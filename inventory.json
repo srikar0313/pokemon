@@ -1,0 +1,88 @@
+[
+  {
+    "id": 25,
+    "name": "Pikachu",
+    "type": "Electric",
+    "rarity": "uncommon",
+    "hp": 35,
+    "maxHp": 35,
+    "attack": 55,
+    "defense": 40,
+    "xpYield": 112,
+    "habitats": [
+      "forest"
+    ],
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "level": 1,
+    "xp": 0,
+    "currentHp": 35,
+    "types": [
+      "Electric"
+    ],
+    "shiny": false
+  },
+  {
+    "id": 7,
+    "name": "Squirtle",
+    "hp": 44,
+    "attack": 52,
+    "defense": 71,
+    "rarity": "common",
+    "xp": 88,
+    "level": 2,
+    "maxHp": 48
+  },
+  {
+    "id": 1,
+    "name": "Bulbasaur",
+    "type": "Grass",
+    "rarity": "common",
+    "hp": 45,
+    "maxHp": 45,
+    "attack": 49,
+    "defense": 49,
+    "xpYield": 64,
+    "habitats": [
+      "forest"
+    ],
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "level": 1,
+    "xp": 0,
+    "currentHp": 1,
+    "types": [
+      "Grass"
+    ],
+    "shiny": false
+  },
+  {
+    "id": 155,
+    "name": "Cyndaquil",
+    "type": "Fire",
+    "rarity": "common",
+    "hp": 39,
+    "maxHp": 39,
+    "attack": 52,
+    "defense": 43,
+    "xpYield": 62,
+    "habitats": [
+      "volcano"
+    ],
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "level": 1,
+    "xp": 0,
+    "currentHp": 1,
+    "types": [
+      "Fire"
+    ],
+    "shiny": false
+  }
+]
