@@ -295,6 +295,22 @@ function displayCurrentPlayer() {
             <p>Status: ${fainted ? renderStatus("fainted") : renderStatus(activePokemon.status)}</p>
           </div>
         </div>
+        <div class="pokemon-moves">
+          <h4>Moves</h4>
+          <div class="moves-grid">
+            ${activePokemon.moves
+              .map(
+                (move) => `
+                  <div class="move-summary">
+                    <strong>${move.name}</strong>
+                    <span>${move.type} • ${move.category}</span>
+                    <span>PP ${move.currentPp}/${move.maxPp ?? move.pp}</span>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </div>
         <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(activePokemon.currentHp, activePokemon.maxHp)}%"></div></div>
       </div>
     </div>
@@ -334,9 +350,15 @@ async function displayAreas() {
     const areaId = typeof area === "string" ? area : area.id;
     const areaName = typeof area === "string" ? area : area.name;
     const unlocked = typeof area === "string" ? true : area.unlocked;
+    const requiresBadge = typeof area === "string" ? null : area.requiresBadge;
     const emoji = getAreaEmoji(areaId);
     const activeClass = selectedArea === areaId ? " active" : "";
-    html += `<button onclick="selectArea(event, '${areaId}')" class="area-btn${unlocked ? activeClass : " locked"}" ${unlocked ? "" : "disabled"}>${emoji} ${areaName.toUpperCase()}${unlocked ? "" : " LOCKED"}</button>`;
+    html += `
+      <button onclick="selectArea(event, '${areaId}')" class="area-btn${unlocked ? activeClass : " locked"}" ${unlocked ? "" : "disabled"}>
+        <strong>${emoji} ${areaName.toUpperCase()}</strong>
+        <span>${unlocked ? "Unlocked" : `Needs ${requiresBadge || "a badge"}`}</span>
+      </button>
+    `;
   });
   html += "</div>";
   document.getElementById("areas").innerHTML = html;
@@ -1000,7 +1022,13 @@ function displayGyms() {
                     <span class="badge-icon">${theme.icon}</span>
                     <span>${gym.badge}</span>
                   </div>
-                  <span>${gym.defeated ? "Cleared - Rematch" : gym.unlocked ? `${gym.rewardCoins} coins` : "Locked"}</span>
+                  <span>${
+                    gym.defeated
+                      ? "Cleared - Rematch"
+                      : gym.unlocked
+                        ? `${gym.rewardCoins} coins`
+                        : `Locked - earn ${gym.requiresBadge || "the previous badge"}`
+                  }</span>
                 </div>
               </div>
             </button>
@@ -2190,6 +2218,11 @@ async function attack(moveName) {
   activePokemon.currentHp = currentPlayerHP;
   activePokemon.status = playerStatus;
   activePokemon.moves = data.playerMoves.map(normalizeMove);
+  if (data.playerPokemon) {
+    activePokemon = normalizePokemon(data.playerPokemon);
+    currentPlayerHP = activePokemon.currentHp;
+    playerStatus = activePokemon.status || "none";
+  }
   wild = normalizePokemon(data.wild);
 
   appendBattleLog(data.log);
@@ -2200,14 +2233,9 @@ async function attack(moveName) {
   await loadInventory();
 
   if (data.winner === "player") {
-    const xpGain =
-      data.xpAward ??
-      Math.floor((wild.xpYield || 50) * Math.max(2, wild.level || 1));
-    appendBattleLog([`${activePokemon.name} gained ${xpGain} XP.`]);
     if (data.moneyReward) {
       await loadProfile();
     }
-    await gainXP(xpGain);
     appendBattleLog([
       `Wild ${wild.name} fainted. You cannot catch a fainted Pokemon.`,
     ]);

@@ -174,6 +174,36 @@ h3 {
   background: linear-gradient(180deg, #fefefe 0%, #f3f6fb 100%);
 }
 
+.pokemon-moves {
+  margin-top: 16px;
+}
+
+.moves-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.move-summary {
+  padding: 12px 14px;
+  border: 1px solid #d8e3ef;
+  border-radius: 14px;
+  background: #f8fbff;
+  color: #243042;
+  font-size: 13px;
+}
+
+.move-summary strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.move-summary span {
+  display: block;
+  color: #4f647f;
+}
+
 .trainer-portrait {
   min-width: 140px;
   display: flex;
@@ -1010,7 +1040,10 @@ h3 {
 }
 
 .area-btn {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
   background: #f0f0f0;
   color: #333;
   border: 2px solid #ddd;
@@ -1020,6 +1053,16 @@ h3 {
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s ease;
+}
+
+.area-btn strong,
+.area-btn span {
+  display: block;
+}
+
+.area-btn span {
+  font-size: 12px;
+  opacity: 0.82;
 }
 
 .area-btn:hover {

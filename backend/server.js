@@ -2269,6 +2269,7 @@ app.get("/api/gyms", (req, res) => {
       type: gym.type,
       difficulty: gym.difficulty,
       badge: gym.badge,
+      requiresBadge: gymUnlocks[gym.id] || null,
       rewardCoins: gym.rewardCoins,
       team: gym.team,
       unlocked: (state.unlockedGyms || []).map(Number).includes(gym.id),
@@ -2461,13 +2462,11 @@ app.post("/api/gym/move", (req, res) => {
   );
   log.push(...playerTurn.log);
   if (playerTurn.error) {
-    return res
-      .status(400)
-      .json({
-        error: playerTurn.error,
-        log,
-        session: getGymSessionView(session),
-      });
+    return res.status(400).json({
+      error: playerTurn.error,
+      log,
+      session: getGymSessionView(session),
+    });
   }
 
   if (gymPokemon.currentHp <= 0) {
@@ -2601,13 +2600,11 @@ app.post("/api/elite/move", (req, res) => {
   );
   log.push(...playerTurn.log);
   if (playerTurn.error) {
-    return res
-      .status(400)
-      .json({
-        error: playerTurn.error,
-        log,
-        session: getEliteSessionView(session),
-      });
+    return res.status(400).json({
+      error: playerTurn.error,
+      log,
+      session: getEliteSessionView(session),
+    });
   }
 
   if (opponentPokemon.currentHp <= 0) {
@@ -3181,7 +3178,7 @@ app.post("/api/battle", (req, res) => {
         return res.status(500).json({ error: "Failed to read inventory" });
       }
 
-      const inventory = JSON.parse(invData).map(normalizePokemon);
+      let inventory = JSON.parse(invData).map(normalizePokemon);
       const playerIndex =
         Number.isInteger(pokemonIndex) && inventory[pokemonIndex]
           ? pokemonIndex
@@ -3258,6 +3255,23 @@ app.post("/api/battle", (req, res) => {
         winner === "player" ? calculateBattleXp(wildPokemon, 1.75) : 0;
 
       inventory[playerIndex] = playerPokemon;
+      let xpResult = null;
+      if (xpAward > 0) {
+        xpResult = applyXpToPokemon(inventory, playerIndex, xpAward);
+        inventory = xpResult.team;
+        const xpPokemon = xpResult.pokemon || inventory[playerIndex];
+        log.push(`${xpPokemon.name} gained ${xpAward} XP.`);
+        if (xpResult.leveledUp) {
+          log.push(`${xpPokemon.name} leveled up to ${xpPokemon.level}!`);
+        }
+        if (xpResult.evolved) {
+          log.push(
+            `${xpResult.evolvedFrom || "Your Pokemon"} evolved into ${
+              xpResult.evolvedTo || xpPokemon.name
+            }!`,
+          );
+        }
+      }
 
       fs.writeFile(
         path.join(__dirname, "..", "inventory.json"),
@@ -3276,7 +3290,17 @@ app.post("/api/battle", (req, res) => {
             wildStatus: wildPokemon.status,
             moneyReward,
             xpAward,
-            playerMoves: playerPokemon.moves,
+            xpResult: xpResult
+              ? {
+                  leveledUp: xpResult.leveledUp,
+                  evolved: xpResult.evolved,
+                  evolvedFrom: xpResult.evolvedFrom,
+                  evolvedTo: xpResult.evolvedTo,
+                  pokemon: xpResult.pokemon,
+                }
+              : null,
+            playerMoves: inventory[playerIndex].moves,
+            playerPokemon: inventory[playerIndex],
             wild: wildPokemon,
           });
         },
@@ -3462,42 +3486,27 @@ app.post("/api/heal", (req, res) => {
 
 app.post("/api/xp", (req, res) => {
   const { pokemonIndex, xpAmount } = req.body;
+  try {
+    const { team, storage } = loadTeamAndStorage();
+    if (pokemonIndex < 0 || pokemonIndex >= team.length) {
+      return res.status(400).json({ error: "Invalid Pokemon index" });
+    }
 
-  fs.readFile(
-    path.join(__dirname, "..", "inventory.json"),
-    "utf8",
-    (err, invData) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to read inventory" });
-      }
+    const xpResult = applyXpToPokemon(team, pokemonIndex, xpAmount);
+    const updatedTeam = xpResult.team;
+    saveTeamAndStorage(updatedTeam, storage);
 
-      const inventory = JSON.parse(invData).map(normalizePokemon);
-      if (pokemonIndex < 0 || pokemonIndex >= inventory.length) {
-        return res.status(400).json({ error: "Invalid Pokemon index" });
-      }
-
-      const xpResult = applyXpToPokemon(inventory, pokemonIndex, xpAmount);
-      const updatedInventory = xpResult.team;
-
-      fs.writeFile(
-        path.join(__dirname, "..", "inventory.json"),
-        JSON.stringify(updatedInventory, null, 2),
-        (err3) => {
-          if (err3) {
-            return res.status(500).json({ error: "Failed to save inventory" });
-          }
-          res.json({
-            success: true,
-            pokemon: updatedInventory[pokemonIndex],
-            leveledUp: xpResult.leveledUp,
-            evolved: xpResult.evolved,
-            evolvedFrom: xpResult.evolvedFrom,
-            evolvedTo: xpResult.evolvedTo,
-          });
-        },
-      );
-    },
-  );
+    res.json({
+      success: true,
+      pokemon: updatedTeam[pokemonIndex],
+      leveledUp: xpResult.leveledUp,
+      evolved: xpResult.evolved,
+      evolvedFrom: xpResult.evolvedFrom,
+      evolvedTo: xpResult.evolvedTo,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to save experience" });
+  }
 });
 
 app.post("/api/release", (req, res) => {
