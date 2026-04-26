@@ -181,33 +181,35 @@ function getPokedexEntries(state) {
     return chain;
   }
 
-  return templates.map((pokemon) => {
-    const previousStage =
-      templates.find((candidate) => candidate.evolvesTo === pokemon.name) ||
-      null;
-    const seen = state.pokedex.seen.includes(pokemon.id);
-    const caught = state.pokedex.caught.includes(pokemon.id);
-    return {
-      id: pokemon.id,
-      name: pokemon.name,
-      type: pokemon.type,
-      types: getPokemonTypes(pokemon),
-      rarity: pokemon.rarity || "common",
-      habitats: pokemon.habitats || [],
-      times: pokemon.times || ["day"],
-      baseCatchRate: pokemon.baseCatchRate ?? null,
-      evolvesTo: pokemon.evolvesTo || null,
-      evolveLevel: pokemon.evolveLevel || null,
-      previousStage: previousStage
-        ? { id: previousStage.id, name: previousStage.name }
-        : null,
-      evolutionChain: previousStage
-        ? getEvolutionChain(previousStage)
-        : getEvolutionChain(pokemon),
-      seen,
-      caught,
-    };
-  });
+  return templates
+    .map((pokemon) => {
+      const previousStage =
+        templates.find((candidate) => candidate.evolvesTo === pokemon.name) ||
+        null;
+      const seen = state.pokedex.seen.includes(pokemon.id);
+      const caught = state.pokedex.caught.includes(pokemon.id);
+      return {
+        id: pokemon.id,
+        name: pokemon.name,
+        type: pokemon.type,
+        types: getPokemonTypes(pokemon),
+        rarity: pokemon.rarity || "common",
+        habitats: pokemon.habitats || [],
+        times: pokemon.times || ["day"],
+        baseCatchRate: pokemon.baseCatchRate ?? null,
+        evolvesTo: pokemon.evolvesTo || null,
+        evolveLevel: pokemon.evolveLevel || null,
+        previousStage: previousStage
+          ? { id: previousStage.id, name: previousStage.name }
+          : null,
+        evolutionChain: previousStage
+          ? getEvolutionChain(previousStage)
+          : getEvolutionChain(pokemon),
+        seen,
+        caught,
+      };
+    })
+    .sort((a, b) => a.id - b.id);
 }
 
 function getGymById(gymId) {

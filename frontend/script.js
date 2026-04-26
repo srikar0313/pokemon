@@ -1709,6 +1709,10 @@ function getPokedexFilterOptions(key) {
 }
 
 function setPokedexStatusFilter(status) {
+  if (status === "all") {
+    resetPokedexFilters();
+    return;
+  }
   pokedexFilters.status = status;
   displayPokedex();
 }
@@ -1831,7 +1835,7 @@ function renderPokedexCard(entry) {
       <div class="pokedex-card-body">
         <div class="pokedex-card-head">
           <span>#${String(entry.id).padStart(3, "0")}</span>
-          <strong>${canShowDetails ? entry.name : "Unknown Pokémon"}</strong>
+          <strong>${entry.name}</strong>
           <em>${status}</em>
         </div>
         <div class="pokedex-tags">
@@ -1848,7 +1852,7 @@ function renderPokedexCard(entry) {
             `
             : `
               <p>Habitat clue: ${habitats || "Unknown"}</p>
-              <p>Details appear after you encounter it.</p>
+              <p>Not encountered yet. Details unlock after you see it.</p>
               ${renderEvolutionChain(entry, false)}
             `
         }
@@ -1891,7 +1895,7 @@ function displayPokedex() {
         <strong>Trainer Milestones</strong>
         <p>${achievements.length ? achievements.join(" • ") : "Start exploring to unlock achievements."}</p>
       </div>
-      <span>${entries.length} shown</span>
+      <span>Showing ${entries.length}/${pokedexCache.total}</span>
     </div>
     <div class="pokedex-filters">
       <div class="pokedex-filter-buttons">
