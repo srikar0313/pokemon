@@ -5,6 +5,7 @@ let currentPlayerHP = 0;
 let currentWildHP = 0;
 let playerStatus = "none";
 let wildStatus = "none";
+let wildParticipantIndexes = new Set();
 let selectedArea = null;
 let teamCache = [];
 let storageCache = [];
@@ -163,6 +164,7 @@ function clearWildEncounterState() {
   wild = null;
   currentWildHP = 0;
   wildStatus = "none";
+  wildParticipantIndexes = new Set();
   isInBattle = false;
   isSwitching = false;
   closeWildEncounterLayer();
@@ -393,25 +395,27 @@ async function selectArea(event, area) {
 }
 
 function getAreaHelperText(area) {
+  const legendaryNote =
+    "Legendary Pokemon are extremely rare and usually appear only in specific biomes.";
   switch (area) {
     case "forest":
-      return "Forest routes favor Bug, Grass, and Poison types. Look for hidden rare encounters and mythical spirits at night.";
+      return `Forest: Grass/Bug Pokemon. ${legendaryNote}`;
     case "lake":
-      return "Lake routes are rich in Water types. Use a Master Ball for rare aquatic legends and keep an eye out for night-only encounters.";
+      return `Lake: Water Pokemon. ${legendaryNote}`;
     case "cave":
-      return "Caves host Rock, Ground, and Ghost types. Explore carefully — rare Pokemon appear in dark passages and hidden chambers.";
+      return `Cave: Rock/Ground/Poison Pokemon. ${legendaryNote}`;
     case "ocean":
-      return "Ocean routes contain Water types and rare sea creatures. Legendary water Pokemon are most likely to appear during night exploration.";
+      return `Ocean: Water/Ice Pokemon. ${legendaryNote}`;
     case "volcano":
-      return "Volcano routes favor Fire and Rock types. Legendary fire beasts roam here, so bring plenty of recovery items.";
+      return `Volcano: Fire Pokemon. ${legendaryNote}`;
     case "mountain":
-      return "Mountain routes are home to Rock, Flying, and Dragon types. Legendary sky Pokemon can appear on high ridges at night.";
+      return `Mountain: Flying/Rock/Dragon Pokemon. ${legendaryNote}`;
     case "desert":
-      return "Desert routes favor Ground, Rock, and Dark types. Watch for rare dragon and sandstorm encounters in the heat.";
+      return `Desert: Ground/Dark Pokemon. ${legendaryNote}`;
     case "graveyard":
-      return "Graveyard routes favor Ghost and Dark types. Mythical spirits and rare night-only Pokemon are more common here.";
+      return `Graveyard: Ghost/Dark Pokemon. ${legendaryNote}`;
     default:
-      return "Select an area to view biome-specific encounter hints and rare Pokemon guidance.";
+      return `Select an area to view biome-specific encounter hints. ${legendaryNote}`;
   }
 }
 
@@ -1881,6 +1885,7 @@ function selectPokemon(index) {
     }
     activeInventoryIndex = index;
     activePokemon = normalizePokemon(selected);
+    if (wild && isInBattle) wildParticipantIndexes.add(index);
     currentPlayerHP = activePokemon.currentHp;
     playerStatus = activePokemon.status || "none";
     displayCurrentPlayer();
@@ -2052,6 +2057,7 @@ document.getElementById("explore-btn")?.addEventListener("click", async () => {
     currentWildHP = wild.currentHp;
     playerStatus = activePokemon.status || "none";
     wildStatus = wild.status || "none";
+    wildParticipantIndexes = new Set([activeInventoryIndex]);
     showBattle();
   } catch (error) {
     console.error("Error:", error);
@@ -2203,6 +2209,7 @@ async function attack(moveName) {
       wildHP: currentWildHP,
       playerStatus,
       wildStatus,
+      participantIndexes: [...wildParticipantIndexes],
     }),
   });
   const data = await response.json();

@@ -429,7 +429,8 @@
 		"xp": 0,
 		"currentHp": 45,
 		"types": [
-			"Normal"
+			"Normal",
+			"Fairy"
 		],
 		"specialAttack": 20,
 		"specialDefense": 20,
@@ -827,7 +828,8 @@
 		"xp": 0,
 		"currentHp": 30,
 		"types": [
-			"Ghost"
+			"Ghost",
+			"Poison"
 		],
 		"specialAttack": 35,
 		"specialDefense": 30,
@@ -902,7 +904,8 @@
 		"defense": 40,
 		"xpYield": 87,
 		"habitats": [
-			"cave"
+			"cave",
+			"desert"
 		],
 		"times": [
 			"night"
@@ -1354,7 +1357,7 @@
 	{
 		"id": 21,
 		"name": "Spearow",
-		"type": "Flying",
+		"type": "Normal",
 		"rarity": "common",
 		"hp": 40,
 		"maxHp": 40,
@@ -1372,6 +1375,7 @@
 		"xp": 0,
 		"currentHp": 40,
 		"types": [
+			"Normal",
 			"Flying"
 		],
 		"specialAttack": 60,
@@ -1448,7 +1452,8 @@
 		"xp": 0,
 		"currentHp": 35,
 		"types": [
-			"Rock"
+			"Rock",
+			"Ground"
 		],
 		"specialAttack": 45,
 		"specialDefense": 160,
@@ -1603,7 +1608,8 @@
 		"xp": 0,
 		"currentHp": 70,
 		"types": [
-			"Bug"
+			"Bug",
+			"Flying"
 		],
 		"specialAttack": 110,
 		"specialDefense": 80,
@@ -1666,7 +1672,8 @@
 		"defense": 95,
 		"xpYield": 219,
 		"habitats": [
-			"lake"
+			"lake",
+			"ocean"
 		],
 		"times": [
 			"night"
@@ -1676,7 +1683,8 @@
 		"xp": 0,
 		"currentHp": 130,
 		"types": [
-			"Water"
+			"Water",
+			"Ice"
 		],
 		"specialAttack": 85,
 		"specialDefense": 95,
@@ -2555,7 +2563,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 35,
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "String Shot",
@@ -2571,7 +2580,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 40
+				"currentPp": 40,
+				"maxPp": 40
 			},
 			{
 				"name": "Bug Bite",
@@ -2580,7 +2590,8 @@
 				"power": 50,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Sleep Powder",
@@ -2594,13 +2605,15 @@
 					"status": "asleep",
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			}
 		],
 		"id": 219,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 45
+		"currentHp": 45,
+		"maxHp": 45
 	},
 	{
 		"name": "Weedle",
@@ -2636,7 +2649,8 @@
 					"status": "poisoned",
 					"chance": 30
 				},
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "Bug Bite",
@@ -2645,7 +2659,8 @@
 				"power": 50,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "String Shot",
@@ -2661,7 +2676,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 40
+				"currentPp": 40,
+				"maxPp": 40
 			},
 			{
 				"name": "Growl",
@@ -2677,13 +2693,15 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 40
+				"currentPp": 40,
+				"maxPp": 40
 			}
 		],
 		"id": 220,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 40
+		"currentHp": 40,
+		"maxHp": 40
 	},
 	{
 		"name": "Oddish",
@@ -2714,7 +2732,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Acid",
@@ -2723,7 +2742,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 30,
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			},
 			{
 				"name": "Sleep Powder",
@@ -2737,7 +2757,8 @@
 					"status": "asleep",
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Poison Powder",
@@ -2751,13 +2772,15 @@
 					"status": "poisoned",
 					"chance": 100
 				},
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			}
 		],
 		"id": 221,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 45
+		"currentHp": 45,
+		"maxHp": 45
 	},
 	{
 		"name": "Butterfree",
@@ -2788,7 +2811,8 @@
 				"power": 50,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Gust",
@@ -2797,7 +2821,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 35,
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "Sleep Powder",
@@ -2811,7 +2836,8 @@
 					"status": "asleep",
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Stun Spore",
@@ -2825,13 +2851,15 @@
 					"status": "paralyzed",
 					"chance": 100
 				},
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			}
 		],
 		"id": 222,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 60
+		"currentHp": 60,
+		"maxHp": 60
 	},
 	{
 		"name": "Poliwag",
@@ -2861,7 +2889,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Bubble",
@@ -2877,7 +2906,8 @@
 					"stages": -1,
 					"chance": 10
 				},
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			},
 			{
 				"name": "Hypnosis",
@@ -2891,7 +2921,8 @@
 					"status": "asleep",
 					"chance": 100
 				},
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Double Slap",
@@ -2900,13 +2931,15 @@
 				"power": 15,
 				"accuracy": 85,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 223,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 40
+		"currentHp": 40,
+		"maxHp": 40
 	},
 	{
 		"name": "Magikarp",
@@ -2936,7 +2969,8 @@
 				"power": 0,
 				"accuracy": 100,
 				"pp": 40,
-				"currentPp": 40
+				"currentPp": 40,
+				"maxPp": 40
 			},
 			{
 				"name": "Tackle",
@@ -2945,7 +2979,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 35,
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "Flail",
@@ -2954,7 +2989,8 @@
 				"power": 1,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Bounce",
@@ -2963,13 +2999,15 @@
 				"power": 85,
 				"accuracy": 85,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			}
 		],
 		"id": 224,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 30
+		"currentHp": 30,
+		"maxHp": 30
 	},
 	{
 		"name": "Goldeen",
@@ -2999,7 +3037,8 @@
 				"power": 65,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Water Pulse",
@@ -3008,7 +3047,8 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 20,
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Flail",
@@ -3017,7 +3057,8 @@
 				"power": 1,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Aqua Jet",
@@ -3026,13 +3067,15 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 20,
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			}
 		],
 		"id": 225,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 45
+		"currentHp": 45,
+		"maxHp": 45
 	},
 	{
 		"name": "Staryu",
@@ -3062,7 +3105,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 35,
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "Water Gun",
@@ -3071,7 +3115,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Rapid Spin",
@@ -3080,7 +3125,8 @@
 				"power": 50,
 				"accuracy": 100,
 				"pp": 40,
-				"currentPp": 40
+				"currentPp": 40,
+				"maxPp": 40
 			},
 			{
 				"name": "Swift",
@@ -3089,13 +3135,15 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 20,
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			}
 		],
 		"id": 226,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 30
+		"currentHp": 30,
+		"maxHp": 30
 	},
 	{
 		"name": "Zubat",
@@ -3126,7 +3174,8 @@
 				"power": 20,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Bite",
@@ -3135,7 +3184,8 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Supersonic",
@@ -3149,7 +3199,8 @@
 					"status": "confused",
 					"chance": 100
 				},
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Wing Attack",
@@ -3158,13 +3209,15 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 35,
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			}
 		],
 		"id": 227,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 40
+		"currentHp": 40,
+		"maxHp": 40
 	},
 	{
 		"name": "Diglett",
@@ -3194,7 +3247,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 35,
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "Sand Attack",
@@ -3210,7 +3264,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Mud-Slap",
@@ -3226,7 +3281,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Dig",
@@ -3235,13 +3291,15 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 228,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 30
+		"currentHp": 30,
+		"maxHp": 30
 	},
 	{
 		"name": "Machop",
@@ -3271,7 +3329,8 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 20,
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Karate Chop",
@@ -3280,7 +3339,8 @@
 				"power": 50,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Focus Energy",
@@ -3296,7 +3356,8 @@
 					"stages": 1,
 					"chance": 100
 				},
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			},
 			{
 				"name": "Seismic Toss",
@@ -3305,13 +3366,15 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 20,
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			}
 		],
 		"id": 229,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 70
+		"currentHp": 70,
+		"maxHp": 70
 	},
 	{
 		"name": "Tentacool",
@@ -3343,7 +3406,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 30,
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			},
 			{
 				"name": "Water Gun",
@@ -3352,7 +3416,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Poison Sting",
@@ -3366,7 +3431,8 @@
 					"status": "poisoned",
 					"chance": 30
 				},
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "Supersonic",
@@ -3380,13 +3446,15 @@
 					"status": "confused",
 					"chance": 100
 				},
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			}
 		],
 		"id": 230,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 40
+		"currentHp": 40,
+		"maxHp": 40
 	},
 	{
 		"name": "Horsea",
@@ -3423,7 +3491,8 @@
 					"stages": -1,
 					"chance": 10
 				},
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			},
 			{
 				"name": "Smokescreen",
@@ -3439,7 +3508,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Leer",
@@ -3455,7 +3525,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			},
 			{
 				"name": "Water Gun",
@@ -3464,13 +3535,15 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			}
 		],
 		"id": 231,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 30
+		"currentHp": 30,
+		"maxHp": 30
 	},
 	{
 		"name": "Shellder",
@@ -3500,7 +3573,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 35,
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "Withdraw",
@@ -3516,7 +3590,8 @@
 					"stages": 1,
 					"chance": 100
 				},
-				"currentPp": 40
+				"currentPp": 40,
+				"maxPp": 40
 			},
 			{
 				"name": "Ice Beam",
@@ -3525,7 +3600,8 @@
 				"power": 90,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Clamp",
@@ -3534,13 +3610,15 @@
 				"power": 35,
 				"accuracy": 85,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			}
 		],
 		"id": 232,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 30
+		"currentHp": 30,
+		"maxHp": 30
 	},
 	{
 		"name": "Seel",
@@ -3572,7 +3650,8 @@
 				"power": 70,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Ice Beam",
@@ -3581,7 +3660,8 @@
 				"power": 90,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Aurora Beam",
@@ -3597,7 +3677,8 @@
 					"stages": -1,
 					"chance": 10
 				},
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Growl",
@@ -3613,13 +3694,15 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 40
+				"currentPp": 40,
+				"maxPp": 40
 			}
 		],
 		"id": 233,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 65
+		"currentHp": 65,
+		"maxHp": 65
 	},
 	{
 		"name": "Vulpix",
@@ -3654,7 +3737,8 @@
 					"status": "burned",
 					"chance": 10
 				},
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Quick Attack",
@@ -3667,7 +3751,8 @@
 					"type": "priority",
 					"amount": 1
 				},
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			},
 			{
 				"name": "Tail Whip",
@@ -3683,7 +3768,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			},
 			{
 				"name": "Flame Wheel",
@@ -3692,13 +3778,15 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			}
 		],
 		"id": 234,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 38
+		"currentHp": 38,
+		"maxHp": 38
 	},
 	{
 		"name": "Ponyta",
@@ -3733,7 +3821,8 @@
 					"status": "burned",
 					"chance": 10
 				},
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Flame Wheel",
@@ -3742,7 +3831,8 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Stomp",
@@ -3751,7 +3841,8 @@
 				"power": 65,
 				"accuracy": 100,
 				"pp": 20,
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Growl",
@@ -3767,13 +3858,15 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 40
+				"currentPp": 40,
+				"maxPp": 40
 			}
 		],
 		"id": 235,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 50
+		"currentHp": 50,
+		"maxHp": 50
 	},
 	{
 		"name": "Magmar",
@@ -3808,7 +3901,8 @@
 					"status": "burned",
 					"chance": 10
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Flamethrower",
@@ -3817,7 +3911,8 @@
 				"power": 90,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Smokescreen",
@@ -3833,7 +3928,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Confuse Ray",
@@ -3847,13 +3943,15 @@
 					"status": "confused",
 					"chance": 100
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 236,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 65
+		"currentHp": 65,
+		"maxHp": 65
 	},
 	{
 		"name": "Pidgey",
@@ -3884,7 +3982,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 35,
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "Gust",
@@ -3893,7 +3992,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 35,
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "Sand Attack",
@@ -3909,7 +4009,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Quick Attack",
@@ -3922,13 +4023,15 @@
 					"type": "priority",
 					"amount": 1
 				},
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			}
 		],
 		"id": 237,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 40
+		"currentHp": 40,
+		"maxHp": 40
 	},
 	{
 		"name": "Larvitar",
@@ -3959,7 +4062,8 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Rock Throw",
@@ -3968,7 +4072,8 @@
 				"power": 50,
 				"accuracy": 90,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Sandstorm",
@@ -3982,7 +4087,8 @@
 					"weather": "sandstorm",
 					"chance": 100
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Dragon Dance",
@@ -3998,13 +4104,15 @@
 					"stages": 1,
 					"chance": 100
 				},
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			}
 		],
 		"id": 238,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 60
+		"currentHp": 60,
+		"maxHp": 60
 	},
 	{
 		"name": "Sandshrew",
@@ -4034,7 +4142,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 35,
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			},
 			{
 				"name": "Sand Attack",
@@ -4050,7 +4159,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Rollout",
@@ -4059,7 +4169,8 @@
 				"power": 30,
 				"accuracy": 90,
 				"pp": 20,
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Defense Curl",
@@ -4075,13 +4186,15 @@
 					"stages": 1,
 					"chance": 100
 				},
-				"currentPp": 40
+				"currentPp": 40,
+				"maxPp": 40
 			}
 		],
 		"id": 239,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 50
+		"currentHp": 50,
+		"maxHp": 50
 	},
 	{
 		"name": "Trapinch",
@@ -4111,7 +4224,8 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Sand Tomb",
@@ -4124,7 +4238,8 @@
 					"type": "trap",
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Mud-Slap",
@@ -4140,7 +4255,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Dig",
@@ -4149,13 +4265,15 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 240,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 45
+		"currentHp": 45,
+		"maxHp": 45
 	},
 	{
 		"name": "Cacnea",
@@ -4190,7 +4308,8 @@
 					"status": "flinched",
 					"chance": 30
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Absorb",
@@ -4199,7 +4318,8 @@
 				"power": 20,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Sand Attack",
@@ -4215,7 +4335,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Poison Sting",
@@ -4229,13 +4350,15 @@
 					"status": "poisoned",
 					"chance": 30
 				},
-				"currentPp": 35
+				"currentPp": 35,
+				"maxPp": 35
 			}
 		],
 		"id": 241,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 50
+		"currentHp": 50,
+		"maxHp": 50
 	},
 	{
 		"name": "Sandile",
@@ -4270,7 +4393,8 @@
 					"type": "trap",
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Bite",
@@ -4279,7 +4403,8 @@
 				"power": 60,
 				"accuracy": 100,
 				"pp": 25,
-				"currentPp": 25
+				"currentPp": 25,
+				"maxPp": 25
 			},
 			{
 				"name": "Sand Attack",
@@ -4295,7 +4420,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Crunch",
@@ -4304,13 +4430,15 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			}
 		],
 		"id": 242,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 50
+		"currentHp": 50,
+		"maxHp": 50
 	},
 	{
 		"name": "Misdreavus",
@@ -4340,7 +4468,8 @@
 				"power": 65,
 				"accuracy": 100,
 				"pp": 20,
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Shadow Ball",
@@ -4349,7 +4478,8 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Confuse Ray",
@@ -4363,7 +4493,8 @@
 					"status": "confused",
 					"chance": 100
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Will-O-Wisp",
@@ -4377,13 +4508,15 @@
 					"status": "burned",
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			}
 		],
 		"id": 243,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 60
+		"currentHp": 60,
+		"maxHp": 60
 	},
 	{
 		"name": "Duskull",
@@ -4413,7 +4546,8 @@
 				"power": 40,
 				"accuracy": 100,
 				"pp": 30,
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			},
 			{
 				"name": "Night Shade",
@@ -4422,7 +4556,8 @@
 				"power": 0,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Will-O-Wisp",
@@ -4436,7 +4571,8 @@
 					"status": "burned",
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Curse",
@@ -4450,13 +4586,15 @@
 					"status": "curse",
 					"chance": 100
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 244,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 20
+		"currentHp": 20,
+		"maxHp": 20
 	},
 	{
 		"name": "Sableye",
@@ -4487,7 +4625,8 @@
 				"power": 70,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Fake Out",
@@ -4501,7 +4640,8 @@
 					"status": "flinched",
 					"chance": 100
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Foul Play",
@@ -4510,7 +4650,8 @@
 				"power": 95,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Taunt",
@@ -4524,13 +4665,15 @@
 					"status": "taunted",
 					"chance": 100
 				},
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			}
 		],
 		"id": 245,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 50
+		"currentHp": 50,
+		"maxHp": 50
 	},
 	{
 		"name": "Gengar",
@@ -4561,7 +4704,8 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Sludge Bomb",
@@ -4575,7 +4719,8 @@
 					"status": "poisoned",
 					"chance": 30
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Hypnosis",
@@ -4589,7 +4734,8 @@
 					"status": "asleep",
 					"chance": 100
 				},
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Dream Eater",
@@ -4598,13 +4744,15 @@
 				"power": 100,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			}
 		],
 		"id": 246,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 60
+		"currentHp": 60,
+		"maxHp": 60
 	},
 	{
 		"name": "Articuno",
@@ -4635,7 +4783,8 @@
 				"power": 90,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Hurricane",
@@ -4644,7 +4793,8 @@
 				"power": 110,
 				"accuracy": 70,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Blizzard",
@@ -4653,7 +4803,8 @@
 				"power": 110,
 				"accuracy": 70,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Roost",
@@ -4666,13 +4817,15 @@
 					"type": "heal",
 					"amount": "50%"
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 247,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 90
+		"currentHp": 90,
+		"maxHp": 90
 	},
 	{
 		"name": "Zapdos",
@@ -4703,7 +4856,8 @@
 				"power": 90,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Drill Peck",
@@ -4712,7 +4866,8 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 20,
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			},
 			{
 				"name": "Thunder",
@@ -4721,7 +4876,8 @@
 				"power": 110,
 				"accuracy": 70,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Agility",
@@ -4737,13 +4893,15 @@
 					"stages": 2,
 					"chance": 100
 				},
-				"currentPp": 30
+				"currentPp": 30,
+				"maxPp": 30
 			}
 		],
 		"id": 248,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 90
+		"currentHp": 90,
+		"maxHp": 90
 	},
 	{
 		"name": "Moltres",
@@ -4774,7 +4932,8 @@
 				"power": 90,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Sky Attack",
@@ -4783,7 +4942,8 @@
 				"power": 140,
 				"accuracy": 90,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Heat Wave",
@@ -4792,7 +4952,8 @@
 				"power": 95,
 				"accuracy": 90,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Roost",
@@ -4805,13 +4966,15 @@
 					"type": "heal",
 					"amount": "50%"
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 249,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 90
+		"currentHp": 90,
+		"maxHp": 90
 	},
 	{
 		"name": "Lugia",
@@ -4842,7 +5005,8 @@
 				"power": 90,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Aeroblast",
@@ -4851,7 +5015,8 @@
 				"power": 100,
 				"accuracy": 95,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Hydro Pump",
@@ -4860,7 +5025,8 @@
 				"power": 110,
 				"accuracy": 80,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Calm Mind",
@@ -4876,13 +5042,15 @@
 					"stages": 1,
 					"chance": 100
 				},
-				"currentPp": 20
+				"currentPp": 20,
+				"maxPp": 20
 			}
 		],
 		"id": 250,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 106
+		"currentHp": 106,
+		"maxHp": 106
 	},
 	{
 		"name": "Ho-Oh",
@@ -4918,7 +5086,8 @@
 					"status": "burned",
 					"chance": 50
 				},
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Brave Bird",
@@ -4934,7 +5103,8 @@
 					"stages": -1,
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Recover",
@@ -4947,7 +5117,8 @@
 					"type": "heal",
 					"amount": "50%"
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Earthquake",
@@ -4956,13 +5127,15 @@
 				"power": 100,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 251,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 106
+		"currentHp": 106,
+		"maxHp": 106
 	},
 	{
 		"name": "Rayquaza",
@@ -4993,7 +5166,8 @@
 				"power": 120,
 				"accuracy": 100,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Outrage",
@@ -5002,7 +5176,8 @@
 				"power": 120,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Dragon Pulse",
@@ -5011,7 +5186,8 @@
 				"power": 85,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Extreme Speed",
@@ -5020,13 +5196,15 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			}
 		],
 		"id": 252,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 105
+		"currentHp": 105,
+		"maxHp": 105
 	},
 	{
 		"name": "Kyogre",
@@ -5056,7 +5234,8 @@
 				"power": 110,
 				"accuracy": 85,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Hydro Pump",
@@ -5065,7 +5244,8 @@
 				"power": 110,
 				"accuracy": 80,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Ice Beam",
@@ -5074,7 +5254,8 @@
 				"power": 90,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Thunder",
@@ -5083,13 +5264,15 @@
 				"power": 110,
 				"accuracy": 70,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 253,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 100
+		"currentHp": 100,
+		"maxHp": 100
 	},
 	{
 		"name": "Groudon",
@@ -5120,7 +5303,8 @@
 				"power": 100,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Precipice Blades",
@@ -5129,7 +5313,8 @@
 				"power": 120,
 				"accuracy": 85,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Stone Edge",
@@ -5138,7 +5323,8 @@
 				"power": 100,
 				"accuracy": 80,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Solar Beam",
@@ -5147,13 +5333,15 @@
 				"power": 120,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 254,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 100
+		"currentHp": 100,
+		"maxHp": 100
 	},
 	{
 		"name": "Dialga",
@@ -5184,7 +5372,8 @@
 				"power": 85,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Flash Cannon",
@@ -5193,7 +5382,8 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Aura Sphere",
@@ -5202,7 +5392,8 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Roar of Time",
@@ -5211,13 +5402,15 @@
 				"power": 150,
 				"accuracy": 90,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			}
 		],
 		"id": 255,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 100
+		"currentHp": 100,
+		"maxHp": 100
 	},
 	{
 		"name": "Palkia",
@@ -5248,7 +5441,8 @@
 				"power": 110,
 				"accuracy": 80,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Spacial Rend",
@@ -5257,7 +5451,8 @@
 				"power": 100,
 				"accuracy": 95,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Thunder",
@@ -5266,7 +5461,8 @@
 				"power": 110,
 				"accuracy": 70,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Earth Power",
@@ -5275,13 +5471,15 @@
 				"power": 90,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 256,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 90
+		"currentHp": 90,
+		"maxHp": 90
 	},
 	{
 		"name": "Giratina",
@@ -5312,7 +5510,8 @@
 				"power": 120,
 				"accuracy": 100,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Dragon Pulse",
@@ -5321,7 +5520,8 @@
 				"power": 85,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Aura Sphere",
@@ -5330,7 +5530,8 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Will-O-Wisp",
@@ -5344,13 +5545,15 @@
 					"status": "burned",
 					"chance": 100
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			}
 		],
 		"id": 257,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 150
+		"currentHp": 150,
+		"maxHp": 150
 	},
 	{
 		"name": "Zekrom",
@@ -5386,7 +5589,8 @@
 					"status": "paralyzed",
 					"chance": 20
 				},
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Outrage",
@@ -5395,7 +5599,8 @@
 				"power": 120,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Dragon Claw",
@@ -5404,7 +5609,8 @@
 				"power": 80,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Stone Edge",
@@ -5413,13 +5619,15 @@
 				"power": 100,
 				"accuracy": 80,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			}
 		],
 		"id": 258,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 100
+		"currentHp": 100,
+		"maxHp": 100
 	},
 	{
 		"name": "Reshiram",
@@ -5455,7 +5663,8 @@
 					"status": "burned",
 					"chance": 20
 				},
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Dragon Pulse",
@@ -5464,7 +5673,8 @@
 				"power": 85,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Fusion Flare",
@@ -5473,7 +5683,8 @@
 				"power": 100,
 				"accuracy": 100,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Air Slash",
@@ -5482,13 +5693,15 @@
 				"power": 75,
 				"accuracy": 95,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			}
 		],
 		"id": 259,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 100
+		"currentHp": 100,
+		"maxHp": 100
 	},
 	{
 		"name": "Xerneas",
@@ -5525,7 +5738,8 @@
 					"stages": -1,
 					"chance": 30
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Geomancy",
@@ -5541,7 +5755,8 @@
 					"stages": 2,
 					"chance": 100
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Thunder",
@@ -5550,7 +5765,8 @@
 				"power": 110,
 				"accuracy": 70,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Psychic",
@@ -5559,13 +5775,15 @@
 				"power": 90,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 260,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 100
+		"currentHp": 100,
+		"maxHp": 100
 	},
 	{
 		"name": "Yveltal",
@@ -5600,7 +5818,8 @@
 					"type": "heal",
 					"amount": "50%"
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Dark Pulse",
@@ -5616,7 +5835,8 @@
 					"stages": -1,
 					"chance": 20
 				},
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Foul Play",
@@ -5625,7 +5845,8 @@
 				"power": 95,
 				"accuracy": 100,
 				"pp": 15,
-				"currentPp": 15
+				"currentPp": 15,
+				"maxPp": 15
 			},
 			{
 				"name": "Hurricane",
@@ -5634,13 +5855,15 @@
 				"power": 110,
 				"accuracy": 70,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 261,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 100
+		"currentHp": 100,
+		"maxHp": 100
 	},
 	{
 		"name": "Arceus",
@@ -5670,7 +5893,8 @@
 				"power": 100,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Recover",
@@ -5683,7 +5907,8 @@
 					"type": "heal",
 					"amount": "50%"
 				},
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			},
 			{
 				"name": "Hyper Beam",
@@ -5692,7 +5917,8 @@
 				"power": 150,
 				"accuracy": 90,
 				"pp": 5,
-				"currentPp": 5
+				"currentPp": 5,
+				"maxPp": 5
 			},
 			{
 				"name": "Earthquake",
@@ -5701,12 +5927,14 @@
 				"power": 100,
 				"accuracy": 100,
 				"pp": 10,
-				"currentPp": 10
+				"currentPp": 10,
+				"maxPp": 10
 			}
 		],
 		"id": 262,
 		"level": 1,
 		"xp": 0,
-		"currentHp": 120
+		"currentHp": 120,
+		"maxHp": 120
 	}
 ]
