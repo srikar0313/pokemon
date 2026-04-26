@@ -5,9 +5,9 @@
     "type": "Electric",
     "rarity": "uncommon",
     "hp": 35,
-    "maxHp": 52,
-    "attack": 23,
-    "defense": 4,
+    "maxHp": 64,
+    "attack": 29,
+    "defense": 10,
     "xpYield": 112,
     "habitats": [
       "forest"
@@ -16,14 +16,14 @@
       "day"
     ],
     "baseCatchRate": 190,
-    "level": 4,
-    "xp": 157,
-    "currentHp": 52,
+    "level": 6,
+    "xp": 156,
+    "currentHp": 40,
     "types": [
       "Electric"
     ],
-    "specialAttack": 76,
-    "specialDefense": 54,
+    "specialAttack": 82,
+    "specialDefense": 60,
     "moves": [
       {
         "name": "Quick Attack",
@@ -34,7 +34,7 @@
         "pp": 30,
         "maxPp": 30,
         "priority": 1,
-        "currentPp": 30
+        "currentPp": 26
       },
       {
         "name": "Thunder Shock",
@@ -49,7 +49,7 @@
           "status": "paralyzed",
           "chance": 10
         },
-        "currentPp": 30
+        "currentPp": 25
       },
       {
         "name": "Thunder Wave",
@@ -79,12 +79,27 @@
           "status": "paralyzed",
           "chance": 10
         },
-        "currentPp": 15
+        "currentPp": 14
       }
     ],
     "evolvesTo": "Raichu",
     "evolveLevel": 12,
     "evolveType": "Electric",
+    "learnset": [
+      {
+        "level": 5,
+        "move": {
+          "name": "Electro Ball",
+          "type": "Electric",
+          "category": "Special",
+          "power": 60,
+          "accuracy": 100,
+          "pp": 10,
+          "maxPp": 10,
+          "currentPp": 10
+        }
+      }
+    ],
     "shiny": false,
     "status": "none",
     "speed": 1
@@ -96,7 +111,7 @@
     "rarity": "rare",
     "hp": 30,
     "maxHp": 30,
-    "attack": 35,
+    "attack": 28,
     "defense": 30,
     "xpYield": 95,
     "habitats": [
@@ -108,7 +123,7 @@
     "baseCatchRate": 190,
     "level": 1,
     "xp": 0,
-    "currentHp": 30,
+    "currentHp": 1,
     "types": [
       "Ghost"
     ],
@@ -143,7 +158,7 @@
           "status": "asleep",
           "chance": 100
         },
-        "currentPp": 20
+        "currentPp": 19
       },
       {
         "name": "Night Shade",
@@ -153,7 +168,7 @@
         "accuracy": 100,
         "pp": 15,
         "maxPp": 15,
-        "currentPp": 15
+        "currentPp": 14
       },
       {
         "name": "Shadow Ball",
@@ -170,7 +185,7 @@
           "stages": -1,
           "chance": 20
         },
-        "currentPp": 15
+        "currentPp": 14
       }
     ],
     "status": "none",

@@ -741,5 +741,75 @@
     "maxHp": 30,
     "status": "none",
     "shiny": false
+  },
+  {
+    "name": "Goldeen",
+    "type": "Water",
+    "types": [
+      "Water"
+    ],
+    "rarity": "common",
+    "hp": 45,
+    "attack": 67,
+    "defense": 60,
+    "specialAttack": 50,
+    "specialDefense": 50,
+    "xpYield": 64,
+    "habitats": [
+      "lake"
+    ],
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 225,
+    "moves": [
+      {
+        "name": "Horn Attack",
+        "type": "Normal",
+        "category": "Physical",
+        "power": 65,
+        "accuracy": 100,
+        "pp": 25,
+        "currentPp": 25,
+        "maxPp": 25
+      },
+      {
+        "name": "Water Pulse",
+        "type": "Water",
+        "category": "Special",
+        "power": 60,
+        "accuracy": 100,
+        "pp": 20,
+        "currentPp": 20,
+        "maxPp": 20
+      },
+      {
+        "name": "Flail",
+        "type": "Normal",
+        "category": "Physical",
+        "power": 1,
+        "accuracy": 100,
+        "pp": 15,
+        "currentPp": 15,
+        "maxPp": 15
+      },
+      {
+        "name": "Aqua Jet",
+        "type": "Water",
+        "category": "Physical",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 20,
+        "currentPp": 20,
+        "maxPp": 20
+      }
+    ],
+    "id": 225,
+    "level": 1,
+    "xp": 0,
+    "currentHp": 10,
+    "maxHp": 45,
+    "status": "none",
+    "shiny": false
   }
 ]

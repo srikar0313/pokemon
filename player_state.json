@@ -1,9 +1,9 @@
 {
   "trainerName": "Player",
-  "coins": 593,
-  "money": 593,
-  "level": 6,
-  "xp": 575,
+  "coins": 658,
+  "money": 658,
+  "level": 7,
+  "xp": 600,
   "badges": [
     "Volt Badge",
     "Aqua Badge"
@@ -22,13 +22,15 @@
   ],
   "items": {
     "standard": 29,
-    "great": 30,
+    "great": 29,
     "ultra": 25,
     "master": 5,
-    "potion": 7,
-    "superPotion": 1,
+    "potion": 6,
+    "superPotion": 0,
+    "hyperPotion": 0,
+    "maxPotion": 0,
     "antidote": 2,
-    "paralyzeHeal": 2,
+    "paralyzeHeal": 3,
     "burnHeal": 1,
     "iceHeal": 1,
     "awakening": 1,
@@ -60,7 +62,11 @@
       131,
       220,
       221,
-      232
+      232,
+      233,
+      225,
+      183,
+      219
     ],
     "caught": [
       25,
@@ -77,7 +83,8 @@
       92,
       231,
       220,
-      232
+      232,
+      225
     ]
   },
   "defeatedNpcs": [
