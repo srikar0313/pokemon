@@ -294,7 +294,37 @@ function renderMoveDetails(pokemon) {
   `;
 }
 
-function renderPokemonDetailCard(pokemon, title = "Pokemon details") {
+function renderPendingMovePanel(pokemon, section = "team", index = activeInventoryIndex) {
+  if (!pokemon.pendingMove) return "";
+  return `
+    <div class="pending-move-panel">
+      <h4>${pokemon.name} wants to learn ${pokemon.pendingMove.name}</h4>
+      <p>Choose a move to replace, or skip learning it.</p>
+      <div class="moves-grid">
+        ${(pokemon.moves || [])
+          .map(
+            (move, moveIndex) => `
+              <button class="move-summary pending-replace" onclick="learnPendingMove('${section}', ${index}, ${moveIndex})">
+                <strong>${move.name}</strong>
+                <span>${move.type} | ${move.category}</span>
+                <span>Power ${move.power ?? 0} | Acc ${move.accuracy ?? 100}</span>
+                <span>Replace with ${pokemon.pendingMove.name}</span>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+      <button class="secondary-btn" onclick="skipPendingMove('${section}', ${index})">Skip ${pokemon.pendingMove.name}</button>
+    </div>
+  `;
+}
+
+function renderPokemonDetailCard(
+  pokemon,
+  title = "Pokemon details",
+  section = "team",
+  index = activeInventoryIndex,
+) {
   const fainted = pokemon.currentHp <= 0;
   return `
     <div class="player-card trainer-sheet${fainted ? " fainted" : ""}">
@@ -328,6 +358,7 @@ function renderPokemonDetailCard(pokemon, title = "Pokemon details") {
           </div>
         </div>
         ${renderMoveDetails(pokemon)}
+        ${renderPendingMovePanel(pokemon, section, index)}
         <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(pokemon.currentHp, pokemon.maxHp)}%"></div></div>
       </div>
     </div>
@@ -352,7 +383,12 @@ function displayCurrentPlayer() {
   }
 
   const fainted = activePokemon.currentHp <= 0;
-  currentPlayer.innerHTML = renderPokemonDetailCard(activePokemon, "Active");
+  currentPlayer.innerHTML = renderPokemonDetailCard(
+    activePokemon,
+    "Active",
+    "team",
+    activeInventoryIndex,
+  );
   if (exploreBtn) exploreBtn.disabled = fainted || !selectedArea;
 }
 
@@ -1663,9 +1699,7 @@ function displayShop() {
     shop.innerHTML = "";
     return;
   }
-  const featuredItems = shopCatalog.filter((item) =>
-    ["standard", "great", "ultra", "master", "potion"].includes(item.id),
-  );
+  const featuredItems = shopCatalog;
   shop.innerHTML = `
     <div class="panel-header">
       <div>
@@ -1817,6 +1851,8 @@ function showPokemonDetail(section, index) {
   panel.innerHTML = renderPokemonDetailCard(
     normalizePokemon(pokemon),
     section === "storage" ? "Storage" : "Team",
+    section,
+    index,
   );
 }
 
@@ -2009,6 +2045,43 @@ async function useItemOnActive(itemId) {
     return;
   }
   await useItem({ stopPropagation() {} }, itemId, activeInventoryIndex);
+}
+
+async function resolvePendingMove(section, pokemonIndex, payload) {
+  const response = await fetch("/api/learn-move", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ section, pokemonIndex, ...payload }),
+  });
+  const data = await response.json();
+  if (data.error) {
+    alert(data.error);
+    return;
+  }
+
+  appendBattleLog([data.message]);
+  await loadInventory();
+  const updated =
+    section === "storage" ? storageCache[pokemonIndex] : teamCache[pokemonIndex];
+  if (updated) {
+    const panel = document.getElementById("current-player");
+    if (panel) {
+      panel.innerHTML = renderPokemonDetailCard(
+        normalizePokemon(updated),
+        section === "storage" ? "Storage" : "Team",
+        section,
+        pokemonIndex,
+      );
+    }
+  }
+}
+
+async function learnPendingMove(section, pokemonIndex, replaceIndex) {
+  await resolvePendingMove(section, pokemonIndex, { replaceIndex });
+}
+
+async function skipPendingMove(section, pokemonIndex) {
+  await resolvePendingMove(section, pokemonIndex, { skip: true });
 }
 
 function releasePokemon(event, section, index) {
@@ -2401,16 +2474,7 @@ async function gainXP(amount) {
     alert(data.error);
     return;
   }
-  if (data.leveledUp) {
-    appendBattleLog([
-      `${data.pokemon.name} leveled up to ${data.pokemon.level}!`,
-    ]);
-  }
-  if (data.evolved) {
-    appendBattleLog([
-      `${data.evolvedFrom || "Your Pokemon"} evolved into ${data.evolvedTo || data.pokemon.name}!`,
-    ]);
-  }
+  if (data.messages?.length) appendBattleLog(data.messages);
   await loadInventory();
 }
 
@@ -2437,7 +2501,9 @@ function appendBattleLog(lines) {
 
 function showRewardPopup(lines = []) {
   const rewardLines = lines.filter((line) =>
-    /(earned|gained|leveled up|evolved|caught)/i.test(line),
+    /(earned|gained|grew to level|stats increased|learned|wants to learn|evolved|caught)/i.test(
+      line,
+    ),
   );
   if (!rewardLines.length) return;
 

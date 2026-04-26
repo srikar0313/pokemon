@@ -1721,9 +1721,56 @@ app.post("/api/xp", (req, res) => {
       evolved: xpResult.evolved,
       evolvedFrom: xpResult.evolvedFrom,
       evolvedTo: xpResult.evolvedTo,
+      statGains: xpResult.statGains,
+      learnedMoves: xpResult.learnedMoves,
+      pendingMove: xpResult.pendingMove,
+      messages: xpResult.messages,
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to save experience" });
+  }
+});
+
+app.post("/api/learn-move", (req, res) => {
+  const { section = "team", pokemonIndex, replaceIndex = null, skip = false } = req.body;
+
+  try {
+    const { team, storage } = loadTeamAndStorage();
+    const list = section === "storage" ? storage : team;
+    const index = Number(pokemonIndex);
+    if (index < 0 || index >= list.length) {
+      return res.status(400).json({ error: "Invalid Pokemon index" });
+    }
+
+    const pokemon = normalizePokemon(list[index]);
+    if (!pokemon.pendingMove) {
+      return res.status(400).json({ error: "No pending move to learn" });
+    }
+
+    const pendingMove = pokemon.pendingMove;
+    let message = `${pokemon.name} did not learn ${pendingMove.name}.`;
+    if (!skip) {
+      const moveIndex = Number(replaceIndex);
+      if (moveIndex < 0 || moveIndex >= (pokemon.moves || []).length) {
+        return res.status(400).json({ error: "Choose a move to replace" });
+      }
+      const oldMove = pokemon.moves[moveIndex];
+      pokemon.moves[moveIndex] = pendingMove;
+      message = `${pokemon.name} forgot ${oldMove.name} and learned ${pendingMove.name}!`;
+    }
+
+    delete pokemon.pendingMove;
+    list[index] = pokemon;
+    saveTeamAndStorage(team, storage);
+    res.json({
+      success: true,
+      message,
+      team,
+      storage,
+      pokemon,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update moves" });
   }
 });
 

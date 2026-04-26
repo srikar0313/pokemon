@@ -204,6 +204,25 @@ h3 {
   color: #4f647f;
 }
 
+.pending-move-panel {
+  margin-top: 16px;
+  padding: 12px;
+  border: 2px solid #f0b429;
+  border-radius: 12px;
+  background: #fff9e8;
+}
+
+.pending-replace {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pending-replace:hover {
+  border-color: #d99000;
+  background: #fff2c2;
+}
+
 .xp-meter {
   margin: 8px 0;
 }

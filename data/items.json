@@ -40,8 +40,24 @@
     "category": "healing",
     "price": 700,
     "icon": "potion",
-    "healAmount": 50,
-    "description": "Restores 50 HP."
+    "healAmount": 100,
+    "description": "Restores 100 HP."
+  },
+  "hyperPotion": {
+    "name": "Hyper Potion",
+    "category": "healing",
+    "price": 1200,
+    "icon": "potion",
+    "healAmount": 150,
+    "description": "Restores 150 HP."
+  },
+  "maxPotion": {
+    "name": "Max Potion",
+    "category": "healing",
+    "price": 2500,
+    "icon": "potion",
+    "healAmount": 9999,
+    "description": "Fully restores HP."
   },
   "antidote": {
     "name": "Antidote",

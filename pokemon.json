@@ -326,7 +326,22 @@
 		],
 		"evolvesTo": "Raichu",
 		"evolveLevel": 12,
-		"evolveType": "Electric"
+		"evolveType": "Electric",
+		"learnset": [
+			{
+				"level": 5,
+				"move": {
+					"name": "Electro Ball",
+					"type": "Electric",
+					"category": "Special",
+					"power": 60,
+					"accuracy": 100,
+					"pp": 10,
+					"maxPp": 10,
+					"currentPp": 10
+				}
+			}
+		]
 	},
 	{
 		"id": 35,

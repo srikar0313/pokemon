@@ -15,6 +15,8 @@ const defaultPlayerState = {
     master: 1,
     potion: 3,
     superPotion: 1,
+    hyperPotion: 0,
+    maxPotion: 0,
     antidote: 2,
     paralyzeHeal: 2,
     burnHeal: 1,

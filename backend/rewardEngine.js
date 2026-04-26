@@ -1,4 +1,56 @@
 function createRewardEngine({ normalizePokemon, getEvolution, updateAchievements }) {
+  const statGrowthByRarity = {
+    common: {
+      maxHp: 5,
+      attack: 2,
+      defense: 2,
+      specialAttack: 2,
+      specialDefense: 2,
+    },
+    uncommon: {
+      maxHp: 6,
+      attack: 3,
+      defense: 3,
+      specialAttack: 3,
+      specialDefense: 3,
+    },
+    rare: {
+      maxHp: 7,
+      attack: 4,
+      defense: 4,
+      specialAttack: 4,
+      specialDefense: 4,
+    },
+    legendary: {
+      maxHp: 8,
+      attack: 5,
+      defense: 5,
+      specialAttack: 5,
+      specialDefense: 5,
+    },
+    mythical: {
+      maxHp: 8,
+      attack: 5,
+      defense: 5,
+      specialAttack: 5,
+      specialDefense: 5,
+    },
+  };
+
+  function getStatGrowth(pokemon) {
+    return statGrowthByRarity[pokemon.rarity] || statGrowthByRarity.common;
+  }
+
+  function normalizeLearnedMove(move) {
+    const maxPp = move.maxPp ?? move.pp ?? move.currentPp ?? 10;
+    return {
+      ...move,
+      pp: move.pp ?? maxPp,
+      maxPp,
+      currentPp: move.currentPp ?? maxPp,
+    };
+  }
+
   function awardCoins(state, amount) {
     state.coins = (state.coins ?? state.money ?? 0) + amount;
     state.money = state.coins;
@@ -34,21 +86,63 @@ function createRewardEngine({ normalizePokemon, getEvolution, updateAchievements
     );
     const pokemon = updatedTeam[pokemonIndex];
     pokemon.xp = (pokemon.xp || 0) + xpAmount;
+    const startingLevel = pokemon.level || 1;
     let leveledUp = false;
     let evolved = false;
     let evolvedFrom = null;
+    const messages = [];
+    const statGains = [];
+    const learnedMoves = [];
 
-    while (pokemon.xp >= Math.max(25, (pokemon.level || 1) * 50)) {
-      const xpNeeded = Math.max(25, (pokemon.level || 1) * 50);
+    while (pokemon.xp >= (pokemon.level || 1) * 50) {
+      const xpNeeded = (pokemon.level || 1) * 50;
       pokemon.xp -= xpNeeded;
       pokemon.level = (pokemon.level || 1) + 1;
-      pokemon.maxHp = Math.floor((pokemon.maxHp || pokemon.hp || 1) * 1.15);
-      pokemon.attack = Math.floor((pokemon.attack || 1) * 1.12);
-      pokemon.defense = Math.floor((pokemon.defense || 1) * 1.12);
-      pokemon.specialAttack = Math.floor((pokemon.specialAttack || 1) * 1.12);
-      pokemon.specialDefense = Math.floor((pokemon.specialDefense || 1) * 1.12);
-      pokemon.currentHp = pokemon.maxHp;
+      const growth = getStatGrowth(pokemon);
+      pokemon.maxHp = (pokemon.maxHp || pokemon.hp || 1) + growth.maxHp;
+      pokemon.attack = (pokemon.attack || 1) + growth.attack;
+      pokemon.defense = (pokemon.defense || 1) + growth.defense;
+      pokemon.specialAttack =
+        (pokemon.specialAttack || pokemon.attack || 1) + growth.specialAttack;
+      pokemon.specialDefense =
+        (pokemon.specialDefense || pokemon.defense || 1) + growth.specialDefense;
+      pokemon.currentHp = Math.min(
+        pokemon.maxHp,
+        (pokemon.currentHp || 0) + growth.maxHp,
+      );
       leveledUp = true;
+      statGains.push({ level: pokemon.level, ...growth });
+      messages.push(`${pokemon.name} grew to level ${pokemon.level}! Stats increased.`);
+    }
+
+    (pokemon.learnset || [])
+      .filter(
+        (entry) =>
+          entry?.move &&
+          entry.level > startingLevel &&
+          entry.level <= (pokemon.level || startingLevel),
+      )
+      .sort((a, b) => a.level - b.level)
+      .forEach((entry) => {
+        const move = normalizeLearnedMove(entry.move);
+        const alreadyKnowsMove = (pokemon.moves || []).some(
+          (knownMove) => knownMove.name === move.name,
+        );
+        if (alreadyKnowsMove) return;
+        if ((pokemon.moves || []).length < 4) {
+          pokemon.moves = [...(pokemon.moves || []), move];
+          learnedMoves.push(move);
+          messages.push(`${pokemon.name} learned ${move.name}!`);
+          return;
+        }
+        pokemon.pendingMove = move;
+        messages.push(
+          `${pokemon.name} wants to learn ${move.name}, but already knows 4 moves.`,
+        );
+      });
+
+    if (!pokemon.pendingMove) {
+      delete pokemon.pendingMove;
     }
 
     const evolution = getEvolution(pokemon);
@@ -67,6 +161,7 @@ function createRewardEngine({ normalizePokemon, getEvolution, updateAchievements
       pokemon.evolveLevel = null;
       pokemon.evolvedFrom = evolvedFrom;
       evolved = true;
+      messages.push(`${evolvedFrom} evolved into ${pokemon.name}!`);
     }
 
     return {
@@ -76,6 +171,10 @@ function createRewardEngine({ normalizePokemon, getEvolution, updateAchievements
       evolved,
       evolvedFrom,
       evolvedTo: evolved ? pokemon.name : null,
+      statGains,
+      learnedMoves,
+      pendingMove: pokemon.pendingMove || null,
+      messages,
     };
   }
 
@@ -100,6 +199,10 @@ function createRewardEngine({ normalizePokemon, getEvolution, updateAchievements
         evolved: result.evolved,
         evolvedFrom: result.evolvedFrom,
         evolvedTo: result.evolvedTo,
+        statGains: result.statGains,
+        learnedMoves: result.learnedMoves,
+        pendingMove: result.pendingMove,
+        messages: result.messages,
       };
     });
 
@@ -110,16 +213,7 @@ function createRewardEngine({ normalizePokemon, getEvolution, updateAchievements
     (xpResults || []).forEach((result) => {
       if (!result.pokemon || result.xpAward <= 0) return;
       log.push(`${result.pokemon.name} gained ${result.xpAward} XP.`);
-      if (result.leveledUp) {
-        log.push(`${result.pokemon.name} leveled up to ${result.pokemon.level}!`);
-      }
-      if (result.evolved) {
-        log.push(
-          `${result.evolvedFrom || "Your Pokemon"} evolved into ${
-            result.evolvedTo || result.pokemon.name
-          }!`,
-        );
-      }
+      (result.messages || []).forEach((message) => log.push(message));
     });
   }
 
