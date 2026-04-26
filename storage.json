@@ -18,7 +18,6 @@
     "baseCatchRate": 45,
     "level": 1,
     "xp": 0,
-    "currentHp": 50,
     "types": [
       "Water"
     ],
@@ -69,8 +68,11 @@
     "evolvesTo": "Croconaw",
     "evolveLevel": 16,
     "evolveType": "Water",
+    "imageId": 158,
+    "currentHp": 50,
     "status": "none",
-    "shiny": false
+    "shiny": false,
+    "learnset": []
   },
   {
     "id": 21,
@@ -91,7 +93,6 @@
     "baseCatchRate": 255,
     "level": 1,
     "xp": 0,
-    "currentHp": 40,
     "types": [
       "Flying"
     ],
@@ -147,8 +148,11 @@
         "currentPp": 20
       }
     ],
+    "imageId": 21,
+    "currentHp": 40,
     "shiny": false,
-    "status": "none"
+    "status": "none",
+    "learnset": []
   },
   {
     "id": 155,
@@ -169,7 +173,6 @@
     "baseCatchRate": 45,
     "level": 1,
     "xp": 72,
-    "currentHp": 39,
     "types": [
       "Fire"
     ],
@@ -210,6 +213,10 @@
         "pp": 30,
         "maxPp": 30,
         "priority": 1,
+        "effect": {
+          "type": "priority",
+          "amount": 1
+        },
         "currentPp": 30
       },
       {
@@ -231,8 +238,11 @@
     "evolvesTo": "Quilava",
     "evolveLevel": 16,
     "evolveType": "Fire",
+    "imageId": 155,
+    "currentHp": 39,
     "shiny": false,
-    "status": "none"
+    "status": "none",
+    "learnset": []
   },
   {
     "id": 69,
@@ -253,7 +263,6 @@
     "baseCatchRate": 255,
     "level": 1,
     "xp": 0,
-    "currentHp": 30,
     "types": [
       "Grass"
     ],
@@ -317,8 +326,14 @@
         "currentPp": 25
       }
     ],
+    "evolvesTo": "Weepinbell",
+    "evolveLevel": 21,
+    "evolveType": "Grass",
+    "imageId": 69,
+    "currentHp": 30,
     "status": "none",
-    "shiny": false
+    "shiny": false,
+    "learnset": []
   },
   {
     "id": 7,
@@ -339,7 +354,6 @@
     "baseCatchRate": 45,
     "level": 2,
     "xp": 88,
-    "currentHp": 48,
     "types": [
       "Water"
     ],
@@ -395,7 +409,10 @@
     "evolvesTo": "Wartortle",
     "evolveLevel": 16,
     "evolveType": "Water",
-    "status": "none"
+    "imageId": 7,
+    "currentHp": 48,
+    "status": "none",
+    "learnset": []
   },
   {
     "id": 104,
@@ -416,7 +433,6 @@
     "baseCatchRate": 190,
     "level": 1,
     "xp": 0,
-    "currentHp": 50,
     "types": [
       "Ground"
     ],
@@ -472,8 +488,11 @@
         "currentPp": 30
       }
     ],
+    "imageId": 104,
+    "currentHp": 50,
     "status": "none",
-    "shiny": false
+    "shiny": false,
+    "learnset": []
   },
   {
     "id": 143,
@@ -494,7 +513,6 @@
     "baseCatchRate": 25,
     "level": 1,
     "xp": 0,
-    "currentHp": 150,
     "types": [
       "Normal"
     ],
@@ -558,8 +576,11 @@
         "currentPp": 5
       }
     ],
+    "imageId": 143,
+    "currentHp": 150,
     "status": "none",
-    "shiny": false
+    "shiny": false,
+    "learnset": []
   },
   {
     "name": "Weedle",
@@ -595,8 +616,8 @@
           "status": "poisoned",
           "chance": 30
         },
-        "currentPp": 35,
-        "maxPp": 35
+        "maxPp": 35,
+        "currentPp": 35
       },
       {
         "name": "Bug Bite",
@@ -605,8 +626,8 @@
         "power": 50,
         "accuracy": 100,
         "pp": 25,
-        "currentPp": 25,
-        "maxPp": 25
+        "maxPp": 25,
+        "currentPp": 25
       },
       {
         "name": "String Shot",
@@ -622,8 +643,8 @@
           "stages": -1,
           "chance": 100
         },
-        "currentPp": 40,
-        "maxPp": 40
+        "maxPp": 40,
+        "currentPp": 40
       },
       {
         "name": "Growl",
@@ -639,17 +660,19 @@
           "stages": -1,
           "chance": 100
         },
-        "currentPp": 40,
-        "maxPp": 40
+        "maxPp": 40,
+        "currentPp": 40
       }
     ],
     "id": 220,
     "level": 1,
     "xp": 0,
-    "currentHp": 40,
     "maxHp": 40,
+    "imageId": 13,
+    "currentHp": 40,
     "status": "none",
-    "shiny": false
+    "shiny": false,
+    "learnset": []
   },
   {
     "name": "Horsea",
@@ -686,8 +709,8 @@
           "stages": -1,
           "chance": 10
         },
-        "currentPp": 30,
-        "maxPp": 30
+        "maxPp": 30,
+        "currentPp": 30
       },
       {
         "name": "Smokescreen",
@@ -703,8 +726,8 @@
           "stages": -1,
           "chance": 100
         },
-        "currentPp": 20,
-        "maxPp": 20
+        "maxPp": 20,
+        "currentPp": 20
       },
       {
         "name": "Leer",
@@ -713,6 +736,7 @@
         "power": 0,
         "accuracy": 100,
         "pp": 30,
+        "maxPp": 30,
         "effect": {
           "type": "statChange",
           "target": "opponent",
@@ -720,8 +744,7 @@
           "stages": -1,
           "chance": 100
         },
-        "currentPp": 30,
-        "maxPp": 30
+        "currentPp": 30
       },
       {
         "name": "Water Gun",
@@ -730,17 +753,19 @@
         "power": 40,
         "accuracy": 100,
         "pp": 25,
-        "currentPp": 25,
-        "maxPp": 25
+        "maxPp": 25,
+        "currentPp": 25
       }
     ],
     "id": 231,
     "level": 1,
     "xp": 0,
-    "currentHp": 30,
     "maxHp": 30,
+    "imageId": 116,
+    "currentHp": 30,
     "status": "none",
-    "shiny": false
+    "shiny": false,
+    "learnset": []
   },
   {
     "name": "Goldeen",
@@ -770,8 +795,8 @@
         "power": 65,
         "accuracy": 100,
         "pp": 25,
-        "currentPp": 25,
-        "maxPp": 25
+        "maxPp": 25,
+        "currentPp": 25
       },
       {
         "name": "Water Pulse",
@@ -780,8 +805,13 @@
         "power": 60,
         "accuracy": 100,
         "pp": 20,
-        "currentPp": 20,
-        "maxPp": 20
+        "maxPp": 20,
+        "effect": {
+          "type": "status",
+          "status": "confused",
+          "chance": 20
+        },
+        "currentPp": 20
       },
       {
         "name": "Flail",
@@ -790,8 +820,8 @@
         "power": 1,
         "accuracy": 100,
         "pp": 15,
-        "currentPp": 15,
-        "maxPp": 15
+        "maxPp": 15,
+        "currentPp": 15
       },
       {
         "name": "Aqua Jet",
@@ -800,16 +830,104 @@
         "power": 40,
         "accuracy": 100,
         "pp": 20,
-        "currentPp": 20,
-        "maxPp": 20
+        "priority": 1,
+        "maxPp": 20,
+        "currentPp": 20
       }
     ],
     "id": 225,
     "level": 1,
     "xp": 0,
-    "currentHp": 10,
     "maxHp": 45,
+    "imageId": 118,
+    "currentHp": 45,
     "status": "none",
-    "shiny": false
+    "shiny": false,
+    "learnset": []
+  },
+  {
+    "id": 131,
+    "name": "Lapras",
+    "type": "Water",
+    "rarity": "rare",
+    "hp": 130,
+    "maxHp": 130,
+    "attack": 85,
+    "defense": 95,
+    "xpYield": 219,
+    "habitats": [
+      "lake",
+      "ocean"
+    ],
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 45,
+    "level": 1,
+    "xp": 0,
+    "types": [
+      "Water",
+      "Ice"
+    ],
+    "specialAttack": 85,
+    "specialDefense": 95,
+    "moves": [
+      {
+        "name": "Water Gun",
+        "type": "Water",
+        "category": "Special",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 25,
+        "maxPp": 25,
+        "currentPp": 25
+      },
+      {
+        "name": "Ice Shard",
+        "type": "Ice",
+        "category": "Physical",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 30,
+        "maxPp": 30,
+        "priority": 1,
+        "currentPp": 30
+      },
+      {
+        "name": "Confuse Ray",
+        "type": "Ghost",
+        "category": "Status",
+        "power": 0,
+        "accuracy": 100,
+        "pp": 10,
+        "maxPp": 10,
+        "effect": {
+          "type": "status",
+          "status": "confused",
+          "chance": 100
+        },
+        "currentPp": 10
+      },
+      {
+        "name": "Ice Beam",
+        "type": "Ice",
+        "category": "Special",
+        "power": 90,
+        "accuracy": 100,
+        "pp": 10,
+        "maxPp": 10,
+        "effect": {
+          "type": "status",
+          "status": "frozen",
+          "chance": 10
+        },
+        "currentPp": 10
+      }
+    ],
+    "imageId": 131,
+    "currentHp": 130,
+    "status": "none",
+    "shiny": false,
+    "learnset": []
   }
 ]
