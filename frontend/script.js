@@ -25,6 +25,9 @@ let pendingSwapStorageIndex = null;
 let focusedNpcId = null;
 let routeDialogue = null;
 const areaPlayerPositions = {};
+const routeDiscovery = {};
+const recentRouteDiscoveries = {};
+let lastZoneEventAt = 0;
 
 const icons = {
   standard: "assets/icons/ball-standard.svg",
@@ -128,6 +131,7 @@ async function init() {
 }
 
 function setActiveScreen(screen) {
+  if (screen !== "battle") closeWildEncounterLayer();
   activeScreen = screen;
   document.querySelectorAll(".screen-panel").forEach((panel) => {
     panel.classList.toggle("active", panel.id === `${screen}-screen`);
@@ -153,6 +157,15 @@ function closeWildEncounterLayer() {
     battleScreen?.classList.remove("active");
   }
   document.body.classList.remove("wild-encounter-open");
+}
+
+function clearWildEncounterState() {
+  wild = null;
+  currentWildHP = 0;
+  wildStatus = "none";
+  isInBattle = false;
+  isSwitching = false;
+  closeWildEncounterLayer();
 }
 
 function openOverlay(type) {
@@ -362,6 +375,8 @@ async function loadAreaWorld(area) {
   if (!areaPlayerPositions[area]) {
     areaPlayerPositions[area] = getDefaultPlayerPosition(area, npcMap);
   }
+  loadRouteDiscovery(area);
+  revealRouteTiles(area, areaPlayerPositions[area]);
   if (!focusedNpcId || !npcCache.some((npc) => npc.id === focusedNpcId)) {
     focusedNpcId = npcCache[0]?.id || null;
   }
@@ -383,6 +398,73 @@ function getPlayerPosition(area = selectedArea) {
     areaPlayerPositions[area] = getDefaultPlayerPosition(area, npcMap);
   }
   return areaPlayerPositions[area];
+}
+
+function getDiscoveryKey(area = selectedArea) {
+  return `pokemon.route.discovery.${area || "unknown"}`;
+}
+
+function getTileKey(x, y) {
+  return `${x},${y}`;
+}
+
+function loadRouteDiscovery(area = selectedArea) {
+  if (!area || routeDiscovery[area]) return routeDiscovery[area] || new Set();
+  try {
+    const saved = JSON.parse(localStorage.getItem(getDiscoveryKey(area)) || "[]");
+    routeDiscovery[area] = new Set(Array.isArray(saved) ? saved : []);
+  } catch {
+    routeDiscovery[area] = new Set();
+  }
+  return routeDiscovery[area];
+}
+
+function saveRouteDiscovery(area = selectedArea) {
+  if (!area || !routeDiscovery[area]) return;
+  localStorage.setItem(
+    getDiscoveryKey(area),
+    JSON.stringify([...routeDiscovery[area]]),
+  );
+}
+
+function revealRouteTiles(area = selectedArea, position = getPlayerPosition(area), radius = 1) {
+  if (!area || !npcMap || !position) return [];
+  const discovered = loadRouteDiscovery(area);
+  recentRouteDiscoveries[area] = new Set();
+
+  for (let y = position.y - radius; y <= position.y + radius; y += 1) {
+    for (let x = position.x - radius; x <= position.x + radius; x += 1) {
+      if (x < 1 || y < 1 || x > (npcMap.width || 0) || y > (npcMap.height || 0)) continue;
+      const key = getTileKey(x, y);
+      if (!discovered.has(key)) {
+        discovered.add(key);
+        recentRouteDiscoveries[area].add(key);
+      }
+    }
+  }
+
+  saveRouteDiscovery(area);
+  return [...recentRouteDiscoveries[area]];
+}
+
+function isRouteTileDiscovered(x, y, area = selectedArea) {
+  return loadRouteDiscovery(area).has(getTileKey(x, y));
+}
+
+function getRouteTileType(x, y) {
+  const npc = getNpcAtPosition(x, y);
+  if (npc) return npc.type === "healer" || npc.type === "shop" ? "camp" : "blocked";
+  if ((x * 17 + y * 29) % 41 === 0) return "rare";
+  if ((x * 11 + y * 13) % 31 === 0) return "danger";
+  if ((x + y) % 5 === 0) return "grass";
+  return "path";
+}
+
+function getExplorationStats(area = selectedArea) {
+  const total = Math.max(1, (npcMap?.width || 0) * (npcMap?.height || 0));
+  const discovered = Math.min(loadRouteDiscovery(area).size, total);
+  const percent = Math.round((discovered / total) * 100);
+  return { discovered, total, percent, cleared: percent >= 80 };
 }
 
 function getNpcAtPosition(x, y) {
@@ -478,6 +560,7 @@ function renderRouteWorld() {
   const nearbyNpc = getNearbyNpc();
   const focusedNpc = getFocusedNpc();
   const displayNpc = nearbyNpc || focusedNpc;
+  const stats = getExplorationStats();
   const interactable = Boolean(
     nearbyNpc &&
       activeScreen === "explore" &&
@@ -498,8 +581,23 @@ function renderRouteWorld() {
           </div>
           <div class="route-map-hint">WASD / Arrows / E</div>
         </div>
-        <div class="route-grid" style="grid-template-columns: repeat(${npcMap.width}, minmax(0, 1fr));">
-          ${renderRouteTiles(playerPosition, nearbyNpc)}
+        <div class="route-progress">
+          <span>${stats.discovered}/${stats.total} tiles discovered</span>
+          <strong>${stats.percent}% explored${stats.cleared ? " - Area cleared" : ""}</strong>
+        </div>
+        <div class="route-map-body">
+          <div class="route-grid" style="grid-template-columns: repeat(${npcMap.width}, minmax(0, 1fr));">
+            ${renderRouteTiles(playerPosition, nearbyNpc)}
+          </div>
+          <div class="route-minimap-panel">
+            <div class="route-minimap-head">
+              <strong>Minimap</strong>
+              <span>${stats.percent}%</span>
+            </div>
+            <div class="route-minimap" style="grid-template-columns: repeat(${npcMap.width}, minmax(0, 1fr));">
+              ${renderRouteMinimap(playerPosition)}
+            </div>
+          </div>
         </div>
       </div>
       <div class="route-side-panel">
@@ -554,27 +652,36 @@ function renderRouteTiles(playerPosition, nearbyNpc) {
     for (let x = 1; x <= (npcMap?.width || 0); x += 1) {
       const npc = getNpcAtPosition(x, y);
       const isPlayer = playerPosition.x === x && playerPosition.y === y;
+      const discovered = isRouteTileDiscovered(x, y) || isPlayer;
+      const recent = recentRouteDiscoveries[selectedArea]?.has(getTileKey(x, y));
+      const tileType = getRouteTileType(x, y);
+      const showNpc = npc && discovered;
       const classes = ["route-tile"];
       if (isPlayer) classes.push("player");
-      if (npc) classes.push("npc", `npc-${npc.type}`);
-      if (nearbyNpc?.id === npc?.id) classes.push("nearby");
+      classes.push(`tile-${discovered ? tileType : "fog"}`);
+      if (!discovered) classes.push("fogged");
+      if (recent) classes.push("newly-discovered");
+      if (showNpc) classes.push("npc", `npc-${npc.type}`);
+      if (showNpc && nearbyNpc?.id === npc?.id) classes.push("nearby");
       html += `
         <button
           class="${classes.join(" ")}"
-          ${npc ? `onclick="inspectNpc(${npc.id})"` : "type=\"button\""}
-          ${npc ? "" : "tabindex=\"-1\""}
+          ${showNpc ? `onclick="inspectNpc(${npc.id})"` : "type=\"button\""}
+          ${showNpc ? "" : "tabindex=\"-1\""}
         >
           ${
             isPlayer
               ? `<img class="route-player-sprite" src="${trainerSprites.player}" alt="${playerState?.trainerName || "Player"}">`
-              : npc
+              : !discovered
+                ? `<span class="route-fog-mark">?</span>`
+                : showNpc
                 ? `
                   <img class="route-npc-map-sprite" src="${getNpcSprite(npc)}" alt="${npc.name}">
                   <span class="route-role-badge">${getNpcTypeIcon(npc.type)}</span>
                   ${nearbyNpc?.id === npc.id ? '<span class="route-prompt">E</span>' : ""}
                   ${npc.defeated ? '<span class="route-defeated-badge">Done</span>' : ""}
                 `
-                : `<span class="route-tile-fill"></span>`
+                : `<span class="route-tile-fill">${getRouteTileSymbol(tileType)}</span>`
           }
         </button>
       `;
@@ -583,8 +690,98 @@ function renderRouteTiles(playerPosition, nearbyNpc) {
   return html;
 }
 
+function renderRouteMinimap(playerPosition) {
+  let html = "";
+  for (let y = 1; y <= (npcMap?.height || 0); y += 1) {
+    for (let x = 1; x <= (npcMap?.width || 0); x += 1) {
+      const isPlayer = playerPosition.x === x && playerPosition.y === y;
+      const discovered = isRouteTileDiscovered(x, y) || isPlayer;
+      const npc = getNpcAtPosition(x, y);
+      const tileType = discovered ? getRouteTileType(x, y) : "fog";
+      const classes = ["minimap-cell", `mini-${tileType}`];
+      if (isPlayer) classes.push("mini-player");
+      if (npc && discovered) classes.push("mini-npc");
+      html += `<span class="${classes.join(" ")}"></span>`;
+    }
+  }
+  return html;
+}
+
+function getRouteTileSymbol(tileType) {
+  if (tileType === "rare") return "!";
+  if (tileType === "danger") return "▲";
+  if (tileType === "camp") return "+";
+  if (tileType === "grass") return "";
+  return "";
+}
+
+async function maybeTriggerZoneEvent(position) {
+  if (!selectedArea || activeOverlay || isInBattle || npcBattle || gymBattle || eliteBattle) return;
+  const now = Date.now();
+  if (now - lastZoneEventAt < 4500 || Math.random() > 0.18) return;
+
+  lastZoneEventAt = now;
+  const tileType = getRouteTileType(position.x, position.y);
+  const eventsByType = {
+    rare: [
+      { text: "A strange energy pulses from this part of the route.", tone: "rare" },
+      { text: "Loose coins shimmer near the rare zone.", coins: 35, tone: "reward" },
+    ],
+    danger: [
+      { text: "The danger zone grows unstable. Stay ready.", tone: "warning" },
+      { text: "You hear movement nearby...", tone: "warning" },
+    ],
+    camp: [
+      { text: "The air feels calm around the camp.", tone: "heal" },
+      { text: "A small supply pouch was found near the camp.", itemId: "potion", itemName: "Potion", tone: "reward" },
+    ],
+    grass: [
+      { text: "The tall grass rustles softly.", tone: "neutral" },
+      { text: "A dropped Poke Ball was tucked under the grass.", itemId: "standard", itemName: "Poke Ball", tone: "reward" },
+      { text: "You found a few coins on the path through the grass.", coins: 15, tone: "reward" },
+    ],
+    path: [
+      { text: "The route is quiet for a moment.", tone: "neutral" },
+      { text: "Loose coins were found on the path.", coins: 10, tone: "reward" },
+    ],
+  };
+  const options = eventsByType[tileType] || eventsByType.path;
+  const event = options[Math.floor(Math.random() * options.length)];
+
+  if (event.coins || event.itemId) {
+    try {
+      const response = await fetch("/api/zone-event/reward", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          coins: event.coins || 0,
+          itemId: event.itemId || null,
+          quantity: 1,
+          reason: "Zone event",
+        }),
+      });
+      const data = await response.json();
+      if (!data.error && data.state) {
+        playerState = data.state;
+        displayStats();
+        displayBag();
+      }
+    } catch (error) {
+      console.error("Zone reward failed:", error);
+    }
+  }
+
+  const rewardText = event.itemName
+    ? `${event.text} +1 ${event.itemName}.`
+    : event.coins
+      ? `${event.text} +${event.coins} coins.`
+      : event.text;
+  setRouteDialogue(null, rewardText, event.tone);
+}
+
 function moveRoutePlayer(dx, dy) {
   if (!selectedArea || !npcMap) return;
+  if (activeOverlay || npcBattle || gymBattle || eliteBattle || isInBattle) return;
   const current = getPlayerPosition();
   const next = {
     x: Math.max(1, Math.min((npcMap?.width || 8), current.x + dx)),
@@ -598,7 +795,9 @@ function moveRoutePlayer(dx, dy) {
   if (nearbyNpc) {
     focusedNpcId = nearbyNpc.id;
   }
+  revealRouteTiles(selectedArea, next);
   renderRouteWorld();
+  maybeTriggerZoneEvent(next);
 }
 
 async function interactNearbyNpc() {
@@ -1982,9 +2181,10 @@ async function throwBall(type) {
     showCatchOptions(true);
     await loadInventory();
     setTimeout(() => {
+      clearWildEncounterState();
       renderBattlePlaceholder("Great catch! Choose an area and explore again.");
-      closeWildEncounterLayer();
       setActiveScreen("explore");
+      renderRouteWorld();
     }, 1200);
   }
 }
@@ -2017,11 +2217,10 @@ async function gainXP(amount) {
 }
 
 function endEncounter() {
-  wild = null;
-  isInBattle = false;
+  clearWildEncounterState();
   renderBattlePlaceholder("You returned safely. Pick an area to explore again.");
-  closeWildEncounterLayer();
   setActiveScreen("explore");
+  renderRouteWorld();
 }
 
 function appendBattleLog(lines) {

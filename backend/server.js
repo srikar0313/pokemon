@@ -1986,6 +1986,32 @@ app.post("/api/reward", (req, res) => {
   });
 });
 
+app.post("/api/zone-event/reward", (req, res) => {
+  const { coins = 0, itemId = null, quantity = 1, reason = "Zone event" } = req.body;
+  const state = loadPlayerState();
+  const amount = Math.max(0, Number(coins) || 0);
+  if (amount) awardCoins(state, amount);
+
+  let itemReward = null;
+  if (itemId) {
+    const item = itemCatalog[itemId];
+    if (!item) {
+      return res.status(400).json({ error: "Unknown reward item" });
+    }
+    const count = Math.max(1, Number(quantity) || 1);
+    state.items[itemId] = (state.items[itemId] || 0) + count;
+    itemReward = { id: itemId, name: item.name, quantity: count };
+  }
+
+  res.json({
+    success: true,
+    message: `${reason}: reward received.`,
+    coins: amount,
+    item: itemReward,
+    state: savePlayerState(state),
+  });
+});
+
 app.get("/api/pokedex", (req, res) => {
   const state = loadPlayerState();
   const entries = getPokedexEntries(state);
