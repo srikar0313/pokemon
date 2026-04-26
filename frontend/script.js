@@ -171,13 +171,23 @@ function clearWildEncounterState() {
 function openOverlay(type) {
   activeOverlay = type;
   document.getElementById("overlay-backdrop")?.classList.remove("hidden");
-  document.getElementById("shop-panel")?.classList.toggle("hidden", type !== "shop");
-  document.getElementById("center-panel")?.classList.toggle("hidden", type !== "center");
-  document.getElementById("swap-panel")?.classList.toggle("hidden", type !== "swap");
+  document
+    .getElementById("shop-panel")
+    ?.classList.toggle("hidden", type !== "shop");
+  document
+    .getElementById("center-panel")
+    ?.classList.toggle("hidden", type !== "center");
+  document
+    .getElementById("swap-panel")
+    ?.classList.toggle("hidden", type !== "swap");
   const title = document.getElementById("overlay-title");
   if (title) {
     title.textContent =
-      type === "shop" ? "Shop" : type === "swap" ? "Swap Pokemon" : "Pokemon Center";
+      type === "shop"
+        ? "Shop"
+        : type === "swap"
+          ? "Swap Pokemon"
+          : "Pokemon Center";
   }
   if (type === "shop") displayShop();
   if (type === "swap") renderSwapPicker();
@@ -190,7 +200,9 @@ function closeOverlay(event) {
   document.getElementById("overlay-backdrop")?.classList.add("hidden");
 }
 
-function renderBattlePlaceholder(message = "Choose an area or challenge a gym to start a battle.") {
+function renderBattlePlaceholder(
+  message = "Choose an area or challenge a gym to start a battle.",
+) {
   const encounter = document.getElementById("encounter");
   if (!encounter) return;
   encounter.innerHTML = `
@@ -293,10 +305,19 @@ function displayCurrentPlayer() {
 async function displayAreas() {
   const response = await fetch("/api/areas");
   const areas = await response.json();
-  const unlockedAreas = areas.filter((area) => (typeof area === "string" ? true : area.unlocked));
-  if (!selectedArea || !unlockedAreas.some((area) => (typeof area === "string" ? area : area.id) === selectedArea)) {
+  const unlockedAreas = areas.filter((area) =>
+    typeof area === "string" ? true : area.unlocked,
+  );
+  if (
+    !selectedArea ||
+    !unlockedAreas.some(
+      (area) => (typeof area === "string" ? area : area.id) === selectedArea,
+    )
+  ) {
     selectedArea = unlockedAreas.length
-      ? (typeof unlockedAreas[0] === "string" ? unlockedAreas[0] : unlockedAreas[0].id)
+      ? typeof unlockedAreas[0] === "string"
+        ? unlockedAreas[0]
+        : unlockedAreas[0].id
       : null;
   }
 
@@ -323,7 +344,8 @@ async function displayAreas() {
   const exploreBtn = document.getElementById("explore-btn");
   if (exploreBtn) {
     exploreBtn.style.display = selectedArea ? "inline-flex" : "none";
-    exploreBtn.disabled = !activePokemon || activePokemon.currentHp <= 0 || !selectedArea;
+    exploreBtn.disabled =
+      !activePokemon || activePokemon.currentHp <= 0 || !selectedArea;
   }
 
   if (selectedArea) {
@@ -369,7 +391,10 @@ async function loadAreaWorld(area) {
 
   npcCache = data.npcs || [];
   npcMap = data.map || { width: 8, height: 6, theme: area };
-  if (routeDialogue?.npc && !npcCache.some((npc) => npc.id === routeDialogue.npc.id)) {
+  if (
+    routeDialogue?.npc &&
+    !npcCache.some((npc) => npc.id === routeDialogue.npc.id)
+  ) {
     routeDialogue = null;
   }
   if (!areaPlayerPositions[area]) {
@@ -411,7 +436,9 @@ function getTileKey(x, y) {
 function loadRouteDiscovery(area = selectedArea) {
   if (!area || routeDiscovery[area]) return routeDiscovery[area] || new Set();
   try {
-    const saved = JSON.parse(localStorage.getItem(getDiscoveryKey(area)) || "[]");
+    const saved = JSON.parse(
+      localStorage.getItem(getDiscoveryKey(area)) || "[]",
+    );
     routeDiscovery[area] = new Set(Array.isArray(saved) ? saved : []);
   } catch {
     routeDiscovery[area] = new Set();
@@ -427,14 +454,19 @@ function saveRouteDiscovery(area = selectedArea) {
   );
 }
 
-function revealRouteTiles(area = selectedArea, position = getPlayerPosition(area), radius = 1) {
+function revealRouteTiles(
+  area = selectedArea,
+  position = getPlayerPosition(area),
+  radius = 1,
+) {
   if (!area || !npcMap || !position) return [];
   const discovered = loadRouteDiscovery(area);
   recentRouteDiscoveries[area] = new Set();
 
   for (let y = position.y - radius; y <= position.y + radius; y += 1) {
     for (let x = position.x - radius; x <= position.x + radius; x += 1) {
-      if (x < 1 || y < 1 || x > (npcMap.width || 0) || y > (npcMap.height || 0)) continue;
+      if (x < 1 || y < 1 || x > (npcMap.width || 0) || y > (npcMap.height || 0))
+        continue;
       const key = getTileKey(x, y);
       if (!discovered.has(key)) {
         discovered.add(key);
@@ -453,7 +485,8 @@ function isRouteTileDiscovered(x, y, area = selectedArea) {
 
 function getRouteTileType(x, y) {
   const npc = getNpcAtPosition(x, y);
-  if (npc) return npc.type === "healer" || npc.type === "shop" ? "camp" : "blocked";
+  if (npc)
+    return npc.type === "healer" || npc.type === "shop" ? "camp" : "blocked";
   if ((x * 17 + y * 29) % 41 === 0) return "rare";
   if ((x * 11 + y * 13) % 31 === 0) return "danger";
   if ((x + y) % 5 === 0) return "grass";
@@ -468,7 +501,10 @@ function getExplorationStats(area = selectedArea) {
 }
 
 function getNpcAtPosition(x, y) {
-  return npcCache.find((npc) => npc.position?.x === x && npc.position?.y === y) || null;
+  return (
+    npcCache.find((npc) => npc.position?.x === x && npc.position?.y === y) ||
+    null
+  );
 }
 
 function getNearbyNpc() {
@@ -563,12 +599,12 @@ function renderRouteWorld() {
   const stats = getExplorationStats();
   const interactable = Boolean(
     nearbyNpc &&
-      activeScreen === "explore" &&
-      !activeOverlay &&
-      !npcBattle &&
-      !gymBattle &&
-      !eliteBattle &&
-      !isInBattle,
+    activeScreen === "explore" &&
+    !activeOverlay &&
+    !npcBattle &&
+    !gymBattle &&
+    !eliteBattle &&
+    !isInBattle,
   );
 
   routeWorld.innerHTML = `
@@ -616,7 +652,10 @@ function renderRouteWorld() {
                 ${
                   displayNpc.type === "trainer" && displayNpc.team?.length
                     ? `<div class="route-npc-team">${displayNpc.team
-                        .map((member) => `<span>${member.name} Lv${member.level}</span>`)
+                        .map(
+                          (member) =>
+                            `<span>${member.name} Lv${member.level}</span>`,
+                        )
                         .join("")}</div>`
                     : ""
                 }
@@ -653,28 +692,27 @@ function renderRouteTiles(playerPosition, nearbyNpc) {
       const npc = getNpcAtPosition(x, y);
       const isPlayer = playerPosition.x === x && playerPosition.y === y;
       const discovered = isRouteTileDiscovered(x, y) || isPlayer;
-      const recent = recentRouteDiscoveries[selectedArea]?.has(getTileKey(x, y));
+      const recent = recentRouteDiscoveries[selectedArea]?.has(
+        getTileKey(x, y),
+      );
       const tileType = getRouteTileType(x, y);
       const showNpc = npc && discovered;
       const classes = ["route-tile"];
       if (isPlayer) classes.push("player");
-      classes.push(`tile-${discovered ? tileType : "fog"}`);
-      if (!discovered) classes.push("fogged");
+      classes.push(`tile-${tileType}`);
       if (recent) classes.push("newly-discovered");
       if (showNpc) classes.push("npc", `npc-${npc.type}`);
       if (showNpc && nearbyNpc?.id === npc?.id) classes.push("nearby");
       html += `
         <button
           class="${classes.join(" ")}"
-          ${showNpc ? `onclick="inspectNpc(${npc.id})"` : "type=\"button\""}
-          ${showNpc ? "" : "tabindex=\"-1\""}
+          ${showNpc ? `onclick="inspectNpc(${npc.id})"` : 'type="button"'}
+          ${showNpc ? "" : 'tabindex="-1"'}
         >
           ${
             isPlayer
               ? `<img class="route-player-sprite" src="${trainerSprites.player}" alt="${playerState?.trainerName || "Player"}">`
-              : !discovered
-                ? `<span class="route-fog-mark">?</span>`
-                : showNpc
+              : showNpc
                 ? `
                   <img class="route-npc-map-sprite" src="${getNpcSprite(npc)}" alt="${npc.name}">
                   <span class="route-role-badge">${getNpcTypeIcon(npc.type)}</span>
@@ -697,7 +735,7 @@ function renderRouteMinimap(playerPosition) {
       const isPlayer = playerPosition.x === x && playerPosition.y === y;
       const discovered = isRouteTileDiscovered(x, y) || isPlayer;
       const npc = getNpcAtPosition(x, y);
-      const tileType = discovered ? getRouteTileType(x, y) : "fog";
+      const tileType = getRouteTileType(x, y);
       const classes = ["minimap-cell", `mini-${tileType}`];
       if (isPlayer) classes.push("mini-player");
       if (npc && discovered) classes.push("mini-npc");
@@ -716,7 +754,15 @@ function getRouteTileSymbol(tileType) {
 }
 
 async function maybeTriggerZoneEvent(position) {
-  if (!selectedArea || activeOverlay || isInBattle || npcBattle || gymBattle || eliteBattle) return;
+  if (
+    !selectedArea ||
+    activeOverlay ||
+    isInBattle ||
+    npcBattle ||
+    gymBattle ||
+    eliteBattle
+  )
+    return;
   const now = Date.now();
   if (now - lastZoneEventAt < 4500 || Math.random() > 0.18) return;
 
@@ -724,8 +770,15 @@ async function maybeTriggerZoneEvent(position) {
   const tileType = getRouteTileType(position.x, position.y);
   const eventsByType = {
     rare: [
-      { text: "A strange energy pulses from this part of the route.", tone: "rare" },
-      { text: "Loose coins shimmer near the rare zone.", coins: 35, tone: "reward" },
+      {
+        text: "A strange energy pulses from this part of the route.",
+        tone: "rare",
+      },
+      {
+        text: "Loose coins shimmer near the rare zone.",
+        coins: 35,
+        tone: "reward",
+      },
     ],
     danger: [
       { text: "The danger zone grows unstable. Stay ready.", tone: "warning" },
@@ -733,16 +786,34 @@ async function maybeTriggerZoneEvent(position) {
     ],
     camp: [
       { text: "The air feels calm around the camp.", tone: "heal" },
-      { text: "A small supply pouch was found near the camp.", itemId: "potion", itemName: "Potion", tone: "reward" },
+      {
+        text: "A small supply pouch was found near the camp.",
+        itemId: "potion",
+        itemName: "Potion",
+        tone: "reward",
+      },
     ],
     grass: [
       { text: "The tall grass rustles softly.", tone: "neutral" },
-      { text: "A dropped Poke Ball was tucked under the grass.", itemId: "standard", itemName: "Poke Ball", tone: "reward" },
-      { text: "You found a few coins on the path through the grass.", coins: 15, tone: "reward" },
+      {
+        text: "A dropped Poke Ball was tucked under the grass.",
+        itemId: "standard",
+        itemName: "Poke Ball",
+        tone: "reward",
+      },
+      {
+        text: "You found a few coins on the path through the grass.",
+        coins: 15,
+        tone: "reward",
+      },
     ],
     path: [
       { text: "The route is quiet for a moment.", tone: "neutral" },
-      { text: "Loose coins were found on the path.", coins: 10, tone: "reward" },
+      {
+        text: "Loose coins were found on the path.",
+        coins: 10,
+        tone: "reward",
+      },
     ],
   };
   const options = eventsByType[tileType] || eventsByType.path;
@@ -781,11 +852,12 @@ async function maybeTriggerZoneEvent(position) {
 
 function moveRoutePlayer(dx, dy) {
   if (!selectedArea || !npcMap) return;
-  if (activeOverlay || npcBattle || gymBattle || eliteBattle || isInBattle) return;
+  if (activeOverlay || npcBattle || gymBattle || eliteBattle || isInBattle)
+    return;
   const current = getPlayerPosition();
   const next = {
-    x: Math.max(1, Math.min((npcMap?.width || 8), current.x + dx)),
-    y: Math.max(1, Math.min((npcMap?.height || 6), current.y + dy)),
+    x: Math.max(1, Math.min(npcMap?.width || 8, current.x + dx)),
+    y: Math.max(1, Math.min(npcMap?.height || 6, current.y + dy)),
   };
   if (getNpcAtPosition(next.x, next.y)) {
     return;
@@ -814,7 +886,11 @@ async function interactNearbyNpc() {
   if (distance > 1) {
     focusedNpcId = npc.id;
     renderRouteWorld();
-    setRouteDialogue(npc, `${npc.name} is too far away. Move next to them first.`, "warning");
+    setRouteDialogue(
+      npc,
+      `${npc.name} is too far away. Move next to them first.`,
+      "warning",
+    );
     return;
   }
 
@@ -876,10 +952,9 @@ function displayGyms() {
     <h3>Gym Arenas</h3>
     <div class="gym-list">
       ${gymCache
-        .map(
-          (gym) => {
-            const theme = getLeaderTheme(gym.type);
-            return `
+        .map((gym) => {
+          const theme = getLeaderTheme(gym.type);
+          return `
             <button class="gym-card ${gym.defeated ? "defeated" : ""}" ${gym.unlocked ? "" : "disabled"} onclick="startGymBattle(${gym.id})">
               <div class="leader-card-head leader-${theme.className}">
                 <strong>${gym.name}</strong>
@@ -899,8 +974,7 @@ function displayGyms() {
               </div>
             </button>
           `;
-          },
-        )
+        })
         .join("")}
     </div>
   `;
@@ -925,10 +999,9 @@ function displayEliteFour() {
     </div>
     <div class="gym-list">
       ${stages
-        .map(
-          (stage, index) => {
-            const theme = getLeaderTheme(stage.type);
-            return `
+        .map((stage, index) => {
+          const theme = getLeaderTheme(stage.type);
+          return `
             <button class="elite-card${eliteCache.unlocked ? "" : " locked"}" ${eliteCache.unlocked && !eliteCache.completed && index === 0 ? "" : "disabled"} onclick="startEliteRun()">
               <div class="leader-card-head leader-${theme.className}">
                 <strong>${stage.name}</strong>
@@ -947,8 +1020,7 @@ function displayEliteFour() {
               </div>
             </button>
           `;
-          },
-        )
+        })
         .join("")}
     </div>
     <p class="elite-status">
@@ -1213,7 +1285,9 @@ function showEliteResult(lines = []) {
       <button class="secondary-btn" onclick="setActiveScreen('gym'); loadEliteFour()">Back to Elite Four</button>
     </div>
   `;
-  appendBattleLog(lines.length ? lines : ["The Elite Four challenge has ended."]);
+  appendBattleLog(
+    lines.length ? lines : ["The Elite Four challenge has ended."],
+  );
 }
 
 function showEliteMoveButtons(player) {
@@ -1491,13 +1565,7 @@ function displayShop() {
     return;
   }
   const featuredItems = shopCatalog.filter((item) =>
-    [
-      "standard",
-      "great",
-      "ultra",
-      "master",
-      "potion",
-    ].includes(item.id),
+    ["standard", "great", "ultra", "master", "potion"].includes(item.id),
   );
   shop.innerHTML = `
     <div class="panel-header">
@@ -1642,7 +1710,9 @@ function displayStorage(storage) {
 function displayBag() {
   const bag = document.getElementById("bag-panel");
   if (!bag || !playerState) return;
-  const ownedItems = shopCatalog.filter((item) => (playerState.items?.[item.id] || 0) > 0);
+  const ownedItems = shopCatalog.filter(
+    (item) => (playerState.items?.[item.id] || 0) > 0,
+  );
   bag.innerHTML = `
     <div class="inventory-header">
       <h3>Items</h3>
@@ -1699,7 +1769,9 @@ function renderSwapPicker() {
   if (!picker) return;
 
   const storedPokemon =
-    pendingSwapStorageIndex != null ? storageCache[pendingSwapStorageIndex] : null;
+    pendingSwapStorageIndex != null
+      ? storageCache[pendingSwapStorageIndex]
+      : null;
   if (!storedPokemon) {
     picker.innerHTML = "<p>No stored Pokémon selected.</p>";
     return;
@@ -1792,7 +1864,8 @@ async function healTeam() {
   wild = null;
   renderBattlePlaceholder(data.message || "Your Pokemon are ready.");
   const centerMessage = document.getElementById("center-message");
-  if (centerMessage) centerMessage.textContent = data.message || "Your Pokemon are ready.";
+  if (centerMessage)
+    centerMessage.textContent = data.message || "Your Pokemon are ready.";
   await loadProfile();
   await loadInventory();
 }
@@ -1864,7 +1937,10 @@ async function swapWithStorage(storageIndex) {
   openOverlay("swap");
 }
 
-async function confirmStorageSwap(teamIndex, explicitStorageIndex = pendingSwapStorageIndex) {
+async function confirmStorageSwap(
+  teamIndex,
+  explicitStorageIndex = pendingSwapStorageIndex,
+) {
   if (!Number.isInteger(teamIndex) || teamIndex < 0 || teamIndex > 6) {
     alert("Choose a valid team slot.");
     return;
@@ -1888,7 +1964,8 @@ async function confirmStorageSwap(teamIndex, explicitStorageIndex = pendingSwapS
     alert(data.error);
     return;
   }
-  if (activeInventoryIndex >= (data.team || []).length) activeInventoryIndex = 0;
+  if (activeInventoryIndex >= (data.team || []).length)
+    activeInventoryIndex = 0;
   await loadInventory();
   closeOverlay();
   renderBattlePlaceholder(data.message);
@@ -2093,7 +2170,8 @@ async function attack(moveName) {
 
   if (data.winner === "player") {
     const xpGain =
-      data.xpAward ?? Math.floor((wild.xpYield || 50) * Math.max(2, wild.level || 1));
+      data.xpAward ??
+      Math.floor((wild.xpYield || 50) * Math.max(2, wild.level || 1));
     appendBattleLog([`${activePokemon.name} gained ${xpGain} XP.`]);
     if (data.moneyReward) {
       await loadProfile();
@@ -2218,7 +2296,9 @@ async function gainXP(amount) {
 
 function endEncounter() {
   clearWildEncounterState();
-  renderBattlePlaceholder("You returned safely. Pick an area to explore again.");
+  renderBattlePlaceholder(
+    "You returned safely. Pick an area to explore again.",
+  );
   setActiveScreen("explore");
   renderRouteWorld();
 }
@@ -2458,7 +2538,13 @@ function formatAreaName(area) {
 }
 
 function getLeaderTheme(type) {
-  return leaderThemes[type] || { className: "champion", badge: `${type} Badge`, icon: "★" };
+  return (
+    leaderThemes[type] || {
+      className: "champion",
+      badge: `${type} Badge`,
+      icon: "★",
+    }
+  );
 }
 
 function getTrainerSprite(type, name = "") {
@@ -2502,7 +2588,8 @@ function getNpcSprite(npc) {
   if (spriteKey === "guide") return trainerSprites.guide;
   if (spriteKey === "guide-sailor") return trainerSprites.fisherman;
   if (spriteKey === "shop") return trainerSprites.shop;
-  if (spriteKey === "healer" || spriteKey === "healer-fire") return trainerSprites.healer;
+  if (spriteKey === "healer" || spriteKey === "healer-fire")
+    return trainerSprites.healer;
   return trainerSprites.player;
 }
 
