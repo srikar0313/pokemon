@@ -35,6 +35,7 @@ function main() {
   const pokemonUtils = createPokemonUtils({
     pokemonPath: path.join(rootDir, "pokemon.json"),
     readJsonFile: loadJson,
+    moveCatalog: gameData.moves,
   });
   const gameState = createGameState({
     inventoryPath: path.join(rootDir, "inventory.json"),
@@ -63,8 +64,9 @@ function main() {
 
   const missingPp = pokemon.flatMap((entry) =>
     (entry.moves || [])
-      .filter((move) => move.pp === undefined && move.maxPp === undefined)
-      .map((move) => `${entry.name}:${move.name}`),
+      .map((move) => (typeof move === "string" ? gameData.moves[move] : move))
+      .filter((move) => !move || (move.pp === undefined && move.maxPp === undefined))
+      .map((move) => `${entry.name}:${move?.name || "unknown"}`),
   );
   assert(
     missingPp.length === 0,

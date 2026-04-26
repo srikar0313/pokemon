@@ -38,6 +38,7 @@ const weatherBoosts = gameData.weatherBoosts;
 const pokemonUtils = createPokemonUtils({
   pokemonPath,
   readJsonFile: loadJson,
+  moveCatalog: gameData.moves,
 });
 const {
   starterPikachu,

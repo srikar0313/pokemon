@@ -25,7 +25,14 @@ function validatePokemon(pokemon, warnings) {
 function main() {
   const gameData = loadGameData();
   const warnings = [];
-  const pokemonNames = new Set(gameData.pokemon.map((pokemon) => pokemon.name));
+  const pokemonNameList = gameData.pokemon.map((pokemon) => pokemon.name);
+  const pokemonNames = new Set(pokemonNameList);
+  const moveNames = new Set(Object.keys(gameData.moves || {}));
+  const getMoveName = (move) => (typeof move === "string" ? move : move?.name);
+
+  pokemonNameList
+    .filter((name, index, names) => names.indexOf(name) !== index)
+    .forEach((name) => warnings.push(`Duplicate Pokemon name: ${name}`));
 
   gameData.gyms.forEach((gym) =>
     validateTeam(`Gym ${gym.name}`, gym.team, pokemonNames, warnings),
@@ -42,7 +49,29 @@ function main() {
   gameData.npcs.forEach((npc) =>
     validateTeam(`NPC ${npc.name}`, npc.team, pokemonNames, warnings),
   );
-  gameData.pokemon.forEach((pokemon) => validatePokemon(pokemon, warnings));
+  gameData.pokemon.forEach((pokemon) => {
+    validatePokemon(pokemon, warnings);
+    (pokemon.moves || []).forEach((move) => {
+      const moveName = getMoveName(move);
+      if (!moveNames.has(moveName)) {
+        warnings.push(`${pokemon.name} references missing move: ${moveName}`);
+      }
+    });
+    (pokemon.learnset || []).forEach((entry) => {
+      const moveName = getMoveName(entry.move);
+      if (!moveNames.has(moveName)) {
+        warnings.push(`${pokemon.name} learnset references missing move: ${moveName}`);
+      }
+    });
+  });
+  Object.entries(gameData.moves || {}).forEach(([name, move]) => {
+    if (!move.type) warnings.push(`${name} has no move type`);
+    if (!move.category) warnings.push(`${name} has no category`);
+    if (move.accuracy === undefined) warnings.push(`${name} has no accuracy`);
+    if (move.pp === undefined && move.maxPp === undefined) {
+      warnings.push(`${name} has no PP`);
+    }
+  });
 
   if (warnings.length) {
     console.warn(`[validate] ${warnings.length} warning(s):`);

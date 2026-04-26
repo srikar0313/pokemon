@@ -105,7 +105,7 @@ const evolutionTriggers = {
   Eevee: { level: 16, name: "Vaporeon", type: "Water" },
 };
 
-function createPokemonUtils({ pokemonPath, readJsonFile }) {
+function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
   let pokemonTemplateCache = null;
 
   function getPokemonTemplates() {
@@ -126,17 +126,43 @@ function createPokemonUtils({ pokemonPath, readJsonFile }) {
     return pokemon.type ? [pokemon.type] : [];
   }
 
-  function normalizeMove(move) {
-    const maxPp = move.maxPp ?? move.pp ?? move.currentPp ?? 10;
+  function getMoveName(move) {
+    return typeof move === "string" ? move : move?.name;
+  }
+
+  function expandMove(move) {
+    if (typeof move === "string") {
+      return { ...(moveCatalog[move] || { name: move }) };
+    }
     return {
-      ...move,
-      category: move.category || "Physical",
-      accuracy: move.accuracy ?? 100,
-      power: move.power ?? 0,
-      pp: move.pp ?? maxPp,
-      maxPp,
-      currentPp: Math.min(move.currentPp ?? maxPp, maxPp),
+      ...(moveCatalog[move?.name] || {}),
+      ...(move || {}),
     };
+  }
+
+  function normalizeMove(move, savedMove = null) {
+    const expanded = expandMove(move);
+    const saved = savedMove ? expandMove(savedMove) : null;
+    const maxPp = expanded.maxPp ?? expanded.pp ?? saved?.maxPp ?? saved?.pp ?? saved?.currentPp ?? 10;
+    return {
+      ...expanded,
+      name: expanded.name || getMoveName(move),
+      category: expanded.category || "Physical",
+      accuracy: expanded.accuracy ?? 100,
+      power: expanded.power ?? 0,
+      pp: expanded.pp ?? maxPp,
+      maxPp,
+      currentPp: Math.min(saved?.currentPp ?? expanded.currentPp ?? maxPp, maxPp),
+    };
+  }
+
+  function normalizeLearnset(learnset = []) {
+    return learnset
+      .filter((entry) => entry?.level && entry.move)
+      .map((entry) => ({
+        ...entry,
+        move: normalizeMove(entry.move),
+      }));
   }
 
   function normalizePokemon(pokemon) {
@@ -167,15 +193,12 @@ function createPokemonUtils({ pokemonPath, readJsonFile }) {
     const moves = (
       templateMoves || savedMoves.length ? templateMoves || savedMoves : defaultMoves
     ).map((move) => {
-      const savedMove = savedMoves.find((saved) => saved.name === move.name);
-      return {
-        ...move,
-        currentPp:
-          savedMove?.currentPp ?? move.currentPp ?? move.maxPp ?? move.pp,
-      };
+      const moveName = getMoveName(move);
+      const savedMove = savedMoves.find((saved) => getMoveName(saved) === moveName);
+      return normalizeMove(move, savedMove);
     });
 
-    return {
+    const normalized = {
       ...merged,
       type: merged.type || types[0] || "Normal",
       types: types.length > 0 ? types : [merged.type || "Normal"],
@@ -186,8 +209,15 @@ function createPokemonUtils({ pokemonPath, readJsonFile }) {
       specialAttack: merged.specialAttack ?? merged.attack ?? 1,
       specialDefense: merged.specialDefense ?? merged.defense ?? 1,
       status: merged.status || "none",
-      moves: moves.map(normalizeMove),
+      moves,
+      learnset: normalizeLearnset(merged.learnset || []),
     };
+    if (merged.pendingMove) {
+      normalized.pendingMove = normalizeMove(merged.pendingMove);
+    } else {
+      delete normalized.pendingMove;
+    }
+    return normalized;
   }
 
   function restorePokemon(pokemon) {

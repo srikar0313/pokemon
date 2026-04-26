@@ -1,0 +1,2250 @@
+{
+  "Absorb": {
+    "name": "Absorb",
+    "type": "Grass",
+    "category": "Special",
+    "power": 20,
+    "accuracy": 100,
+    "pp": 25,
+    "maxPp": 25
+  },
+  "Acid": {
+    "name": "Acid",
+    "type": "Poison",
+    "category": "Special",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 30,
+    "maxPp": 30,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "specialDefense",
+      "stages": -1,
+      "chance": 10
+    }
+  },
+  "Aerial Ace": {
+    "name": "Aerial Ace",
+    "type": "Flying",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Aeroblast": {
+    "name": "Aeroblast",
+    "type": "Flying",
+    "category": "Special",
+    "power": 100,
+    "accuracy": 95,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Agility": {
+    "name": "Agility",
+    "type": "Psychic",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 30,
+    "maxPp": 30,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "speed",
+      "stages": 2,
+      "chance": 100
+    }
+  },
+  "Air Cutter": {
+    "name": "Air Cutter",
+    "type": "Flying",
+    "category": "Special",
+    "power": 60,
+    "accuracy": 95,
+    "pp": 25,
+    "effect": {
+      "type": "criticalBoost",
+      "chance": 20
+    },
+    "maxPp": 25
+  },
+  "Air Slash": {
+    "name": "Air Slash",
+    "type": "Flying",
+    "category": "Special",
+    "power": 75,
+    "accuracy": 95,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Ancient Power": {
+    "name": "Ancient Power",
+    "type": "Rock",
+    "category": "Special",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 5,
+    "maxPp": 5,
+    "effect": {
+      "type": "allStatsUp",
+      "target": "self",
+      "stages": 1,
+      "chance": 10
+    }
+  },
+  "Aqua Jet": {
+    "name": "Aqua Jet",
+    "type": "Water",
+    "category": "Physical",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 20,
+    "priority": 1,
+    "maxPp": 20
+  },
+  "Aqua Tail": {
+    "name": "Aqua Tail",
+    "type": "Water",
+    "category": "Physical",
+    "power": 90,
+    "accuracy": 90,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Astonish": {
+    "name": "Astonish",
+    "type": "Ghost",
+    "category": "Physical",
+    "power": 30,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Aura Sphere": {
+    "name": "Aura Sphere",
+    "type": "Fighting",
+    "category": "Special",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Aurora Beam": {
+    "name": "Aurora Beam",
+    "type": "Ice",
+    "category": "Special",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 20,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "attack",
+      "stages": -1,
+      "chance": 10
+    },
+    "maxPp": 20
+  },
+  "Bite": {
+    "name": "Bite",
+    "type": "Dark",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 25,
+    "maxPp": 25
+  },
+  "Blizzard": {
+    "name": "Blizzard",
+    "type": "Ice",
+    "category": "Special",
+    "power": 110,
+    "accuracy": 70,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Blue Flare": {
+    "name": "Blue Flare",
+    "type": "Fire",
+    "category": "Special",
+    "power": 130,
+    "accuracy": 85,
+    "pp": 5,
+    "effect": {
+      "type": "status",
+      "status": "burned",
+      "chance": 20
+    },
+    "maxPp": 5
+  },
+  "Body Slam": {
+    "name": "Body Slam",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 85,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 30
+    }
+  },
+  "Bolt Strike": {
+    "name": "Bolt Strike",
+    "type": "Electric",
+    "category": "Physical",
+    "power": 130,
+    "accuracy": 85,
+    "pp": 5,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 20
+    },
+    "maxPp": 5
+  },
+  "Bone Club": {
+    "name": "Bone Club",
+    "type": "Ground",
+    "category": "Physical",
+    "power": 65,
+    "accuracy": 85,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Bonemerang": {
+    "name": "Bonemerang",
+    "type": "Ground",
+    "category": "Physical",
+    "power": 50,
+    "accuracy": 90,
+    "pp": 10,
+    "maxPp": 10,
+    "hits": 2
+  },
+  "Bounce": {
+    "name": "Bounce",
+    "type": "Flying",
+    "category": "Physical",
+    "power": 85,
+    "accuracy": 85,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Brave Bird": {
+    "name": "Brave Bird",
+    "type": "Flying",
+    "category": "Physical",
+    "power": 120,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "recoil",
+      "stages": -1,
+      "chance": 100
+    },
+    "maxPp": 15
+  },
+  "Bubble Beam": {
+    "name": "Bubble Beam",
+    "type": "Water",
+    "category": "Special",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 20,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "speed",
+      "stages": -1,
+      "chance": 10
+    },
+    "maxPp": 20
+  },
+  "Bubble": {
+    "name": "Bubble",
+    "type": "Water",
+    "category": "Special",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 30,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "speed",
+      "stages": -1,
+      "chance": 10
+    },
+    "maxPp": 30
+  },
+  "Bug Bite": {
+    "name": "Bug Bite",
+    "type": "Bug",
+    "category": "Physical",
+    "power": 50,
+    "accuracy": 100,
+    "pp": 25,
+    "maxPp": 25
+  },
+  "Bullet Seed": {
+    "name": "Bullet Seed",
+    "type": "Grass",
+    "category": "Physical",
+    "power": 25,
+    "accuracy": 100,
+    "pp": 30,
+    "hits": 3,
+    "maxPp": 30
+  },
+  "Calm Mind": {
+    "name": "Calm Mind",
+    "type": "Psychic",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 20,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "specialAttack",
+      "stages": 1,
+      "chance": 100
+    },
+    "maxPp": 20
+  },
+  "Charm": {
+    "name": "Charm",
+    "type": "Fairy",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "attack",
+      "stages": -2,
+      "chance": 100
+    }
+  },
+  "Clamp": {
+    "name": "Clamp",
+    "type": "Water",
+    "category": "Physical",
+    "power": 35,
+    "accuracy": 85,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Confuse Ray": {
+    "name": "Confuse Ray",
+    "type": "Ghost",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10,
+    "effect": {
+      "type": "status",
+      "status": "confused",
+      "chance": 100
+    }
+  },
+  "Confusion": {
+    "name": "Confusion",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 50,
+    "accuracy": 100,
+    "pp": 25,
+    "maxPp": 25,
+    "effect": {
+      "type": "status",
+      "status": "confused",
+      "chance": 10
+    }
+  },
+  "Counter": {
+    "name": "Counter",
+    "type": "Fighting",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Crunch": {
+    "name": "Crunch",
+    "type": "Dark",
+    "category": "Physical",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "defense",
+      "stages": -1,
+      "chance": 20
+    },
+    "maxPp": 15
+  },
+  "Curse": {
+    "name": "Curse",
+    "type": "Ghost",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "status",
+      "status": "curse",
+      "chance": 100
+    },
+    "maxPp": 10
+  },
+  "Dark Pulse": {
+    "name": "Dark Pulse",
+    "type": "Dark",
+    "category": "Special",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Dark Void": {
+    "name": "Dark Void",
+    "type": "Dark",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 80,
+    "pp": 10,
+    "effect": {
+      "type": "status",
+      "status": "asleep",
+      "chance": 100
+    },
+    "maxPp": 10
+  },
+  "Defense Curl": {
+    "name": "Defense Curl",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 40,
+    "maxPp": 40,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "defense",
+      "stages": 1,
+      "chance": 100
+    }
+  },
+  "Dig": {
+    "name": "Dig",
+    "type": "Ground",
+    "category": "Physical",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Disarming Voice": {
+    "name": "Disarming Voice",
+    "type": "Fairy",
+    "category": "Special",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Doom Desire": {
+    "name": "Doom Desire",
+    "type": "Steel",
+    "category": "Special",
+    "power": 140,
+    "accuracy": 100,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Double Kick": {
+    "name": "Double Kick",
+    "type": "Fighting",
+    "category": "Physical",
+    "power": 30,
+    "accuracy": 100,
+    "pp": 30,
+    "hits": 2,
+    "maxPp": 30
+  },
+  "Double Slap": {
+    "name": "Double Slap",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 15,
+    "accuracy": 85,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Dragon Ascent": {
+    "name": "Dragon Ascent",
+    "type": "Flying",
+    "category": "Physical",
+    "power": 120,
+    "accuracy": 100,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Dragon Breath": {
+    "name": "Dragon Breath",
+    "type": "Dragon",
+    "category": "Special",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 30
+    }
+  },
+  "Dragon Claw": {
+    "name": "Dragon Claw",
+    "type": "Dragon",
+    "category": "Physical",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Dragon Dance": {
+    "name": "Dragon Dance",
+    "type": "Dragon",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 20,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "attack",
+      "stages": 1,
+      "chance": 100
+    },
+    "maxPp": 20
+  },
+  "Dragon Pulse": {
+    "name": "Dragon Pulse",
+    "type": "Dragon",
+    "category": "Special",
+    "power": 85,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Dream Eater": {
+    "name": "Dream Eater",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Drill Peck": {
+    "name": "Drill Peck",
+    "type": "Flying",
+    "category": "Physical",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Earth Power": {
+    "name": "Earth Power",
+    "type": "Ground",
+    "category": "Special",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Earthquake": {
+    "name": "Earthquake",
+    "type": "Ground",
+    "category": "Physical",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Electro Ball": {
+    "name": "Electro Ball",
+    "type": "Electric",
+    "category": "Special",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Ember": {
+    "name": "Ember",
+    "type": "Fire",
+    "category": "Special",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 25,
+    "maxPp": 25,
+    "effect": {
+      "type": "status",
+      "status": "burned",
+      "chance": 10
+    }
+  },
+  "Energy Ball": {
+    "name": "Energy Ball",
+    "type": "Grass",
+    "category": "Special",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "specialDefense",
+      "stages": -1,
+      "chance": 10
+    },
+    "maxPp": 10
+  },
+  "Extreme Speed": {
+    "name": "Extreme Speed",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Faint Attack": {
+    "name": "Faint Attack",
+    "type": "Dark",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Fake Out": {
+    "name": "Fake Out",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "status",
+      "status": "flinched",
+      "chance": 100
+    },
+    "maxPp": 10
+  },
+  "Fire Punch": {
+    "name": "Fire Punch",
+    "type": "Fire",
+    "category": "Physical",
+    "power": 75,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+      "type": "status",
+      "status": "burned",
+      "chance": 10
+    },
+    "maxPp": 15
+  },
+  "Flail": {
+    "name": "Flail",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 1,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Flame Charge": {
+    "name": "Flame Charge",
+    "type": "Fire",
+    "category": "Physical",
+    "power": 50,
+    "accuracy": 100,
+    "pp": 20,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "speed",
+      "stages": 1,
+      "chance": 100
+    },
+    "maxPp": 20
+  },
+  "Flame Wheel": {
+    "name": "Flame Wheel",
+    "type": "Fire",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 25,
+    "maxPp": 25,
+    "effect": {
+      "type": "status",
+      "status": "burned",
+      "chance": 10
+    }
+  },
+  "Flamethrower": {
+    "name": "Flamethrower",
+    "type": "Fire",
+    "category": "Special",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "status",
+      "status": "burned",
+      "chance": 10
+    }
+  },
+  "Flash Cannon": {
+    "name": "Flash Cannon",
+    "type": "Steel",
+    "category": "Special",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Focus Energy": {
+    "name": "Focus Energy",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 30,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "critical",
+      "stages": 1,
+      "chance": 100
+    },
+    "maxPp": 30
+  },
+  "Force Palm": {
+    "name": "Force Palm",
+    "type": "Fighting",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 30
+    },
+    "maxPp": 10
+  },
+  "Foresight": {
+    "name": "Foresight",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 40,
+    "maxPp": 40
+  },
+  "Foul Play": {
+    "name": "Foul Play",
+    "type": "Dark",
+    "category": "Physical",
+    "power": 95,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Fury Attack": {
+    "name": "Fury Attack",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 15,
+    "accuracy": 85,
+    "pp": 20,
+    "maxPp": 20,
+    "hits": 3
+  },
+  "Fusion Flare": {
+    "name": "Fusion Flare",
+    "type": "Fire",
+    "category": "Special",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Geomancy": {
+    "name": "Geomancy",
+    "type": "Fairy",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "specialAttack",
+      "stages": 2,
+      "chance": 100
+    },
+    "maxPp": 10
+  },
+  "Glare": {
+    "name": "Glare",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 30,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 100
+    },
+    "maxPp": 30
+  },
+  "Growl": {
+    "name": "Growl",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 40,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "attack",
+      "stages": -1,
+      "chance": 100
+    },
+    "maxPp": 40
+  },
+  "Growth": {
+    "name": "Growth",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 20,
+    "effect": {
+      "type": "allStatsUp",
+      "target": "self",
+      "stages": 1,
+      "chance": 100
+    },
+    "maxPp": 20
+  },
+  "Gust": {
+    "name": "Gust",
+    "type": "Flying",
+    "category": "Special",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 35,
+    "maxPp": 35
+  },
+  "Headbutt": {
+    "name": "Headbutt",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Heat Wave": {
+    "name": "Heat Wave",
+    "type": "Fire",
+    "category": "Special",
+    "power": 95,
+    "accuracy": 90,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Hex": {
+    "name": "Hex",
+    "type": "Ghost",
+    "category": "Special",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Horn Attack": {
+    "name": "Horn Attack",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 25,
+    "maxPp": 25
+  },
+  "Hurricane": {
+    "name": "Hurricane",
+    "type": "Flying",
+    "category": "Special",
+    "power": 110,
+    "accuracy": 70,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Hydro Pump": {
+    "name": "Hydro Pump",
+    "type": "Water",
+    "category": "Special",
+    "power": 110,
+    "accuracy": 80,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Hyper Beam": {
+    "name": "Hyper Beam",
+    "type": "Normal",
+    "category": "Special",
+    "power": 120,
+    "accuracy": 90,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Hypnosis": {
+    "name": "Hypnosis",
+    "type": "Psychic",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 60,
+    "pp": 20,
+    "maxPp": 20,
+    "effect": {
+      "type": "status",
+      "status": "asleep",
+      "chance": 100
+    }
+  },
+  "Ice Beam": {
+    "name": "Ice Beam",
+    "type": "Ice",
+    "category": "Special",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10,
+    "effect": {
+      "type": "status",
+      "status": "frozen",
+      "chance": 10
+    }
+  },
+  "Ice Shard": {
+    "name": "Ice Shard",
+    "type": "Ice",
+    "category": "Physical",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 30,
+    "maxPp": 30,
+    "priority": 1
+  },
+  "Incinerate": {
+    "name": "Incinerate",
+    "type": "Fire",
+    "category": "Special",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Iron Defense": {
+    "name": "Iron Defense",
+    "type": "Steel",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "defense",
+      "stages": 2,
+      "chance": 100
+    },
+    "maxPp": 15
+  },
+  "Iron Tail": {
+    "name": "Iron Tail",
+    "type": "Steel",
+    "category": "Physical",
+    "power": 100,
+    "accuracy": 75,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "defense",
+      "stages": -1,
+      "chance": 30
+    }
+  },
+  "Judgment": {
+    "name": "Judgment",
+    "type": "Normal",
+    "category": "Special",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Karate Chop": {
+    "name": "Karate Chop",
+    "type": "Fighting",
+    "category": "Physical",
+    "power": 50,
+    "accuracy": 100,
+    "pp": 25,
+    "maxPp": 25
+  },
+  "Lava Plume": {
+    "name": "Lava Plume",
+    "type": "Fire",
+    "category": "Special",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+      "type": "status",
+      "status": "burned",
+      "chance": 30
+    },
+    "maxPp": 15
+  },
+  "Leafage": {
+    "name": "Leafage",
+    "type": "Grass",
+    "category": "Physical",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 40,
+    "maxPp": 40
+  },
+  "Leech Life": {
+    "name": "Leech Life",
+    "type": "Bug",
+    "category": "Special",
+    "power": 20,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Leer": {
+    "name": "Leer",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 30,
+    "maxPp": 30,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "defense",
+      "stages": -1,
+      "chance": 100
+    }
+  },
+  "Lick": {
+    "name": "Lick",
+    "type": "Ghost",
+    "category": "Physical",
+    "power": 30,
+    "accuracy": 100,
+    "pp": 30,
+    "maxPp": 30,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 30
+    }
+  },
+  "Low Kick": {
+    "name": "Low Kick",
+    "type": "Fighting",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Luster Purge": {
+    "name": "Luster Purge",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 95,
+    "accuracy": 100,
+    "pp": 5,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "specialDefense",
+      "stages": -1,
+      "chance": 50
+    },
+    "maxPp": 5
+  },
+  "Magical Leaf": {
+    "name": "Magical Leaf",
+    "type": "Grass",
+    "category": "Special",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Magnitude": {
+    "name": "Magnitude",
+    "type": "Ground",
+    "category": "Physical",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 30,
+    "maxPp": 30
+  },
+  "Mega Drain": {
+    "name": "Mega Drain",
+    "type": "Grass",
+    "category": "Special",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Metal Claw": {
+    "name": "Metal Claw",
+    "type": "Steel",
+    "category": "Physical",
+    "power": 50,
+    "accuracy": 95,
+    "pp": 35,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "attack",
+      "stages": 1,
+      "chance": 10
+    },
+    "maxPp": 35
+  },
+  "Metronome": {
+    "name": "Metronome",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10,
+    "effect": {
+      "type": "randomMove"
+    }
+  },
+  "Mist Ball": {
+    "name": "Mist Ball",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 95,
+    "accuracy": 100,
+    "pp": 5,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "specialAttack",
+      "stages": -1,
+      "chance": 50
+    },
+    "maxPp": 5
+  },
+  "Moonblast": {
+    "name": "Moonblast",
+    "type": "Fairy",
+    "category": "Special",
+    "power": 95,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "specialAttack",
+      "stages": -1,
+      "chance": 30
+    }
+  },
+  "Moonlight": {
+    "name": "Moonlight",
+    "type": "Fairy",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 5,
+    "effect": {
+      "type": "heal",
+      "target": "self",
+      "percent": 50
+    },
+    "maxPp": 5
+  },
+  "Mud Bomb": {
+    "name": "Mud Bomb",
+    "type": "Ground",
+    "category": "Special",
+    "power": 65,
+    "accuracy": 85,
+    "pp": 10,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "accuracy",
+      "stages": -1,
+      "chance": 30
+    },
+    "maxPp": 10
+  },
+  "Mud Shot": {
+    "name": "Mud Shot",
+    "type": "Ground",
+    "category": "Special",
+    "power": 55,
+    "accuracy": 95,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "speed",
+      "stages": -1,
+      "chance": 100
+    }
+  },
+  "Mud-Slap": {
+    "name": "Mud-Slap",
+    "type": "Ground",
+    "category": "Special",
+    "power": 20,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "accuracy",
+      "stages": -1,
+      "chance": 100
+    },
+    "maxPp": 10
+  },
+  "Needle Arm": {
+    "name": "Needle Arm",
+    "type": "Grass",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+      "type": "status",
+      "status": "flinched",
+      "chance": 30
+    },
+    "maxPp": 15
+  },
+  "Night Daze": {
+    "name": "Night Daze",
+    "type": "Dark",
+    "category": "Special",
+    "power": 85,
+    "accuracy": 95,
+    "pp": 10,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "accuracy",
+      "stages": -1,
+      "chance": 40
+    },
+    "maxPp": 10
+  },
+  "Night Shade": {
+    "name": "Night Shade",
+    "type": "Ghost",
+    "category": "Special",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Night Slash": {
+    "name": "Night Slash",
+    "type": "Dark",
+    "category": "Physical",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+      "type": "criticalBoost",
+      "chance": 20
+    },
+    "maxPp": 15
+  },
+  "Nuzzle": {
+    "name": "Nuzzle",
+    "type": "Electric",
+    "category": "Physical",
+    "power": 20,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 100
+    }
+  },
+  "Oblivion Wing": {
+    "name": "Oblivion Wing",
+    "type": "Flying",
+    "category": "Special",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "heal",
+      "amount": "50%"
+    },
+    "maxPp": 10
+  },
+  "Origin Pulse": {
+    "name": "Origin Pulse",
+    "type": "Water",
+    "category": "Special",
+    "power": 110,
+    "accuracy": 85,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Outrage": {
+    "name": "Outrage",
+    "type": "Dragon",
+    "category": "Physical",
+    "power": 120,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Peck": {
+    "name": "Peck",
+    "type": "Flying",
+    "category": "Physical",
+    "power": 35,
+    "accuracy": 100,
+    "pp": 35,
+    "maxPp": 35
+  },
+  "Play Rough": {
+    "name": "Play Rough",
+    "type": "Fairy",
+    "category": "Physical",
+    "power": 90,
+    "accuracy": 90,
+    "pp": 10,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "attack",
+      "stages": -1,
+      "chance": 10
+    },
+    "maxPp": 10
+  },
+  "Poison Fang": {
+    "name": "Poison Fang",
+    "type": "Poison",
+    "category": "Physical",
+    "power": 50,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+      "type": "status",
+      "status": "poisoned",
+      "chance": 30
+    },
+    "maxPp": 15
+  },
+  "Poison Powder": {
+    "name": "Poison Powder",
+    "type": "Poison",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 75,
+    "pp": 35,
+    "effect": {
+      "type": "status",
+      "status": "poisoned",
+      "chance": 100
+    },
+    "maxPp": 35
+  },
+  "Poison Sting": {
+    "name": "Poison Sting",
+    "type": "Poison",
+    "category": "Physical",
+    "power": 15,
+    "accuracy": 100,
+    "pp": 35,
+    "effect": {
+      "type": "status",
+      "status": "poisoned",
+      "chance": 30
+    },
+    "maxPp": 35
+  },
+  "Pound": {
+    "name": "Pound",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 35,
+    "maxPp": 35
+  },
+  "Precipice Blades": {
+    "name": "Precipice Blades",
+    "type": "Ground",
+    "category": "Physical",
+    "power": 120,
+    "accuracy": 85,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Protect": {
+    "name": "Protect",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "defense",
+      "stages": 1,
+      "chance": 100
+    }
+  },
+  "Psybeam": {
+    "name": "Psybeam",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20,
+    "effect": {
+      "type": "status",
+      "status": "confused",
+      "chance": 10
+    }
+  },
+  "Psychic": {
+    "name": "Psychic",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "specialDefense",
+      "stages": -1,
+      "chance": 10
+    }
+  },
+  "Psycho Cut": {
+    "name": "Psycho Cut",
+    "type": "Psychic",
+    "category": "Physical",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20,
+    "effect": {
+      "type": "criticalBoost",
+      "chance": 20
+    }
+  },
+  "Psycho Shift": {
+    "name": "Psycho Shift",
+    "type": "Psychic",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "status",
+      "status": "confused",
+      "chance": 50
+    },
+    "maxPp": 10
+  },
+  "Psywave": {
+    "name": "Psywave",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Quick Attack": {
+    "name": "Quick Attack",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 30,
+    "maxPp": 30,
+    "priority": 1,
+    "effect": {
+      "type": "priority",
+      "amount": 1
+    }
+  },
+  "Rapid Spin": {
+    "name": "Rapid Spin",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 50,
+    "accuracy": 100,
+    "pp": 40,
+    "maxPp": 40
+  },
+  "Razor Leaf": {
+    "name": "Razor Leaf",
+    "type": "Grass",
+    "category": "Physical",
+    "power": 55,
+    "accuracy": 95,
+    "pp": 25,
+    "maxPp": 25,
+    "effect": {
+      "type": "criticalBoost",
+      "chance": 20
+    }
+  },
+  "Recover": {
+    "name": "Recover",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10,
+    "effect": {
+      "type": "heal",
+      "amount": "50%"
+    }
+  },
+  "Rest": {
+    "name": "Rest",
+    "type": "Psychic",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 5,
+    "maxPp": 5,
+    "effect": {
+      "type": "healAndSleep",
+      "target": "self",
+      "percent": 100,
+      "status": "asleep"
+    }
+  },
+  "Roar of Time": {
+    "name": "Roar of Time",
+    "type": "Dragon",
+    "category": "Special",
+    "power": 150,
+    "accuracy": 90,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Rock Slide": {
+    "name": "Rock Slide",
+    "type": "Rock",
+    "category": "Physical",
+    "power": 75,
+    "accuracy": 90,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Rock Throw": {
+    "name": "Rock Throw",
+    "type": "Rock",
+    "category": "Physical",
+    "power": 50,
+    "accuracy": 90,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Rock Tomb": {
+    "name": "Rock Tomb",
+    "type": "Rock",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 95,
+    "pp": 15,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "speed",
+      "stages": -1,
+      "chance": 100
+    },
+    "maxPp": 15
+  },
+  "Rollout": {
+    "name": "Rollout",
+    "type": "Rock",
+    "category": "Physical",
+    "power": 30,
+    "accuracy": 90,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Roost": {
+    "name": "Roost",
+    "type": "Flying",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "heal",
+      "amount": "50%"
+    },
+    "maxPp": 10
+  },
+  "Sacred Fire": {
+    "name": "Sacred Fire",
+    "type": "Fire",
+    "category": "Physical",
+    "power": 100,
+    "accuracy": 95,
+    "pp": 5,
+    "effect": {
+      "type": "status",
+      "status": "burned",
+      "chance": 50
+    },
+    "maxPp": 5
+  },
+  "Sand Attack": {
+    "name": "Sand Attack",
+    "type": "Ground",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 15,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "accuracy",
+      "stages": -1,
+      "chance": 100
+    },
+    "maxPp": 15
+  },
+  "Sand Tomb": {
+    "name": "Sand Tomb",
+    "type": "Ground",
+    "category": "Physical",
+    "power": 35,
+    "accuracy": 85,
+    "pp": 15,
+    "effect": {
+      "type": "trap",
+      "chance": 100
+    },
+    "maxPp": 15
+  },
+  "Sandstorm": {
+    "name": "Sandstorm",
+    "type": "Rock",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "weather",
+      "weather": "sandstorm",
+      "chance": 100
+    },
+    "maxPp": 10
+  },
+  "Scratch": {
+    "name": "Scratch",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 35,
+    "maxPp": 35
+  },
+  "Screech": {
+    "name": "Screech",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 85,
+    "pp": 40,
+    "maxPp": 40,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "defense",
+      "stages": -2,
+      "chance": 100
+    }
+  },
+  "Seed Bomb": {
+    "name": "Seed Bomb",
+    "type": "Grass",
+    "category": "Physical",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Seismic Toss": {
+    "name": "Seismic Toss",
+    "type": "Fighting",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Shadow Ball": {
+    "name": "Shadow Ball",
+    "type": "Ghost",
+    "category": "Special",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "specialDefense",
+      "stages": -1,
+      "chance": 20
+    }
+  },
+  "Shadow Claw": {
+    "name": "Shadow Claw",
+    "type": "Ghost",
+    "category": "Physical",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Shadow Force": {
+    "name": "Shadow Force",
+    "type": "Ghost",
+    "category": "Physical",
+    "power": 120,
+    "accuracy": 100,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Shadow Sneak": {
+    "name": "Shadow Sneak",
+    "type": "Ghost",
+    "category": "Physical",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 30,
+    "priority": 1,
+    "maxPp": 30
+  },
+  "Sing": {
+    "name": "Sing",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 55,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "status",
+      "status": "asleep",
+      "chance": 100
+    }
+  },
+  "Sky Attack": {
+    "name": "Sky Attack",
+    "type": "Flying",
+    "category": "Physical",
+    "power": 140,
+    "accuracy": 90,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Slam": {
+    "name": "Slam",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 80,
+    "accuracy": 75,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Slash": {
+    "name": "Slash",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20,
+    "effect": {
+      "type": "criticalBoost",
+      "chance": 20
+    }
+  },
+  "Sleep Powder": {
+    "name": "Sleep Powder",
+    "type": "Grass",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 75,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "status",
+      "status": "asleep",
+      "chance": 100
+    }
+  },
+  "Sludge Bomb": {
+    "name": "Sludge Bomb",
+    "type": "Poison",
+    "category": "Special",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 10,
+    "effect": {
+      "type": "status",
+      "status": "poisoned",
+      "chance": 30
+    },
+    "maxPp": 10
+  },
+  "Smokescreen": {
+    "name": "Smokescreen",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 20,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "accuracy",
+      "stages": -1,
+      "chance": 100
+    },
+    "maxPp": 20
+  },
+  "Solar Beam": {
+    "name": "Solar Beam",
+    "type": "Grass",
+    "category": "Special",
+    "power": 120,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Spacial Rend": {
+    "name": "Spacial Rend",
+    "type": "Dragon",
+    "category": "Special",
+    "power": 100,
+    "accuracy": 95,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "Spark": {
+    "name": "Spark",
+    "type": "Electric",
+    "category": "Physical",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 30
+    }
+  },
+  "Splash": {
+    "name": "Splash",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 40,
+    "maxPp": 40
+  },
+  "Stomp": {
+    "name": "Stomp",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 65,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Stone Edge": {
+    "name": "Stone Edge",
+    "type": "Rock",
+    "category": "Physical",
+    "power": 100,
+    "accuracy": 80,
+    "pp": 5,
+    "maxPp": 5
+  },
+  "String Shot": {
+    "name": "String Shot",
+    "type": "Bug",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 95,
+    "pp": 40,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "speed",
+      "stages": -1,
+      "chance": 100
+    },
+    "maxPp": 40
+  },
+  "Stun Spore": {
+    "name": "Stun Spore",
+    "type": "Grass",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 75,
+    "pp": 30,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 100
+    },
+    "maxPp": 30
+  },
+  "Sucker Punch": {
+    "name": "Sucker Punch",
+    "type": "Dark",
+    "category": "Physical",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 5,
+    "priority": 1,
+    "maxPp": 5
+  },
+  "Supersonic": {
+    "name": "Supersonic",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 55,
+    "pp": 20,
+    "effect": {
+      "type": "status",
+      "status": "confused",
+      "chance": 100
+    },
+    "maxPp": 20
+  },
+  "Sweet Kiss": {
+    "name": "Sweet Kiss",
+    "type": "Fairy",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 75,
+    "pp": 10,
+    "maxPp": 10,
+    "effect": {
+      "type": "status",
+      "status": "confused",
+      "chance": 100
+    }
+  },
+  "Swift": {
+    "name": "Swift",
+    "type": "Normal",
+    "category": "Special",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Synthesis": {
+    "name": "Synthesis",
+    "type": "Grass",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 5,
+    "maxPp": 5,
+    "effect": {
+      "type": "heal",
+      "target": "self",
+      "percent": 50
+    }
+  },
+  "Tackle": {
+    "name": "Tackle",
+    "type": "Normal",
+    "category": "Physical",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 35,
+    "maxPp": 35
+  },
+  "Tail Whip": {
+    "name": "Tail Whip",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 30,
+    "effect": {
+      "type": "statChange",
+      "target": "opponent",
+      "stat": "defense",
+      "stages": -1,
+      "chance": 100
+    },
+    "maxPp": 30
+  },
+  "Taunt": {
+    "name": "Taunt",
+    "type": "Dark",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 20,
+    "effect": {
+      "type": "status",
+      "status": "taunted",
+      "chance": 100
+    },
+    "maxPp": 20
+  },
+  "Thunder Shock": {
+    "name": "Thunder Shock",
+    "type": "Electric",
+    "category": "Special",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 30,
+    "maxPp": 30,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 10
+    }
+  },
+  "Thunder Wave": {
+    "name": "Thunder Wave",
+    "type": "Electric",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 90,
+    "pp": 20,
+    "maxPp": 20,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 100
+    }
+  },
+  "Thunder": {
+    "name": "Thunder",
+    "type": "Electric",
+    "category": "Special",
+    "power": 110,
+    "accuracy": 70,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Thunderbolt": {
+    "name": "Thunderbolt",
+    "type": "Electric",
+    "category": "Special",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "status",
+      "status": "paralyzed",
+      "chance": 10
+    }
+  },
+  "Twister": {
+    "name": "Twister",
+    "type": "Dragon",
+    "category": "Special",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Vine Whip": {
+    "name": "Vine Whip",
+    "type": "Grass",
+    "category": "Physical",
+    "power": 45,
+    "accuracy": 100,
+    "pp": 25,
+    "maxPp": 25
+  },
+  "Water Gun": {
+    "name": "Water Gun",
+    "type": "Water",
+    "category": "Special",
+    "power": 40,
+    "accuracy": 100,
+    "pp": 25,
+    "maxPp": 25
+  },
+  "Water Pulse": {
+    "name": "Water Pulse",
+    "type": "Water",
+    "category": "Special",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20,
+    "effect": {
+      "type": "status",
+      "status": "confused",
+      "chance": 20
+    }
+  },
+  "Will-O-Wisp": {
+    "name": "Will-O-Wisp",
+    "type": "Fire",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 85,
+    "pp": 15,
+    "effect": {
+      "type": "status",
+      "status": "burned",
+      "chance": 100
+    },
+    "maxPp": 15
+  },
+  "Wing Attack": {
+    "name": "Wing Attack",
+    "type": "Flying",
+    "category": "Physical",
+    "power": 60,
+    "accuracy": 100,
+    "pp": 35,
+    "maxPp": 35
+  },
+  "Withdraw": {
+    "name": "Withdraw",
+    "type": "Water",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 40,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "defense",
+      "stages": 1,
+      "chance": 100
+    },
+    "maxPp": 40
+  },
+  "X-Scissor": {
+    "name": "X-Scissor",
+    "type": "Bug",
+    "category": "Physical",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Yawn": {
+    "name": "Yawn",
+    "type": "Normal",
+    "category": "Status",
+    "power": 0,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10,
+    "effect": {
+      "type": "status",
+      "status": "asleep",
+      "chance": 100
+    }
+  },
+  "Zen Headbutt": {
+    "name": "Zen Headbutt",
+    "type": "Psychic",
+    "category": "Physical",
+    "power": 80,
+    "accuracy": 90,
+    "pp": 15,
+    "maxPp": 15
+  }
+}
