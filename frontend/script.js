@@ -137,6 +137,24 @@ function setActiveScreen(screen) {
   });
 }
 
+function openWildEncounterLayer() {
+  const battleScreen = document.getElementById("battle-screen");
+  battleScreen?.classList.add("active", "wild-encounter-layer");
+  document.body.classList.add("wild-encounter-open");
+  document.querySelectorAll(".nav-tab").forEach((button) => {
+    button.classList.toggle("active", button.dataset.screen === activeScreen);
+  });
+}
+
+function closeWildEncounterLayer() {
+  const battleScreen = document.getElementById("battle-screen");
+  battleScreen?.classList.remove("wild-encounter-layer");
+  if (activeScreen !== "battle") {
+    battleScreen?.classList.remove("active");
+  }
+  document.body.classList.remove("wild-encounter-open");
+}
+
 function openOverlay(type) {
   activeOverlay = type;
   document.getElementById("overlay-backdrop")?.classList.remove("hidden");
@@ -1699,7 +1717,6 @@ document.getElementById("explore-btn")?.addEventListener("click", async () => {
     currentWildHP = wild.currentHp;
     playerStatus = activePokemon.status || "none";
     wildStatus = wild.status || "none";
-    setActiveScreen("battle");
     showBattle();
   } catch (error) {
     console.error("Error:", error);
@@ -1707,10 +1724,15 @@ document.getElementById("explore-btn")?.addEventListener("click", async () => {
 });
 
 function showBattle() {
-  setActiveScreen("battle");
+  openWildEncounterLayer();
   document.getElementById("encounter").innerHTML = `
-    <h2>Battle in ${wild.area}!</h2>
-    <p class="weather-info">Weather: ${wild.weather} ${wild.shiny ? " | Shiny encounter!" : ""}</p>
+    <div class="wild-encounter-head">
+      <div>
+        <span>Wild Encounter</span>
+        <h2>${wild.name}${wild.shiny ? " *" : ""} appeared!</h2>
+      </div>
+      <p class="weather-info">${formatAreaName(wild.area)} | Weather: ${wild.weather}${wild.shiny ? " | Shiny encounter!" : ""}</p>
+    </div>
     <div class="battle-container">
       <div class="battle-pokemon">
         <img src="${getPokemonImage(activePokemon.id)}" alt="${activePokemon.name}">
@@ -1922,6 +1944,7 @@ async function throwBall(type) {
     await loadInventory();
     setTimeout(() => {
       renderBattlePlaceholder("Great catch! Choose an area and explore again.");
+      closeWildEncounterLayer();
       setActiveScreen("explore");
     }, 1200);
   }
@@ -1958,6 +1981,7 @@ function endEncounter() {
   wild = null;
   isInBattle = false;
   renderBattlePlaceholder("You returned safely. Pick an area to explore again.");
+  closeWildEncounterLayer();
   setActiveScreen("explore");
 }
 
