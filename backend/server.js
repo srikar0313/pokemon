@@ -1,7 +1,11 @@
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
-const { loadGameData } = require("./dataLoader");
+const { loadGameData, loadJson, saveJson } = require("./dataLoader");
+const { createGameState } = require("./gameState");
+const { createPokemonUtils } = require("./pokemonUtils");
+const { createBattleEngine } = require("./battleEngine");
+const { createEncounterEngine } = require("./encounterEngine");
+const { createRewardEngine } = require("./rewardEngine");
 const app = express();
 const port = process.env.PORT || 3000;
 const rootDir = path.join(__dirname, "..");
@@ -31,44 +35,25 @@ const areas = gameData.areas;
 const areaUnlocks = gameData.areaUnlocks;
 const rarityWeights = gameData.rarityWeights;
 const weatherBoosts = gameData.weatherBoosts;
+const pokemonUtils = createPokemonUtils({
+  pokemonPath,
+  readJsonFile: loadJson,
+});
+const {
+  starterPikachu,
+  getPokemonTemplates,
+  getPokemonTypes,
+  normalizePokemon,
+  restorePokemon,
+  getEvolution,
+  createLeveledPokemon,
+} = pokemonUtils;
 
 const ballRates = {
   standard: 1.0,
   great: 1.5,
   ultra: 2.0,
   master: 255,
-};
-
-const defaultPlayerState = {
-  trainerName: "Player",
-  coins: 100,
-  money: 100,
-  level: 1,
-  xp: 0,
-  badges: [],
-  championDefeated: false,
-  unlockedAreas: ["forest"],
-  unlockedGyms: [1],
-  items: {
-    standard: 10,
-    great: 5,
-    ultra: 2,
-    master: 1,
-    potion: 3,
-    superPotion: 1,
-    antidote: 2,
-    paralyzeHeal: 2,
-    burnHeal: 1,
-    iceHeal: 1,
-    awakening: 1,
-    fullHeal: 1,
-  },
-  pokedex: {
-    seen: [],
-    caught: [],
-  },
-  defeatedNpcs: [],
-  achievements: [],
 };
 
 const statusModifiers = {
@@ -113,268 +98,66 @@ const activeNpcSessions = new Map();
 
 const allGymBadges = gyms.map((gym) => gym.badge);
 
-const defaultMoves = [
-  {
-    name: "Tackle",
-    type: "Normal",
-    category: "Physical",
-    power: 40,
-    accuracy: 100,
-    pp: 35,
-  },
-  {
-    name: "Growl",
-    type: "Normal",
-    category: "Status",
-    power: null,
-    accuracy: 100,
-    pp: 40,
-    effect: "lower_attack",
-  },
-  {
-    name: "Quick Attack",
-    type: "Normal",
-    category: "Physical",
-    power: 40,
-    accuracy: 100,
-    pp: 30,
-  },
-  {
-    name: "Tail Whip",
-    type: "Normal",
-    category: "Status",
-    power: null,
-    accuracy: 100,
-    pp: 30,
-    effect: "lower_defense",
-  },
-];
-
-const starterPikachu = {
-  id: 25,
-  name: "Pikachu",
-  type: "Electric",
-  rarity: "uncommon",
-  hp: 35,
-  maxHp: 35,
-  attack: 55,
-  defense: 40,
-  specialAttack: 50,
-  specialDefense: 50,
-  xpYield: 112,
-  habitats: ["forest"],
-  times: ["day"],
-  baseCatchRate: 190,
-  level: 1,
-  xp: 0,
-  currentHp: 35,
-  types: ["Electric"],
-  shiny: false,
-  moves: [
-    {
-      name: "Thunderbolt",
-      type: "Electric",
-      category: "Special",
-      power: 90,
-      accuracy: 100,
-      pp: 15,
-    },
-    {
-      name: "Quick Attack",
-      type: "Normal",
-      category: "Physical",
-      power: 40,
-      accuracy: 100,
-      pp: 30,
-    },
-    {
-      name: "Growl",
-      type: "Normal",
-      category: "Status",
-      power: null,
-      accuracy: 100,
-      pp: 40,
-      effect: "lower_attack",
-    },
-    {
-      name: "Thunder Wave",
-      type: "Electric",
-      category: "Status",
-      power: null,
-      accuracy: 90,
-      pp: 20,
-      effect: "paralyze",
-    },
-  ],
-};
-
-let pokemonTemplateCache = null;
-
-function getPokemonTemplates() {
-  if (!pokemonTemplateCache) {
-    pokemonTemplateCache = readJsonFile(pokemonPath, []);
-  }
-  return pokemonTemplateCache;
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getPokemonTemplate(id) {
-  return getPokemonTemplates().find((pokemon) => pokemon.id === id) || {};
-}
+const gameState = createGameState({
+  inventoryPath,
+  storagePath,
+  playerStatePath,
+  teamLimit,
+  gyms,
+  areaUnlocks,
+  gymUnlocks,
+  legacyBadgeMap,
+  championBadge: champion.badge,
+  readJsonFile: loadJson,
+  writeJsonFile: saveJson,
+  normalizePokemon,
+  starterPokemon: starterPikachu,
+});
+const {
+  readJsonFile,
+  writeJsonFile,
+  loadTeamAndStorage,
+  saveTeamAndStorage,
+  getAllOwnedPokemon,
+  uniqueNumbers,
+  loadPlayerState,
+  savePlayerState,
+  markPokedexSeen,
+  updateAchievements,
+} = gameState;
 
-function readJsonFile(filePath, fallback) {
-  try {
-    return JSON.parse(fs.readFileSync(filePath, "utf8"));
-  } catch (error) {
-    return fallback;
-  }
-}
+const battleEngine = createBattleEngine({ getRandomInt });
+const {
+  aiDifficulty,
+  executeBattleMove,
+  chooseBestMove,
+  chooseGymAction,
+  chooseTrainerAction,
+} = battleEngine;
 
-function writeJsonFile(filePath, data) {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
+const encounterEngine = createEncounterEngine({
+  rarityWeights,
+  weatherBoosts,
+  getPokemonTypes,
+});
+const { selectEncounter } = encounterEngine;
 
-function loadTeamAndStorage() {
-  let team = readJsonFile(inventoryPath, []).map(normalizePokemon);
-  let storage = readJsonFile(storagePath, []).map(normalizePokemon);
-  const hasPikachu = [...team, ...storage].some((p) => p.id === 25);
-
-  if (!hasPikachu) {
-    team.unshift(normalizePokemon(starterPikachu));
-  }
-
-  if (team.length > teamLimit) {
-    storage = [...storage, ...team.slice(teamLimit)];
-    team = team.slice(0, teamLimit);
-  }
-
-  saveTeamAndStorage(team, storage);
-  return { team, storage };
-}
-
-function saveTeamAndStorage(team, storage) {
-  writeJsonFile(inventoryPath, team.map(normalizePokemon));
-  writeJsonFile(storagePath, storage.map(normalizePokemon));
-}
-
-function getAllOwnedPokemon() {
-  const { team, storage } = loadTeamAndStorage();
-  return [...team, ...storage];
-}
-
-function uniqueNumbers(values) {
-  return [...new Set(values.map(Number).filter(Boolean))];
-}
-
-function uniqueStrings(values) {
-  return [...new Set(values.filter(Boolean).map(String))];
-}
-
-function normalizePlayerState(state = {}) {
-  const coins = state.coins ?? state.money ?? defaultPlayerState.coins;
-  const badges = uniqueStrings(
-    (state.badges || []).map((badge) => legacyBadgeMap[badge] || badge),
-  );
-  const championDefeated =
-    Boolean(state.championDefeated) || badges.includes(champion.badge);
-  const unlockedAreas = uniqueStrings([
-    ...(state.unlockedAreas || defaultPlayerState.unlockedAreas),
-    ...Object.entries(areaUnlocks)
-      .filter(([, badge]) => !badge || badges.includes(badge))
-      .map(([area]) => area),
-  ]);
-  const unlockedGyms = gyms
-    .map((gym) => gym.id)
-    .filter(
-      (gymId) => !gymUnlocks[gymId] || badges.includes(gymUnlocks[gymId]),
-    );
-  return {
-    ...defaultPlayerState,
-    ...state,
-    coins,
-    money: coins,
-    level: state.level || defaultPlayerState.level,
-    xp: state.xp || 0,
-    items: {
-      ...defaultPlayerState.items,
-      ...(state.items || {}),
-    },
-    pokedex: {
-      seen: uniqueNumbers(state.pokedex?.seen || []),
-      caught: uniqueNumbers(state.pokedex?.caught || []),
-    },
-    defeatedNpcs: uniqueNumbers(state.defeatedNpcs || []),
-    badges,
-    championDefeated,
-    unlockedAreas,
-    unlockedGyms,
-    achievements: state.achievements || [],
-  };
-}
-
-function loadPlayerState() {
-  const state = normalizePlayerState(
-    readJsonFile(playerStatePath, defaultPlayerState),
-  );
-  const inventoryIds = getAllOwnedPokemon().map((pokemon) => pokemon.id);
-  if (inventoryIds.length > 0) {
-    state.pokedex.seen = uniqueNumbers([
-      ...state.pokedex.seen,
-      ...inventoryIds,
-    ]);
-    state.pokedex.caught = uniqueNumbers([
-      ...state.pokedex.caught,
-      ...inventoryIds,
-    ]);
-    updateAchievements(state);
-  }
-  writeJsonFile(playerStatePath, state);
-  return state;
-}
-
-function savePlayerState(state) {
-  const normalized = normalizePlayerState(state);
-  writeJsonFile(playerStatePath, normalized);
-  return normalized;
-}
-
-function awardCoins(state, amount) {
-  state.coins = (state.coins ?? state.money ?? 0) + amount;
-  state.money = state.coins;
-  state.xp = (state.xp || 0) + Math.max(1, Math.floor(amount / 10));
-  state.level = Math.max(1, Math.floor((state.xp || 0) / 100) + 1);
-  updateAchievements(state);
-  return state;
-}
-
-function updateAchievements(state) {
-  const achievements = new Set(state.achievements);
-  const caughtCount = state.pokedex.caught.length;
-  const seenCount = state.pokedex.seen.length;
-
-  if (seenCount >= 1) achievements.add("First Encounter");
-  if (caughtCount >= 1) achievements.add("First Catch");
-  if (caughtCount >= 5) achievements.add("Rookie Collector");
-  if (caughtCount >= 10) achievements.add("Pokedex Scout");
-  if ((state.coins ?? state.money ?? 0) >= 5000) achievements.add("Big Saver");
-
-  state.achievements = [...achievements];
-  return state;
-}
-
-function markPokedexSeen(id) {
-  const state = loadPlayerState();
-  state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, id]);
-  updateAchievements(state);
-  return savePlayerState(state);
-}
-
-function markPokedexCaught(id) {
-  const state = loadPlayerState();
-  state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, id]);
-  state.pokedex.caught = uniqueNumbers([...state.pokedex.caught, id]);
-  updateAchievements(state);
-  return savePlayerState(state);
-}
+const rewardEngine = createRewardEngine({
+  normalizePokemon,
+  getEvolution,
+  updateAchievements,
+});
+const {
+  awardCoins,
+  calculateBattleXp,
+  applyXpToPokemon,
+  applyXpToParticipants,
+  appendXpLog,
+} = rewardEngine;
 
 function getPokedexEntries(state) {
   return getPokemonTemplates().map((pokemon) => ({
@@ -385,703 +168,6 @@ function getPokedexEntries(state) {
     seen: state.pokedex.seen.includes(pokemon.id),
     caught: state.pokedex.caught.includes(pokemon.id),
   }));
-}
-
-const typeChart = {
-  Normal: { Rock: 0.5, Ghost: 0, Steel: 0.5 },
-  Fire: {
-    Fire: 0.5,
-    Water: 0.5,
-    Grass: 2,
-    Ice: 2,
-    Bug: 2,
-    Rock: 0.5,
-    Dragon: 0.5,
-    Steel: 2,
-  },
-  Water: { Fire: 2, Water: 0.5, Grass: 0.5, Ground: 2, Rock: 2, Dragon: 0.5 },
-  Electric: {
-    Water: 2,
-    Electric: 0.5,
-    Grass: 0.5,
-    Ground: 0,
-    Flying: 2,
-    Dragon: 0.5,
-  },
-  Grass: {
-    Fire: 0.5,
-    Water: 2,
-    Grass: 0.5,
-    Poison: 0.5,
-    Ground: 2,
-    Flying: 0.5,
-    Bug: 0.5,
-    Rock: 2,
-    Dragon: 0.5,
-    Steel: 0.5,
-  },
-  Ice: {
-    Fire: 0.5,
-    Water: 0.5,
-    Grass: 2,
-    Ice: 0.5,
-    Ground: 2,
-    Flying: 2,
-    Dragon: 2,
-    Steel: 0.5,
-  },
-  Fighting: {
-    Normal: 2,
-    Ice: 2,
-    Rock: 2,
-    Dark: 2,
-    Steel: 2,
-    Poison: 0.5,
-    Flying: 0.5,
-    Psychic: 0.5,
-    Bug: 0.5,
-    Fairy: 0.5,
-    Ghost: 0,
-  },
-  Poison: {
-    Grass: 2,
-    Fairy: 2,
-    Poison: 0.5,
-    Ground: 0.5,
-    Rock: 0.5,
-    Ghost: 0.5,
-    Steel: 0,
-  },
-  Ground: {
-    Fire: 2,
-    Electric: 2,
-    Grass: 0.5,
-    Poison: 2,
-    Flying: 0,
-    Bug: 0.5,
-    Rock: 2,
-    Steel: 2,
-  },
-  Flying: {
-    Grass: 2,
-    Fighting: 2,
-    Bug: 2,
-    Electric: 0.5,
-    Rock: 0.5,
-    Steel: 0.5,
-  },
-  Psychic: { Fighting: 2, Poison: 2, Psychic: 0.5, Steel: 0.5, Dark: 0 },
-  Bug: {
-    Grass: 2,
-    Psychic: 2,
-    Dark: 2,
-    Fire: 0.5,
-    Fighting: 0.5,
-    Poison: 0.5,
-    Flying: 0.5,
-    Ghost: 0.5,
-    Steel: 0.5,
-    Fairy: 0.5,
-    Rock: 1,
-  },
-  Rock: {
-    Fire: 2,
-    Ice: 2,
-    Flying: 2,
-    Bug: 2,
-    Fighting: 0.5,
-    Ground: 0.5,
-    Steel: 0.5,
-  },
-  Ghost: { Psychic: 2, Ghost: 2, Normal: 0, Dark: 0.5 },
-  Dragon: { Dragon: 2, Steel: 0.5, Fairy: 0 },
-  Dark: { Psychic: 2, Ghost: 2, Fighting: 0.5, Dark: 0.5, Fairy: 0.5 },
-  Steel: {
-    Ice: 2,
-    Rock: 2,
-    Fairy: 2,
-    Fire: 0.5,
-    Water: 0.5,
-    Electric: 0.5,
-    Steel: 0.5,
-  },
-  Fairy: {
-    Fighting: 2,
-    Dragon: 2,
-    Dark: 2,
-    Fire: 0.5,
-    Poison: 0.5,
-    Steel: 0.5,
-  },
-};
-
-function getTimeOfDay() {
-  const hour = new Date().getHours();
-  return hour >= 6 && hour < 18 ? "day" : "night";
-}
-
-function getCurrentWeather() {
-  const roll = Math.random();
-  if (roll < 0.5) return "sunny";
-  if (roll < 0.8) return "rain";
-  if (roll < 0.95) return "snow";
-  return "sandstorm";
-}
-
-function getPokemonTypes(pokemon) {
-  if (Array.isArray(pokemon.types) && pokemon.types.length > 0) {
-    return pokemon.types;
-  }
-  return pokemon.type ? [pokemon.type] : [];
-}
-
-function getTypeEffectiveness(attackerType, defenderType) {
-  if (!attackerType || !defenderType) return 1;
-  return typeChart[attackerType]?.[defenderType] ?? 1;
-}
-
-function getCombinedTypeEffectiveness(attackerType, defenderTypes) {
-  const types = Array.isArray(defenderTypes) ? defenderTypes : [defenderTypes];
-  return types.reduce(
-    (multiplier, type) => multiplier * getTypeEffectiveness(attackerType, type),
-    1,
-  );
-}
-
-function normalizeMove(move) {
-  const maxPp = move.maxPp ?? move.pp ?? move.currentPp ?? 10;
-  return {
-    ...move,
-    category: move.category || "Physical",
-    accuracy: move.accuracy ?? 100,
-    power: move.power ?? 0,
-    pp: move.pp ?? maxPp,
-    maxPp,
-    currentPp: Math.min(move.currentPp ?? maxPp, maxPp),
-  };
-}
-
-function normalizePokemon(pokemon) {
-  const template = getPokemonTemplate(pokemon.id);
-  const merged = {
-    ...template,
-    ...pokemon,
-  };
-  const hasGenericSavedType =
-    pokemon.type === "Normal" &&
-    Array.isArray(pokemon.types) &&
-    pokemon.types.length === 1 &&
-    pokemon.types[0] === "Normal" &&
-    template.type &&
-    template.type !== "Normal";
-
-  if (hasGenericSavedType) {
-    merged.type = template.type;
-    merged.types = template.types || [template.type];
-  }
-
-  const types = getPokemonTypes(merged);
-  const templateMoves =
-    Array.isArray(template.moves) && template.moves.length > 0
-      ? template.moves
-      : null;
-  const savedMoves = Array.isArray(pokemon.moves) ? pokemon.moves : [];
-  const moves = (
-    templateMoves || savedMoves.length
-      ? templateMoves || savedMoves
-      : defaultMoves
-  ).map((move) => {
-    const savedMove = savedMoves.find((saved) => saved.name === move.name);
-    return {
-      ...move,
-      currentPp:
-        savedMove?.currentPp ?? move.currentPp ?? move.maxPp ?? move.pp,
-    };
-  });
-
-  return {
-    ...merged,
-    type: merged.type || types[0] || "Normal",
-    types: types.length > 0 ? types : [merged.type || "Normal"],
-    level: merged.level || 1,
-    xp: merged.xp || 0,
-    maxHp: merged.maxHp || merged.hp || 1,
-    currentHp: merged.currentHp ?? merged.maxHp ?? merged.hp ?? 1,
-    specialAttack: merged.specialAttack ?? merged.attack ?? 1,
-    specialDefense: merged.specialDefense ?? merged.defense ?? 1,
-    status: merged.status || "none",
-    moves: moves.map(normalizeMove),
-  };
-}
-
-function restorePokemon(pokemon) {
-  const normalized = normalizePokemon(pokemon);
-  return {
-    ...normalized,
-    currentHp: normalized.maxHp,
-    status: "none",
-    moves: normalized.moves.map((move) => ({
-      ...move,
-      currentPp: move.maxPp ?? move.pp,
-    })),
-  };
-}
-
-function getWeatherMatch(types, weather) {
-  return types.some((type) => (weatherBoosts[type] || []).includes(weather));
-}
-
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function calculateSpawnWeight(pokemon, selectedArea, currentTime, weather) {
-  let weight = rarityWeights[pokemon.rarity] || 0;
-  const habitats = Array.isArray(pokemon.habitats)
-    ? pokemon.habitats
-    : pokemon.habitats
-      ? [pokemon.habitats]
-      : [];
-  const times = Array.isArray(pokemon.times)
-    ? pokemon.times
-    : pokemon.times
-      ? [pokemon.times]
-      : [];
-  const types = getPokemonTypes(pokemon);
-
-  if (habitats.includes(selectedArea)) weight += 30;
-  if (times.includes(currentTime)) weight += 15;
-  if (getWeatherMatch(types, weather)) weight += 10;
-  return Math.max(1, weight);
-}
-
-function weightedSelection(items) {
-  const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
-  let random = Math.random() * totalWeight;
-  for (let item of items) {
-    random -= item.weight;
-    if (random <= 0) return item.pokemon;
-  }
-  return items[0].pokemon;
-}
-
-function calculateDamage(
-  { attack, defense, specialAttack, specialDefense, types, level, status },
-  { defense: defStat, specialDefense: defSpDef, types: oppTypes },
-  movePower,
-  category,
-  moveType,
-) {
-  let atkStat, defStatUsed;
-  if (category === "Physical") {
-    atkStat = attack || 1;
-    defStatUsed = defStat || 1;
-  } else if (category === "Special") {
-    atkStat = specialAttack || attack || 1;
-    defStatUsed = defSpDef || defStat || 1;
-  } else {
-    return { damage: 0, effectiveness: 1, critical: false, burnReduced: false }; // status move
-  }
-
-  const stab = types.includes(moveType) ? 1.5 : 1;
-  const effectiveness = getCombinedTypeEffectiveness(moveType, oppTypes);
-  const randomFactor = getRandomInt(85, 100) / 100;
-  const critical = Math.random() < 0.0625 ? 1.5 : 1;
-  const burnReduction = status === "burned" ? 0.5 : 1;
-
-  const base = (((2 * level) / 5 + 2) * atkStat * movePower) / defStatUsed;
-  const damage = Math.floor(
-    (base / 50 + 2) *
-      stab *
-      effectiveness *
-      randomFactor *
-      critical *
-      burnReduction,
-  );
-  return {
-    damage: Math.max(1, damage),
-    effectiveness,
-    critical: critical > 1,
-    burnReduced: burnReduction < 1,
-  };
-}
-
-function getMoveByName(pokemon, moveName) {
-  return (pokemon.moves || []).find((move) => move.name === moveName);
-}
-
-function checkAccuracy(move) {
-  return Math.random() * 100 < (move.accuracy ?? 100);
-}
-
-function changeStat(target, stat, stages) {
-  if (!stat || !Number.isFinite(stages)) return false;
-  const current = target[stat] ?? 1;
-  const multiplier =
-    stages > 0 ? 1 + stages * 0.25 : 1 / (1 + Math.abs(stages) * 0.25);
-  target[stat] = Math.max(1, Math.floor(current * multiplier));
-  return true;
-}
-
-function applyMoveEffect(move, attacker, defender) {
-  const effect = move.effect;
-  const log = [];
-  if (!effect || Math.random() * 100 >= (effect.chance ?? 100)) {
-    return log;
-  }
-
-  const target = effect.target === "self" ? attacker : defender;
-  const targetName = target === attacker ? attacker.name : defender.name;
-
-  if (effect.type === "status") {
-    if (!target.status || target.status === "none") {
-      target.status = effect.status;
-      log.push(`${targetName} was ${formatStatusForLog(effect.status)}!`);
-    }
-  } else if (effect.type === "statChange") {
-    if (changeStat(target, effect.stat, effect.stages)) {
-      const direction = effect.stages > 0 ? "rose" : "fell";
-      log.push(
-        `${targetName}'s ${formatStatForLog(effect.stat)} ${direction}!`,
-      );
-    }
-  } else if (effect.type === "heal" || effect.type === "healAndSleep") {
-    const maxHp = attacker.maxHp || attacker.hp || 1;
-    const healed = Math.min(
-      maxHp - attacker.currentHp,
-      Math.max(1, Math.floor(maxHp * ((effect.percent || 50) / 100))),
-    );
-    attacker.currentHp += healed;
-    log.push(`${attacker.name} recovered ${healed} HP.`);
-    if (effect.type === "healAndSleep") {
-      attacker.status = effect.status || "asleep";
-      log.push(`${attacker.name} fell asleep!`);
-    }
-  } else if (effect.type === "allStatsUp") {
-    ["attack", "defense", "specialAttack", "specialDefense", "speed"].forEach(
-      (stat) => changeStat(attacker, stat, effect.stages || 1),
-    );
-    log.push(`${attacker.name}'s stats rose!`);
-  } else if (effect.type === "randomMove") {
-    log.push("A mysterious power sparked, but nothing happened.");
-  }
-
-  return log;
-}
-
-function calculateMoveDamage(attacker, defender, move) {
-  const baseResult = calculateDamage(
-    attacker,
-    defender,
-    move.power || 0,
-    move.category,
-    move.type,
-  );
-  const boostedCritical =
-    move.effect?.type === "criticalBoost" &&
-    Math.random() * 100 < (move.effect.chance ?? 0);
-  const hits = Math.max(1, move.hits || 1);
-  const criticalMultiplier = boostedCritical && !baseResult.critical ? 1.5 : 1;
-  return {
-    ...baseResult,
-    damage:
-      Math.max(1, Math.floor(baseResult.damage * criticalMultiplier)) * hits,
-    hits,
-    critical: baseResult.critical || boostedCritical,
-  };
-}
-
-function formatStatusForLog(status) {
-  const labels = {
-    asleep: "put to sleep",
-    burned: "burned",
-    confused: "confused",
-    frozen: "frozen",
-    paralyzed: "paralyzed",
-    poisoned: "poisoned",
-  };
-  return labels[status] || status;
-}
-
-function formatStatForLog(stat) {
-  return String(stat || "")
-    .replace(/([A-Z])/g, " $1")
-    .toLowerCase();
-}
-
-function executeBattleMove(attacker, defender, moveName, defenderPrefix = "") {
-  const log = [];
-  const move = getMoveByName(attacker, moveName);
-  if (!move) return { error: "Move not found", log };
-  if (move.currentPp <= 0) {
-    log.push("No PP left for this move!");
-    return { error: "No PP left for this move", log };
-  }
-
-  if (attacker.status === "paralyzed" && Math.random() < 0.25) {
-    log.push(`${attacker.name} is paralyzed and cannot move!`);
-    return { move, log };
-  }
-  if (attacker.status === "asleep" || attacker.status === "frozen") {
-    log.push(`${attacker.name} is ${attacker.status} and cannot move!`);
-    return { move, log };
-  }
-
-  move.currentPp -= 1;
-  log.push(`${attacker.name} used ${move.name}!`);
-
-  if (!checkAccuracy(move)) {
-    log.push("The attack missed!");
-    return { move, log };
-  }
-
-  if (move.category !== "Status" && (move.power || 0) > 0) {
-    const damageResult = calculateMoveDamage(attacker, defender, move);
-    defender.currentHp = Math.max(0, defender.currentHp - damageResult.damage);
-    if (damageResult.critical) log.push("A critical hit!");
-    if (damageResult.effectiveness > 1) log.push("It's super effective!");
-    if (damageResult.effectiveness < 1 && damageResult.effectiveness > 0) {
-      log.push("It's not very effective...");
-    }
-    if (damageResult.effectiveness === 0) log.push("It had no effect!");
-    if (damageResult.hits > 1) log.push(`Hit ${damageResult.hits} times!`);
-    log.push(
-      `${defenderPrefix}${defender.name} took ${damageResult.damage} damage.`,
-    );
-  }
-
-  log.push(...applyMoveEffect(move, attacker, defender));
-  return { move, log };
-}
-
-const aiDifficulty = {
-  EASY: "easy",
-  MEDIUM: "medium",
-  HARD: "hard",
-};
-
-function getAvailableMoves(pokemon) {
-  return (pokemon.moves || []).filter((move) => move.currentPp > 0);
-}
-
-function isDamagingMove(move) {
-  return move.category !== "Status" && (move.power || 0) > 0;
-}
-
-function estimateMoveDamage(attacker, defender, move) {
-  if (!isDamagingMove(move)) return 0;
-  const attackStat =
-    move.category === "Special"
-      ? attacker.specialAttack || attacker.attack || 1
-      : attacker.attack || 1;
-  const defenseStat =
-    move.category === "Special"
-      ? defender.specialDefense || defender.defense || 1
-      : defender.defense || 1;
-  const stab = (attacker.types || []).includes(move.type) ? 1.5 : 1;
-  const effectiveness = getCombinedTypeEffectiveness(move.type, defender.types);
-  const base =
-    (((2 * (attacker.level || 1)) / 5 + 2) * attackStat * (move.power || 0)) /
-      defenseStat /
-      50 +
-    2;
-  return Math.max(0, Math.floor(base * stab * effectiveness));
-}
-
-function isUsefulStatusMove(move, defender) {
-  const effect = move.effect;
-  if (!effect) return false;
-  if (effect.type === "status") {
-    const usefulStatuses = [
-      "paralyzed",
-      "burned",
-      "asleep",
-      "frozen",
-      "confused",
-      "poisoned",
-    ];
-    return (
-      usefulStatuses.includes(effect.status) &&
-      (!defender.status || defender.status === "none")
-    );
-  }
-  return ["statChange", "heal", "healAndSleep", "allStatsUp"].includes(
-    effect.type,
-  );
-}
-
-function scoreMove(attacker, defender, move) {
-  if (move.currentPp <= 0) return -Infinity;
-  let score = 100;
-  const effectiveness = isDamagingMove(move)
-    ? getCombinedTypeEffectiveness(move.type, defender.types)
-    : 1;
-
-  if (isDamagingMove(move)) {
-    if (effectiveness === 0) return -Infinity;
-    if (effectiveness > 1) score += 80;
-    if (effectiveness < 1) score -= 40;
-    if ((attacker.types || []).includes(move.type)) score += 30;
-    score += (move.power || 0) / 2;
-    if (estimateMoveDamage(attacker, defender, move) >= defender.currentHp) {
-      score += 100;
-    }
-    if (
-      move.priority &&
-      defender.currentHp / Math.max(1, defender.maxHp) <= 0.25
-    ) {
-      score += 40;
-    }
-  } else {
-    if (!isUsefulStatusMove(move, defender)) return -Infinity;
-    score += move.effect?.type === "status" ? 35 : 20;
-  }
-
-  const randomFactor = 0.9 + Math.random() * 0.2;
-  return score * randomFactor;
-}
-
-function chooseAiMove(attacker, defender, difficulty = aiDifficulty.MEDIUM) {
-  const moves = getAvailableMoves(attacker);
-  if (moves.length === 0) return null;
-
-  if (difficulty === aiDifficulty.EASY && Math.random() < 0.75) {
-    return moves[Math.floor(Math.random() * moves.length)];
-  }
-  if (difficulty === aiDifficulty.MEDIUM && Math.random() < 0.3) {
-    return moves[Math.floor(Math.random() * moves.length)];
-  }
-
-  const scoredMoves = moves
-    .map((move) => ({ move, score: scoreMove(attacker, defender, move) }))
-    .filter((entry) => entry.score > -Infinity)
-    .sort((a, b) => b.score - a.score);
-
-  return (
-    scoredMoves[0]?.move || moves[Math.floor(Math.random() * moves.length)]
-  );
-}
-
-function chooseBestMove(attacker, defender) {
-  return chooseAiMove(attacker, defender, aiDifficulty.MEDIUM);
-}
-
-function chooseGymMove(attacker, defender) {
-  return chooseAiMove(attacker, defender, aiDifficulty.HARD);
-}
-
-function isWeakToOpponent(currentPokemon, opponent) {
-  const opponentMoves = getAvailableMoves(opponent).filter(isDamagingMove);
-  return opponentMoves.some(
-    (move) => getCombinedTypeEffectiveness(move.type, currentPokemon.types) > 1,
-  );
-}
-
-function hasAdvantageAgainst(candidate, opponent) {
-  return getAvailableMoves(candidate)
-    .filter(isDamagingMove)
-    .some(
-      (move) => getCombinedTypeEffectiveness(move.type, opponent.types) > 1,
-    );
-}
-
-function chooseAiSwitch(team, currentIndex, opponent) {
-  const currentPokemon = team[currentIndex];
-  if (!currentPokemon || !isWeakToOpponent(currentPokemon, opponent))
-    return null;
-  return team.findIndex(
-    (pokemon, index) =>
-      index !== currentIndex &&
-      pokemon.currentHp > 0 &&
-      hasAdvantageAgainst(pokemon, opponent),
-  );
-}
-
-function chooseGymAction(session, opponent) {
-  const current = session.gymTeam[session.gymIndex];
-  if (!current) return { type: "none" };
-
-  const lowHp = current.currentHp / Math.max(1, current.maxHp) < 0.3;
-  if (lowHp && (session.aiItems?.potion || 0) > 0) {
-    return { type: "item", itemId: "potion" };
-  }
-  if (lowHp) {
-    const defensiveMove = getAvailableMoves(current).find(
-      (move) =>
-        move.category === "Status" &&
-        (move.effect?.target === "self" ||
-          move.effect?.type === "heal" ||
-          move.effect?.type === "healAndSleep" ||
-          (move.effect?.type === "statChange" &&
-            move.effect?.target === "self")),
-    );
-    if (defensiveMove) return { type: "move", move: defensiveMove };
-  }
-
-  const switchIndex = chooseAiSwitch(
-    session.gymTeam,
-    session.gymIndex,
-    opponent,
-  );
-  if (switchIndex >= 0) return { type: "switch", index: switchIndex };
-
-  return { type: "move", move: chooseGymMove(current, opponent) };
-}
-
-function chooseTrainerAction(
-  team,
-  currentIndex,
-  aiItems,
-  opponent,
-  trainerName,
-  difficulty = aiDifficulty.HARD,
-) {
-  const current = team[currentIndex];
-  if (!current) return { type: "none" };
-
-  const lowHp = current.currentHp / Math.max(1, current.maxHp) < 0.3;
-  if (lowHp && (aiItems?.potion || 0) > 0) {
-    return { type: "item", itemId: "potion", trainerName };
-  }
-  if (lowHp) {
-    const defensiveMove = getAvailableMoves(current).find(
-      (move) =>
-        move.category === "Status" &&
-        (move.effect?.target === "self" ||
-          move.effect?.type === "heal" ||
-          move.effect?.type === "healAndSleep" ||
-          (move.effect?.type === "statChange" &&
-            move.effect?.target === "self")),
-    );
-    if (defensiveMove) return { type: "move", move: defensiveMove };
-  }
-
-  const switchIndex = chooseAiSwitch(team, currentIndex, opponent);
-  if (switchIndex >= 0) return { type: "switch", index: switchIndex };
-
-  return { type: "move", move: chooseAiMove(current, opponent, difficulty) };
-}
-
-function createLeveledPokemon(name, level) {
-  const template = normalizePokemon(
-    getPokemonTemplates().find((pokemon) => pokemon.name === name) || {},
-  );
-  const multiplier = 1 + Math.max(0, level - 1) * 0.08;
-  return {
-    ...template,
-    level,
-    maxHp: Math.floor(template.maxHp * multiplier),
-    currentHp: Math.floor(template.maxHp * multiplier),
-    attack: Math.floor(template.attack * multiplier),
-    defense: Math.floor(template.defense * multiplier),
-    specialAttack: Math.floor(template.specialAttack * multiplier),
-    specialDefense: Math.floor(template.specialDefense * multiplier),
-    status: "none",
-    moves: template.moves.map((move) => ({
-      ...move,
-      currentPp: move.maxPp ?? move.pp,
-    })),
-  };
 }
 
 function getGymById(gymId) {
@@ -1276,120 +362,6 @@ function finishNpcLoss(session, log = []) {
     npc: getNpcView(session.npc, loadPlayerState()),
     session: getNpcSessionView(session),
   };
-}
-
-function calculateBattleXp(defeatedPokemon, trainerMultiplier = 1) {
-  const baseYield = defeatedPokemon?.xpYield || 50;
-  const level = defeatedPokemon?.level || 1;
-  return Math.max(
-    50,
-    Math.floor(baseYield * Math.max(1, level / 2) * trainerMultiplier),
-  );
-}
-
-function applyXpToPokemon(team, pokemonIndex, xpAmount) {
-  if (!team[pokemonIndex] || xpAmount <= 0) {
-    return {
-      team,
-      pokemon: team[pokemonIndex] || null,
-      leveledUp: false,
-      evolved: false,
-      evolvedFrom: null,
-      evolvedTo: null,
-    };
-  }
-
-  const updatedTeam = team.map((pokemon, index) =>
-    index === pokemonIndex ? normalizePokemon({ ...pokemon }) : pokemon,
-  );
-  const pokemon = updatedTeam[pokemonIndex];
-  pokemon.xp = (pokemon.xp || 0) + xpAmount;
-  let leveledUp = false;
-  let evolved = false;
-  let evolvedFrom = null;
-
-  while (pokemon.xp >= Math.max(25, (pokemon.level || 1) * 50)) {
-    const xpNeeded = Math.max(25, (pokemon.level || 1) * 50);
-    pokemon.xp -= xpNeeded;
-    pokemon.level = (pokemon.level || 1) + 1;
-    pokemon.maxHp = Math.floor((pokemon.maxHp || pokemon.hp || 1) * 1.15);
-    pokemon.attack = Math.floor((pokemon.attack || 1) * 1.12);
-    pokemon.defense = Math.floor((pokemon.defense || 1) * 1.12);
-    pokemon.specialAttack = Math.floor((pokemon.specialAttack || 1) * 1.12);
-    pokemon.specialDefense = Math.floor((pokemon.specialDefense || 1) * 1.12);
-    pokemon.currentHp = pokemon.maxHp;
-    leveledUp = true;
-  }
-
-  const evolution = getEvolution(pokemon);
-  if (evolution && pokemon.level >= evolution.level) {
-    evolvedFrom = pokemon.name;
-    pokemon.name = evolution.name;
-    pokemon.type = evolution.type || pokemon.type;
-    pokemon.types = [pokemon.type];
-    pokemon.attack = Math.floor(pokemon.attack * 1.05);
-    pokemon.defense = Math.floor(pokemon.defense * 1.05);
-    pokemon.maxHp = Math.floor(pokemon.maxHp * 1.05);
-    pokemon.specialAttack = Math.floor(pokemon.specialAttack * 1.05);
-    pokemon.specialDefense = Math.floor(pokemon.specialDefense * 1.05);
-    pokemon.currentHp = pokemon.maxHp;
-    pokemon.evolvesTo = null;
-    pokemon.evolveLevel = null;
-    pokemon.evolvedFrom = evolvedFrom;
-    evolved = true;
-  }
-
-  return {
-    team: updatedTeam,
-    pokemon,
-    leveledUp,
-    evolved,
-    evolvedFrom,
-    evolvedTo: evolved ? pokemon.name : null,
-  };
-}
-
-function applyXpToParticipants(team, participantIndexes, xpAmount) {
-  const indexes = [...new Set((participantIndexes || []).map(Number))]
-    .filter((index) => team[index] && xpAmount > 0);
-  if (!indexes.length) {
-    return { team, results: [], xpEach: 0 };
-  }
-
-  const xpEach = Math.max(1, Math.floor(xpAmount / indexes.length));
-  let updatedTeam = team;
-  const results = indexes.map((index) => {
-    const result = applyXpToPokemon(updatedTeam, index, xpEach);
-    updatedTeam = result.team;
-    return {
-      index,
-      xpAward: xpEach,
-      pokemon: result.pokemon,
-      leveledUp: result.leveledUp,
-      evolved: result.evolved,
-      evolvedFrom: result.evolvedFrom,
-      evolvedTo: result.evolvedTo,
-    };
-  });
-
-  return { team: updatedTeam, results, xpEach };
-}
-
-function appendXpLog(log, xpResults) {
-  (xpResults || []).forEach((result) => {
-    if (!result.pokemon || result.xpAward <= 0) return;
-    log.push(`${result.pokemon.name} gained ${result.xpAward} XP.`);
-    if (result.leveledUp) {
-      log.push(`${result.pokemon.name} leveled up to ${result.pokemon.level}!`);
-    }
-    if (result.evolved) {
-      log.push(
-        `${result.evolvedFrom || "Your Pokemon"} evolved into ${
-          result.evolvedTo || result.pokemon.name
-        }!`,
-      );
-    }
-  });
 }
 
 function completeGymSession(session, log = []) {
@@ -2449,38 +1421,8 @@ app.post("/api/encounter", (req, res) => {
 
   try {
     const allPokemon = getPokemonTemplates();
-    const currentTime = getTimeOfDay();
-    const weather = getCurrentWeather();
-    const selectedArea = String(area).toLowerCase();
-    const legendaryRoll = Math.random() < 0.02;
-    const areaPool = allPokemon.filter((pokemon) => {
-      const habitats = Array.isArray(pokemon.habitats)
-        ? pokemon.habitats
-        : pokemon.habitats
-          ? [pokemon.habitats]
-          : [];
-      return habitats.includes(selectedArea);
-    });
-    const biomePool = areaPool.length ? areaPool : allPokemon;
-    const spawnPool = biomePool.filter((pokemon) => {
-      const isLegendary =
-        pokemon.rarity === "legendary" || pokemon.rarity === "mythical";
-      return legendaryRoll ? isLegendary : !isLegendary;
-    });
-
-    const weightedPokemon = (spawnPool.length ? spawnPool : biomePool).map(
-      (pokemon) => ({
-        pokemon,
-        weight: calculateSpawnWeight(
-          pokemon,
-          selectedArea,
-          currentTime,
-          weather,
-        ),
-      }),
-    );
-
-    const encountered = normalizePokemon(weightedSelection(weightedPokemon));
+    const { pokemon, weather } = selectEncounter(allPokemon, area);
+    const encountered = normalizePokemon(pokemon);
     const shiny = Math.random() < 1 / 4096;
     const encounterData = {
       ...encountered,
@@ -2742,29 +1684,6 @@ app.get("/api/inventory", (req, res) => {
     res.status(500).json({ error: "Failed to read inventory" });
   }
 });
-
-const evolutionTriggers = {
-  Pichu: { level: 8, name: "Pikachu", type: "Electric" },
-  Pikachu: { level: 12, name: "Raichu", type: "Electric" },
-  Bulbasaur: { level: 16, name: "Ivysaur", type: "Grass" },
-  Charmander: { level: 16, name: "Charmeleon", type: "Fire" },
-  Squirtle: { level: 16, name: "Wartortle", type: "Water" },
-  Chikorita: { level: 16, name: "Bayleef", type: "Grass" },
-  Cyndaquil: { level: 16, name: "Quilava", type: "Fire" },
-  Totodile: { level: 16, name: "Croconaw", type: "Water" },
-  Eevee: { level: 16, name: "Vaporeon", type: "Water" },
-};
-
-function getEvolution(pokemon) {
-  if (pokemon.evolvesTo && pokemon.evolveLevel) {
-    return {
-      level: pokemon.evolveLevel,
-      name: pokemon.evolvesTo,
-      type: pokemon.evolveType || pokemon.type,
-    };
-  }
-  return evolutionTriggers[pokemon.name];
-}
 
 app.post("/api/heal", (req, res) => {
   try {
