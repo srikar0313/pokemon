@@ -41,7 +41,7 @@ const ballRates = {
   standard: 1.0,
   great: 1.5,
   ultra: 2.0,
-  master: 4.0,
+  master: 255,
 };
 
 const itemCatalog = {
@@ -65,6 +65,13 @@ const itemCatalog = {
     price: 100,
     icon: "ultra",
     description: "A high-performance ball for tough catches.",
+  },
+  master: {
+    name: "Master Ball",
+    category: "ball",
+    price: 500,
+    icon: "master",
+    description: "The ultimate ball. It catches any wild Pokemon without fail.",
   },
   potion: {
     name: "Potion",
@@ -1946,6 +1953,8 @@ function calculateCatchProbability(
   currentHP,
   status = "none",
 ) {
+  if (pokeball === "master") return 1.0;
+
   const maxHP = wildPokemon.maxHp || wildPokemon.hp || 1;
   const baseCatchRate = wildPokemon.baseCatchRate || 1;
   const ballRate = ballRates[pokeball] || 1.0;

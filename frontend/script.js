@@ -1278,6 +1278,7 @@ function displayShop() {
       "standard",
       "great",
       "ultra",
+      "master",
       "potion",
     ].includes(item.id),
   );
