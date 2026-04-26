@@ -1759,6 +1759,7 @@ function showBattle() {
     <div id="type-advantage" class="type-advantage"></div>
     <div id="move-buttons" class="move-buttons"></div>
     <button onclick="switchPokemon()" class="secondary-btn">Switch Pokémon</button>
+    <div id="wild-switch-panel"></div>
     <div id="catch-panel"></div>
     <div id="battle-log"></div>
   `;
@@ -1785,8 +1786,46 @@ function showMoveButtons(disabled = false) {
 
 function switchPokemon() {
   isSwitching = true;
+  if (wild && isInBattle) {
+    showWildSwitchPanel();
+    return;
+  }
   setActiveScreen("party");
   loadInventory();
+}
+
+function showWildSwitchPanel() {
+  const panel = document.getElementById("wild-switch-panel");
+  if (!panel) return;
+  panel.innerHTML = `
+    <div class="wild-switch-panel">
+      <div class="wild-switch-head">
+        <strong>Switch Pokemon</strong>
+        <button class="secondary-btn" onclick="cancelWildSwitch()">Cancel</button>
+      </div>
+      <div class="wild-switch-grid">
+        ${teamCache
+          .map((pokemon, index) => {
+            const disabled =
+              index === activeInventoryIndex || (pokemon.currentHp || 0) <= 0;
+            return `
+              <button class="wild-switch-card" ${disabled ? "disabled" : ""} onclick="selectPokemon(${index})">
+                <img src="${getPokemonImage(pokemon.id)}" alt="${pokemon.name}">
+                <span>${pokemon.name}</span>
+                <small>${pokemon.currentHp}/${pokemon.maxHp} HP</small>
+              </button>
+            `;
+          })
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
+function cancelWildSwitch() {
+  isSwitching = false;
+  const panel = document.getElementById("wild-switch-panel");
+  if (panel) panel.innerHTML = "";
 }
 
 function updateTypeAdvantage() {

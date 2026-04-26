@@ -1297,6 +1297,54 @@ button:disabled {
   opacity: 0.9;
 }
 
+.wild-switch-panel {
+  margin: 12px 0;
+  padding: 12px;
+  border: 2px solid #d4e0ec;
+  border-radius: 14px;
+  background: #f7fbff;
+}
+
+.wild-switch-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.wild-switch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.wild-switch-card {
+  min-height: 128px;
+  margin: 0;
+  padding: 10px;
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  background: #ffffff;
+  color: #24415f;
+  border: 2px solid #cfdae7;
+}
+
+.wild-switch-card img {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+
+.wild-switch-card span {
+  font-weight: 800;
+}
+
+.wild-switch-card small {
+  color: #5f738d;
+}
+
 .status-line {
   font-weight: bold;
   color: #555;
