@@ -2226,6 +2226,7 @@ function showBattle() {
     </div>
     <div id="type-advantage" class="type-advantage"></div>
     <div id="move-buttons" class="move-buttons"></div>
+    <div id="battle-item-panel"></div>
     <button onclick="switchPokemon()" class="secondary-btn">Switch Pokémon</button>
     <div id="wild-switch-panel"></div>
     <div id="catch-panel"></div>
@@ -2233,6 +2234,7 @@ function showBattle() {
   `;
   updateTypeAdvantage();
   showMoveButtons();
+  showBattleItemPanel();
   showCatchOptions();
   isInBattle = true;
 }
@@ -2250,6 +2252,55 @@ function showMoveButtons(disabled = false) {
     btn.onclick = () => attack(move.name);
     moveButtonsDiv.appendChild(btn);
   });
+}
+
+function getBattleUsableItems() {
+  if (!playerState?.items) return [];
+  return shopCatalog.filter(
+    (item) =>
+      ["healing", "status"].includes(item.category) &&
+      (playerState.items[item.id] || 0) > 0,
+  );
+}
+
+function canUseBattleItem(item) {
+  if (!item) return false;
+  if (!activePokemon || currentPlayerHP <= 0) return false;
+  if (item.category === "healing") return currentPlayerHP < activePokemon.maxHp;
+  return Boolean(item.cures?.includes(playerStatus));
+}
+
+function showBattleItemPanel(disabled = false) {
+  const panel = document.getElementById("battle-item-panel");
+  if (!panel) return;
+  const items = getBattleUsableItems();
+  if (!items.length) {
+    panel.innerHTML = "";
+    return;
+  }
+
+  panel.innerHTML = `
+    <div class="battle-item-panel">
+      <div class="battle-item-head">
+        <strong>${renderIcon("backpack", "Bag")} Battle Items</strong>
+        <span>Use on ${activePokemon?.name || "active Pokemon"}</span>
+      </div>
+      <div class="battle-item-grid">
+        ${items
+          .map((item) => {
+            const count = playerState.items[item.id] || 0;
+            const itemDisabled = disabled || !canUseBattleItem(item);
+            return `
+              <button class="mini-item-btn icon-button" ${itemDisabled ? "disabled" : ""} onclick="useBattleItem('${item.id}')">
+                ${renderIcon(item.icon, item.name)}
+                <span>${item.name} (${count})</span>
+              </button>
+            `;
+          })
+          .join("")}
+      </div>
+    </div>
+  `;
 }
 
 function switchPokemon() {
@@ -2363,6 +2414,7 @@ async function attack(moveName) {
   updateBattleDisplay();
   displayCurrentPlayer();
   showMoveButtons(!!data.winner);
+  showBattleItemPanel(!!data.winner);
   showCatchOptions(!!data.winner);
   await loadInventory();
 
@@ -2376,6 +2428,44 @@ async function attack(moveName) {
   } else if (data.winner === "wild") {
     appendBattleLog(["You lost the battle. Heal up and try again."]);
   }
+}
+
+async function useBattleItem(itemId) {
+  if (!wild || !isInBattle) {
+    await useItemOnActive(itemId);
+    return;
+  }
+  const item = shopCatalog.find((catalogItem) => catalogItem.id === itemId);
+  if (!canUseBattleItem(item)) {
+    alert("That item will not help right now.");
+    return;
+  }
+
+  const response = await fetch("/api/use-item", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ itemId, pokemonIndex: activeInventoryIndex }),
+  });
+  const data = await response.json();
+  if (data.error) {
+    alert(data.error);
+    return;
+  }
+
+  if (data.state) playerState = data.state;
+  teamCache = (data.team || data.inventory || teamCache).map(normalizePokemon);
+  storageCache = (data.storage || storageCache).map(normalizePokemon);
+  activePokemon = normalizePokemon(teamCache[activeInventoryIndex]);
+  currentPlayerHP = activePokemon.currentHp;
+  playerStatus = activePokemon.status || "none";
+  appendBattleLog([data.message]);
+  updateBattleDisplay();
+  displayStats();
+  displayCurrentPlayer();
+  displayParty(teamCache);
+  displayStorage(storageCache);
+  displayBag();
+  showBattleItemPanel();
 }
 
 function updateBattleDisplay() {

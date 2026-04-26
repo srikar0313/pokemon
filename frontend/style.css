@@ -204,6 +204,30 @@ h3 {
   color: #4f647f;
 }
 
+.battle-item-panel {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #d8e3ef;
+  border-radius: 12px;
+  background: #f8fbff;
+}
+
+.battle-item-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #315170;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.battle-item-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
 .pending-move-panel {
   margin-top: 16px;
   padding: 12px;

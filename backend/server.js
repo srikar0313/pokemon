@@ -1090,12 +1090,12 @@ app.post("/api/use-item", (req, res) => {
     return res.status(400).json({ error: "You do not have that item" });
   }
 
-  const inventory = readJsonFile(inventoryPath, []).map(normalizePokemon);
-  if (pokemonIndex < 0 || pokemonIndex >= inventory.length) {
+  const { team, storage } = loadTeamAndStorage();
+  if (pokemonIndex < 0 || pokemonIndex >= team.length) {
     return res.status(400).json({ error: "Invalid Pokemon index" });
   }
 
-  const pokemon = inventory[pokemonIndex];
+  const pokemon = team[pokemonIndex];
   let message = "";
   if (item.category === "healing") {
     if (pokemon.currentHp >= pokemon.maxHp) {
@@ -1117,12 +1117,14 @@ app.post("/api/use-item", (req, res) => {
   }
 
   state.items[itemId] -= 1;
-  inventory[pokemonIndex] = pokemon;
-  writeJsonFile(inventoryPath, inventory);
+  team[pokemonIndex] = pokemon;
+  saveTeamAndStorage(team, storage);
   res.json({
     success: true,
     message,
-    inventory,
+    inventory: team,
+    team,
+    storage,
     state: savePlayerState(state),
   });
 });
