@@ -340,6 +340,7 @@ async function displayAreas() {
   });
   html += "</div>";
   document.getElementById("areas").innerHTML = html;
+  updateAreaHelper(selectedArea);
 
   const exploreBtn = document.getElementById("explore-btn");
   if (exploreBtn) {
@@ -364,8 +365,38 @@ async function selectArea(event, area) {
   event.currentTarget.classList.add("active");
   document.getElementById("explore-btn").disabled =
     !activePokemon || activePokemon.currentHp <= 0;
+  updateAreaHelper(area);
   await loadAreaWorld(area);
   displayCurrentPlayer();
+}
+
+function getAreaHelperText(area) {
+  switch (area) {
+    case "forest":
+      return "Forest routes favor Bug, Grass, and Poison types. Look for hidden rare encounters and mythical spirits at night.";
+    case "lake":
+      return "Lake routes are rich in Water types. Use a Master Ball for rare aquatic legends and keep an eye out for night-only encounters.";
+    case "cave":
+      return "Caves host Rock, Ground, and Ghost types. Explore carefully — rare Pokemon appear in dark passages and hidden chambers.";
+    case "ocean":
+      return "Ocean routes contain Water types and rare sea creatures. Legendary water Pokemon are most likely to appear during night exploration.";
+    case "volcano":
+      return "Volcano routes favor Fire and Rock types. Legendary fire beasts roam here, so bring plenty of recovery items.";
+    case "mountain":
+      return "Mountain routes are home to Rock, Flying, and Dragon types. Legendary sky Pokemon can appear on high ridges at night.";
+    case "desert":
+      return "Desert routes favor Ground, Rock, and Dark types. Watch for rare dragon and sandstorm encounters in the heat.";
+    case "graveyard":
+      return "Graveyard routes favor Ghost and Dark types. Mythical spirits and rare night-only Pokemon are more common here.";
+    default:
+      return "Select an area to view biome-specific encounter hints and rare Pokemon guidance.";
+  }
+}
+
+function updateAreaHelper(area) {
+  const helper = document.getElementById("area-helper");
+  if (!helper) return;
+  helper.textContent = getAreaHelperText(area);
 }
 
 async function loadAreaWorld(area) {

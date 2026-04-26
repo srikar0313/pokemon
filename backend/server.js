@@ -24,7 +24,7 @@ const rarityWeights = {
   uncommon: 25,
   rare: 10,
   legendary: 3,
-  mythical: 2,
+  mythical: 1,
 };
 
 const weatherBoosts = {
@@ -378,10 +378,45 @@ const eliteBossTemplates = [
     specialAttack: 109,
     specialDefense: 85,
     moves: [
-      { name: "Flamethrower", type: "Fire", category: "Special", power: 90, accuracy: 100, pp: 15, maxPp: 15, effect: { type: "status", status: "burned", chance: 10 } },
-      { name: "Air Slash", type: "Flying", category: "Special", power: 75, accuracy: 95, pp: 15, maxPp: 15 },
-      { name: "Dragon Breath", type: "Dragon", category: "Special", power: 60, accuracy: 100, pp: 20, maxPp: 20, effect: { type: "status", status: "paralyzed", chance: 30 } },
-      { name: "Slash", type: "Normal", category: "Physical", power: 70, accuracy: 100, pp: 20, maxPp: 20, effect: { type: "criticalBoost", chance: 20 } },
+      {
+        name: "Flamethrower",
+        type: "Fire",
+        category: "Special",
+        power: 90,
+        accuracy: 100,
+        pp: 15,
+        maxPp: 15,
+        effect: { type: "status", status: "burned", chance: 10 },
+      },
+      {
+        name: "Air Slash",
+        type: "Flying",
+        category: "Special",
+        power: 75,
+        accuracy: 95,
+        pp: 15,
+        maxPp: 15,
+      },
+      {
+        name: "Dragon Breath",
+        type: "Dragon",
+        category: "Special",
+        power: 60,
+        accuracy: 100,
+        pp: 20,
+        maxPp: 20,
+        effect: { type: "status", status: "paralyzed", chance: 30 },
+      },
+      {
+        name: "Slash",
+        type: "Normal",
+        category: "Physical",
+        power: 70,
+        accuracy: 100,
+        pp: 20,
+        maxPp: 20,
+        effect: { type: "criticalBoost", chance: 20 },
+      },
     ],
   },
   {
@@ -397,10 +432,51 @@ const eliteBossTemplates = [
     specialAttack: 85,
     specialDefense: 105,
     moves: [
-      { name: "Water Pulse", type: "Water", category: "Special", power: 60, accuracy: 100, pp: 20, maxPp: 20, effect: { type: "status", status: "confused", chance: 20 } },
-      { name: "Bite", type: "Dark", category: "Physical", power: 60, accuracy: 100, pp: 25, maxPp: 25 },
-      { name: "Ice Beam", type: "Ice", category: "Special", power: 90, accuracy: 100, pp: 10, maxPp: 10, effect: { type: "status", status: "frozen", chance: 10 } },
-      { name: "Protect", type: "Normal", category: "Status", power: 0, accuracy: 100, pp: 10, maxPp: 10, effect: { type: "statChange", target: "self", stat: "defense", stages: 1, chance: 100 } },
+      {
+        name: "Water Pulse",
+        type: "Water",
+        category: "Special",
+        power: 60,
+        accuracy: 100,
+        pp: 20,
+        maxPp: 20,
+        effect: { type: "status", status: "confused", chance: 20 },
+      },
+      {
+        name: "Bite",
+        type: "Dark",
+        category: "Physical",
+        power: 60,
+        accuracy: 100,
+        pp: 25,
+        maxPp: 25,
+      },
+      {
+        name: "Ice Beam",
+        type: "Ice",
+        category: "Special",
+        power: 90,
+        accuracy: 100,
+        pp: 10,
+        maxPp: 10,
+        effect: { type: "status", status: "frozen", chance: 10 },
+      },
+      {
+        name: "Protect",
+        type: "Normal",
+        category: "Status",
+        power: 0,
+        accuracy: 100,
+        pp: 10,
+        maxPp: 10,
+        effect: {
+          type: "statChange",
+          target: "self",
+          stat: "defense",
+          stages: 1,
+          chance: 100,
+        },
+      },
     ],
   },
   {
@@ -416,10 +492,51 @@ const eliteBossTemplates = [
     specialAttack: 130,
     specialDefense: 75,
     moves: [
-      { name: "Shadow Ball", type: "Ghost", category: "Special", power: 80, accuracy: 100, pp: 15, maxPp: 15, effect: { type: "statChange", target: "opponent", stat: "specialDefense", stages: -1, chance: 20 } },
-      { name: "Hypnosis", type: "Psychic", category: "Status", power: 0, accuracy: 60, pp: 20, maxPp: 20, effect: { type: "status", status: "asleep", chance: 100 } },
-      { name: "Dream Eater", type: "Psychic", category: "Special", power: 100, accuracy: 100, pp: 15, maxPp: 15 },
-      { name: "Sludge Bomb", type: "Poison", category: "Special", power: 90, accuracy: 100, pp: 10, maxPp: 10, effect: { type: "status", status: "poisoned", chance: 30 } },
+      {
+        name: "Shadow Ball",
+        type: "Ghost",
+        category: "Special",
+        power: 80,
+        accuracy: 100,
+        pp: 15,
+        maxPp: 15,
+        effect: {
+          type: "statChange",
+          target: "opponent",
+          stat: "specialDefense",
+          stages: -1,
+          chance: 20,
+        },
+      },
+      {
+        name: "Hypnosis",
+        type: "Psychic",
+        category: "Status",
+        power: 0,
+        accuracy: 60,
+        pp: 20,
+        maxPp: 20,
+        effect: { type: "status", status: "asleep", chance: 100 },
+      },
+      {
+        name: "Dream Eater",
+        type: "Psychic",
+        category: "Special",
+        power: 100,
+        accuracy: 100,
+        pp: 15,
+        maxPp: 15,
+      },
+      {
+        name: "Sludge Bomb",
+        type: "Poison",
+        category: "Special",
+        power: 90,
+        accuracy: 100,
+        pp: 10,
+        maxPp: 10,
+        effect: { type: "status", status: "poisoned", chance: 30 },
+      },
     ],
   },
   {
@@ -435,10 +552,43 @@ const eliteBossTemplates = [
     specialAttack: 100,
     specialDefense: 100,
     moves: [
-      { name: "Dragon Breath", type: "Dragon", category: "Special", power: 60, accuracy: 100, pp: 20, maxPp: 20, effect: { type: "status", status: "paralyzed", chance: 30 } },
-      { name: "Wing Attack", type: "Flying", category: "Physical", power: 60, accuracy: 100, pp: 35, maxPp: 35 },
-      { name: "Aqua Tail", type: "Water", category: "Physical", power: 90, accuracy: 90, pp: 10, maxPp: 10 },
-      { name: "Hyper Beam", type: "Normal", category: "Special", power: 120, accuracy: 90, pp: 5, maxPp: 5 },
+      {
+        name: "Dragon Breath",
+        type: "Dragon",
+        category: "Special",
+        power: 60,
+        accuracy: 100,
+        pp: 20,
+        maxPp: 20,
+        effect: { type: "status", status: "paralyzed", chance: 30 },
+      },
+      {
+        name: "Wing Attack",
+        type: "Flying",
+        category: "Physical",
+        power: 60,
+        accuracy: 100,
+        pp: 35,
+        maxPp: 35,
+      },
+      {
+        name: "Aqua Tail",
+        type: "Water",
+        category: "Physical",
+        power: 90,
+        accuracy: 90,
+        pp: 10,
+        maxPp: 10,
+      },
+      {
+        name: "Hyper Beam",
+        type: "Normal",
+        category: "Special",
+        power: 120,
+        accuracy: 90,
+        pp: 5,
+        maxPp: 5,
+      },
     ],
   },
   {
@@ -454,10 +604,43 @@ const eliteBossTemplates = [
     specialAttack: 150,
     specialDefense: 90,
     moves: [
-      { name: "Twister", type: "Dragon", category: "Special", power: 40, accuracy: 100, pp: 20, maxPp: 20 },
-      { name: "Dragon Breath", type: "Dragon", category: "Special", power: 60, accuracy: 100, pp: 20, maxPp: 20, effect: { type: "status", status: "paralyzed", chance: 30 } },
-      { name: "Air Slash", type: "Flying", category: "Special", power: 75, accuracy: 95, pp: 15, maxPp: 15 },
-      { name: "Hyper Beam", type: "Normal", category: "Special", power: 120, accuracy: 90, pp: 5, maxPp: 5 },
+      {
+        name: "Twister",
+        type: "Dragon",
+        category: "Special",
+        power: 40,
+        accuracy: 100,
+        pp: 20,
+        maxPp: 20,
+      },
+      {
+        name: "Dragon Breath",
+        type: "Dragon",
+        category: "Special",
+        power: 60,
+        accuracy: 100,
+        pp: 20,
+        maxPp: 20,
+        effect: { type: "status", status: "paralyzed", chance: 30 },
+      },
+      {
+        name: "Air Slash",
+        type: "Flying",
+        category: "Special",
+        power: 75,
+        accuracy: 95,
+        pp: 15,
+        maxPp: 15,
+      },
+      {
+        name: "Hyper Beam",
+        type: "Normal",
+        category: "Special",
+        power: 120,
+        accuracy: 90,
+        pp: 5,
+        maxPp: 5,
+      },
     ],
   },
 ];
@@ -605,7 +788,8 @@ const npcs = [
     type: "guide",
     sprite: "guide-sailor",
     position: { x: 3, y: 4 },
-    dialogue: "Gym victories open sea lanes. Water specialists like to stack status moves.",
+    dialogue:
+      "Gym victories open sea lanes. Water specialists like to stack status moves.",
   },
   {
     id: 8,
@@ -722,7 +906,8 @@ function getPokemonTemplates() {
     try {
       const storedTemplates = JSON.parse(fs.readFileSync(pokemonPath, "utf8"));
       const missingBossTemplates = eliteBossTemplates.filter(
-        (boss) => !storedTemplates.some((pokemon) => pokemon.name === boss.name),
+        (boss) =>
+          !storedTemplates.some((pokemon) => pokemon.name === boss.name),
       );
       pokemonTemplateCache = [...storedTemplates, ...missingBossTemplates];
     } catch (error) {
@@ -1101,15 +1286,18 @@ function normalizePokemon(pokemon) {
       ? template.moves
       : null;
   const savedMoves = Array.isArray(pokemon.moves) ? pokemon.moves : [];
-  const moves = (templateMoves || savedMoves.length ? templateMoves || savedMoves : defaultMoves).map(
-    (move) => {
-      const savedMove = savedMoves.find((saved) => saved.name === move.name);
-      return {
-        ...move,
-        currentPp: savedMove?.currentPp ?? move.currentPp ?? move.maxPp ?? move.pp,
-      };
-    },
-  );
+  const moves = (
+    templateMoves || savedMoves.length
+      ? templateMoves || savedMoves
+      : defaultMoves
+  ).map((move) => {
+    const savedMove = savedMoves.find((saved) => saved.name === move.name);
+    return {
+      ...move,
+      currentPp:
+        savedMove?.currentPp ?? move.currentPp ?? move.maxPp ?? move.pp,
+    };
+  });
 
   return {
     ...merged,
@@ -1229,7 +1417,8 @@ function checkAccuracy(move) {
 function changeStat(target, stat, stages) {
   if (!stat || !Number.isFinite(stages)) return false;
   const current = target[stat] ?? 1;
-  const multiplier = stages > 0 ? 1 + stages * 0.25 : 1 / (1 + Math.abs(stages) * 0.25);
+  const multiplier =
+    stages > 0 ? 1 + stages * 0.25 : 1 / (1 + Math.abs(stages) * 0.25);
   target[stat] = Math.max(1, Math.floor(current * multiplier));
   return true;
 }
@@ -1252,7 +1441,9 @@ function applyMoveEffect(move, attacker, defender) {
   } else if (effect.type === "statChange") {
     if (changeStat(target, effect.stat, effect.stages)) {
       const direction = effect.stages > 0 ? "rose" : "fell";
-      log.push(`${targetName}'s ${formatStatForLog(effect.stat)} ${direction}!`);
+      log.push(
+        `${targetName}'s ${formatStatForLog(effect.stat)} ${direction}!`,
+      );
     }
   } else if (effect.type === "heal" || effect.type === "healAndSleep") {
     const maxHp = attacker.maxHp || attacker.hp || 1;
@@ -1293,7 +1484,8 @@ function calculateMoveDamage(attacker, defender, move) {
   const criticalMultiplier = boostedCritical && !baseResult.critical ? 1.5 : 1;
   return {
     ...baseResult,
-    damage: Math.max(1, Math.floor(baseResult.damage * criticalMultiplier)) * hits,
+    damage:
+      Math.max(1, Math.floor(baseResult.damage * criticalMultiplier)) * hits,
     hits,
     critical: baseResult.critical || boostedCritical,
   };
@@ -1353,7 +1545,9 @@ function executeBattleMove(attacker, defender, moveName, defenderPrefix = "") {
     }
     if (damageResult.effectiveness === 0) log.push("It had no effect!");
     if (damageResult.hits > 1) log.push(`Hit ${damageResult.hits} times!`);
-    log.push(`${defenderPrefix}${defender.name} took ${damageResult.damage} damage.`);
+    log.push(
+      `${defenderPrefix}${defender.name} took ${damageResult.damage} damage.`,
+    );
   }
 
   log.push(...applyMoveEffect(move, attacker, defender));
@@ -1387,8 +1581,8 @@ function estimateMoveDamage(attacker, defender, move) {
   const stab = (attacker.types || []).includes(move.type) ? 1.5 : 1;
   const effectiveness = getCombinedTypeEffectiveness(move.type, defender.types);
   const base =
-    ((((2 * (attacker.level || 1)) / 5 + 2) * attackStat * (move.power || 0)) /
-      defenseStat) /
+    (((2 * (attacker.level || 1)) / 5 + 2) * attackStat * (move.power || 0)) /
+      defenseStat /
       50 +
     2;
   return Math.max(0, Math.floor(base * stab * effectiveness));
@@ -1398,13 +1592,22 @@ function isUsefulStatusMove(move, defender) {
   const effect = move.effect;
   if (!effect) return false;
   if (effect.type === "status") {
-    const usefulStatuses = ["paralyzed", "burned", "asleep", "frozen", "confused", "poisoned"];
+    const usefulStatuses = [
+      "paralyzed",
+      "burned",
+      "asleep",
+      "frozen",
+      "confused",
+      "poisoned",
+    ];
     return (
       usefulStatuses.includes(effect.status) &&
       (!defender.status || defender.status === "none")
     );
   }
-  return ["statChange", "heal", "healAndSleep", "allStatsUp"].includes(effect.type);
+  return ["statChange", "heal", "healAndSleep", "allStatsUp"].includes(
+    effect.type,
+  );
 }
 
 function scoreMove(attacker, defender, move) {
@@ -1423,7 +1626,10 @@ function scoreMove(attacker, defender, move) {
     if (estimateMoveDamage(attacker, defender, move) >= defender.currentHp) {
       score += 100;
     }
-    if (move.priority && defender.currentHp / Math.max(1, defender.maxHp) <= 0.25) {
+    if (
+      move.priority &&
+      defender.currentHp / Math.max(1, defender.maxHp) <= 0.25
+    ) {
       score += 40;
     }
   } else {
@@ -1451,7 +1657,9 @@ function chooseAiMove(attacker, defender, difficulty = aiDifficulty.MEDIUM) {
     .filter((entry) => entry.score > -Infinity)
     .sort((a, b) => b.score - a.score);
 
-  return scoredMoves[0]?.move || moves[Math.floor(Math.random() * moves.length)];
+  return (
+    scoredMoves[0]?.move || moves[Math.floor(Math.random() * moves.length)]
+  );
 }
 
 function chooseBestMove(attacker, defender) {
@@ -1472,12 +1680,15 @@ function isWeakToOpponent(currentPokemon, opponent) {
 function hasAdvantageAgainst(candidate, opponent) {
   return getAvailableMoves(candidate)
     .filter(isDamagingMove)
-    .some((move) => getCombinedTypeEffectiveness(move.type, opponent.types) > 1);
+    .some(
+      (move) => getCombinedTypeEffectiveness(move.type, opponent.types) > 1,
+    );
 }
 
 function chooseAiSwitch(team, currentIndex, opponent) {
   const currentPokemon = team[currentIndex];
-  if (!currentPokemon || !isWeakToOpponent(currentPokemon, opponent)) return null;
+  if (!currentPokemon || !isWeakToOpponent(currentPokemon, opponent))
+    return null;
   return team.findIndex(
     (pokemon, index) =>
       index !== currentIndex &&
@@ -1501,12 +1712,17 @@ function chooseGymAction(session, opponent) {
         (move.effect?.target === "self" ||
           move.effect?.type === "heal" ||
           move.effect?.type === "healAndSleep" ||
-          (move.effect?.type === "statChange" && move.effect?.target === "self")),
+          (move.effect?.type === "statChange" &&
+            move.effect?.target === "self")),
     );
     if (defensiveMove) return { type: "move", move: defensiveMove };
   }
 
-  const switchIndex = chooseAiSwitch(session.gymTeam, session.gymIndex, opponent);
+  const switchIndex = chooseAiSwitch(
+    session.gymTeam,
+    session.gymIndex,
+    opponent,
+  );
   if (switchIndex >= 0) return { type: "switch", index: switchIndex };
 
   return { type: "move", move: chooseGymMove(current, opponent) };
@@ -1534,7 +1750,8 @@ function chooseTrainerAction(
         (move.effect?.target === "self" ||
           move.effect?.type === "heal" ||
           move.effect?.type === "healAndSleep" ||
-          (move.effect?.type === "statChange" && move.effect?.target === "self")),
+          (move.effect?.type === "statChange" &&
+            move.effect?.target === "self")),
     );
     if (defensiveMove) return { type: "move", move: defensiveMove };
   }
@@ -1584,12 +1801,16 @@ function getNpcRewardCoins(npc) {
   if (npc.rewardCoins) return npc.rewardCoins;
   return Math.max(
     150,
-    (npc.team || []).reduce((total, member) => total + (member.level || 1) * 25, 0),
+    (npc.team || []).reduce(
+      (total, member) => total + (member.level || 1) * 25,
+      0,
+    ),
   );
 }
 
 function getNpcView(npc, state) {
-  const defeated = npc.type === "trainer" ? isTrainerDefeated(state, npc.id) : false;
+  const defeated =
+    npc.type === "trainer" ? isTrainerDefeated(state, npc.id) : false;
   return {
     id: npc.id,
     area: npc.area,
@@ -1719,8 +1940,11 @@ function completeNpcBattle(session, log = []) {
       state.items[session.npc.itemReward.id] =
         (state.items[session.npc.itemReward.id] || 0) + quantity;
       const itemName =
-        itemCatalog[session.npc.itemReward.id]?.name || session.npc.itemReward.id;
-      log.push(`${session.npc.name} gave you ${quantity} ${itemName}${quantity > 1 ? "s" : ""}.`);
+        itemCatalog[session.npc.itemReward.id]?.name ||
+        session.npc.itemReward.id;
+      log.push(
+        `${session.npc.name} gave you ${quantity} ${itemName}${quantity > 1 ? "s" : ""}.`,
+      );
     }
   } else {
     log.push(`${session.npc.name} has already been defeated.`);
@@ -1757,7 +1981,10 @@ function finishNpcLoss(session, log = []) {
 function calculateBattleXp(defeatedPokemon, trainerMultiplier = 1) {
   const baseYield = defeatedPokemon?.xpYield || 50;
   const level = defeatedPokemon?.level || 1;
-  return Math.max(50, Math.floor(baseYield * Math.max(1, level / 2) * trainerMultiplier));
+  return Math.max(
+    50,
+    Math.floor(baseYield * Math.max(1, level / 2) * trainerMultiplier),
+  );
 }
 
 function applyXpToPokemon(team, pokemonIndex, xpAmount) {
@@ -1922,7 +2149,9 @@ function runGymBattle(playerTeam, gym) {
     if (!playerMove) {
       player.currentHp = 0;
     } else {
-      log.push(...executeBattleMove(player, opponent, playerMove.name, "Gym ").log);
+      log.push(
+        ...executeBattleMove(player, opponent, playerMove.name, "Gym ").log,
+      );
     }
     if (opponent.currentHp <= 0) {
       log.push(`Gym ${opponent.name} fainted!`);
@@ -1987,7 +2216,12 @@ app.post("/api/reward", (req, res) => {
 });
 
 app.post("/api/zone-event/reward", (req, res) => {
-  const { coins = 0, itemId = null, quantity = 1, reason = "Zone event" } = req.body;
+  const {
+    coins = 0,
+    itemId = null,
+    quantity = 1,
+    reason = "Zone event",
+  } = req.body;
   const state = loadPlayerState();
   const amount = Math.max(0, Number(coins) || 0);
   if (amount) awardCoins(state, amount);
@@ -2049,7 +2283,9 @@ app.get("/api/elitefour", (req, res) => {
   const progress = activeEliteSessions.get("player");
   res.json({
     unlocked,
-    completed: Boolean(state.championDefeated || (state.badges || []).includes(champion.badge)),
+    completed: Boolean(
+      state.championDefeated || (state.badges || []).includes(champion.badge),
+    ),
     active: Boolean(progress && progress.status === "active"),
     session: progress ? getEliteSessionView(progress) : null,
     stages: [
@@ -2059,7 +2295,8 @@ app.get("/api/elitefour", (req, res) => {
         type: trainer.type,
         team: trainer.team,
         unlocked,
-        progress: progress?.status === "active" && progress.stageIndex === index,
+        progress:
+          progress?.status === "active" && progress.stageIndex === index,
       })),
       {
         id: champion.id,
@@ -2092,7 +2329,9 @@ app.post("/api/gym/start", (req, res) => {
   const { team } = loadTeamAndStorage();
   const playerIndex = getFirstHealthyPokemonIndex(team);
   if (playerIndex < 0) {
-    return res.status(400).json({ error: "Heal your team before the gym battle" });
+    return res
+      .status(400)
+      .json({ error: "Heal your team before the gym battle" });
   }
 
   const session = {
@@ -2123,7 +2362,9 @@ app.post("/api/gym/start", (req, res) => {
 app.post("/api/elite/start", (req, res) => {
   const state = loadPlayerState();
   if (!hasAllGymBadges(state)) {
-    return res.status(403).json({ error: "Defeat every gym before challenging the Elite Four" });
+    return res
+      .status(403)
+      .json({ error: "Defeat every gym before challenging the Elite Four" });
   }
   if (activeNpcSessions.get("player")?.status === "active") {
     return res.status(400).json({ error: "Finish your trainer battle first" });
@@ -2143,7 +2384,9 @@ app.post("/api/elite/start", (req, res) => {
   const { team } = loadTeamAndStorage();
   const playerIndex = getFirstHealthyPokemonIndex(team);
   if (playerIndex < 0) {
-    return res.status(400).json({ error: "Heal your team before challenging the Elite Four" });
+    return res
+      .status(400)
+      .json({ error: "Heal your team before challenging the Elite Four" });
   }
 
   const session = {
@@ -2188,11 +2431,17 @@ app.post("/api/gym/move", (req, res) => {
       return res.status(400).json({ error: "Invalid Pokemon" });
     }
     if (session.playerTeam[nextIndex].currentHp <= 0) {
-      return res.status(400).json({ error: "Cannot switch to a fainted Pokemon" });
+      return res
+        .status(400)
+        .json({ error: "Cannot switch to a fainted Pokemon" });
     }
     session.playerIndex = nextIndex;
     log.push(`Go, ${session.playerTeam[nextIndex].name}!`);
-    return res.json({ success: true, log, session: getGymSessionView(session) });
+    return res.json({
+      success: true,
+      log,
+      session: getGymSessionView(session),
+    });
   }
 
   const playerPokemon = session.playerTeam[session.playerIndex];
@@ -2204,30 +2453,55 @@ app.post("/api/gym/move", (req, res) => {
     return res.json(completeGymSession(session, ["Gym battle complete."]));
   }
 
-  const playerTurn = executeBattleMove(playerPokemon, gymPokemon, moveName, "Gym ");
+  const playerTurn = executeBattleMove(
+    playerPokemon,
+    gymPokemon,
+    moveName,
+    "Gym ",
+  );
   log.push(...playerTurn.log);
   if (playerTurn.error) {
-    return res.status(400).json({ error: playerTurn.error, log, session: getGymSessionView(session) });
+    return res
+      .status(400)
+      .json({
+        error: playerTurn.error,
+        log,
+        session: getGymSessionView(session),
+      });
   }
 
   if (gymPokemon.currentHp <= 0) {
     const xpAward = calculateBattleXp(gymPokemon, 2.5);
-    const xpResult = applyXpToPokemon(session.playerTeam, session.playerIndex, xpAward);
+    const xpResult = applyXpToPokemon(
+      session.playerTeam,
+      session.playerIndex,
+      xpAward,
+    );
     session.playerTeam = xpResult.team;
     log.push(`Gym ${gymPokemon.name} fainted!`);
     log.push(`${xpResult.pokemon.name} gained ${xpAward} XP.`);
     if (xpResult.leveledUp) {
-      log.push(`${xpResult.pokemon.name} leveled up to ${xpResult.pokemon.level}!`);
+      log.push(
+        `${xpResult.pokemon.name} leveled up to ${xpResult.pokemon.level}!`,
+      );
     }
     if (xpResult.evolved) {
-      log.push(`${xpResult.evolvedFrom || "Your Pokemon"} evolved into ${xpResult.evolvedTo || xpResult.pokemon.name}!`);
+      log.push(
+        `${xpResult.evolvedFrom || "Your Pokemon"} evolved into ${xpResult.evolvedTo || xpResult.pokemon.name}!`,
+      );
     }
     session.gymIndex += 1;
     if (session.gymIndex >= session.gymTeam.length) {
       return res.json(completeGymSession(session, log));
     }
-    log.push(`${session.gym.name} sent out ${session.gymTeam[session.gymIndex].name}!`);
-    return res.json({ success: true, log, session: getGymSessionView(session) });
+    log.push(
+      `${session.gym.name} sent out ${session.gymTeam[session.gymIndex].name}!`,
+    );
+    return res.json({
+      success: true,
+      log,
+      session: getGymSessionView(session),
+    });
   }
 
   const gymAction = chooseGymAction(session, playerPokemon);
@@ -2246,9 +2520,13 @@ app.post("/api/gym/move", (req, res) => {
     );
     gymPokemon.currentHp += healed;
     session.aiItems.potion -= 1;
-    log.push(`${session.gym.name} used a Potion. ${gymPokemon.name} recovered ${healed} HP.`);
+    log.push(
+      `${session.gym.name} used a Potion. ${gymPokemon.name} recovered ${healed} HP.`,
+    );
   } else if (gymAction.move) {
-    log.push(...executeBattleMove(gymPokemon, playerPokemon, gymAction.move.name).log);
+    log.push(
+      ...executeBattleMove(gymPokemon, playerPokemon, gymAction.move.name).log,
+    );
   }
 
   if (playerPokemon.currentHp <= 0) {
@@ -2292,12 +2570,18 @@ app.post("/api/elite/move", (req, res) => {
       return res.status(400).json({ error: "Invalid Pokemon" });
     }
     if (session.playerTeam[nextIndex].currentHp <= 0) {
-      return res.status(400).json({ error: "Cannot switch to a fainted Pokemon" });
+      return res
+        .status(400)
+        .json({ error: "Cannot switch to a fainted Pokemon" });
     }
     session.playerIndex = nextIndex;
     log.push(`Go, ${session.playerTeam[nextIndex].name}!`);
     persistBattlePlayerTeam(session);
-    return res.json({ success: true, log, session: getEliteSessionView(session) });
+    return res.json({
+      success: true,
+      log,
+      session: getEliteSessionView(session),
+    });
   }
 
   const playerPokemon = session.playerTeam[session.playerIndex];
@@ -2309,10 +2593,21 @@ app.post("/api/elite/move", (req, res) => {
     return res.status(400).json({ error: "Elite battle is already finished" });
   }
 
-  const playerTurn = executeBattleMove(playerPokemon, opponentPokemon, moveName, "Elite ");
+  const playerTurn = executeBattleMove(
+    playerPokemon,
+    opponentPokemon,
+    moveName,
+    "Elite ",
+  );
   log.push(...playerTurn.log);
   if (playerTurn.error) {
-    return res.status(400).json({ error: playerTurn.error, log, session: getEliteSessionView(session) });
+    return res
+      .status(400)
+      .json({
+        error: playerTurn.error,
+        log,
+        session: getEliteSessionView(session),
+      });
   }
 
   if (opponentPokemon.currentHp <= 0) {
@@ -2330,16 +2625,31 @@ app.post("/api/elite/move", (req, res) => {
       if (session.isChampion) {
         log.push(`${champion.name} awaits as the final battle!`);
       } else {
-        log.push(`Elite Four progress: ${session.stageIndex}/${eliteFour.length}`);
+        log.push(
+          `Elite Four progress: ${session.stageIndex}/${eliteFour.length}`,
+        );
       }
-      log.push(`${session.currentTrainer.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`);
+      log.push(
+        `${session.currentTrainer.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
+      );
       persistBattlePlayerTeam(session);
-      return res.json({ success: true, stageCleared: true, log, session: getEliteSessionView(session) });
+      return res.json({
+        success: true,
+        stageCleared: true,
+        log,
+        session: getEliteSessionView(session),
+      });
     }
 
-    log.push(`${session.currentTrainer.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`);
+    log.push(
+      `${session.currentTrainer.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
+    );
     persistBattlePlayerTeam(session);
-    return res.json({ success: true, log, session: getEliteSessionView(session) });
+    return res.json({
+      success: true,
+      log,
+      session: getEliteSessionView(session),
+    });
   }
 
   const eliteAction = chooseTrainerAction(
@@ -2352,7 +2662,8 @@ app.post("/api/elite/move", (req, res) => {
   if (eliteAction.type === "switch") {
     const incoming = session.opponentTeam[eliteAction.index];
     if (incoming) {
-      session.opponentTeam[eliteAction.index] = session.opponentTeam[session.opponentIndex];
+      session.opponentTeam[eliteAction.index] =
+        session.opponentTeam[session.opponentIndex];
       session.opponentTeam[session.opponentIndex] = incoming;
       log.push(`${session.currentTrainer.name} switched to ${incoming.name}!`);
     }
@@ -2364,9 +2675,17 @@ app.post("/api/elite/move", (req, res) => {
     );
     opponentPokemon.currentHp += healed;
     session.aiItems.potion -= 1;
-    log.push(`${session.currentTrainer.name} used a Potion. ${opponentPokemon.name} recovered ${healed} HP.`);
+    log.push(
+      `${session.currentTrainer.name} used a Potion. ${opponentPokemon.name} recovered ${healed} HP.`,
+    );
   } else if (eliteAction.move) {
-    log.push(...executeBattleMove(opponentPokemon, playerPokemon, eliteAction.move.name).log);
+    log.push(
+      ...executeBattleMove(
+        opponentPokemon,
+        playerPokemon,
+        eliteAction.move.name,
+      ).log,
+    );
   }
 
   if (playerPokemon.currentHp <= 0) {
@@ -2469,11 +2788,9 @@ app.post("/api/use-item", (req, res) => {
     message = `${pokemon.name} recovered ${healed} HP.`;
   } else {
     if (!item.cures.includes(pokemon.status)) {
-      return res
-        .status(400)
-        .json({
-          error: `${item.name} does not help ${pokemon.name} right now`,
-        });
+      return res.status(400).json({
+        error: `${item.name} does not help ${pokemon.name} right now`,
+      });
     }
     pokemon.status = "none";
     message = `${pokemon.name}'s status was cured.`;
@@ -2527,13 +2844,17 @@ app.post("/api/npc/interact", (req, res) => {
     return res.status(404).json({ error: "NPC not found" });
   }
   if (activeNpcSessions.get("player")?.status === "active") {
-    return res.status(400).json({ error: "Finish your current trainer battle first" });
+    return res
+      .status(400)
+      .json({ error: "Finish your current trainer battle first" });
   }
   if (activeGymSessions.get("player")?.status === "active") {
     return res.status(400).json({ error: "Finish your gym battle first" });
   }
   if (activeEliteSessions.get("player")?.status === "active") {
-    return res.status(400).json({ error: "Finish your Elite Four battle first" });
+    return res
+      .status(400)
+      .json({ error: "Finish your Elite Four battle first" });
   }
 
   const state = loadPlayerState();
@@ -2551,7 +2872,9 @@ app.post("/api/npc/interact", (req, res) => {
     const { team } = loadTeamAndStorage();
     const playerIndex = getFirstHealthyPokemonIndex(team);
     if (playerIndex < 0) {
-      return res.status(400).json({ error: "Heal your team before battling trainers" });
+      return res
+        .status(400)
+        .json({ error: "Heal your team before battling trainers" });
     }
 
     const session = {
@@ -2630,12 +2953,18 @@ app.post("/api/npc/move", (req, res) => {
       return res.status(400).json({ error: "Invalid Pokemon" });
     }
     if (session.playerTeam[nextIndex].currentHp <= 0) {
-      return res.status(400).json({ error: "Cannot switch to a fainted Pokemon" });
+      return res
+        .status(400)
+        .json({ error: "Cannot switch to a fainted Pokemon" });
     }
     session.playerIndex = nextIndex;
     persistBattlePlayerTeam(session);
     log.push(`Go, ${session.playerTeam[nextIndex].name}!`);
-    return res.json({ success: true, log, session: getNpcSessionView(session) });
+    return res.json({
+      success: true,
+      log,
+      session: getNpcSessionView(session),
+    });
   }
 
   const playerPokemon = session.playerTeam[session.playerIndex];
@@ -2664,12 +2993,18 @@ app.post("/api/npc/move", (req, res) => {
 
   if (opponentPokemon.currentHp <= 0) {
     const xpAward = calculateBattleXp(opponentPokemon, 2);
-    const xpResult = applyXpToPokemon(session.playerTeam, session.playerIndex, xpAward);
+    const xpResult = applyXpToPokemon(
+      session.playerTeam,
+      session.playerIndex,
+      xpAward,
+    );
     session.playerTeam = xpResult.team;
     log.push(`${session.npc.name}'s ${opponentPokemon.name} fainted!`);
     log.push(`${xpResult.pokemon.name} gained ${xpAward} XP.`);
     if (xpResult.leveledUp) {
-      log.push(`${xpResult.pokemon.name} leveled up to ${xpResult.pokemon.level}!`);
+      log.push(
+        `${xpResult.pokemon.name} leveled up to ${xpResult.pokemon.level}!`,
+      );
     }
     if (xpResult.evolved) {
       log.push(
@@ -2680,9 +3015,15 @@ app.post("/api/npc/move", (req, res) => {
     if (session.opponentIndex < 0) {
       return res.json(completeNpcBattle(session, log));
     }
-    log.push(`${session.npc.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`);
+    log.push(
+      `${session.npc.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
+    );
     persistBattlePlayerTeam(session);
-    return res.json({ success: true, log, session: getNpcSessionView(session) });
+    return res.json({
+      success: true,
+      log,
+      session: getNpcSessionView(session),
+    });
   }
 
   const npcAction = chooseTrainerAction(
@@ -2696,7 +3037,8 @@ app.post("/api/npc/move", (req, res) => {
   if (npcAction.type === "switch") {
     const incoming = session.opponentTeam[npcAction.index];
     if (incoming) {
-      session.opponentTeam[npcAction.index] = session.opponentTeam[session.opponentIndex];
+      session.opponentTeam[npcAction.index] =
+        session.opponentTeam[session.opponentIndex];
       session.opponentTeam[session.opponentIndex] = incoming;
       log.push(`${session.npc.name} switched to ${incoming.name}!`);
     }
@@ -2708,9 +3050,14 @@ app.post("/api/npc/move", (req, res) => {
     );
     opponentPokemon.currentHp += healed;
     session.aiItems.potion -= 1;
-    log.push(`${session.npc.name} used a Potion. ${opponentPokemon.name} recovered ${healed} HP.`);
+    log.push(
+      `${session.npc.name} used a Potion. ${opponentPokemon.name} recovered ${healed} HP.`,
+    );
   } else if (npcAction.move) {
-    log.push(...executeBattleMove(opponentPokemon, playerPokemon, npcAction.move.name).log);
+    log.push(
+      ...executeBattleMove(opponentPokemon, playerPokemon, npcAction.move.name)
+        .log,
+    );
   }
 
   if (playerPokemon.currentHp <= 0) {
@@ -2782,10 +3129,17 @@ app.post("/api/encounter", (req, res) => {
         return legendaryRoll ? isLegendary : !isLegendary;
       });
 
-      const weightedPokemon = (spawnPool.length ? spawnPool : allPokemon).map((pokemon) => ({
-        pokemon,
-        weight: calculateSpawnWeight(pokemon, selectedArea, currentTime, weather),
-      }));
+      const weightedPokemon = (spawnPool.length ? spawnPool : allPokemon).map(
+        (pokemon) => ({
+          pokemon,
+          weight: calculateSpawnWeight(
+            pokemon,
+            selectedArea,
+            currentTime,
+            weather,
+          ),
+        }),
+      );
 
       const encountered = normalizePokemon(weightedSelection(weightedPokemon));
       const shiny = Math.random() < 1 / 4096;
@@ -2849,7 +3203,12 @@ app.post("/api/battle", (req, res) => {
       let winner = null;
       const log = [];
 
-      const playerTurn = executeBattleMove(playerPokemon, wildPokemon, moveName, "Wild ");
+      const playerTurn = executeBattleMove(
+        playerPokemon,
+        wildPokemon,
+        moveName,
+        "Wild ",
+      );
       log.push(...playerTurn.log);
       if (playerTurn.error) {
         return res.status(400).json({ error: playerTurn.error, log });
@@ -2869,7 +3228,11 @@ app.post("/api/battle", (req, res) => {
           const wildMove =
             chooseBestMove(wildPokemon, playerPokemon) ||
             availableMoves[Math.floor(Math.random() * availableMoves.length)];
-          const wildTurn = executeBattleMove(wildPokemon, playerPokemon, wildMove.name);
+          const wildTurn = executeBattleMove(
+            wildPokemon,
+            playerPokemon,
+            wildMove.name,
+          );
           log.push(...wildTurn.log);
         }
       }
@@ -2924,13 +3287,19 @@ app.post("/api/battle", (req, res) => {
 
 app.post("/api/catch", (req, res) => {
   if (activeNpcSessions.get("player")?.status === "active") {
-    return res.status(400).json({ error: "You cannot catch Pokemon during a trainer battle." });
+    return res
+      .status(400)
+      .json({ error: "You cannot catch Pokemon during a trainer battle." });
   }
   if (activeGymSessions.get("player")?.status === "active") {
-    return res.status(400).json({ error: "You cannot catch Pokemon during a gym battle." });
+    return res
+      .status(400)
+      .json({ error: "You cannot catch Pokemon during a gym battle." });
   }
   if (activeEliteSessions.get("player")?.status === "active") {
-    return res.status(400).json({ error: "You cannot catch Pokemon during an Elite Four battle." });
+    return res
+      .status(400)
+      .json({ error: "You cannot catch Pokemon during an Elite Four battle." });
   }
 
   const {
@@ -2970,7 +3339,7 @@ app.post("/api/catch", (req, res) => {
         target,
         pokeball,
         currentHP,
-            status,
+        status,
       );
       const success = catchProbability >= 1 || Math.random() < catchProbability;
       const state = loadPlayerState();
@@ -3175,7 +3544,9 @@ app.post("/api/swap-storage", (req, res) => {
     }
 
     const storedPokemon = storage.splice(storageIndex, 1)[0];
-    const targetTeamIndex = Number.isInteger(teamIndex) ? teamIndex : team.length;
+    const targetTeamIndex = Number.isInteger(teamIndex)
+      ? teamIndex
+      : team.length;
 
     if (team.length < teamLimit && targetTeamIndex >= team.length) {
       team.push(storedPokemon);

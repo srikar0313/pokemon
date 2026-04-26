@@ -810,19 +810,19 @@
 		"id": 92,
 		"name": "Gastly",
 		"type": "Ghost",
-		"rarity": "rare",
+		"rarity": "common",
 		"hp": 30,
 		"maxHp": 30,
 		"attack": 35,
 		"defense": 30,
-		"xpYield": 95,
+		"xpYield": 55,
 		"habitats": [
 			"graveyard"
 		],
 		"times": [
 			"night"
 		],
-		"baseCatchRate": 190,
+		"baseCatchRate": 255,
 		"level": 1,
 		"xp": 0,
 		"currentHp": 30,
@@ -895,7 +895,7 @@
 		"id": 104,
 		"name": "Cubone",
 		"type": "Ground",
-		"rarity": "rare",
+		"rarity": "uncommon",
 		"hp": 50,
 		"maxHp": 50,
 		"attack": 75,
@@ -2526,5 +2526,3187 @@
 				"currentPp": 20
 			}
 		]
+	},
+	{
+		"name": "Caterpie",
+		"type": "Bug",
+		"types": [
+			"Bug"
+		],
+		"rarity": "common",
+		"hp": 45,
+		"attack": 30,
+		"defense": 35,
+		"specialAttack": 20,
+		"specialDefense": 30,
+		"xpYield": 50,
+		"habitats": [
+			"forest"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 255,
+		"moves": [
+			{
+				"name": "Tackle",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 35,
+				"currentPp": 35
+			},
+			{
+				"name": "String Shot",
+				"type": "Bug",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 95,
+				"pp": 40,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "speed",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 40
+			},
+			{
+				"name": "Bug Bite",
+				"type": "Bug",
+				"category": "Physical",
+				"power": 50,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Sleep Powder",
+				"type": "Grass",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 75,
+				"pp": 15,
+				"effect": {
+					"type": "status",
+					"status": "asleep",
+					"chance": 100
+				},
+				"currentPp": 15
+			}
+		],
+		"id": 219,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 45
+	},
+	{
+		"name": "Weedle",
+		"type": "Bug",
+		"types": [
+			"Bug",
+			"Poison"
+		],
+		"rarity": "common",
+		"hp": 40,
+		"attack": 35,
+		"defense": 30,
+		"specialAttack": 20,
+		"specialDefense": 20,
+		"xpYield": 50,
+		"habitats": [
+			"forest"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 255,
+		"moves": [
+			{
+				"name": "Poison Sting",
+				"type": "Poison",
+				"category": "Physical",
+				"power": 15,
+				"accuracy": 100,
+				"pp": 35,
+				"effect": {
+					"type": "status",
+					"status": "poisoned",
+					"chance": 30
+				},
+				"currentPp": 35
+			},
+			{
+				"name": "Bug Bite",
+				"type": "Bug",
+				"category": "Physical",
+				"power": 50,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "String Shot",
+				"type": "Bug",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 95,
+				"pp": 40,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "speed",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 40
+			},
+			{
+				"name": "Growl",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 40,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "attack",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 40
+			}
+		],
+		"id": 220,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 40
+	},
+	{
+		"name": "Oddish",
+		"type": "Grass",
+		"types": [
+			"Grass",
+			"Poison"
+		],
+		"rarity": "common",
+		"hp": 45,
+		"attack": 50,
+		"defense": 55,
+		"specialAttack": 75,
+		"specialDefense": 65,
+		"xpYield": 64,
+		"habitats": [
+			"forest"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 255,
+		"moves": [
+			{
+				"name": "Absorb",
+				"type": "Grass",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Acid",
+				"type": "Poison",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 30,
+				"currentPp": 30
+			},
+			{
+				"name": "Sleep Powder",
+				"type": "Grass",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 75,
+				"pp": 15,
+				"effect": {
+					"type": "status",
+					"status": "asleep",
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Poison Powder",
+				"type": "Poison",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 75,
+				"pp": 35,
+				"effect": {
+					"type": "status",
+					"status": "poisoned",
+					"chance": 100
+				},
+				"currentPp": 35
+			}
+		],
+		"id": 221,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 45
+	},
+	{
+		"name": "Butterfree",
+		"type": "Bug",
+		"types": [
+			"Bug",
+			"Flying"
+		],
+		"rarity": "rare",
+		"hp": 60,
+		"attack": 45,
+		"defense": 50,
+		"specialAttack": 90,
+		"specialDefense": 80,
+		"xpYield": 140,
+		"habitats": [
+			"forest"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 75,
+		"moves": [
+			{
+				"name": "Confusion",
+				"type": "Psychic",
+				"category": "Special",
+				"power": 50,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Gust",
+				"type": "Flying",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 35,
+				"currentPp": 35
+			},
+			{
+				"name": "Sleep Powder",
+				"type": "Grass",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 75,
+				"pp": 15,
+				"effect": {
+					"type": "status",
+					"status": "asleep",
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Stun Spore",
+				"type": "Grass",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 75,
+				"pp": 30,
+				"effect": {
+					"type": "status",
+					"status": "paralyzed",
+					"chance": 100
+				},
+				"currentPp": 30
+			}
+		],
+		"id": 222,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 60
+	},
+	{
+		"name": "Poliwag",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "common",
+		"hp": 40,
+		"attack": 50,
+		"defense": 40,
+		"specialAttack": 50,
+		"specialDefense": 40,
+		"xpYield": 60,
+		"habitats": [
+			"lake"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 255,
+		"moves": [
+			{
+				"name": "Water Gun",
+				"type": "Water",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Bubble",
+				"type": "Water",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 30,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "speed",
+					"stages": -1,
+					"chance": 10
+				},
+				"currentPp": 30
+			},
+			{
+				"name": "Hypnosis",
+				"type": "Psychic",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 60,
+				"pp": 20,
+				"effect": {
+					"type": "status",
+					"status": "asleep",
+					"chance": 100
+				},
+				"currentPp": 20
+			},
+			{
+				"name": "Double Slap",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 15,
+				"accuracy": 85,
+				"pp": 10,
+				"currentPp": 10
+			}
+		],
+		"id": 223,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 40
+	},
+	{
+		"name": "Magikarp",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "common",
+		"hp": 30,
+		"attack": 20,
+		"defense": 55,
+		"specialAttack": 20,
+		"specialDefense": 55,
+		"xpYield": 40,
+		"habitats": [
+			"lake"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 255,
+		"moves": [
+			{
+				"name": "Splash",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 40,
+				"currentPp": 40
+			},
+			{
+				"name": "Tackle",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 35,
+				"currentPp": 35
+			},
+			{
+				"name": "Flail",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 1,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Bounce",
+				"type": "Flying",
+				"category": "Physical",
+				"power": 85,
+				"accuracy": 85,
+				"pp": 5,
+				"currentPp": 5
+			}
+		],
+		"id": 224,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 30
+	},
+	{
+		"name": "Goldeen",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "common",
+		"hp": 45,
+		"attack": 67,
+		"defense": 60,
+		"specialAttack": 50,
+		"specialDefense": 50,
+		"xpYield": 64,
+		"habitats": [
+			"lake"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 225,
+		"moves": [
+			{
+				"name": "Horn Attack",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 65,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Water Pulse",
+				"type": "Water",
+				"category": "Special",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 20,
+				"currentPp": 20
+			},
+			{
+				"name": "Flail",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 1,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Aqua Jet",
+				"type": "Water",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 20,
+				"currentPp": 20
+			}
+		],
+		"id": 225,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 45
+	},
+	{
+		"name": "Staryu",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "uncommon",
+		"hp": 30,
+		"attack": 45,
+		"defense": 55,
+		"specialAttack": 65,
+		"specialDefense": 70,
+		"xpYield": 68,
+		"habitats": [
+			"lake"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 225,
+		"moves": [
+			{
+				"name": "Tackle",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 35,
+				"currentPp": 35
+			},
+			{
+				"name": "Water Gun",
+				"type": "Water",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Rapid Spin",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 50,
+				"accuracy": 100,
+				"pp": 40,
+				"currentPp": 40
+			},
+			{
+				"name": "Swift",
+				"type": "Normal",
+				"category": "Special",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 20,
+				"currentPp": 20
+			}
+		],
+		"id": 226,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 30
+	},
+	{
+		"name": "Zubat",
+		"type": "Poison",
+		"types": [
+			"Poison",
+			"Flying"
+		],
+		"rarity": "common",
+		"hp": 40,
+		"attack": 45,
+		"defense": 35,
+		"specialAttack": 30,
+		"specialDefense": 40,
+		"xpYield": 55,
+		"habitats": [
+			"cave"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 255,
+		"moves": [
+			{
+				"name": "Leech Life",
+				"type": "Bug",
+				"category": "Special",
+				"power": 20,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Bite",
+				"type": "Dark",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Supersonic",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 55,
+				"pp": 20,
+				"effect": {
+					"type": "status",
+					"status": "confused",
+					"chance": 100
+				},
+				"currentPp": 20
+			},
+			{
+				"name": "Wing Attack",
+				"type": "Flying",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 35,
+				"currentPp": 35
+			}
+		],
+		"id": 227,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 40
+	},
+	{
+		"name": "Diglett",
+		"type": "Ground",
+		"types": [
+			"Ground"
+		],
+		"rarity": "common",
+		"hp": 30,
+		"attack": 55,
+		"defense": 25,
+		"specialAttack": 35,
+		"specialDefense": 45,
+		"xpYield": 55,
+		"habitats": [
+			"cave"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 255,
+		"moves": [
+			{
+				"name": "Scratch",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 35,
+				"currentPp": 35
+			},
+			{
+				"name": "Sand Attack",
+				"type": "Ground",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 15,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "accuracy",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Mud-Slap",
+				"type": "Ground",
+				"category": "Special",
+				"power": 20,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "accuracy",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Dig",
+				"type": "Ground",
+				"category": "Physical",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			}
+		],
+		"id": 228,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 30
+	},
+	{
+		"name": "Machop",
+		"type": "Fighting",
+		"types": [
+			"Fighting"
+		],
+		"rarity": "uncommon",
+		"hp": 70,
+		"attack": 80,
+		"defense": 50,
+		"specialAttack": 35,
+		"specialDefense": 35,
+		"xpYield": 80,
+		"habitats": [
+			"cave"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 180,
+		"moves": [
+			{
+				"name": "Low Kick",
+				"type": "Fighting",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 20,
+				"currentPp": 20
+			},
+			{
+				"name": "Karate Chop",
+				"type": "Fighting",
+				"category": "Physical",
+				"power": 50,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Focus Energy",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 30,
+				"effect": {
+					"type": "statChange",
+					"target": "self",
+					"stat": "critical",
+					"stages": 1,
+					"chance": 100
+				},
+				"currentPp": 30
+			},
+			{
+				"name": "Seismic Toss",
+				"type": "Fighting",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 20,
+				"currentPp": 20
+			}
+		],
+		"id": 229,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 70
+	},
+	{
+		"name": "Tentacool",
+		"type": "Water",
+		"types": [
+			"Water",
+			"Poison"
+		],
+		"rarity": "common",
+		"hp": 40,
+		"attack": 40,
+		"defense": 35,
+		"specialAttack": 50,
+		"specialDefense": 100,
+		"xpYield": 60,
+		"habitats": [
+			"ocean"
+		],
+		"times": [
+			"day",
+			"night"
+		],
+		"baseCatchRate": 235,
+		"moves": [
+			{
+				"name": "Acid",
+				"type": "Poison",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 30,
+				"currentPp": 30
+			},
+			{
+				"name": "Water Gun",
+				"type": "Water",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Poison Sting",
+				"type": "Poison",
+				"category": "Physical",
+				"power": 15,
+				"accuracy": 100,
+				"pp": 35,
+				"effect": {
+					"type": "status",
+					"status": "poisoned",
+					"chance": 30
+				},
+				"currentPp": 35
+			},
+			{
+				"name": "Supersonic",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 55,
+				"pp": 20,
+				"effect": {
+					"type": "status",
+					"status": "confused",
+					"chance": 100
+				},
+				"currentPp": 20
+			}
+		],
+		"id": 230,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 40
+	},
+	{
+		"name": "Horsea",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "common",
+		"hp": 30,
+		"attack": 40,
+		"defense": 70,
+		"specialAttack": 40,
+		"specialDefense": 70,
+		"xpYield": 59,
+		"habitats": [
+			"ocean"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 225,
+		"moves": [
+			{
+				"name": "Bubble",
+				"type": "Water",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 30,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "speed",
+					"stages": -1,
+					"chance": 10
+				},
+				"currentPp": 30
+			},
+			{
+				"name": "Smokescreen",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 20,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "accuracy",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 20
+			},
+			{
+				"name": "Leer",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 30,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "defense",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 30
+			},
+			{
+				"name": "Water Gun",
+				"type": "Water",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			}
+		],
+		"id": 231,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 30
+	},
+	{
+		"name": "Shellder",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "uncommon",
+		"hp": 30,
+		"attack": 65,
+		"defense": 100,
+		"specialAttack": 45,
+		"specialDefense": 45,
+		"xpYield": 72,
+		"habitats": [
+			"ocean"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 190,
+		"moves": [
+			{
+				"name": "Tackle",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 35,
+				"currentPp": 35
+			},
+			{
+				"name": "Withdraw",
+				"type": "Water",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 40,
+				"effect": {
+					"type": "statChange",
+					"target": "self",
+					"stat": "defense",
+					"stages": 1,
+					"chance": 100
+				},
+				"currentPp": 40
+			},
+			{
+				"name": "Ice Beam",
+				"type": "Ice",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Clamp",
+				"type": "Water",
+				"category": "Physical",
+				"power": 35,
+				"accuracy": 85,
+				"pp": 15,
+				"currentPp": 15
+			}
+		],
+		"id": 232,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 30
+	},
+	{
+		"name": "Seel",
+		"type": "Water",
+		"types": [
+			"Water",
+			"Ice"
+		],
+		"rarity": "uncommon",
+		"hp": 65,
+		"attack": 45,
+		"defense": 55,
+		"specialAttack": 45,
+		"specialDefense": 70,
+		"xpYield": 84,
+		"habitats": [
+			"ocean"
+		],
+		"times": [
+			"day",
+			"night"
+		],
+		"baseCatchRate": 190,
+		"moves": [
+			{
+				"name": "Headbutt",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 70,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Ice Beam",
+				"type": "Ice",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Aurora Beam",
+				"type": "Ice",
+				"category": "Special",
+				"power": 65,
+				"accuracy": 100,
+				"pp": 20,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "attack",
+					"stages": -1,
+					"chance": 10
+				},
+				"currentPp": 20
+			},
+			{
+				"name": "Growl",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 40,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "attack",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 40
+			}
+		],
+		"id": 233,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 65
+	},
+	{
+		"name": "Vulpix",
+		"type": "Fire",
+		"types": [
+			"Fire"
+		],
+		"rarity": "common",
+		"hp": 38,
+		"attack": 41,
+		"defense": 40,
+		"specialAttack": 50,
+		"specialDefense": 65,
+		"xpYield": 60,
+		"habitats": [
+			"volcano"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 190,
+		"moves": [
+			{
+				"name": "Ember",
+				"type": "Fire",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 25,
+				"effect": {
+					"type": "status",
+					"status": "burned",
+					"chance": 10
+				},
+				"currentPp": 25
+			},
+			{
+				"name": "Quick Attack",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 30,
+				"effect": {
+					"type": "priority",
+					"amount": 1
+				},
+				"currentPp": 30
+			},
+			{
+				"name": "Tail Whip",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 30,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "defense",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 30
+			},
+			{
+				"name": "Flame Wheel",
+				"type": "Fire",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			}
+		],
+		"id": 234,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 38
+	},
+	{
+		"name": "Ponyta",
+		"type": "Fire",
+		"types": [
+			"Fire"
+		],
+		"rarity": "uncommon",
+		"hp": 50,
+		"attack": 85,
+		"defense": 55,
+		"specialAttack": 65,
+		"specialDefense": 65,
+		"xpYield": 95,
+		"habitats": [
+			"volcano"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 170,
+		"moves": [
+			{
+				"name": "Ember",
+				"type": "Fire",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 25,
+				"effect": {
+					"type": "status",
+					"status": "burned",
+					"chance": 10
+				},
+				"currentPp": 25
+			},
+			{
+				"name": "Flame Wheel",
+				"type": "Fire",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Stomp",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 65,
+				"accuracy": 100,
+				"pp": 20,
+				"currentPp": 20
+			},
+			{
+				"name": "Growl",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 40,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "attack",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 40
+			}
+		],
+		"id": 235,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 50
+	},
+	{
+		"name": "Magmar",
+		"type": "Fire",
+		"types": [
+			"Fire"
+		],
+		"rarity": "rare",
+		"hp": 65,
+		"attack": 95,
+		"defense": 57,
+		"specialAttack": 100,
+		"specialDefense": 85,
+		"xpYield": 150,
+		"habitats": [
+			"volcano"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 90,
+		"moves": [
+			{
+				"name": "Fire Punch",
+				"type": "Fire",
+				"category": "Physical",
+				"power": 75,
+				"accuracy": 100,
+				"pp": 15,
+				"effect": {
+					"type": "status",
+					"status": "burned",
+					"chance": 10
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Flamethrower",
+				"type": "Fire",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Smokescreen",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 20,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "accuracy",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 20
+			},
+			{
+				"name": "Confuse Ray",
+				"type": "Ghost",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "status",
+					"status": "confused",
+					"chance": 100
+				},
+				"currentPp": 10
+			}
+		],
+		"id": 236,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 65
+	},
+	{
+		"name": "Pidgey",
+		"type": "Normal",
+		"types": [
+			"Normal",
+			"Flying"
+		],
+		"rarity": "common",
+		"hp": 40,
+		"attack": 45,
+		"defense": 40,
+		"specialAttack": 35,
+		"specialDefense": 35,
+		"xpYield": 50,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 255,
+		"moves": [
+			{
+				"name": "Tackle",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 35,
+				"currentPp": 35
+			},
+			{
+				"name": "Gust",
+				"type": "Flying",
+				"category": "Special",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 35,
+				"currentPp": 35
+			},
+			{
+				"name": "Sand Attack",
+				"type": "Ground",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 15,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "accuracy",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Quick Attack",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 30,
+				"effect": {
+					"type": "priority",
+					"amount": 1
+				},
+				"currentPp": 30
+			}
+		],
+		"id": 237,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 40
+	},
+	{
+		"name": "Larvitar",
+		"type": "Rock",
+		"types": [
+			"Rock",
+			"Ground"
+		],
+		"rarity": "rare",
+		"hp": 60,
+		"attack": 84,
+		"defense": 70,
+		"specialAttack": 50,
+		"specialDefense": 50,
+		"xpYield": 140,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 90,
+		"moves": [
+			{
+				"name": "Bite",
+				"type": "Dark",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Rock Throw",
+				"type": "Rock",
+				"category": "Physical",
+				"power": 50,
+				"accuracy": 90,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Sandstorm",
+				"type": "Rock",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "weather",
+					"weather": "sandstorm",
+					"chance": 100
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Dragon Dance",
+				"type": "Dragon",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 20,
+				"effect": {
+					"type": "statChange",
+					"target": "self",
+					"stat": "attack",
+					"stages": 1,
+					"chance": 100
+				},
+				"currentPp": 20
+			}
+		],
+		"id": 238,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 60
+	},
+	{
+		"name": "Sandshrew",
+		"type": "Ground",
+		"types": [
+			"Ground"
+		],
+		"rarity": "common",
+		"hp": 50,
+		"attack": 75,
+		"defense": 85,
+		"specialAttack": 20,
+		"specialDefense": 30,
+		"xpYield": 60,
+		"habitats": [
+			"desert"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 255,
+		"moves": [
+			{
+				"name": "Scratch",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 35,
+				"currentPp": 35
+			},
+			{
+				"name": "Sand Attack",
+				"type": "Ground",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 15,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "accuracy",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Rollout",
+				"type": "Rock",
+				"category": "Physical",
+				"power": 30,
+				"accuracy": 90,
+				"pp": 20,
+				"currentPp": 20
+			},
+			{
+				"name": "Defense Curl",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 40,
+				"effect": {
+					"type": "statChange",
+					"target": "self",
+					"stat": "defense",
+					"stages": 1,
+					"chance": 100
+				},
+				"currentPp": 40
+			}
+		],
+		"id": 239,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 50
+	},
+	{
+		"name": "Trapinch",
+		"type": "Ground",
+		"types": [
+			"Ground"
+		],
+		"rarity": "uncommon",
+		"hp": 45,
+		"attack": 100,
+		"defense": 45,
+		"specialAttack": 45,
+		"specialDefense": 45,
+		"xpYield": 85,
+		"habitats": [
+			"desert"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 190,
+		"moves": [
+			{
+				"name": "Bite",
+				"type": "Dark",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Sand Tomb",
+				"type": "Ground",
+				"category": "Physical",
+				"power": 35,
+				"accuracy": 85,
+				"pp": 15,
+				"effect": {
+					"type": "trap",
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Mud-Slap",
+				"type": "Ground",
+				"category": "Special",
+				"power": 20,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "accuracy",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Dig",
+				"type": "Ground",
+				"category": "Physical",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			}
+		],
+		"id": 240,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 45
+	},
+	{
+		"name": "Cacnea",
+		"type": "Grass",
+		"types": [
+			"Grass"
+		],
+		"rarity": "uncommon",
+		"hp": 50,
+		"attack": 85,
+		"defense": 40,
+		"specialAttack": 85,
+		"specialDefense": 40,
+		"xpYield": 90,
+		"habitats": [
+			"desert"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 190,
+		"moves": [
+			{
+				"name": "Needle Arm",
+				"type": "Grass",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 15,
+				"effect": {
+					"type": "status",
+					"status": "flinched",
+					"chance": 30
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Absorb",
+				"type": "Grass",
+				"category": "Special",
+				"power": 20,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Sand Attack",
+				"type": "Ground",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 15,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "accuracy",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Poison Sting",
+				"type": "Poison",
+				"category": "Physical",
+				"power": 15,
+				"accuracy": 100,
+				"pp": 35,
+				"effect": {
+					"type": "status",
+					"status": "poisoned",
+					"chance": 30
+				},
+				"currentPp": 35
+			}
+		],
+		"id": 241,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 50
+	},
+	{
+		"name": "Sandile",
+		"type": "Ground",
+		"types": [
+			"Ground",
+			"Dark"
+		],
+		"rarity": "rare",
+		"hp": 50,
+		"attack": 72,
+		"defense": 35,
+		"specialAttack": 35,
+		"specialDefense": 35,
+		"xpYield": 130,
+		"habitats": [
+			"desert"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 90,
+		"moves": [
+			{
+				"name": "Sand Tomb",
+				"type": "Ground",
+				"category": "Physical",
+				"power": 35,
+				"accuracy": 85,
+				"pp": 15,
+				"effect": {
+					"type": "trap",
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Bite",
+				"type": "Dark",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Sand Attack",
+				"type": "Ground",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 15,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "accuracy",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Crunch",
+				"type": "Dark",
+				"category": "Physical",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			}
+		],
+		"id": 242,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 50
+	},
+	{
+		"name": "Misdreavus",
+		"type": "Ghost",
+		"types": [
+			"Ghost"
+		],
+		"rarity": "uncommon",
+		"hp": 60,
+		"attack": 60,
+		"defense": 60,
+		"specialAttack": 85,
+		"specialDefense": 85,
+		"xpYield": 110,
+		"habitats": [
+			"graveyard"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 175,
+		"moves": [
+			{
+				"name": "Psybeam",
+				"type": "Psychic",
+				"category": "Special",
+				"power": 65,
+				"accuracy": 100,
+				"pp": 20,
+				"currentPp": 20
+			},
+			{
+				"name": "Shadow Ball",
+				"type": "Ghost",
+				"category": "Special",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Confuse Ray",
+				"type": "Ghost",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "status",
+					"status": "confused",
+					"chance": 100
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Will-O-Wisp",
+				"type": "Fire",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 85,
+				"pp": 15,
+				"effect": {
+					"type": "status",
+					"status": "burned",
+					"chance": 100
+				},
+				"currentPp": 15
+			}
+		],
+		"id": 243,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 60
+	},
+	{
+		"name": "Duskull",
+		"type": "Ghost",
+		"types": [
+			"Ghost"
+		],
+		"rarity": "uncommon",
+		"hp": 20,
+		"attack": 40,
+		"defense": 90,
+		"specialAttack": 30,
+		"specialDefense": 90,
+		"xpYield": 95,
+		"habitats": [
+			"graveyard"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 190,
+		"moves": [
+			{
+				"name": "Shadow Sneak",
+				"type": "Ghost",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 30,
+				"currentPp": 30
+			},
+			{
+				"name": "Night Shade",
+				"type": "Ghost",
+				"category": "Special",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Will-O-Wisp",
+				"type": "Fire",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 85,
+				"pp": 15,
+				"effect": {
+					"type": "status",
+					"status": "burned",
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Curse",
+				"type": "Ghost",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "status",
+					"status": "curse",
+					"chance": 100
+				},
+				"currentPp": 10
+			}
+		],
+		"id": 244,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 20
+	},
+	{
+		"name": "Sableye",
+		"type": "Dark",
+		"types": [
+			"Dark",
+			"Ghost"
+		],
+		"rarity": "rare",
+		"hp": 50,
+		"attack": 75,
+		"defense": 75,
+		"specialAttack": 65,
+		"specialDefense": 75,
+		"xpYield": 160,
+		"habitats": [
+			"graveyard"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 90,
+		"moves": [
+			{
+				"name": "Shadow Claw",
+				"type": "Ghost",
+				"category": "Physical",
+				"power": 70,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Fake Out",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 40,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "status",
+					"status": "flinched",
+					"chance": 100
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Foul Play",
+				"type": "Dark",
+				"category": "Physical",
+				"power": 95,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Taunt",
+				"type": "Dark",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 20,
+				"effect": {
+					"type": "status",
+					"status": "taunted",
+					"chance": 100
+				},
+				"currentPp": 20
+			}
+		],
+		"id": 245,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 50
+	},
+	{
+		"name": "Gengar",
+		"type": "Ghost",
+		"types": [
+			"Ghost",
+			"Poison"
+		],
+		"rarity": "rare",
+		"hp": 60,
+		"attack": 65,
+		"defense": 60,
+		"specialAttack": 130,
+		"specialDefense": 75,
+		"xpYield": 180,
+		"habitats": [
+			"graveyard"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 90,
+		"moves": [
+			{
+				"name": "Shadow Ball",
+				"type": "Ghost",
+				"category": "Special",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Sludge Bomb",
+				"type": "Poison",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "status",
+					"status": "poisoned",
+					"chance": 30
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Hypnosis",
+				"type": "Psychic",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 60,
+				"pp": 20,
+				"effect": {
+					"type": "status",
+					"status": "asleep",
+					"chance": 100
+				},
+				"currentPp": 20
+			},
+			{
+				"name": "Dream Eater",
+				"type": "Psychic",
+				"category": "Special",
+				"power": 100,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			}
+		],
+		"id": 246,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 60
+	},
+	{
+		"name": "Articuno",
+		"type": "Ice",
+		"types": [
+			"Ice",
+			"Flying"
+		],
+		"rarity": "legendary",
+		"hp": 90,
+		"attack": 85,
+		"defense": 100,
+		"specialAttack": 125,
+		"specialDefense": 115,
+		"xpYield": 320,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Ice Beam",
+				"type": "Ice",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Hurricane",
+				"type": "Flying",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 70,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Blizzard",
+				"type": "Ice",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 70,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Roost",
+				"type": "Flying",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "heal",
+					"amount": "50%"
+				},
+				"currentPp": 10
+			}
+		],
+		"id": 247,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 90
+	},
+	{
+		"name": "Zapdos",
+		"type": "Electric",
+		"types": [
+			"Electric",
+			"Flying"
+		],
+		"rarity": "legendary",
+		"hp": 90,
+		"attack": 90,
+		"defense": 85,
+		"specialAttack": 125,
+		"specialDefense": 90,
+		"xpYield": 320,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Thunderbolt",
+				"type": "Electric",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Drill Peck",
+				"type": "Flying",
+				"category": "Physical",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 20,
+				"currentPp": 20
+			},
+			{
+				"name": "Thunder",
+				"type": "Electric",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 70,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Agility",
+				"type": "Psychic",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 30,
+				"effect": {
+					"type": "statChange",
+					"target": "self",
+					"stat": "speed",
+					"stages": 2,
+					"chance": 100
+				},
+				"currentPp": 30
+			}
+		],
+		"id": 248,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 90
+	},
+	{
+		"name": "Moltres",
+		"type": "Fire",
+		"types": [
+			"Fire",
+			"Flying"
+		],
+		"rarity": "legendary",
+		"hp": 90,
+		"attack": 100,
+		"defense": 90,
+		"specialAttack": 125,
+		"specialDefense": 85,
+		"xpYield": 320,
+		"habitats": [
+			"volcano"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Flamethrower",
+				"type": "Fire",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Sky Attack",
+				"type": "Flying",
+				"category": "Physical",
+				"power": 140,
+				"accuracy": 90,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Heat Wave",
+				"type": "Fire",
+				"category": "Special",
+				"power": 95,
+				"accuracy": 90,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Roost",
+				"type": "Flying",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "heal",
+					"amount": "50%"
+				},
+				"currentPp": 10
+			}
+		],
+		"id": 249,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 90
+	},
+	{
+		"name": "Lugia",
+		"type": "Psychic",
+		"types": [
+			"Psychic",
+			"Flying"
+		],
+		"rarity": "legendary",
+		"hp": 106,
+		"attack": 90,
+		"defense": 130,
+		"specialAttack": 90,
+		"specialDefense": 154,
+		"xpYield": 340,
+		"habitats": [
+			"ocean"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Psychic",
+				"type": "Psychic",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Aeroblast",
+				"type": "Flying",
+				"category": "Special",
+				"power": 100,
+				"accuracy": 95,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Hydro Pump",
+				"type": "Water",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 80,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Calm Mind",
+				"type": "Psychic",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 20,
+				"effect": {
+					"type": "statChange",
+					"target": "self",
+					"stat": "specialAttack",
+					"stages": 1,
+					"chance": 100
+				},
+				"currentPp": 20
+			}
+		],
+		"id": 250,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 106
+	},
+	{
+		"name": "Ho-Oh",
+		"type": "Fire",
+		"types": [
+			"Fire",
+			"Flying"
+		],
+		"rarity": "legendary",
+		"hp": 106,
+		"attack": 130,
+		"defense": 90,
+		"specialAttack": 110,
+		"specialDefense": 154,
+		"xpYield": 340,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Sacred Fire",
+				"type": "Fire",
+				"category": "Physical",
+				"power": 100,
+				"accuracy": 95,
+				"pp": 5,
+				"effect": {
+					"type": "status",
+					"status": "burned",
+					"chance": 50
+				},
+				"currentPp": 5
+			},
+			{
+				"name": "Brave Bird",
+				"type": "Flying",
+				"category": "Physical",
+				"power": 120,
+				"accuracy": 100,
+				"pp": 15,
+				"effect": {
+					"type": "statChange",
+					"target": "self",
+					"stat": "recoil",
+					"stages": -1,
+					"chance": 100
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Recover",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "heal",
+					"amount": "50%"
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Earthquake",
+				"type": "Ground",
+				"category": "Physical",
+				"power": 100,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			}
+		],
+		"id": 251,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 106
+	},
+	{
+		"name": "Rayquaza",
+		"type": "Dragon",
+		"types": [
+			"Dragon",
+			"Flying"
+		],
+		"rarity": "legendary",
+		"hp": 105,
+		"attack": 150,
+		"defense": 90,
+		"specialAttack": 150,
+		"specialDefense": 90,
+		"xpYield": 340,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Dragon Ascent",
+				"type": "Flying",
+				"category": "Physical",
+				"power": 120,
+				"accuracy": 100,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Outrage",
+				"type": "Dragon",
+				"category": "Physical",
+				"power": 120,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Dragon Pulse",
+				"type": "Dragon",
+				"category": "Special",
+				"power": 85,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Extreme Speed",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 5,
+				"currentPp": 5
+			}
+		],
+		"id": 252,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 105
+	},
+	{
+		"name": "Kyogre",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "legendary",
+		"hp": 100,
+		"attack": 100,
+		"defense": 90,
+		"specialAttack": 150,
+		"specialDefense": 140,
+		"xpYield": 340,
+		"habitats": [
+			"ocean"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Origin Pulse",
+				"type": "Water",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 85,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Hydro Pump",
+				"type": "Water",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 80,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Ice Beam",
+				"type": "Ice",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Thunder",
+				"type": "Electric",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 70,
+				"pp": 10,
+				"currentPp": 10
+			}
+		],
+		"id": 253,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 100
+	},
+	{
+		"name": "Groudon",
+		"type": "Ground",
+		"types": [
+			"Ground"
+		],
+		"rarity": "legendary",
+		"hp": 100,
+		"attack": 150,
+		"defense": 140,
+		"specialAttack": 100,
+		"specialDefense": 90,
+		"xpYield": 340,
+		"habitats": [
+			"desert",
+			"volcano"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Earthquake",
+				"type": "Ground",
+				"category": "Physical",
+				"power": 100,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Precipice Blades",
+				"type": "Ground",
+				"category": "Physical",
+				"power": 120,
+				"accuracy": 85,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Stone Edge",
+				"type": "Rock",
+				"category": "Physical",
+				"power": 100,
+				"accuracy": 80,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Solar Beam",
+				"type": "Grass",
+				"category": "Special",
+				"power": 120,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			}
+		],
+		"id": 254,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 100
+	},
+	{
+		"name": "Dialga",
+		"type": "Steel",
+		"types": [
+			"Steel",
+			"Dragon"
+		],
+		"rarity": "legendary",
+		"hp": 100,
+		"attack": 120,
+		"defense": 120,
+		"specialAttack": 150,
+		"specialDefense": 100,
+		"xpYield": 360,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Dragon Pulse",
+				"type": "Dragon",
+				"category": "Special",
+				"power": 85,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Flash Cannon",
+				"type": "Steel",
+				"category": "Special",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Aura Sphere",
+				"type": "Fighting",
+				"category": "Special",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Roar of Time",
+				"type": "Dragon",
+				"category": "Special",
+				"power": 150,
+				"accuracy": 90,
+				"pp": 5,
+				"currentPp": 5
+			}
+		],
+		"id": 255,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 100
+	},
+	{
+		"name": "Palkia",
+		"type": "Water",
+		"types": [
+			"Water",
+			"Dragon"
+		],
+		"rarity": "legendary",
+		"hp": 90,
+		"attack": 120,
+		"defense": 100,
+		"specialAttack": 150,
+		"specialDefense": 120,
+		"xpYield": 360,
+		"habitats": [
+			"ocean"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Hydro Pump",
+				"type": "Water",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 80,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Spacial Rend",
+				"type": "Dragon",
+				"category": "Special",
+				"power": 100,
+				"accuracy": 95,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Thunder",
+				"type": "Electric",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 70,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Earth Power",
+				"type": "Ground",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			}
+		],
+		"id": 256,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 90
+	},
+	{
+		"name": "Giratina",
+		"type": "Ghost",
+		"types": [
+			"Ghost",
+			"Dragon"
+		],
+		"rarity": "legendary",
+		"hp": 150,
+		"attack": 100,
+		"defense": 120,
+		"specialAttack": 100,
+		"specialDefense": 120,
+		"xpYield": 360,
+		"habitats": [
+			"graveyard"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Shadow Force",
+				"type": "Ghost",
+				"category": "Physical",
+				"power": 120,
+				"accuracy": 100,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Dragon Pulse",
+				"type": "Dragon",
+				"category": "Special",
+				"power": 85,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Aura Sphere",
+				"type": "Fighting",
+				"category": "Special",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Will-O-Wisp",
+				"type": "Fire",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 85,
+				"pp": 15,
+				"effect": {
+					"type": "status",
+					"status": "burned",
+					"chance": 100
+				},
+				"currentPp": 15
+			}
+		],
+		"id": 257,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 150
+	},
+	{
+		"name": "Zekrom",
+		"type": "Electric",
+		"types": [
+			"Electric",
+			"Dragon"
+		],
+		"rarity": "legendary",
+		"hp": 100,
+		"attack": 150,
+		"defense": 120,
+		"specialAttack": 120,
+		"specialDefense": 90,
+		"xpYield": 360,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Bolt Strike",
+				"type": "Electric",
+				"category": "Physical",
+				"power": 130,
+				"accuracy": 85,
+				"pp": 5,
+				"effect": {
+					"type": "status",
+					"status": "paralyzed",
+					"chance": 20
+				},
+				"currentPp": 5
+			},
+			{
+				"name": "Outrage",
+				"type": "Dragon",
+				"category": "Physical",
+				"power": 120,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Dragon Claw",
+				"type": "Dragon",
+				"category": "Physical",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Stone Edge",
+				"type": "Rock",
+				"category": "Physical",
+				"power": 100,
+				"accuracy": 80,
+				"pp": 5,
+				"currentPp": 5
+			}
+		],
+		"id": 258,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 100
+	},
+	{
+		"name": "Reshiram",
+		"type": "Fire",
+		"types": [
+			"Fire",
+			"Dragon"
+		],
+		"rarity": "legendary",
+		"hp": 100,
+		"attack": 120,
+		"defense": 100,
+		"specialAttack": 150,
+		"specialDefense": 120,
+		"xpYield": 360,
+		"habitats": [
+			"volcano"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Blue Flare",
+				"type": "Fire",
+				"category": "Special",
+				"power": 130,
+				"accuracy": 85,
+				"pp": 5,
+				"effect": {
+					"type": "status",
+					"status": "burned",
+					"chance": 20
+				},
+				"currentPp": 5
+			},
+			{
+				"name": "Dragon Pulse",
+				"type": "Dragon",
+				"category": "Special",
+				"power": 85,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Fusion Flare",
+				"type": "Fire",
+				"category": "Special",
+				"power": 100,
+				"accuracy": 100,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Air Slash",
+				"type": "Flying",
+				"category": "Special",
+				"power": 75,
+				"accuracy": 95,
+				"pp": 15,
+				"currentPp": 15
+			}
+		],
+		"id": 259,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 100
+	},
+	{
+		"name": "Xerneas",
+		"type": "Fairy",
+		"types": [
+			"Fairy"
+		],
+		"rarity": "legendary",
+		"hp": 100,
+		"attack": 115,
+		"defense": 115,
+		"specialAttack": 150,
+		"specialDefense": 120,
+		"xpYield": 360,
+		"habitats": [
+			"forest"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Moonblast",
+				"type": "Fairy",
+				"category": "Special",
+				"power": 95,
+				"accuracy": 100,
+				"pp": 15,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "specialAttack",
+					"stages": -1,
+					"chance": 30
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Geomancy",
+				"type": "Fairy",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "statChange",
+					"target": "self",
+					"stat": "specialAttack",
+					"stages": 2,
+					"chance": 100
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Thunder",
+				"type": "Electric",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 70,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Psychic",
+				"type": "Psychic",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			}
+		],
+		"id": 260,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 100
+	},
+	{
+		"name": "Yveltal",
+		"type": "Dark",
+		"types": [
+			"Dark",
+			"Flying"
+		],
+		"rarity": "legendary",
+		"hp": 100,
+		"attack": 150,
+		"defense": 100,
+		"specialAttack": 120,
+		"specialDefense": 100,
+		"xpYield": 360,
+		"habitats": [
+			"graveyard"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 5,
+		"moves": [
+			{
+				"name": "Oblivion Wing",
+				"type": "Flying",
+				"category": "Special",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "heal",
+					"amount": "50%"
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Dark Pulse",
+				"type": "Dark",
+				"category": "Special",
+				"power": 80,
+				"accuracy": 100,
+				"pp": 15,
+				"effect": {
+					"type": "statChange",
+					"target": "opponent",
+					"stat": "specialDefense",
+					"stages": -1,
+					"chance": 20
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Foul Play",
+				"type": "Dark",
+				"category": "Physical",
+				"power": 95,
+				"accuracy": 100,
+				"pp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Hurricane",
+				"type": "Flying",
+				"category": "Special",
+				"power": 110,
+				"accuracy": 70,
+				"pp": 10,
+				"currentPp": 10
+			}
+		],
+		"id": 261,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 100
+	},
+	{
+		"name": "Arceus",
+		"type": "Normal",
+		"types": [
+			"Normal"
+		],
+		"rarity": "mythical",
+		"hp": 120,
+		"attack": 120,
+		"defense": 120,
+		"specialAttack": 120,
+		"specialDefense": 120,
+		"xpYield": 400,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"night"
+		],
+		"baseCatchRate": 3,
+		"moves": [
+			{
+				"name": "Judgment",
+				"type": "Normal",
+				"category": "Special",
+				"power": 100,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Recover",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 10,
+				"effect": {
+					"type": "heal",
+					"amount": "50%"
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Hyper Beam",
+				"type": "Normal",
+				"category": "Special",
+				"power": 150,
+				"accuracy": 90,
+				"pp": 5,
+				"currentPp": 5
+			},
+			{
+				"name": "Earthquake",
+				"type": "Ground",
+				"category": "Physical",
+				"power": 100,
+				"accuracy": 100,
+				"pp": 10,
+				"currentPp": 10
+			}
+		],
+		"id": 262,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 120
 	}
 ]
