@@ -31,7 +31,8 @@
 		],
 		"evolvesTo": "Ivysaur",
 		"evolveLevel": 16,
-		"evolveType": "Grass"
+		"evolveType": "Grass",
+		"imageId": 1
 	},
 	{
 		"id": 4,
@@ -65,7 +66,8 @@
 		],
 		"evolvesTo": "Charmeleon",
 		"evolveLevel": 16,
-		"evolveType": "Fire"
+		"evolveType": "Fire",
+		"imageId": 4
 	},
 	{
 		"id": 7,
@@ -99,7 +101,8 @@
 		],
 		"evolvesTo": "Wartortle",
 		"evolveLevel": 16,
-		"evolveType": "Water"
+		"evolveType": "Water",
+		"imageId": 7
 	},
 	{
 		"id": 25,
@@ -139,7 +142,8 @@
 				"level": 5,
 				"move": "Electro Ball"
 			}
-		]
+		],
+		"imageId": 25
 	},
 	{
 		"id": 35,
@@ -170,7 +174,8 @@
 			"Sing",
 			"Disarming Voice",
 			"Moonblast"
-		]
+		],
+		"imageId": 35
 	},
 	{
 		"id": 39,
@@ -202,7 +207,8 @@
 			"Sing",
 			"Disarming Voice",
 			"Body Slam"
-		]
+		],
+		"imageId": 39
 	},
 	{
 		"id": 54,
@@ -233,7 +239,8 @@
 			"Water Gun",
 			"Confusion",
 			"Water Pulse"
-		]
+		],
+		"imageId": 54
 	},
 	{
 		"id": 58,
@@ -264,7 +271,8 @@
 			"Ember",
 			"Flame Wheel",
 			"Flamethrower"
-		]
+		],
+		"imageId": 58
 	},
 	{
 		"id": 69,
@@ -298,7 +306,8 @@
 		],
 		"evolvesTo": "Weepinbell",
 		"evolveLevel": 21,
-		"evolveType": "Grass"
+		"evolveType": "Grass",
+		"imageId": 69
 	},
 	{
 		"id": 74,
@@ -332,7 +341,8 @@
 		],
 		"evolvesTo": "Graveler",
 		"evolveLevel": 25,
-		"evolveType": "Rock"
+		"evolveType": "Rock",
+		"imageId": 74
 	},
 	{
 		"id": 92,
@@ -367,7 +377,8 @@
 		],
 		"evolvesTo": "Haunter",
 		"evolveLevel": 25,
-		"evolveType": "Ghost"
+		"evolveType": "Ghost",
+		"imageId": 92
 	},
 	{
 		"id": 104,
@@ -399,7 +410,8 @@
 			"Headbutt",
 			"Bonemerang",
 			"Leer"
-		]
+		],
+		"imageId": 104
 	},
 	{
 		"id": 133,
@@ -433,7 +445,8 @@
 		],
 		"evolvesTo": "Vaporeon",
 		"evolveLevel": 16,
-		"evolveType": "Water"
+		"evolveType": "Water",
+		"imageId": 133
 	},
 	{
 		"id": 147,
@@ -464,7 +477,8 @@
 			"Thunder Wave",
 			"Dragon Breath",
 			"Aqua Tail"
-		]
+		],
+		"imageId": 147
 	},
 	{
 		"id": 150,
@@ -496,7 +510,8 @@
 			"Psychic",
 			"Recover"
 		],
-		"catchRate": 3
+		"catchRate": 3,
+		"imageId": 150
 	},
 	{
 		"id": 151,
@@ -528,7 +543,8 @@
 			"Aura Sphere",
 			"Ancient Power"
 		],
-		"catchRate": 10
+		"catchRate": 10,
+		"imageId": 151
 	},
 	{
 		"id": 16,
@@ -559,7 +575,8 @@
 			"Quick Attack",
 			"Wing Attack",
 			"Air Slash"
-		]
+		],
+		"imageId": 18
 	},
 	{
 		"id": 21,
@@ -591,7 +608,8 @@
 			"Leer",
 			"Fury Attack",
 			"Aerial Ace"
-		]
+		],
+		"imageId": 21
 	},
 	{
 		"id": 95,
@@ -623,7 +641,8 @@
 			"Rock Throw",
 			"Dig",
 			"Iron Tail"
-		]
+		],
+		"imageId": 95
 	},
 	{
 		"id": 100,
@@ -654,7 +673,8 @@
 			"Spark",
 			"Electro Ball",
 			"Screech"
-		]
+		],
+		"imageId": 100
 	},
 	{
 		"id": 123,
@@ -686,7 +706,8 @@
 			"Wing Attack",
 			"Slash",
 			"X-Scissor"
-		]
+		],
+		"imageId": 123
 	},
 	{
 		"id": 131,
@@ -719,7 +740,8 @@
 			"Ice Shard",
 			"Confuse Ray",
 			"Ice Beam"
-		]
+		],
+		"imageId": 131
 	},
 	{
 		"id": 143,
@@ -750,7 +772,8 @@
 			"Lick",
 			"Body Slam",
 			"Rest"
-		]
+		],
+		"imageId": 143
 	},
 	{
 		"id": 152,
@@ -784,7 +807,8 @@
 		],
 		"evolvesTo": "Bayleef",
 		"evolveLevel": 16,
-		"evolveType": "Grass"
+		"evolveType": "Grass",
+		"imageId": 152
 	},
 	{
 		"id": 155,
@@ -818,7 +842,8 @@
 		],
 		"evolvesTo": "Quilava",
 		"evolveLevel": 16,
-		"evolveType": "Fire"
+		"evolveType": "Fire",
+		"imageId": 155
 	},
 	{
 		"id": 158,
@@ -852,7 +877,8 @@
 		],
 		"evolvesTo": "Croconaw",
 		"evolveLevel": 16,
-		"evolveType": "Water"
+		"evolveType": "Water",
+		"imageId": 158
 	},
 	{
 		"id": 172,
@@ -886,7 +912,8 @@
 		],
 		"evolvesTo": "Pikachu",
 		"evolveLevel": 8,
-		"evolveType": "Electric"
+		"evolveType": "Electric",
+		"imageId": 172
 	},
 	{
 		"id": 175,
@@ -917,7 +944,8 @@
 			"Charm",
 			"Metronome",
 			"Ancient Power"
-		]
+		],
+		"imageId": 175
 	},
 	{
 		"id": 183,
@@ -948,7 +976,8 @@
 			"Water Gun",
 			"Rollout",
 			"Aqua Tail"
-		]
+		],
+		"imageId": 183
 	},
 	{
 		"id": 194,
@@ -979,7 +1008,8 @@
 			"Mud Shot",
 			"Slam",
 			"Yawn"
-		]
+		],
+		"imageId": 194
 	},
 	{
 		"id": 207,
@@ -1012,7 +1042,8 @@
 			"Stomp",
 			"Psybeam",
 			"Agility"
-		]
+		],
+		"imageId": 203
 	},
 	{
 		"id": 218,
@@ -1043,7 +1074,8 @@
 			"Quick Attack",
 			"Ice Shard",
 			"Faint Attack"
-		]
+		],
+		"imageId": 215
 	},
 	{
 		"name": "Caterpie",
@@ -1074,7 +1106,8 @@
 		"id": 219,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 45
+		"maxHp": 45,
+		"imageId": 10
 	},
 	{
 		"name": "Weedle",
@@ -1106,7 +1139,8 @@
 		"id": 220,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 40
+		"maxHp": 40,
+		"imageId": 13
 	},
 	{
 		"name": "Oddish",
@@ -1138,7 +1172,8 @@
 		"id": 221,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 45
+		"maxHp": 45,
+		"imageId": 43
 	},
 	{
 		"name": "Butterfree",
@@ -1170,7 +1205,8 @@
 		"id": 222,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 60
+		"maxHp": 60,
+		"imageId": 12
 	},
 	{
 		"name": "Poliwag",
@@ -1201,7 +1237,8 @@
 		"id": 223,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 40
+		"maxHp": 40,
+		"imageId": 60
 	},
 	{
 		"name": "Magikarp",
@@ -1232,7 +1269,8 @@
 		"id": 224,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 30
+		"maxHp": 30,
+		"imageId": 129
 	},
 	{
 		"name": "Goldeen",
@@ -1263,7 +1301,8 @@
 		"id": 225,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 45
+		"maxHp": 45,
+		"imageId": 118
 	},
 	{
 		"name": "Staryu",
@@ -1294,7 +1333,8 @@
 		"id": 226,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 30
+		"maxHp": 30,
+		"imageId": 120
 	},
 	{
 		"name": "Zubat",
@@ -1326,7 +1366,8 @@
 		"id": 227,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 40
+		"maxHp": 40,
+		"imageId": 41
 	},
 	{
 		"name": "Diglett",
@@ -1357,7 +1398,8 @@
 		"id": 228,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 30
+		"maxHp": 30,
+		"imageId": 50
 	},
 	{
 		"name": "Machop",
@@ -1388,7 +1430,8 @@
 		"id": 229,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 70
+		"maxHp": 70,
+		"imageId": 66
 	},
 	{
 		"name": "Tentacool",
@@ -1421,7 +1464,8 @@
 		"id": 230,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 40
+		"maxHp": 40,
+		"imageId": 72
 	},
 	{
 		"name": "Horsea",
@@ -1452,7 +1496,8 @@
 		"id": 231,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 30
+		"maxHp": 30,
+		"imageId": 116
 	},
 	{
 		"name": "Shellder",
@@ -1483,7 +1528,8 @@
 		"id": 232,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 30
+		"maxHp": 30,
+		"imageId": 90
 	},
 	{
 		"name": "Seel",
@@ -1516,7 +1562,8 @@
 		"id": 233,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 65
+		"maxHp": 65,
+		"imageId": 86
 	},
 	{
 		"name": "Vulpix",
@@ -1547,7 +1594,8 @@
 		"id": 234,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 38
+		"maxHp": 38,
+		"imageId": 37
 	},
 	{
 		"name": "Ponyta",
@@ -1578,7 +1626,8 @@
 		"id": 235,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 50
+		"maxHp": 50,
+		"imageId": 77
 	},
 	{
 		"name": "Magmar",
@@ -1609,7 +1658,8 @@
 		"id": 236,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 65
+		"maxHp": 65,
+		"imageId": 126
 	},
 	{
 		"name": "Pidgey",
@@ -1641,7 +1691,8 @@
 		"id": 237,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 40
+		"maxHp": 40,
+		"imageId": 16
 	},
 	{
 		"name": "Larvitar",
@@ -1673,7 +1724,8 @@
 		"id": 238,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 60
+		"maxHp": 60,
+		"imageId": 246
 	},
 	{
 		"name": "Sandshrew",
@@ -1704,7 +1756,8 @@
 		"id": 239,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 50
+		"maxHp": 50,
+		"imageId": 27
 	},
 	{
 		"name": "Trapinch",
@@ -1735,7 +1788,8 @@
 		"id": 240,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 45
+		"maxHp": 45,
+		"imageId": 328
 	},
 	{
 		"name": "Cacnea",
@@ -1766,7 +1820,8 @@
 		"id": 241,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 50
+		"maxHp": 50,
+		"imageId": 331
 	},
 	{
 		"name": "Sandile",
@@ -1798,7 +1853,8 @@
 		"id": 242,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 50
+		"maxHp": 50,
+		"imageId": 551
 	},
 	{
 		"name": "Misdreavus",
@@ -1829,7 +1885,8 @@
 		"id": 243,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 60
+		"maxHp": 60,
+		"imageId": 200
 	},
 	{
 		"name": "Duskull",
@@ -1860,7 +1917,8 @@
 		"id": 244,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 20
+		"maxHp": 20,
+		"imageId": 355
 	},
 	{
 		"name": "Sableye",
@@ -1892,7 +1950,8 @@
 		"id": 245,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 50
+		"maxHp": 50,
+		"imageId": 302
 	},
 	{
 		"name": "Gengar",
@@ -1924,7 +1983,8 @@
 		"id": 246,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 60
+		"maxHp": 60,
+		"imageId": 94
 	},
 	{
 		"name": "Articuno",
@@ -1956,7 +2016,8 @@
 		"id": 247,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 90
+		"maxHp": 90,
+		"imageId": 144
 	},
 	{
 		"name": "Zapdos",
@@ -1988,7 +2049,8 @@
 		"id": 248,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 90
+		"maxHp": 90,
+		"imageId": 145
 	},
 	{
 		"name": "Moltres",
@@ -2020,7 +2082,8 @@
 		"id": 249,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 90
+		"maxHp": 90,
+		"imageId": 146
 	},
 	{
 		"name": "Lugia",
@@ -2052,7 +2115,8 @@
 		"id": 250,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 106
+		"maxHp": 106,
+		"imageId": 249
 	},
 	{
 		"name": "Ho-Oh",
@@ -2084,7 +2148,8 @@
 		"id": 251,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 106
+		"maxHp": 106,
+		"imageId": 250
 	},
 	{
 		"name": "Rayquaza",
@@ -2116,7 +2181,8 @@
 		"id": 252,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 105
+		"maxHp": 105,
+		"imageId": 384
 	},
 	{
 		"name": "Kyogre",
@@ -2147,7 +2213,8 @@
 		"id": 253,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 100
+		"maxHp": 100,
+		"imageId": 382
 	},
 	{
 		"name": "Groudon",
@@ -2179,7 +2246,8 @@
 		"id": 254,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 100
+		"maxHp": 100,
+		"imageId": 383
 	},
 	{
 		"name": "Dialga",
@@ -2211,7 +2279,8 @@
 		"id": 255,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 100
+		"maxHp": 100,
+		"imageId": 483
 	},
 	{
 		"name": "Palkia",
@@ -2243,7 +2312,8 @@
 		"id": 256,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 90
+		"maxHp": 90,
+		"imageId": 484
 	},
 	{
 		"name": "Giratina",
@@ -2275,7 +2345,8 @@
 		"id": 257,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 150
+		"maxHp": 150,
+		"imageId": 487
 	},
 	{
 		"name": "Zekrom",
@@ -2307,7 +2378,8 @@
 		"id": 258,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 100
+		"maxHp": 100,
+		"imageId": 644
 	},
 	{
 		"name": "Reshiram",
@@ -2339,7 +2411,8 @@
 		"id": 259,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 100
+		"maxHp": 100,
+		"imageId": 643
 	},
 	{
 		"name": "Xerneas",
@@ -2370,7 +2443,8 @@
 		"id": 260,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 100
+		"maxHp": 100,
+		"imageId": 716
 	},
 	{
 		"name": "Yveltal",
@@ -2402,7 +2476,8 @@
 		"id": 261,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 100
+		"maxHp": 100,
+		"imageId": 717
 	},
 	{
 		"name": "Arceus",
@@ -2433,7 +2508,8 @@
 		"id": 262,
 		"level": 1,
 		"xp": 0,
-		"maxHp": 120
+		"maxHp": 120,
+		"imageId": 493
 	},
 	{
 		"id": 6,
@@ -2466,7 +2542,8 @@
 		"times": [
 			"day",
 			"night"
-		]
+		],
+		"imageId": 6
 	},
 	{
 		"id": 9,
@@ -2498,7 +2575,8 @@
 		"times": [
 			"day",
 			"night"
-		]
+		],
+		"imageId": 9
 	},
 	{
 		"id": 149,
@@ -2531,7 +2609,8 @@
 		"times": [
 			"day",
 			"night"
-		]
+		],
+		"imageId": 149
 	},
 	{
 		"id": 2,
@@ -2566,7 +2645,8 @@
 		],
 		"evolvesTo": "Venusaur",
 		"evolveLevel": 32,
-		"evolveType": "Grass"
+		"evolveType": "Grass",
+		"imageId": 2
 	},
 	{
 		"id": 3,
@@ -2598,7 +2678,8 @@
 			"Sleep Powder",
 			"Energy Ball",
 			"Solar Beam"
-		]
+		],
+		"imageId": 3
 	},
 	{
 		"id": 5,
@@ -2632,7 +2713,8 @@
 		],
 		"evolvesTo": "Charizard",
 		"evolveLevel": 36,
-		"evolveType": "Fire"
+		"evolveType": "Fire",
+		"imageId": 5
 	},
 	{
 		"id": 8,
@@ -2666,7 +2748,8 @@
 		],
 		"evolvesTo": "Blastoise",
 		"evolveLevel": 36,
-		"evolveType": "Water"
+		"evolveType": "Water",
+		"imageId": 8
 	},
 	{
 		"id": 26,
@@ -2698,7 +2781,8 @@
 			"Thunder Shock",
 			"Thunder Wave",
 			"Thunderbolt"
-		]
+		],
+		"imageId": 26
 	},
 	{
 		"id": 93,
@@ -2734,7 +2818,8 @@
 		],
 		"evolvesTo": "Gengar",
 		"evolveLevel": 36,
-		"evolveType": "Ghost"
+		"evolveType": "Ghost",
+		"imageId": 93
 	},
 	{
 		"id": 75,
@@ -2767,7 +2852,8 @@
 			"Defense Curl",
 			"Rock Throw",
 			"Magnitude"
-		]
+		],
+		"imageId": 75
 	},
 	{
 		"id": 70,
@@ -2799,7 +2885,8 @@
 			"Acid",
 			"Sleep Powder",
 			"Razor Leaf"
-		]
+		],
+		"imageId": 70
 	},
 	{
 		"id": 263,
@@ -2832,7 +2919,8 @@
 			"Hypnosis",
 			"Confusion",
 			"Air Cutter"
-		]
+		],
+		"imageId": 163
 	},
 	{
 		"id": 264,
@@ -2863,7 +2951,8 @@
 			"Growth",
 			"Bullet Seed",
 			"Seed Bomb"
-		]
+		],
+		"imageId": 273
 	},
 	{
 		"id": 265,
@@ -2894,7 +2983,8 @@
 			"Tackle",
 			"Mega Drain",
 			"Sleep Powder"
-		]
+		],
+		"imageId": 285
 	},
 	{
 		"id": 266,
@@ -2926,7 +3016,8 @@
 			"Quick Attack",
 			"Absorb",
 			"Energy Ball"
-		]
+		],
+		"imageId": 252
 	},
 	{
 		"id": 267,
@@ -2957,7 +3048,8 @@
 			"Leafage",
 			"Razor Leaf",
 			"Synthesis"
-		]
+		],
+		"imageId": 387
 	},
 	{
 		"id": 268,
@@ -2988,7 +3080,8 @@
 			"Water Gun",
 			"Mud-Slap",
 			"Water Pulse"
-		]
+		],
+		"imageId": 258
 	},
 	{
 		"id": 269,
@@ -3021,7 +3114,8 @@
 			"Absorb",
 			"Bubble Beam",
 			"Mega Drain"
-		]
+		],
+		"imageId": 270
 	},
 	{
 		"id": 270,
@@ -3054,7 +3148,8 @@
 			"Gust",
 			"Quick Attack",
 			"Air Cutter"
-		]
+		],
+		"imageId": 278
 	},
 	{
 		"id": 271,
@@ -3087,7 +3182,8 @@
 			"Water Gun",
 			"Flail",
 			"Aqua Tail"
-		]
+		],
+		"imageId": 349
 	},
 	{
 		"id": 272,
@@ -3120,7 +3216,8 @@
 			"Water Gun",
 			"Aqua Jet",
 			"Water Pulse"
-		]
+		],
+		"imageId": 418
 	},
 	{
 		"id": 273,
@@ -3153,7 +3250,8 @@
 			"Metal Claw",
 			"Iron Defense",
 			"Rock Slide"
-		]
+		],
+		"imageId": 304
 	},
 	{
 		"id": 274,
@@ -3184,7 +3282,8 @@
 			"Rock Throw",
 			"Thunder Wave",
 			"Rock Slide"
-		]
+		],
+		"imageId": 299
 	},
 	{
 		"id": 275,
@@ -3216,7 +3315,8 @@
 			"Rock Throw",
 			"Defense Curl",
 			"Rock Slide"
-		]
+		],
+		"imageId": 524
 	},
 	{
 		"id": 276,
@@ -3247,7 +3347,8 @@
 			"Mud-Slap",
 			"Dig",
 			"Earthquake"
-		]
+		],
+		"imageId": 529
 	},
 	{
 		"id": 277,
@@ -3279,7 +3380,8 @@
 			"Metal Claw",
 			"Crunch",
 			"Play Rough"
-		]
+		],
+		"imageId": 303
 	},
 	{
 		"id": 278,
@@ -3310,7 +3412,8 @@
 			"Ember",
 			"Double Kick",
 			"Flame Charge"
-		]
+		],
+		"imageId": 255
 	},
 	{
 		"id": 279,
@@ -3342,7 +3445,8 @@
 			"Ember",
 			"Mud Bomb",
 			"Lava Plume"
-		]
+		],
+		"imageId": 322
 	},
 	{
 		"id": 280,
@@ -3373,7 +3477,8 @@
 			"Rock Throw",
 			"Flame Charge",
 			"Lava Plume"
-		]
+		],
+		"imageId": 218
 	},
 	{
 		"id": 281,
@@ -3405,7 +3510,8 @@
 			"Ember",
 			"Crunch",
 			"Flamethrower"
-		]
+		],
+		"imageId": 228
 	},
 	{
 		"id": 282,
@@ -3439,7 +3545,8 @@
 			"Ember",
 			"Flame Charge",
 			"Lava Plume"
-		]
+		],
+		"imageId": 757
 	},
 	{
 		"id": 283,
@@ -3471,7 +3578,8 @@
 			"Leer",
 			"Fury Attack",
 			"Aerial Ace"
-		]
+		],
+		"imageId": 821
 	},
 	{
 		"id": 284,
@@ -3503,7 +3611,8 @@
 			"Counter",
 			"Force Palm",
 			"Aura Sphere"
-		]
+		],
+		"imageId": 447
 	},
 	{
 		"id": 285,
@@ -3535,7 +3644,8 @@
 			"Bite",
 			"Night Slash",
 			"Sucker Punch"
-		]
+		],
+		"imageId": 359
 	},
 	{
 		"id": 286,
@@ -3566,7 +3676,8 @@
 			"Dragon Breath",
 			"Dragon Claw",
 			"Dragon Pulse"
-		]
+		],
+		"imageId": 371
 	},
 	{
 		"id": 287,
@@ -3597,7 +3708,8 @@
 			"Dragon Breath",
 			"Slash",
 			"Dragon Claw"
-		]
+		],
+		"imageId": 610
 	},
 	{
 		"id": 288,
@@ -3629,7 +3741,8 @@
 			"Confusion",
 			"Psywave",
 			"Rock Tomb"
-		]
+		],
+		"imageId": 343
 	},
 	{
 		"id": 289,
@@ -3660,7 +3773,8 @@
 			"Bite",
 			"Dig",
 			"Earthquake"
-		]
+		],
+		"imageId": 449
 	},
 	{
 		"id": 290,
@@ -3691,7 +3805,8 @@
 			"Ember",
 			"Fire Punch",
 			"Flame Charge"
-		]
+		],
+		"imageId": 554
 	},
 	{
 		"id": 291,
@@ -3723,7 +3838,8 @@
 			"Bite",
 			"Low Kick",
 			"Crunch"
-		]
+		],
+		"imageId": 559
 	},
 	{
 		"id": 292,
@@ -3754,7 +3870,8 @@
 			"Dig",
 			"Glare",
 			"Earthquake"
-		]
+		],
+		"imageId": 843
 	},
 	{
 		"id": 293,
@@ -3785,7 +3902,8 @@
 			"Night Shade",
 			"Will-O-Wisp",
 			"Shadow Ball"
-		]
+		],
+		"imageId": 353
 	},
 	{
 		"id": 294,
@@ -3817,7 +3935,8 @@
 			"Hex",
 			"Will-O-Wisp",
 			"Shadow Ball"
-		]
+		],
+		"imageId": 607
 	},
 	{
 		"id": 295,
@@ -3849,7 +3968,8 @@
 			"Razor Leaf",
 			"Shadow Sneak",
 			"Seed Bomb"
-		]
+		],
+		"imageId": 708
 	},
 	{
 		"id": 296,
@@ -3880,7 +4000,8 @@
 			"Hex",
 			"Will-O-Wisp",
 			"Shadow Ball"
-		]
+		],
+		"imageId": 562
 	},
 	{
 		"id": 297,
@@ -3912,7 +4033,8 @@
 			"Hypnosis",
 			"Dark Pulse",
 			"Shadow Ball"
-		]
+		],
+		"imageId": 442
 	},
 	{
 		"id": 298,
@@ -3946,7 +4068,8 @@
 			"Psychic",
 			"Luster Purge",
 			"Recover"
-		]
+		],
+		"imageId": 381
 	},
 	{
 		"id": 299,
@@ -3980,7 +4103,8 @@
 			"Psychic",
 			"Mist Ball",
 			"Recover"
-		]
+		],
+		"imageId": 380
 	},
 	{
 		"id": 300,
@@ -4013,7 +4137,8 @@
 			"Doom Desire",
 			"Psychic",
 			"Recover"
-		]
+		],
+		"imageId": 385
 	},
 	{
 		"id": 301,
@@ -4045,7 +4170,8 @@
 			"Dark Void",
 			"Night Daze",
 			"Dark Pulse"
-		]
+		],
+		"imageId": 491
 	},
 	{
 		"id": 302,
@@ -4077,6 +4203,7 @@
 			"Moonlight",
 			"Psycho Shift",
 			"Moonblast"
-		]
+		],
+		"imageId": 488
 	}
 ]

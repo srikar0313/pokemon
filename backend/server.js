@@ -174,6 +174,7 @@ function getPokedexEntries(state) {
       visited.add(key);
       chain.push({
         id: current.id,
+        imageId: current.imageId || current.id,
         name: current.name,
         evolveLevel: current.evolveLevel || null,
       });
@@ -191,6 +192,7 @@ function getPokedexEntries(state) {
       const caught = state.pokedex.caught.includes(pokemon.id);
       return {
         id: pokemon.id,
+        imageId: pokemon.imageId || pokemon.id,
         name: pokemon.name,
         type: pokemon.type,
         types: getPokemonTypes(pokemon),
@@ -201,7 +203,11 @@ function getPokedexEntries(state) {
         evolvesTo: pokemon.evolvesTo || null,
         evolveLevel: pokemon.evolveLevel || null,
         previousStage: previousStage
-          ? { id: previousStage.id, name: previousStage.name }
+          ? {
+              id: previousStage.id,
+              imageId: previousStage.imageId || previousStage.id,
+              name: previousStage.name,
+            }
           : null,
         evolutionChain: previousStage
           ? getEvolutionChain(previousStage)

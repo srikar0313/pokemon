@@ -57,6 +57,7 @@ function validateGameData(gameData) {
     });
     if (!pokemon.type && !pokemon.types?.length) warnings.push(`${pokemon.name} has no type`);
     if (!pokemon.rarity) warnings.push(`${pokemon.name} has no rarity`);
+    if (!pokemon.imageId) warnings.push(`${pokemon.name} has no imageId`);
     if (pokemon.baseCatchRate === undefined) {
       warnings.push(`${pokemon.name} has no baseCatchRate`);
     }

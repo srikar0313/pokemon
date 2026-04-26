@@ -339,7 +339,7 @@ function renderPokemonDetailCard(
     <div class="player-card trainer-sheet${fainted ? " fainted" : ""}">
       <div class="trainer-portrait trainer-player">
         <span class="trainer-role">${title}</span>
-        <img src="${getPokemonImage(pokemon.id)}" alt="${pokemon.name}">
+        <img src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
       </div>
       <div class="player-info">
         <div class="panel-header compact-header">
@@ -353,7 +353,7 @@ function renderPokemonDetailCard(
           </div>
         </div>
         <div class="partner-showcase">
-          <img class="partner-art" src="${getPokemonImage(pokemon.id)}" alt="${pokemon.name}">
+          <img class="partner-art" src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
           <div class="partner-stats">
             <p>${renderIcon("heart", "HP")} HP: ${pokemon.currentHp}/${pokemon.maxHp}</p>
             <p>ATK ${pokemon.attack} | DEF ${pokemon.defense} | SP.ATK ${pokemon.specialAttack} | SP.DEF ${pokemon.specialDefense}</p>
@@ -1225,7 +1225,7 @@ function showGymBattle(lines = []) {
       </div>
       <div class="battle-container gym-battle-container">
         <div class="battle-pokemon">
-          <img src="${getPokemonImage(player.id)}" alt="${player.name}">
+          <img src="${getPokemonImage(player)}" alt="${player.name}">
           <div class="battle-info">
             <h3>${player.name} Lv${player.level}</h3>
             ${renderTypeBadges(player.types)}
@@ -1236,7 +1236,7 @@ function showGymBattle(lines = []) {
         </div>
         <div class="vs">VS</div>
         <div class="battle-pokemon">
-          <img src="${getPokemonImage(opponent.id)}" alt="${opponent.name}">
+          <img src="${getPokemonImage(opponent)}" alt="${opponent.name}">
           <div class="battle-info">
             <h3>Gym ${opponent.name} Lv${opponent.level}</h3>
             ${renderTypeBadges(opponent.types)}
@@ -1388,7 +1388,7 @@ function showEliteBattle(lines = []) {
       </div>
       <div class="battle-container elite-battle-container">
         <div class="battle-pokemon">
-          <img src="${getPokemonImage(player.id)}" alt="${player.name}">
+          <img src="${getPokemonImage(player)}" alt="${player.name}">
           <div class="battle-info">
             <h3>${player.name} Lv${player.level}</h3>
             ${renderTypeBadges(player.types)}
@@ -1399,7 +1399,7 @@ function showEliteBattle(lines = []) {
         </div>
         <div class="vs">VS</div>
         <div class="battle-pokemon">
-          <img src="${getPokemonImage(opponent.id)}" alt="${opponent.name}">
+          <img src="${getPokemonImage(opponent)}" alt="${opponent.name}">
           <div class="battle-info">
             <h3>${eliteBattle.isChampion ? opponent.name : `${eliteBattle.trainer.name}'s ${opponent.name}`} Lv${opponent.level}</h3>
             ${renderTypeBadges(opponent.types)}
@@ -1535,7 +1535,7 @@ function showNpcBattle(lines = []) {
       </div>
       <div class="battle-container npc-battle-container">
         <div class="battle-pokemon">
-          <img src="${getPokemonImage(player.id)}" alt="${player.name}">
+          <img src="${getPokemonImage(player)}" alt="${player.name}">
           <div class="battle-info">
             <h3>${player.name} Lv${player.level}</h3>
             ${renderTypeBadges(player.types)}
@@ -1546,7 +1546,7 @@ function showNpcBattle(lines = []) {
         </div>
         <div class="vs">VS</div>
         <div class="battle-pokemon">
-          <img src="${getPokemonImage(opponent.id)}" alt="${opponent.name}">
+          <img src="${getPokemonImage(opponent)}" alt="${opponent.name}">
           <div class="battle-info">
             <h3>${npc.name}'s ${opponent.name} Lv${opponent.level}</h3>
             ${renderTypeBadges(opponent.types)}
@@ -1828,7 +1828,7 @@ function renderPokedexCard(entry) {
       <div class="pokedex-card-art">
         ${
           canShowDetails
-            ? `<img src="${getPokemonImage(entry.id)}" alt="${entry.name}">`
+            ? `<img src="${getPokemonImage(entry)}" alt="${entry.name}">`
             : `<div class="pokedex-silhouette">?</div>`
         }
       </div>
@@ -2035,7 +2035,7 @@ function displayParty(data) {
       const isActive = index === activeInventoryIndex;
       const fainted = (p.currentHp ?? p.hp) <= 0;
       html += `<div class="inventory-item party-card${isActive ? " active" : ""}" onclick="selectPokemon(${index})">
-        <img src="${getPokemonImage(p.id)}" alt="${p.name}">
+        <img src="${getPokemonImage(p)}" alt="${p.name}">
         <div class="item-info">
           <div class="inventory-top">
             <strong>${p.name}${p.shiny ? " *" : ""}</strong> Lv${p.level}
@@ -2075,7 +2075,7 @@ function displayStorage(storage) {
     storage.forEach((p, index) => {
       const fainted = (p.currentHp ?? p.hp) <= 0;
       html += `<div class="inventory-item storage-item${fainted ? " fainted" : ""}" onclick="showPokemonDetail('storage', ${index})">
-        <img src="${getPokemonImage(p.id)}" alt="${p.name}">
+        <img src="${getPokemonImage(p)}" alt="${p.name}">
         <div class="item-info">
           <div class="inventory-top">
             <strong>${p.name}${p.shiny ? " *" : ""}</strong> Lv${p.level}
@@ -2182,7 +2182,7 @@ function renderSwapPicker() {
   picker.innerHTML = `
     <div class="swap-picker">
       <div class="swap-summary">
-        <img src="${getPokemonImage(storedPokemon.id)}" alt="${storedPokemon.name}">
+        <img src="${getPokemonImage(storedPokemon)}" alt="${storedPokemon.name}">
         <div>
           <h3>${storedPokemon.name}</h3>
           <p>Choose which team slot should be replaced.</p>
@@ -2196,7 +2196,7 @@ function renderSwapPicker() {
               <button class="swap-slot-btn" onclick="confirmStorageSwap(${index})" ${
                 isInBattle && index === activeInventoryIndex ? "disabled" : ""
               }>
-                <img src="${getPokemonImage(pokemon.id)}" alt="${pokemon.name}">
+                <img src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
                 <div>
                   <strong>Slot ${index + 1}: ${pokemon.name}</strong>
                   <span>${pokemon.currentHp}/${pokemon.maxHp} HP</span>
@@ -2457,7 +2457,7 @@ function showBattle() {
     </div>
     <div class="battle-container">
       <div class="battle-pokemon">
-        <img src="${getPokemonImage(activePokemon.id)}" alt="${activePokemon.name}">
+        <img src="${getPokemonImage(activePokemon)}" alt="${activePokemon.name}">
         <div class="battle-info">
           <h3>${activePokemon.name} Lv${activePokemon.level}</h3>
           ${renderTypeBadges(activePokemon.types)}
@@ -2468,7 +2468,7 @@ function showBattle() {
       </div>
       <div class="vs">VS</div>
       <div class="battle-pokemon">
-        <img src="${getPokemonImage(wild.id)}" alt="${wild.name}">
+        <img src="${getPokemonImage(wild)}" alt="${wild.name}">
         <div class="battle-info">
           <h3>${wild.name}${wild.shiny ? " *" : ""} Lv${wild.level}</h3>
           ${renderTypeBadges(wild.types)}
@@ -2583,7 +2583,7 @@ function showWildSwitchPanel() {
               index === activeInventoryIndex || (pokemon.currentHp || 0) <= 0;
             return `
               <button class="wild-switch-card" ${disabled ? "disabled" : ""} onclick="selectPokemon(${index})">
-                <img src="${getPokemonImage(pokemon.id)}" alt="${pokemon.name}">
+                <img src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
                 <span>${pokemon.name}</span>
                 <small>${pokemon.currentHp}/${pokemon.maxHp} HP</small>
               </button>
@@ -3045,8 +3045,12 @@ function getCombinedTypeEffectiveness(attackerType, defenderTypes) {
   );
 }
 
-function getPokemonImage(id) {
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+function getPokemonImage(pokemonOrId) {
+  const imageId =
+    typeof pokemonOrId === "object"
+      ? pokemonOrId.imageId || pokemonOrId.id
+      : pokemonOrId;
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${imageId}.png`;
 }
 
 function getTypeColor(type) {

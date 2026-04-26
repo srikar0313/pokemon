@@ -14,6 +14,7 @@ function validatePokemon(pokemon, warnings) {
     warnings.push(`${pokemon.name || pokemon.id} has no type/types`);
   }
   if (!pokemon.rarity) warnings.push(`${pokemon.name} has no rarity`);
+  if (!pokemon.imageId) warnings.push(`${pokemon.name} has no imageId`);
   if (!Array.isArray(pokemon.moves) || pokemon.moves.length === 0) {
     warnings.push(`${pokemon.name} has no moves`);
   }
