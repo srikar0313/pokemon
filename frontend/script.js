@@ -11,6 +11,13 @@ let teamCache = [];
 let storageCache = [];
 let playerState = null;
 let shopCatalog = [];
+let pokedexCache = null;
+let pokedexFilters = {
+  status: "all",
+  habitat: "all",
+  type: "all",
+  rarity: "all",
+};
 let gymCache = [];
 let eliteCache = null;
 let gymBattle = null;
@@ -124,6 +131,7 @@ async function init() {
     await displayAreas();
     await loadGyms();
     await loadEliteFour();
+    await loadPokedex();
     await loadInventory();
     await loadShop();
     setActiveScreen("explore");
@@ -141,6 +149,7 @@ function setActiveScreen(screen) {
   document.querySelectorAll(".nav-tab").forEach((button) => {
     button.classList.toggle("active", button.dataset.screen === screen);
   });
+  if (screen === "pokedex") loadPokedex();
 }
 
 function openWildEncounterLayer() {
@@ -1674,6 +1683,246 @@ function displayStats() {
   `;
 }
 
+async function loadPokedex() {
+  const panel = document.getElementById("pokedex-panel");
+  if (panel && !pokedexCache) {
+    panel.innerHTML = "<p>Loading Pokédex...</p>";
+  }
+  const response = await fetch("/api/pokedex");
+  pokedexCache = await response.json();
+  displayPokedex();
+}
+
+function getPokedexFilterOptions(key) {
+  if (!pokedexCache?.entries) return [];
+  const values = new Set();
+  pokedexCache.entries.forEach((entry) => {
+    if (key === "habitat") {
+      (entry.habitats || []).forEach((habitat) => values.add(habitat));
+    } else if (key === "type") {
+      (entry.types || []).forEach((type) => values.add(type));
+    } else if (entry[key]) {
+      values.add(entry[key]);
+    }
+  });
+  return [...values].sort();
+}
+
+function setPokedexStatusFilter(status) {
+  pokedexFilters.status = status;
+  displayPokedex();
+}
+
+function updatePokedexSelectFilter(key, value) {
+  pokedexFilters[key] = value;
+  displayPokedex();
+}
+
+function resetPokedexFilters() {
+  pokedexFilters = {
+    status: "all",
+    habitat: "all",
+    type: "all",
+    rarity: "all",
+  };
+  displayPokedex();
+}
+
+function getFilteredPokedexEntries() {
+  if (!pokedexCache?.entries) return [];
+  return pokedexCache.entries.filter((entry) => {
+    if (pokedexFilters.status === "seen" && !entry.seen) return false;
+    if (pokedexFilters.status === "caught" && !entry.caught) return false;
+    if (pokedexFilters.status === "uncaught" && entry.caught) return false;
+    if (
+      pokedexFilters.status === "legendary" &&
+      !["legendary", "mythical"].includes(entry.rarity)
+    ) {
+      return false;
+    }
+    if (
+      pokedexFilters.habitat !== "all" &&
+      !(entry.habitats || []).includes(pokedexFilters.habitat)
+    ) {
+      return false;
+    }
+    if (
+      pokedexFilters.type !== "all" &&
+      !(entry.types || []).includes(pokedexFilters.type)
+    ) {
+      return false;
+    }
+    if (
+      pokedexFilters.rarity !== "all" &&
+      entry.rarity !== pokedexFilters.rarity
+    ) {
+      return false;
+    }
+    return true;
+  });
+}
+
+function renderPokedexSelect(key, label, values, formatter = (value) => value) {
+  return `
+    <label class="pokedex-filter-select">
+      <span>${label}</span>
+      <select onchange="updatePokedexSelectFilter('${key}', this.value)">
+        <option value="all">All</option>
+        ${values
+          .map(
+            (value) =>
+              `<option value="${value}" ${pokedexFilters[key] === value ? "selected" : ""}>${formatter(value)}</option>`,
+          )
+          .join("")}
+      </select>
+    </label>
+  `;
+}
+
+function renderEvolutionChain(entry, canShowDetails) {
+  if (!canShowDetails) return "<p>Evolution: unknown</p>";
+  const chain = entry.evolutionChain || [];
+  const chainText = chain.length
+    ? chain.map((stage) => stage.name).join(" -> ")
+    : entry.name;
+  const forward =
+    entry.evolvesTo && entry.evolveLevel
+      ? `<p>Evolves to ${entry.evolvesTo} at level ${entry.evolveLevel}</p>`
+      : "<p>Final stage or no evolution data</p>";
+  const previous = entry.previousStage
+    ? `<p>Previous stage: ${entry.previousStage.name}</p>`
+    : "";
+  return `
+    <div class="pokedex-evolution">
+      <p>${chainText}</p>
+      ${previous}
+      ${forward}
+    </div>
+  `;
+}
+
+function renderLegendaryHint(entry, canShowDetails) {
+  if (!["legendary", "mythical"].includes(entry.rarity)) return "";
+  const habitat = entry.habitats?.[0]
+    ? formatAreaName(entry.habitats[0])
+    : "a hidden area";
+  const time = entry.times?.[0] || "rare conditions";
+  const clue = canShowDetails
+    ? `Rumored to appear in ${formatList(entry.habitats, formatAreaName)} during ${formatList(entry.times)}.`
+    : `Rumored to appear in ${habitat} at ${time}.`;
+  return `<p class="legendary-hint">Extremely rare. ${clue}</p>`;
+}
+
+function renderPokedexCard(entry) {
+  const canShowDetails = entry.seen || entry.caught;
+  const status = entry.caught ? "Caught" : entry.seen ? "Seen" : "Unknown";
+  const cardClass = `pokedex-card ${entry.caught ? "caught" : entry.seen ? "seen" : "hidden"}`;
+  const habitats = formatList(entry.habitats, formatAreaName);
+  const times = formatList(entry.times);
+  return `
+    <article class="${cardClass}">
+      <div class="pokedex-card-art">
+        ${
+          canShowDetails
+            ? `<img src="${getPokemonImage(entry.id)}" alt="${entry.name}">`
+            : `<div class="pokedex-silhouette">?</div>`
+        }
+      </div>
+      <div class="pokedex-card-body">
+        <div class="pokedex-card-head">
+          <span>#${String(entry.id).padStart(3, "0")}</span>
+          <strong>${canShowDetails ? entry.name : "Unknown Pokémon"}</strong>
+          <em>${status}</em>
+        </div>
+        <div class="pokedex-tags">
+          <span class="rarity-pill rarity-${entry.rarity}">${entry.rarity}</span>
+          ${canShowDetails ? renderTypeBadges(entry.types || []) : ""}
+        </div>
+        ${
+          canShowDetails
+            ? `
+              <p>Habitats: ${habitats}</p>
+              <p>Availability: ${times}</p>
+              <p>Base catch rate: ${entry.baseCatchRate ?? "Unknown"}</p>
+              ${renderEvolutionChain(entry, true)}
+            `
+            : `
+              <p>Habitat clue: ${habitats || "Unknown"}</p>
+              <p>Details appear after you encounter it.</p>
+              ${renderEvolutionChain(entry, false)}
+            `
+        }
+        ${renderLegendaryHint(entry, canShowDetails)}
+      </div>
+    </article>
+  `;
+}
+
+function displayPokedex() {
+  const panel = document.getElementById("pokedex-panel");
+  if (!panel) return;
+  if (!pokedexCache?.entries) {
+    panel.innerHTML = "<p>Loading Pokédex...</p>";
+    return;
+  }
+
+  const entries = getFilteredPokedexEntries();
+  const habitats = getPokedexFilterOptions("habitat");
+  const types = getPokedexFilterOptions("type");
+  const rarities = getPokedexFilterOptions("rarity");
+  const achievements = pokedexCache.achievements || [];
+
+  panel.innerHTML = `
+    <div class="screen-header pokedex-header">
+      <div>
+        <h2>Pokédex</h2>
+        <p>Track every Pokémon you have seen, caught, and still need to discover.</p>
+      </div>
+      <button class="secondary-btn" onclick="loadPokedex()">Refresh</button>
+    </div>
+    <div class="pokedex-summary">
+      <div><span>Total</span><strong>${pokedexCache.total}</strong></div>
+      <div><span>Seen</span><strong>${pokedexCache.seenCount}</strong></div>
+      <div><span>Caught</span><strong>${pokedexCache.caughtCount}</strong></div>
+      <div><span>Complete</span><strong>${pokedexCache.caughtPercent}%</strong></div>
+    </div>
+    <div class="pokedex-trainer-card">
+      <div>
+        <strong>Trainer Milestones</strong>
+        <p>${achievements.length ? achievements.join(" • ") : "Start exploring to unlock achievements."}</p>
+      </div>
+      <span>${entries.length} shown</span>
+    </div>
+    <div class="pokedex-filters">
+      <div class="pokedex-filter-buttons">
+        ${["all", "seen", "caught", "uncaught", "legendary"]
+          .map(
+            (status) => `
+              <button class="mini-btn ${pokedexFilters.status === status ? "active" : ""}" onclick="setPokedexStatusFilter('${status}')">
+                ${status === "legendary" ? "Legendary/Mythical" : status.charAt(0).toUpperCase() + status.slice(1)}
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+      <div class="pokedex-selects">
+        ${renderPokedexSelect("habitat", "Biome", habitats, formatAreaName)}
+        ${renderPokedexSelect("type", "Type", types)}
+        ${renderPokedexSelect("rarity", "Rarity", rarities)}
+        <button class="secondary-btn" onclick="resetPokedexFilters()">Clear</button>
+      </div>
+    </div>
+    <p class="pokedex-note">Legendary Pokémon are extremely rare and usually appear only in specific biomes.</p>
+    <div class="pokedex-grid">
+      ${
+        entries.length
+          ? entries.map(renderPokedexCard).join("")
+          : "<p>No Pokémon match these filters.</p>"
+      }
+    </div>
+  `;
+}
+
 async function loadShop() {
   const response = await fetch("/api/shop");
   const data = await response.json();
@@ -2185,6 +2434,7 @@ document.getElementById("explore-btn")?.addEventListener("click", async () => {
     playerStatus = activePokemon.status || "none";
     wildStatus = wild.status || "none";
     wildParticipantIndexes = new Set([activeInventoryIndex]);
+    if (pokedexCache) await loadPokedex();
     showBattle();
   } catch (error) {
     console.error("Error:", error);
@@ -2536,6 +2786,7 @@ async function throwBall(type) {
   appendBattleLog([`${data.message} (${data.catchRate}% chance)`]);
   displayStats();
   showCatchOptions();
+  if (pokedexCache) await loadPokedex();
 
   if (data.success) {
     showMoveButtons(true);
@@ -2833,6 +3084,11 @@ function getAreaEmoji(area) {
 function formatAreaName(area) {
   if (!area) return "Route";
   return area.charAt(0).toUpperCase() + area.slice(1);
+}
+
+function formatList(values = [], formatter = (value) => value) {
+  if (!values.length) return "Unknown";
+  return values.map(formatter).join(", ");
 }
 
 function getLeaderTheme(type) {

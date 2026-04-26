@@ -40,6 +40,13 @@
         </button>
         <button
           class="nav-tab"
+          data-screen="pokedex"
+          onclick="setActiveScreen('pokedex')"
+        >
+          Pokédex
+        </button>
+        <button
+          class="nav-tab"
           data-screen="gym"
           onclick="setActiveScreen('gym')"
         >
@@ -111,6 +118,12 @@
               </div>
             </div>
             <div id="bag-panel"></div>
+          </div>
+        </section>
+
+        <section id="pokedex-screen" class="screen-panel">
+          <div class="screen-card">
+            <div id="pokedex-panel"></div>
           </div>
         </section>
 

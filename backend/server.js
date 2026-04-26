@@ -160,14 +160,54 @@ const {
 } = rewardEngine;
 
 function getPokedexEntries(state) {
-  return getPokemonTemplates().map((pokemon) => ({
-    id: pokemon.id,
-    name: pokemon.name,
-    type: pokemon.type,
-    types: getPokemonTypes(pokemon),
-    seen: state.pokedex.seen.includes(pokemon.id),
-    caught: state.pokedex.caught.includes(pokemon.id),
-  }));
+  const templates = getPokemonTemplates();
+  const byName = new Map(templates.map((pokemon) => [pokemon.name, pokemon]));
+
+  function getEvolutionChain(pokemon) {
+    const chain = [];
+    const visited = new Set();
+    let current = pokemon;
+    while (current) {
+      const key = current.name;
+      if (visited.has(key)) break;
+      visited.add(key);
+      chain.push({
+        id: current.id,
+        name: current.name,
+        evolveLevel: current.evolveLevel || null,
+      });
+      current = current.evolvesTo ? byName.get(current.evolvesTo) : null;
+    }
+    return chain;
+  }
+
+  return templates.map((pokemon) => {
+    const previousStage =
+      templates.find((candidate) => candidate.evolvesTo === pokemon.name) ||
+      null;
+    const seen = state.pokedex.seen.includes(pokemon.id);
+    const caught = state.pokedex.caught.includes(pokemon.id);
+    return {
+      id: pokemon.id,
+      name: pokemon.name,
+      type: pokemon.type,
+      types: getPokemonTypes(pokemon),
+      rarity: pokemon.rarity || "common",
+      habitats: pokemon.habitats || [],
+      times: pokemon.times || ["day"],
+      baseCatchRate: pokemon.baseCatchRate ?? null,
+      evolvesTo: pokemon.evolvesTo || null,
+      evolveLevel: pokemon.evolveLevel || null,
+      previousStage: previousStage
+        ? { id: previousStage.id, name: previousStage.name }
+        : null,
+      evolutionChain: previousStage
+        ? getEvolutionChain(previousStage)
+        : getEvolutionChain(pokemon),
+      seen,
+      caught,
+    };
+  });
 }
 
 function getGymById(gymId) {
@@ -564,10 +604,17 @@ app.post("/api/zone-event/reward", (req, res) => {
 app.get("/api/pokedex", (req, res) => {
   const state = loadPlayerState();
   const entries = getPokedexEntries(state);
+  const caughtCount = entries.filter((entry) => entry.caught).length;
+  const seenCount = entries.filter((entry) => entry.seen).length;
   res.json({
-    seen: state.pokedex.seen.length,
-    caught: state.pokedex.caught.length,
     total: entries.length,
+    seenCount,
+    caughtCount,
+    caughtPercent: entries.length
+      ? Math.round((caughtCount / entries.length) * 1000) / 10
+      : 0,
+    seen: seenCount,
+    caught: caughtCount,
     entries,
     achievements: state.achievements,
   });
