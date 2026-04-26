@@ -2431,17 +2431,11 @@ app.get("/api/pokeballs", (req, res) => {
 });
 
 app.get("/api/pokemon", (req, res) => {
-  fs.readFile(
-    path.join(__dirname, "..", "pokemon.json"),
-    "utf8",
-    (err, data) => {
-      if (err) {
-        res.status(500).json({ error: "Failed to read Pokemon data" });
-      } else {
-        res.json(JSON.parse(data));
-      }
-    },
-  );
+  try {
+    res.json(getPokemonTemplates());
+  } catch (error) {
+    res.status(500).json({ error: "Failed to read Pokemon data" });
+  }
 });
 
 app.post("/api/encounter", (req, res) => {
@@ -2453,64 +2447,58 @@ app.post("/api/encounter", (req, res) => {
     return res.status(400).json({ error: "Finish your trainer battle first" });
   }
 
-  fs.readFile(
-    path.join(__dirname, "..", "pokemon.json"),
-    "utf8",
-    (err, data) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to read Pokemon data" });
-      }
+  try {
+    const allPokemon = getPokemonTemplates();
+    const currentTime = getTimeOfDay();
+    const weather = getCurrentWeather();
+    const selectedArea = String(area).toLowerCase();
+    const legendaryRoll = Math.random() < 0.02;
+    const areaPool = allPokemon.filter((pokemon) => {
+      const habitats = Array.isArray(pokemon.habitats)
+        ? pokemon.habitats
+        : pokemon.habitats
+          ? [pokemon.habitats]
+          : [];
+      return habitats.includes(selectedArea);
+    });
+    const biomePool = areaPool.length ? areaPool : allPokemon;
+    const spawnPool = biomePool.filter((pokemon) => {
+      const isLegendary =
+        pokemon.rarity === "legendary" || pokemon.rarity === "mythical";
+      return legendaryRoll ? isLegendary : !isLegendary;
+    });
 
-      const allPokemon = JSON.parse(data);
-      const currentTime = getTimeOfDay();
-      const weather = getCurrentWeather();
-      const selectedArea = String(area).toLowerCase();
-      const legendaryRoll = Math.random() < 0.02;
-      const areaPool = allPokemon.filter((pokemon) => {
-        const habitats = Array.isArray(pokemon.habitats)
-          ? pokemon.habitats
-          : pokemon.habitats
-            ? [pokemon.habitats]
-            : [];
-        return habitats.includes(selectedArea);
-      });
-      const biomePool = areaPool.length ? areaPool : allPokemon;
-      const spawnPool = biomePool.filter((pokemon) => {
-        const isLegendary =
-          pokemon.rarity === "legendary" || pokemon.rarity === "mythical";
-        return legendaryRoll ? isLegendary : !isLegendary;
-      });
-
-      const weightedPokemon = (spawnPool.length ? spawnPool : biomePool).map(
-        (pokemon) => ({
+    const weightedPokemon = (spawnPool.length ? spawnPool : biomePool).map(
+      (pokemon) => ({
+        pokemon,
+        weight: calculateSpawnWeight(
           pokemon,
-          weight: calculateSpawnWeight(
-            pokemon,
-            selectedArea,
-            currentTime,
-            weather,
-          ),
-        }),
-      );
+          selectedArea,
+          currentTime,
+          weather,
+        ),
+      }),
+    );
 
-      const encountered = normalizePokemon(weightedSelection(weightedPokemon));
-      const shiny = Math.random() < 1 / 4096;
-      const encounterData = {
-        ...encountered,
-        currentHp: encountered.maxHp || encountered.hp,
-        area,
-        level: encountered.level || 1,
-        weather,
-        shiny,
-        moves: encountered.moves.map((m) => ({
-          ...m,
-          currentPp: m.maxPp ?? m.pp,
-        })),
-      };
-      markPokedexSeen(encounterData.id);
-      res.json(encounterData);
-    },
-  );
+    const encountered = normalizePokemon(weightedSelection(weightedPokemon));
+    const shiny = Math.random() < 1 / 4096;
+    const encounterData = {
+      ...encountered,
+      currentHp: encountered.maxHp || encountered.hp,
+      area,
+      level: encountered.level || 1,
+      weather,
+      shiny,
+      moves: encountered.moves.map((m) => ({
+        ...m,
+        currentPp: m.maxPp ?? m.pp,
+      })),
+    };
+    markPokedexSeen(encounterData.id);
+    res.json(encounterData);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create encounter" });
+  }
 });
 
 app.post("/api/battle", (req, res) => {
@@ -2526,130 +2514,117 @@ app.post("/api/battle", (req, res) => {
     participantIndexes = [],
   } = req.body;
 
-  fs.readFile(
-    path.join(__dirname, "..", "inventory.json"),
-    "utf8",
-    (err, invData) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to read inventory" });
-      }
+  try {
+    const { team, storage } = loadTeamAndStorage();
+    let inventory = team;
+    const playerIndex =
+      Number.isInteger(pokemonIndex) && inventory[pokemonIndex]
+        ? pokemonIndex
+        : inventory.findIndex((p) => p.id === playerId);
+    if (playerIndex < 0) {
+      return res.status(404).json({ error: "Player Pokémon not found" });
+    }
 
-      let inventory = JSON.parse(invData).map(normalizePokemon);
-      const playerIndex =
-        Number.isInteger(pokemonIndex) && inventory[pokemonIndex]
-          ? pokemonIndex
-          : inventory.findIndex((p) => p.id === playerId);
-      if (playerIndex < 0) {
-        return res.status(404).json({ error: "Player Pokémon not found" });
-      }
+    const playerPokemon = inventory[playerIndex];
+    const wildPokemon = normalizePokemon(wild || {});
+    if (!wildPokemon.id) {
+      return res.status(400).json({ error: "Wild Pokémon is required" });
+    }
 
-      const playerPokemon = inventory[playerIndex];
-      const wildPokemon = normalizePokemon(wild || {});
-      if (!wildPokemon.id) {
-        return res.status(400).json({ error: "Wild Pokémon is required" });
-      }
+    playerPokemon.currentHp = Math.max(0, playerHP);
+    wildPokemon.currentHp = Math.max(0, wildHP);
+    playerPokemon.status = playerStatus;
+    wildPokemon.status = wildStatus;
+    let winner = null;
+    const log = [];
 
-      playerPokemon.currentHp = Math.max(0, playerHP);
-      wildPokemon.currentHp = Math.max(0, wildHP);
-      playerPokemon.status = playerStatus;
-      wildPokemon.status = wildStatus;
-      let winner = null;
-      const log = [];
+    const playerTurn = executeBattleMove(
+      playerPokemon,
+      wildPokemon,
+      moveName,
+      "Wild ",
+    );
+    log.push(...playerTurn.log);
+    if (playerTurn.error) {
+      return res.status(400).json({ error: playerTurn.error, log });
+    }
 
-      const playerTurn = executeBattleMove(
-        playerPokemon,
-        wildPokemon,
-        moveName,
-        "Wild ",
-      );
-      log.push(...playerTurn.log);
-      if (playerTurn.error) {
-        return res.status(400).json({ error: playerTurn.error, log });
-      }
+    if (wildPokemon.currentHp <= 0) {
+      winner = "player";
+      log.push(`Wild ${wildPokemon.name} fainted!`);
+    }
 
-      if (wildPokemon.currentHp <= 0) {
+    if (!winner) {
+      const availableMoves = wildPokemon.moves.filter((m) => m.currentPp > 0);
+      if (availableMoves.length === 0) {
         winner = "player";
-        log.push(`Wild ${wildPokemon.name} fainted!`);
-      }
-
-      if (!winner) {
-        const availableMoves = wildPokemon.moves.filter((m) => m.currentPp > 0);
-        if (availableMoves.length === 0) {
-          winner = "player";
-          log.push(`Wild ${wildPokemon.name} has no moves left!`);
-        } else {
-          const wildMove =
-            chooseBestMove(wildPokemon, playerPokemon) ||
-            availableMoves[Math.floor(Math.random() * availableMoves.length)];
-          const wildTurn = executeBattleMove(
-            wildPokemon,
-            playerPokemon,
-            wildMove.name,
-          );
-          log.push(...wildTurn.log);
-        }
-      }
-
-      if (playerPokemon.currentHp <= 0) {
-        winner = "wild";
-        log.push(`${playerPokemon.name} fainted!`);
-      }
-
-      let moneyReward = 0;
-      if (winner === "player") {
-        moneyReward = getRandomInt(
-          coinRewards.wildBattleMin,
-          coinRewards.wildBattleMax,
+        log.push(`Wild ${wildPokemon.name} has no moves left!`);
+      } else {
+        const wildMove =
+          chooseBestMove(wildPokemon, playerPokemon) ||
+          availableMoves[Math.floor(Math.random() * availableMoves.length)];
+        const wildTurn = executeBattleMove(
+          wildPokemon,
+          playerPokemon,
+          wildMove.name,
         );
-        const state = loadPlayerState();
-        awardCoins(state, moneyReward);
-        savePlayerState(state);
-        log.push(`You earned ${moneyReward} coins.`);
+        log.push(...wildTurn.log);
       }
+    }
 
-      const xpAward =
-        winner === "player" ? calculateBattleXp(wildPokemon, 1.75) : 0;
+    if (playerPokemon.currentHp <= 0) {
+      winner = "wild";
+      log.push(`${playerPokemon.name} fainted!`);
+    }
 
-      inventory[playerIndex] = playerPokemon;
-      let xpResult = null;
-      if (xpAward > 0) {
-        const participants = [...new Set([...participantIndexes, playerIndex])];
-        xpResult = applyXpToParticipants(inventory, participants, xpAward);
-        inventory = xpResult.team;
-        appendXpLog(log, xpResult.results);
-      }
-
-      fs.writeFile(
-        path.join(__dirname, "..", "inventory.json"),
-        JSON.stringify(inventory, null, 2),
-        (writeErr) => {
-          if (writeErr) {
-            return res.status(500).json({ error: "Failed to save inventory" });
-          }
-
-          res.json({
-            playerHP: playerPokemon.currentHp,
-            wildHP: wildPokemon.currentHp,
-            winner,
-            log,
-            playerStatus: playerPokemon.status,
-            wildStatus: wildPokemon.status,
-            moneyReward,
-            xpAward,
-            xpResult: xpResult
-              ? {
-                  xpEach: xpResult.xpEach,
-                  results: xpResult.results,
-                }
-              : null,
-            playerMoves: inventory[playerIndex].moves,
-            playerPokemon: inventory[playerIndex],
-            wild: wildPokemon,
-          });
-        },
+    let moneyReward = 0;
+    if (winner === "player") {
+      moneyReward = getRandomInt(
+        coinRewards.wildBattleMin,
+        coinRewards.wildBattleMax,
       );
-    },
-  );
+      const state = loadPlayerState();
+      awardCoins(state, moneyReward);
+      savePlayerState(state);
+      log.push(`You earned ${moneyReward} coins.`);
+    }
+
+    const xpAward =
+      winner === "player" ? calculateBattleXp(wildPokemon, 1.75) : 0;
+
+    inventory[playerIndex] = playerPokemon;
+    let xpResult = null;
+    if (xpAward > 0) {
+      const participants = [...new Set([...participantIndexes, playerIndex])];
+      xpResult = applyXpToParticipants(inventory, participants, xpAward);
+      inventory = xpResult.team;
+      appendXpLog(log, xpResult.results);
+    }
+
+    saveTeamAndStorage(inventory, storage);
+
+    res.json({
+      playerHP: playerPokemon.currentHp,
+      wildHP: wildPokemon.currentHp,
+      winner,
+      log,
+      playerStatus: playerPokemon.status,
+      wildStatus: wildPokemon.status,
+      moneyReward,
+      xpAward,
+      xpResult: xpResult
+        ? {
+            xpEach: xpResult.xpEach,
+            results: xpResult.results,
+          }
+        : null,
+      playerMoves: inventory[playerIndex].moves,
+      playerPokemon: inventory[playerIndex],
+      wild: wildPokemon,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to process battle" });
+  }
 });
 
 app.post("/api/catch", (req, res) => {
@@ -2676,107 +2651,88 @@ app.post("/api/catch", (req, res) => {
     status = "none",
   } = req.body;
 
-  fs.readFile(
-    path.join(__dirname, "..", "pokemon.json"),
-    "utf8",
-    (err, data) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to read Pokemon data" });
-      }
+  try {
+    const pokemon = getPokemonTemplates();
+    const target = normalizePokemon(pokemon.find((p) => p.id === id) || {});
+    if (!target.id) {
+      return res.status(404).json({ error: "Pokemon not found" });
+    }
+    const isLegendary =
+      target.rarity === "legendary" || target.rarity === "mythical";
+    const ownedIds = getAllOwnedPokemon().map((pokemon) => pokemon.id);
+    if (isLegendary && ownedIds.includes(target.id)) {
+      return res
+        .status(400)
+        .json({ error: `You already caught ${target.name}.` });
+    }
 
-      const pokemon = JSON.parse(data);
-      const target = normalizePokemon(pokemon.find((p) => p.id === id) || {});
-      if (!target.id) {
-        return res.status(404).json({ error: "Pokemon not found" });
-      }
-      const isLegendary =
-        target.rarity === "legendary" || target.rarity === "mythical";
-      const ownedIds = getAllOwnedPokemon().map((pokemon) => pokemon.id);
-      if (isLegendary && ownedIds.includes(target.id)) {
-        return res
-          .status(400)
-          .json({ error: `You already caught ${target.name}.` });
-      }
+    const currentHP = Math.max(
+      1,
+      Math.round((target.maxHp || target.hp) * wildHPPercent),
+    );
+    const catchProbability = calculateCatchProbability(
+      target,
+      pokeball,
+      currentHP,
+      status,
+    );
+    const success = catchProbability >= 1 || Math.random() < catchProbability;
+    const state = loadPlayerState();
+    if ((state.items[pokeball] || 0) <= 0) {
+      return res.status(400).json({ error: "You do not have that ball" });
+    }
+    state.items[pokeball] -= 1;
 
-      const currentHP = Math.max(
-        1,
-        Math.round((target.maxHp || target.hp) * wildHPPercent),
-      );
-      const catchProbability = calculateCatchProbability(
-        target,
-        pokeball,
-        currentHP,
-        status,
-      );
-      const success = catchProbability >= 1 || Math.random() < catchProbability;
-      const state = loadPlayerState();
-      if ((state.items[pokeball] || 0) <= 0) {
-        return res.status(400).json({ error: "You do not have that ball" });
-      }
-      state.items[pokeball] -= 1;
-
-      if (success) {
-        fs.readFile(inventoryPath, "utf8", (err2, invData) => {
-          if (err2) {
-            return res.status(500).json({ error: "Failed to read inventory" });
-          }
-
-          const { team, storage } = loadTeamAndStorage();
-          const caughtPokemon = {
-            ...target,
-            currentHp: currentHP,
-            level: target.level || 1,
-            xp: target.xp || 0,
-            shiny: !!req.body.shiny,
-            status: "none",
-            moves: target.moves.map((m) => ({
-              ...m,
-              currentPp: m.maxPp ?? m.pp,
-            })),
-          };
-          const catchDestination =
-            team.length < teamLimit ? "your team" : "storage";
-          if (team.length < teamLimit) {
-            team.push(caughtPokemon);
-          } else {
-            storage.push(caughtPokemon);
-          }
-          state.pokedex.seen = uniqueNumbers([
-            ...state.pokedex.seen,
-            target.id,
-          ]);
-          state.pokedex.caught = uniqueNumbers([
-            ...state.pokedex.caught,
-            target.id,
-          ]);
-          awardCoins(state, coinRewards.catch);
-
-          try {
-            saveTeamAndStorage(team, storage);
-            savePlayerState(state);
-            res.json({
-              success: true,
-              message: `Caught ${target.name}! Sent to ${catchDestination}. Earned ${coinRewards.catch} coins.`,
-              pokemon: caughtPokemon,
-              catchRate: Math.round(catchProbability * 100),
-              state,
-              destination: catchDestination,
-            });
-          } catch (writeError) {
-            res.status(500).json({ error: "Failed to save inventory" });
-          }
-        });
+    if (success) {
+      const { team, storage } = loadTeamAndStorage();
+      const caughtPokemon = {
+        ...target,
+        currentHp: currentHP,
+        level: target.level || 1,
+        xp: target.xp || 0,
+        shiny: !!req.body.shiny,
+        status: "none",
+        moves: target.moves.map((m) => ({
+          ...m,
+          currentPp: m.maxPp ?? m.pp,
+        })),
+      };
+      const catchDestination =
+        team.length < teamLimit ? "your team" : "storage";
+      if (team.length < teamLimit) {
+        team.push(caughtPokemon);
       } else {
-        savePlayerState(state);
-        res.json({
-          success: false,
-          message: "Pokemon escaped!",
-          catchRate: Math.round(catchProbability * 100),
-          state,
-        });
+        storage.push(caughtPokemon);
       }
-    },
-  );
+      state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, target.id]);
+      state.pokedex.caught = uniqueNumbers([
+        ...state.pokedex.caught,
+        target.id,
+      ]);
+      awardCoins(state, coinRewards.catch);
+
+      saveTeamAndStorage(team, storage);
+      savePlayerState(state);
+      return res.json({
+        success: true,
+        message: `Caught ${target.name}! Sent to ${catchDestination}. Earned ${coinRewards.catch} coins.`,
+        pokemon: caughtPokemon,
+        catchRate: Math.round(catchProbability * 100),
+        state,
+        destination: catchDestination,
+      });
+    }
+
+    savePlayerState(state);
+    res.json({
+      success: false,
+      message: "Pokemon escaped!",
+      catchRate: Math.round(catchProbability * 100),
+      state,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to catch Pokemon" });
+  }
 });
 
 app.get("/api/inventory", (req, res) => {
@@ -2927,43 +2883,25 @@ app.post("/api/swap-storage", (req, res) => {
 app.post("/api/heal-pokemon", (req, res) => {
   const { pokemonIndex } = req.body;
 
-  fs.readFile(
-    path.join(__dirname, "..", "inventory.json"),
-    "utf8",
-    (err, invData) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to read inventory" });
-      }
+  try {
+    const { team, storage } = loadTeamAndStorage();
+    if (pokemonIndex < 0 || pokemonIndex >= team.length) {
+      return res.status(400).json({ error: "Invalid Pokemon index" });
+    }
 
-      const inventory = JSON.parse(invData).map(normalizePokemon);
-      if (pokemonIndex < 0 || pokemonIndex >= inventory.length) {
-        return res.status(400).json({ error: "Invalid Pokemon index" });
-      }
-
-      const pokemon = inventory[pokemonIndex];
-      pokemon.currentHp = pokemon.maxHp;
-      pokemon.status = "none";
-      pokemon.moves = pokemon.moves.map((move) => ({
-        ...move,
-        currentPp: move.maxPp ?? move.pp,
-      }));
-
-      fs.writeFile(
-        path.join(__dirname, "..", "inventory.json"),
-        JSON.stringify(inventory, null, 2),
-        (err3) => {
-          if (err3) {
-            return res.status(500).json({ error: "Failed to save inventory" });
-          }
-          res.json({
-            success: true,
-            message: `${pokemon.name} was fully healed.`,
-            inventory,
-          });
-        },
-      );
-    },
-  );
+    const pokemon = restorePokemon(team[pokemonIndex]);
+    team[pokemonIndex] = pokemon;
+    saveTeamAndStorage(team, storage);
+    res.json({
+      success: true,
+      message: `${pokemon.name} was fully healed.`,
+      inventory: team,
+      team,
+      storage,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to heal Pokemon" });
+  }
 });
 
 app.listen(port, () => {

@@ -25,6 +25,7 @@ let activeOverlay = null;
 let pendingSwapStorageIndex = null;
 let focusedNpcId = null;
 let routeDialogue = null;
+const PARTY_LIMIT = 6;
 const areaPlayerPositions = {};
 const routeDiscovery = {};
 const recentRouteDiscoveries = {};
@@ -1733,7 +1734,7 @@ function displayParty(data) {
   const usableItems = getUsableItems();
   let html = `
     <div class="inventory-header">
-      <h3>Team (${data.length}/6)</h3>
+      <h3>Team (${data.length}/${PARTY_LIMIT})</h3>
       <span class="xp-help" title="Pokemon gain XP from winning battles. Any Pokemon used in the battle shares XP. Level up happens when XP reaches level x 50.">XP help</span>
       <button class="secondary-btn icon-button" onclick="healTeam()">${renderIcon("potion", "Potion")} Heal All</button>
     </div>
@@ -2041,7 +2042,7 @@ function releasePokemon(event, section, index) {
 }
 
 async function swapWithStorage(storageIndex) {
-  if (teamCache.length < 7) {
+  if (teamCache.length < PARTY_LIMIT) {
     await confirmStorageSwap(teamCache.length, storageIndex);
     return;
   }
@@ -2054,7 +2055,11 @@ async function confirmStorageSwap(
   teamIndex,
   explicitStorageIndex = pendingSwapStorageIndex,
 ) {
-  if (!Number.isInteger(teamIndex) || teamIndex < 0 || teamIndex > 6) {
+  if (
+    !Number.isInteger(teamIndex) ||
+    teamIndex < 0 ||
+    teamIndex >= PARTY_LIMIT
+  ) {
     alert("Choose a valid team slot.");
     return;
   }
