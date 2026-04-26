@@ -1,0 +1,54 @@
+{
+  "areaUnlocks": {
+    "forest": null,
+    "lake": "Aqua Badge",
+    "cave": "Volt Badge",
+    "ocean": "Aqua Badge",
+    "volcano": "Blaze Badge",
+    "mountain": "Rock Badge",
+    "desert": "Rock Badge",
+    "graveyard": "Psychic Badge"
+  },
+  "areas": [
+    {
+      "id": "forest",
+      "name": "Forest",
+      "requiresBadge": null
+    },
+    {
+      "id": "cave",
+      "name": "Cave",
+      "requiresBadge": "Volt Badge"
+    },
+    {
+      "id": "volcano",
+      "name": "Volcano",
+      "requiresBadge": "Blaze Badge"
+    },
+    {
+      "id": "ocean",
+      "name": "Ocean",
+      "requiresBadge": "Aqua Badge"
+    },
+    {
+      "id": "lake",
+      "name": "Lake",
+      "requiresBadge": "Aqua Badge"
+    },
+    {
+      "id": "mountain",
+      "name": "Mountain",
+      "requiresBadge": "Rock Badge"
+    },
+    {
+      "id": "desert",
+      "name": "Desert",
+      "requiresBadge": "Rock Badge"
+    },
+    {
+      "id": "graveyard",
+      "name": "Graveyard",
+      "requiresBadge": "Psychic Badge"
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "npcMaps": {
+    "forest": {
+      "width": 8,
+      "height": 6,
+      "theme": "forest"
+    },
+    "cave": {
+      "width": 8,
+      "height": 6,
+      "theme": "cave"
+    },
+    "ocean": {
+      "width": 8,
+      "height": 6,
+      "theme": "ocean"
+    },
+    "lake": {
+      "width": 8,
+      "height": 6,
+      "theme": "lake"
+    },
+    "volcano": {
+      "width": 8,
+      "height": 6,
+      "theme": "volcano"
+    },
+    "mountain": {
+      "width": 8,
+      "height": 6,
+      "theme": "mountain"
+    },
+    "desert": {
+      "width": 8,
+      "height": 6,
+      "theme": "desert"
+    },
+    "graveyard": {
+      "width": 8,
+      "height": 6,
+      "theme": "graveyard"
+    }
+  },
+  "npcs": [
+    {
+      "id": 1,
+      "area": "forest",
+      "name": "Trainer John",
+      "type": "trainer",
+      "sprite": "trainer",
+      "position": {
+        "x": 5,
+        "y": 3
+      },
+      "dialogue": "You already beat me. Keep your guard up in the cave ahead.",
+      "introDialogue": "Hey! Let's battle!",
+      "team": [
+        {
+          "name": "Pikachu",
+          "level": 10
+        }
+      ],
+      "rewardCoins": 320,
+      "itemReward": {
+        "id": "potion",
+        "quantity": 1
+      }
+    },
+    {
+      "id": 2,
+      "area": "forest",
+      "name": "Guide Maple",
+      "type": "guide",
+      "sprite": "guide",
+      "position": {
+        "x": 2,
+        "y": 2
+      },
+      "dialogue": "Routes open up fast once you grab badges. The cave responds to the Volt Badge."
+    },
+    {
+      "id": 3,
+      "area": "forest",
+      "name": "Merchant Nia",
+      "type": "shop",
+      "sprite": "shop",
+      "position": {
+        "x": 1,
+        "y": 5
+      },
+      "dialogue": "Travel light, battle hard. Need supplies?"
+    },
+    {
+      "id": 4,
+      "area": "forest",
+      "name": "Nurse Hana",
+      "type": "healer",
+      "sprite": "healer",
+      "position": {
+        "x": 7,
+        "y": 5
+      },
+      "dialogue": "Take a breath. I'll heal your whole team."
+    },
+    {
+      "id": 5,
+      "area": "lake",
+      "name": "Trainer Marina",
+      "type": "trainer",
+      "sprite": "trainer-water",
+      "position": {
+        "x": 5,
+        "y": 2
+      },
+      "dialogue": "That was a clean battle. Water types still have my heart.",
+      "introDialogue": "The water's calm. Perfect for a battle!",
+      "team": [
+        {
+          "name": "Psyduck",
+          "level": 12
+        },
+        {
+          "name": "Marill",
+          "level": 11
+        }
+      ],
+      "rewardCoins": 460
+    },
+    {
+      "id": 6,
+      "area": "cave",
+      "name": "Hiker Rex",
+      "type": "trainer",
+      "sprite": "trainer-rock",
+      "position": {
+        "x": 6,
+        "y": 3
+      },
+      "dialogue": "Solid win. You're ready for deeper tunnels now.",
+      "introDialogue": "This cave is my training ground!",
+      "team": [
+        {
+          "name": "Geodude",
+          "level": 14
+        },
+        {
+          "name": "Onix",
+          "level": 16
+        }
+      ],
+      "rewardCoins": 650,
+      "itemReward": {
+        "id": "great",
+        "quantity": 1
+      }
+    },
+    {
+      "id": 7,
+      "area": "ocean",
+      "name": "Captain Finn",
+      "type": "guide",
+      "sprite": "guide-sailor",
+      "position": {
+        "x": 3,
+        "y": 4
+      },
+      "dialogue": "Gym victories open sea lanes. Water specialists like to stack status moves."
+    },
+    {
+      "id": 8,
+      "area": "volcano",
+      "name": "Medic Ember",
+      "type": "healer",
+      "sprite": "healer-fire",
+      "position": {
+        "x": 2,
+        "y": 4
+      },
+      "dialogue": "The heat is brutal out here. Let me patch up your team."
+    }
+  ]
+}

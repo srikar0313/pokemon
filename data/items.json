@@ -1,0 +1,113 @@
+{
+  "standard": {
+    "name": "Poke Ball",
+    "category": "ball",
+    "price": 20,
+    "icon": "standard",
+    "description": "A basic ball for catching wild Pokemon."
+  },
+  "great": {
+    "name": "Great Ball",
+    "category": "ball",
+    "price": 50,
+    "icon": "great",
+    "description": "A better ball with improved catch odds."
+  },
+  "ultra": {
+    "name": "Ultra Ball",
+    "category": "ball",
+    "price": 100,
+    "icon": "ultra",
+    "description": "A high-performance ball for tough catches."
+  },
+  "master": {
+    "name": "Master Ball",
+    "category": "ball",
+    "price": 500,
+    "icon": "master",
+    "description": "The ultimate ball. It catches any wild Pokemon without fail."
+  },
+  "potion": {
+    "name": "Potion",
+    "category": "healing",
+    "price": 30,
+    "icon": "potion",
+    "healAmount": 50,
+    "description": "Restores 50 HP."
+  },
+  "superPotion": {
+    "name": "Super Potion",
+    "category": "healing",
+    "price": 700,
+    "icon": "potion",
+    "healAmount": 50,
+    "description": "Restores 50 HP."
+  },
+  "antidote": {
+    "name": "Antidote",
+    "category": "status",
+    "price": 100,
+    "icon": "poisoned",
+    "cures": [
+      "poisoned",
+      "badpoison"
+    ],
+    "description": "Cures poison."
+  },
+  "paralyzeHeal": {
+    "name": "Paralyze Heal",
+    "category": "status",
+    "price": 200,
+    "icon": "paralyzed",
+    "cures": [
+      "paralyzed"
+    ],
+    "description": "Cures paralysis."
+  },
+  "burnHeal": {
+    "name": "Burn Heal",
+    "category": "status",
+    "price": 250,
+    "icon": "burned",
+    "cures": [
+      "burned"
+    ],
+    "description": "Cures burns."
+  },
+  "iceHeal": {
+    "name": "Ice Heal",
+    "category": "status",
+    "price": 250,
+    "icon": "frozen",
+    "cures": [
+      "frozen"
+    ],
+    "description": "Cures freeze."
+  },
+  "awakening": {
+    "name": "Awakening",
+    "category": "status",
+    "price": 250,
+    "icon": "asleep",
+    "cures": [
+      "asleep"
+    ],
+    "description": "Wakes a sleeping Pokemon."
+  },
+  "fullHeal": {
+    "name": "Full Heal",
+    "category": "status",
+    "price": 600,
+    "icon": "potion",
+    "cures": [
+      "asleep",
+      "frozen",
+      "paralyzed",
+      "burned",
+      "poisoned",
+      "badpoison",
+      "confused"
+    ],
+    "description": "Cures any major status condition."
+  }
+}

@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1,
+    "name": "Volt Gym",
+    "leaderName": "Spark",
+    "city": "Volt City",
+    "type": "Electric",
+    "difficulty": 1,
+    "rewardCoins": 500,
+    "badge": "Volt Badge",
+    "team": [
+      {
+        "name": "Pichu",
+        "level": 10
+      },
+      {
+        "name": "Pikachu",
+        "level": 12
+      },
+      {
+        "name": "Voltorb",
+        "level": 14
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Aqua Gym",
+    "leaderName": "Mistyra",
+    "city": "Aqua Harbor",
+    "type": "Water",
+    "difficulty": 2,
+    "rewardCoins": 800,
+    "badge": "Aqua Badge",
+    "team": [
+      {
+        "name": "Squirtle",
+        "level": 16
+      },
+      {
+        "name": "Psyduck",
+        "level": 18
+      },
+      {
+        "name": "Lapras",
+        "level": 20
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Blaze Gym",
+    "leaderName": "Flint",
+    "city": "Blaze Town",
+    "type": "Fire",
+    "difficulty": 3,
+    "rewardCoins": 1100,
+    "badge": "Blaze Badge",
+    "team": [
+      {
+        "name": "Charmander",
+        "level": 20
+      },
+      {
+        "name": "Cyndaquil",
+        "level": 21
+      },
+      {
+        "name": "Growlithe",
+        "level": 22
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Forest Gym",
+    "leaderName": "Verdia",
+    "city": "Verdant Grove",
+    "type": "Grass",
+    "difficulty": 4,
+    "rewardCoins": 1400,
+    "badge": "Forest Badge",
+    "team": [
+      {
+        "name": "Bulbasaur",
+        "level": 24
+      },
+      {
+        "name": "Bellsprout",
+        "level": 25
+      },
+      {
+        "name": "Chikorita",
+        "level": 26
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Storm Gym",
+    "leaderName": "Zephyr",
+    "city": "Storm Peak",
+    "type": "Flying",
+    "difficulty": 5,
+    "rewardCoins": 1700,
+    "badge": "Storm Badge",
+    "team": [
+      {
+        "name": "Spearow",
+        "level": 28
+      },
+      {
+        "name": "Scyther",
+        "level": 30
+      },
+      {
+        "name": "Pidgeot",
+        "level": 32
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Rock Gym",
+    "leaderName": "Garnet",
+    "city": "Garnet Ridge",
+    "type": "Rock",
+    "difficulty": 6,
+    "rewardCoins": 2000,
+    "badge": "Rock Badge",
+    "team": [
+      {
+        "name": "Geodude",
+        "level": 34
+      },
+      {
+        "name": "Onix",
+        "level": 36
+      },
+      {
+        "name": "Cubone",
+        "level": 38
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Psychic Gym",
+    "leaderName": "Lunara",
+    "city": "Moonveil City",
+    "type": "Psychic",
+    "difficulty": 7,
+    "rewardCoins": 2300,
+    "badge": "Psychic Badge",
+    "team": [
+      {
+        "name": "Girafarig",
+        "level": 40
+      },
+      {
+        "name": "Clefairy",
+        "level": 42
+      },
+      {
+        "name": "Togepi",
+        "level": 44
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Ice Gym",
+    "leaderName": "Glacius",
+    "city": "Glacier Bay",
+    "type": "Ice",
+    "difficulty": 8,
+    "rewardCoins": 2600,
+    "badge": "Ice Badge",
+    "team": [
+      {
+        "name": "Sneasel",
+        "level": 46
+      },
+      {
+        "name": "Lapras",
+        "level": 48
+      },
+      {
+        "name": "Snorlax",
+        "level": 50
+      }
+    ]
+  }
+]

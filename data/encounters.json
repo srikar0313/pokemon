@@ -1,0 +1,33 @@
+{
+  "rarityWeights": {
+    "common": 60,
+    "uncommon": 25,
+    "rare": 10,
+    "legendary": 3,
+    "mythical": 1
+  },
+  "weatherBoosts": {
+    "Fire": [
+      "sunny"
+    ],
+    "Water": [
+      "rain"
+    ],
+    "Electric": [
+      "rain"
+    ],
+    "Ice": [
+      "snow"
+    ],
+    "Rock": [
+      "sandstorm"
+    ],
+    "Ground": [
+      "sandstorm"
+    ],
+    "Grass": [
+      "rain",
+      "sunny"
+    ]
+  }
+}

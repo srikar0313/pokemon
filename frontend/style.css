@@ -204,6 +204,78 @@ h3 {
   color: #4f647f;
 }
 
+.xp-meter {
+  margin: 8px 0;
+}
+
+.xp-meter-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #315170;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.xp-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: #dfe8f4;
+  overflow: hidden;
+}
+
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4d9de0, #67c587);
+  transition: width 0.25s ease;
+}
+
+.xp-help {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eaf2fb;
+  color: #30506f;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: help;
+}
+
+.reward-popups {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 80;
+  display: grid;
+  gap: 10px;
+  width: min(360px, calc(100vw - 36px));
+}
+
+.reward-popup {
+  padding: 12px 14px;
+  border: 2px solid #263a58;
+  border-radius: 12px;
+  background: #fffdf4;
+  box-shadow: 0 12px 32px rgba(20, 32, 48, 0.22);
+  animation: reward-pop 240ms ease-out;
+}
+
+.reward-popup p {
+  margin: 3px 0;
+  color: #263a58;
+  font-weight: 800;
+}
+
+@keyframes reward-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .trainer-portrait {
   min-width: 140px;
   display: flex;

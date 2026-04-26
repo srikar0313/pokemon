@@ -252,6 +252,87 @@ function normalizePokemon(pokemon) {
   };
 }
 
+function getXpNeeded(pokemon) {
+  return Math.max(25, (pokemon?.level || 1) * 50);
+}
+
+function renderXpBar(pokemon) {
+  const needed = getXpNeeded(pokemon);
+  const current = pokemon?.xp || 0;
+  const percent = Math.max(0, Math.min(100, (current / needed) * 100));
+  return `
+    <div class="xp-meter">
+      <div class="xp-meter-head">
+        <span>${renderIcon("xp", "XP")} XP</span>
+        <strong>${current}/${needed}</strong>
+      </div>
+      <div class="xp-bar"><div class="xp-fill" style="width: ${percent}%"></div></div>
+    </div>
+  `;
+}
+
+function renderMoveDetails(pokemon) {
+  return `
+    <div class="pokemon-moves">
+      <h4>Moves</h4>
+      <div class="moves-grid">
+        ${(pokemon.moves || [])
+          .map(
+            (move) => `
+              <div class="move-summary">
+                <strong>${move.name}</strong>
+                <span>${move.type} | ${move.category}</span>
+                <span>Power ${move.power ?? 0} | Acc ${move.accuracy ?? 100}</span>
+                <span>PP ${move.currentPp}/${move.maxPp ?? move.pp}</span>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderPokemonDetailCard(pokemon, title = "Pokemon details") {
+  const fainted = pokemon.currentHp <= 0;
+  return `
+    <div class="player-card trainer-sheet${fainted ? " fainted" : ""}">
+      <div class="trainer-portrait trainer-player">
+        <span class="trainer-role">${title}</span>
+        <img src="${getPokemonImage(pokemon.id)}" alt="${pokemon.name}">
+      </div>
+      <div class="player-info">
+        <div class="panel-header compact-header">
+          <div>
+            <h2>${pokemon.name}${pokemon.shiny ? " *" : ""}</h2>
+            <p>Level ${pokemon.level} | ${renderTypeBadges(pokemon.types)}</p>
+          </div>
+          <div class="badge-token player-badge-token">
+            <span class="badge-icon">XP</span>
+            <span>Next level: ${getXpNeeded(pokemon) - (pokemon.xp || 0)}</span>
+          </div>
+        </div>
+        <div class="partner-showcase">
+          <img class="partner-art" src="${getPokemonImage(pokemon.id)}" alt="${pokemon.name}">
+          <div class="partner-stats">
+            <p>${renderIcon("heart", "HP")} HP: ${pokemon.currentHp}/${pokemon.maxHp}</p>
+            <p>ATK ${pokemon.attack} | DEF ${pokemon.defense} | SP.ATK ${pokemon.specialAttack} | SP.DEF ${pokemon.specialDefense}</p>
+            <p>Status: ${fainted ? renderStatus("fainted") : renderStatus(pokemon.status)}</p>
+            <p>Evolution: ${
+              pokemon.evolvesTo && pokemon.evolveLevel
+                ? `${pokemon.evolvesTo} at level ${pokemon.evolveLevel}`
+                : "No evolution data"
+            }</p>
+            ${renderXpBar(pokemon)}
+          </div>
+        </div>
+        ${renderMoveDetails(pokemon)}
+        <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(pokemon.currentHp, pokemon.maxHp)}%"></div></div>
+      </div>
+    </div>
+  `;
+}
+
 function displayCurrentPlayer() {
   const currentPlayer = document.getElementById("current-player");
   const exploreBtn = document.getElementById("explore-btn");
@@ -270,53 +351,7 @@ function displayCurrentPlayer() {
   }
 
   const fainted = activePokemon.currentHp <= 0;
-  currentPlayer.innerHTML = `
-    <div class="player-card trainer-sheet${fainted ? " fainted" : ""}">
-      <div class="trainer-portrait trainer-player">
-        <span class="trainer-role">Player</span>
-        <img src="${trainerSprites.player}" alt="${playerState?.trainerName || "Player"} trainer">
-      </div>
-      <div class="player-info">
-        <div class="panel-header compact-header">
-          <div>
-            <h2>${playerState?.trainerName || "Player"}</h2>
-            <p>Active partner: ${activePokemon.name}${activePokemon.shiny ? " *" : ""}</p>
-          </div>
-          <div class="badge-token player-badge-token">
-            <span class="badge-icon">🎒</span>
-            <span>Trainer</span>
-          </div>
-        </div>
-        <div class="partner-showcase">
-          <img class="partner-art" src="${getPokemonImage(activePokemon.id)}" alt="${activePokemon.name}">
-          <div class="partner-stats">
-            <p>${renderTypeBadges(activePokemon.types)}</p>
-            <p>${renderIcon("xp", "XP")} Level: ${activePokemon.level} | XP: ${activePokemon.xp}</p>
-            <p>${renderIcon("heart", "HP")} HP: ${activePokemon.currentHp}/${activePokemon.maxHp}</p>
-            <p>ATK ${activePokemon.attack} | DEF ${activePokemon.defense} | SP.ATK ${activePokemon.specialAttack} | SP.DEF ${activePokemon.specialDefense}</p>
-            <p>Status: ${fainted ? renderStatus("fainted") : renderStatus(activePokemon.status)}</p>
-          </div>
-        </div>
-        <div class="pokemon-moves">
-          <h4>Moves</h4>
-          <div class="moves-grid">
-            ${activePokemon.moves
-              .map(
-                (move) => `
-                  <div class="move-summary">
-                    <strong>${move.name}</strong>
-                    <span>${move.type} • ${move.category}</span>
-                    <span>PP ${move.currentPp}/${move.maxPp ?? move.pp}</span>
-                  </div>
-                `,
-              )
-              .join("")}
-          </div>
-        </div>
-        <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(activePokemon.currentHp, activePokemon.maxHp)}%"></div></div>
-      </div>
-    </div>
-  `;
+  currentPlayer.innerHTML = renderPokemonDetailCard(activePokemon, "Active");
   if (exploreBtn) exploreBtn.disabled = fainted || !selectedArea;
 }
 
@@ -1698,7 +1733,8 @@ function displayParty(data) {
   const usableItems = getUsableItems();
   let html = `
     <div class="inventory-header">
-      <h3>Team (${data.length}/7)</h3>
+      <h3>Team (${data.length}/6)</h3>
+      <span class="xp-help" title="Pokemon gain XP from winning battles. Any Pokemon used in the battle shares XP. Level up happens when XP reaches level x 50.">XP help</span>
       <button class="secondary-btn icon-button" onclick="healTeam()">${renderIcon("potion", "Potion")} Heal All</button>
     </div>
   `;
@@ -1719,6 +1755,7 @@ function displayParty(data) {
             ${isActive ? '<span class="active-label">ACTIVE</span>' : ""}
           </div>
           <div class="hp-bar-small"><div class="hp-fill" style="width: ${getHpPercent(p.currentHp ?? p.hp, p.maxHp)}%"></div></div>
+          ${renderXpBar(p)}
           <p>${renderIcon("heart", "HP")} ${p.currentHp ?? p.hp}/${p.maxHp} HP ${fainted ? renderStatus("fainted") : renderStatus(p.status)}</p>
           <div class="bag-actions">
             <button onclick="setActivePokemonByIndex(event, ${index})" class="mini-item-btn icon-button">Make Active</button>
@@ -1749,7 +1786,7 @@ function displayStorage(storage) {
   } else {
     storage.forEach((p, index) => {
       const fainted = (p.currentHp ?? p.hp) <= 0;
-      html += `<div class="inventory-item storage-item${fainted ? " fainted" : ""}">
+      html += `<div class="inventory-item storage-item${fainted ? " fainted" : ""}" onclick="showPokemonDetail('storage', ${index})">
         <img src="${getPokemonImage(p.id)}" alt="${p.name}">
         <div class="item-info">
           <div class="inventory-top">
@@ -1757,9 +1794,10 @@ function displayStorage(storage) {
             ${renderTypeBadges(p.types)}
           </div>
           <div class="hp-bar-small"><div class="hp-fill" style="width: ${getHpPercent(p.currentHp ?? p.hp, p.maxHp)}%"></div></div>
+          ${renderXpBar(p)}
           <p>${renderIcon("heart", "HP")} ${p.currentHp ?? p.hp}/${p.maxHp} HP ${fainted ? renderStatus("fainted") : renderStatus(p.status)}</p>
           <div class="bag-actions">
-            <button onclick="swapWithStorage(${index})" class="mini-btn swap-btn">Swap into Team</button>
+            <button onclick="event.stopPropagation(); swapWithStorage(${index})" class="mini-btn swap-btn">Swap into Team</button>
             <button onclick="releasePokemon(event, 'storage', ${index})" class="mini-btn">Release</button>
           </div>
         </div>
@@ -1768,6 +1806,17 @@ function displayStorage(storage) {
   }
 
   inventoryDiv.insertAdjacentHTML("beforeend", html);
+}
+
+function showPokemonDetail(section, index) {
+  const pokemon =
+    section === "storage" ? storageCache[index] : teamCache[index];
+  const panel = document.getElementById("current-player");
+  if (!pokemon || !panel) return;
+  panel.innerHTML = renderPokemonDetailCard(
+    normalizePokemon(pokemon),
+    section === "storage" ? "Storage" : "Team",
+  );
 }
 
 function displayBag() {
@@ -2372,12 +2421,34 @@ function endEncounter() {
 function appendBattleLog(lines) {
   const logDiv = document.getElementById("battle-log");
   if (!logDiv) return;
+  showRewardPopup(lines);
   lines.forEach((line) => {
     const p = document.createElement("p");
     p.textContent = line;
     logDiv.appendChild(p);
   });
   logDiv.scrollTop = logDiv.scrollHeight;
+}
+
+function showRewardPopup(lines = []) {
+  const rewardLines = lines.filter((line) =>
+    /(earned|gained|leveled up|evolved|caught)/i.test(line),
+  );
+  if (!rewardLines.length) return;
+
+  let holder = document.getElementById("reward-popups");
+  if (!holder) {
+    holder = document.createElement("div");
+    holder.id = "reward-popups";
+    holder.className = "reward-popups";
+    document.body.appendChild(holder);
+  }
+
+  const popup = document.createElement("div");
+  popup.className = "reward-popup";
+  popup.innerHTML = rewardLines.map((line) => `<p>${line}</p>`).join("");
+  holder.appendChild(popup);
+  setTimeout(() => popup.remove(), 4200);
 }
 
 function renderTypeBadges(types) {

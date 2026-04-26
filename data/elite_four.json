@@ -1,0 +1,85 @@
+{
+  "eliteFour": [
+    {
+      "id": 1,
+      "name": "Noctis",
+      "type": "Dark",
+      "team": [
+        {
+          "name": "Sneasel",
+          "level": 40
+        },
+        {
+          "name": "Gengar",
+          "level": 45
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Pyra",
+      "type": "Fire",
+      "team": [
+        {
+          "name": "Growlithe",
+          "level": 45
+        },
+        {
+          "name": "Charizard",
+          "level": 50
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Marinus",
+      "type": "Water",
+      "team": [
+        {
+          "name": "Lapras",
+          "level": 48
+        },
+        {
+          "name": "Blastoise",
+          "level": 52
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Drakon",
+      "type": "Dragon",
+      "team": [
+        {
+          "name": "Dratini",
+          "level": 50
+        },
+        {
+          "name": "Dragonite",
+          "level": 55
+        }
+      ]
+    }
+  ],
+  "champion": {
+    "id": 5,
+    "name": "Champion Aurelius",
+    "type": "Legendary",
+    "badge": "Champion Badge",
+    "rewardCoins": 3000,
+    "team": [
+      {
+        "name": "Mewtwo",
+        "level": 60
+      },
+      {
+        "name": "Rayquaza",
+        "level": 62
+      },
+      {
+        "name": "Mew",
+        "level": 64
+      }
+    ]
+  }
+}

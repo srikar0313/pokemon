@@ -2383,7 +2383,7 @@
 	{
 		"id": 207,
 		"name": "Girafarig",
-		"type": "Normal",
+		"type": "Psychic",
 		"rarity": "uncommon",
 		"hp": 70,
 		"maxHp": 70,
@@ -2391,7 +2391,8 @@
 		"defense": 65,
 		"xpYield": 148,
 		"habitats": [
-			"desert"
+			"desert",
+			"mountain"
 		],
 		"times": [
 			"day"
@@ -2401,7 +2402,8 @@
 		"xp": 0,
 		"currentHp": 70,
 		"types": [
-			"Normal"
+			"Normal",
+			"Psychic"
 		],
 		"specialAttack": 70,
 		"specialDefense": 65,
@@ -5936,5 +5938,250 @@
 		"xp": 0,
 		"currentHp": 120,
 		"maxHp": 120
+	},
+	{
+		"id": 6,
+		"name": "Charizard",
+		"type": "Fire",
+		"types": [
+			"Fire",
+			"Flying"
+		],
+		"rarity": "legendary",
+		"hp": 78,
+		"maxHp": 78,
+		"attack": 84,
+		"defense": 78,
+		"specialAttack": 109,
+		"specialDefense": 85,
+		"moves": [
+			{
+				"name": "Flamethrower",
+				"type": "Fire",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 15,
+				"maxPp": 15,
+				"effect": {
+					"type": "status",
+					"status": "burned",
+					"chance": 10
+				},
+				"currentPp": 15
+			},
+			{
+				"name": "Air Slash",
+				"type": "Flying",
+				"category": "Special",
+				"power": 75,
+				"accuracy": 95,
+				"pp": 15,
+				"maxPp": 15,
+				"currentPp": 15
+			},
+			{
+				"name": "Dragon Breath",
+				"type": "Dragon",
+				"category": "Special",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 20,
+				"maxPp": 20,
+				"effect": {
+					"type": "status",
+					"status": "paralyzed",
+					"chance": 30
+				},
+				"currentPp": 20
+			},
+			{
+				"name": "Slash",
+				"type": "Normal",
+				"category": "Physical",
+				"power": 70,
+				"accuracy": 100,
+				"pp": 20,
+				"maxPp": 20,
+				"effect": {
+					"type": "criticalBoost",
+					"chance": 20
+				},
+				"currentPp": 20
+			}
+		],
+		"baseCatchRate": 45,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 78,
+		"xpYield": 240,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"day",
+			"night"
+		]
+	},
+	{
+		"id": 9,
+		"name": "Blastoise",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "legendary",
+		"hp": 79,
+		"maxHp": 79,
+		"attack": 83,
+		"defense": 100,
+		"specialAttack": 85,
+		"specialDefense": 105,
+		"moves": [
+			{
+				"name": "Water Pulse",
+				"type": "Water",
+				"category": "Special",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 20,
+				"maxPp": 20,
+				"effect": {
+					"type": "status",
+					"status": "confused",
+					"chance": 20
+				},
+				"currentPp": 20
+			},
+			{
+				"name": "Bite",
+				"type": "Dark",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 25,
+				"maxPp": 25,
+				"currentPp": 25
+			},
+			{
+				"name": "Ice Beam",
+				"type": "Ice",
+				"category": "Special",
+				"power": 90,
+				"accuracy": 100,
+				"pp": 10,
+				"maxPp": 10,
+				"effect": {
+					"type": "status",
+					"status": "frozen",
+					"chance": 10
+				},
+				"currentPp": 10
+			},
+			{
+				"name": "Protect",
+				"type": "Normal",
+				"category": "Status",
+				"power": 0,
+				"accuracy": 100,
+				"pp": 10,
+				"maxPp": 10,
+				"effect": {
+					"type": "statChange",
+					"target": "self",
+					"stat": "defense",
+					"stages": 1,
+					"chance": 100
+				},
+				"currentPp": 10
+			}
+		],
+		"baseCatchRate": 45,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 79,
+		"xpYield": 240,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"day",
+			"night"
+		]
+	},
+	{
+		"id": 149,
+		"name": "Dragonite",
+		"type": "Dragon",
+		"types": [
+			"Dragon",
+			"Flying"
+		],
+		"rarity": "legendary",
+		"hp": 91,
+		"maxHp": 91,
+		"attack": 134,
+		"defense": 95,
+		"specialAttack": 100,
+		"specialDefense": 100,
+		"moves": [
+			{
+				"name": "Dragon Breath",
+				"type": "Dragon",
+				"category": "Special",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 20,
+				"maxPp": 20,
+				"effect": {
+					"type": "status",
+					"status": "paralyzed",
+					"chance": 30
+				},
+				"currentPp": 20
+			},
+			{
+				"name": "Wing Attack",
+				"type": "Flying",
+				"category": "Physical",
+				"power": 60,
+				"accuracy": 100,
+				"pp": 35,
+				"maxPp": 35,
+				"currentPp": 35
+			},
+			{
+				"name": "Aqua Tail",
+				"type": "Water",
+				"category": "Physical",
+				"power": 90,
+				"accuracy": 90,
+				"pp": 10,
+				"maxPp": 10,
+				"currentPp": 10
+			},
+			{
+				"name": "Hyper Beam",
+				"type": "Normal",
+				"category": "Special",
+				"power": 120,
+				"accuracy": 90,
+				"pp": 5,
+				"maxPp": 5,
+				"currentPp": 5
+			}
+		],
+		"baseCatchRate": 45,
+		"level": 1,
+		"xp": 0,
+		"currentHp": 91,
+		"xpYield": 240,
+		"habitats": [
+			"mountain"
+		],
+		"times": [
+			"day",
+			"night"
+		]
 	}
 ]
