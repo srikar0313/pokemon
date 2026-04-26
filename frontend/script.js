@@ -85,7 +85,7 @@ const trainerSprites = {
   trainer: "https://play.pokemonshowdown.com/sprites/trainers/youngster.png",
   guide: "https://play.pokemonshowdown.com/sprites/trainers/oak.png",
   shop: "https://play.pokemonshowdown.com/sprites/trainers/clerk.png",
-  healer: "https://play.pokemonshowdown.com/sprites/trainers/nursejoy.png",
+  healer: "https://play.pokemonshowdown.com/sprites/trainers/nurse.png",
   hiker: "https://play.pokemonshowdown.com/sprites/trainers/hiker.png",
   fisherman: "https://play.pokemonshowdown.com/sprites/trainers/fisherman.png",
 };
