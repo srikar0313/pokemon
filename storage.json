@@ -1,0 +1,323 @@
+[
+  {
+    "id": 158,
+    "name": "Totodile",
+    "type": "Water",
+    "rarity": "common",
+    "hp": 50,
+    "maxHp": 50,
+    "attack": 9,
+    "defense": 20,
+    "xpYield": 66,
+    "habitats": [
+      "lake"
+    ],
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "level": 1,
+    "xp": 0,
+    "currentHp": 50,
+    "types": [
+      "Water"
+    ],
+    "specialAttack": 65,
+    "specialDefense": 64,
+    "moves": [
+      {
+        "name": "Scratch",
+        "type": "Normal",
+        "category": "Physical",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 35,
+        "maxPp": 35,
+        "currentPp": 35
+      },
+      {
+        "name": "Water Gun",
+        "type": "Water",
+        "category": "Special",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 25,
+        "maxPp": 25,
+        "currentPp": 25
+      },
+      {
+        "name": "Bite",
+        "type": "Dark",
+        "category": "Physical",
+        "power": 60,
+        "accuracy": 100,
+        "pp": 25,
+        "maxPp": 25,
+        "currentPp": 25
+      },
+      {
+        "name": "Aqua Tail",
+        "type": "Water",
+        "category": "Physical",
+        "power": 90,
+        "accuracy": 90,
+        "pp": 10,
+        "maxPp": 10,
+        "currentPp": 10
+      }
+    ],
+    "evolvesTo": "Croconaw",
+    "evolveLevel": 16,
+    "evolveType": "Water",
+    "status": "none",
+    "shiny": false
+  },
+  {
+    "id": 21,
+    "name": "Spearow",
+    "type": "Flying",
+    "rarity": "common",
+    "hp": 40,
+    "maxHp": 40,
+    "attack": 24,
+    "defense": 12,
+    "xpYield": 73,
+    "habitats": [
+      "mountain"
+    ],
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "level": 1,
+    "xp": 0,
+    "currentHp": 40,
+    "types": [
+      "Flying"
+    ],
+    "specialAttack": 60,
+    "specialDefense": 30,
+    "moves": [
+      {
+        "name": "Peck",
+        "type": "Flying",
+        "category": "Physical",
+        "power": 35,
+        "accuracy": 100,
+        "pp": 35,
+        "maxPp": 35,
+        "currentPp": 35
+      },
+      {
+        "name": "Leer",
+        "type": "Normal",
+        "category": "Status",
+        "power": 0,
+        "accuracy": 100,
+        "pp": 30,
+        "maxPp": 30,
+        "effect": {
+          "type": "statChange",
+          "target": "opponent",
+          "stat": "defense",
+          "stages": -1,
+          "chance": 100
+        },
+        "currentPp": 30
+      },
+      {
+        "name": "Fury Attack",
+        "type": "Normal",
+        "category": "Physical",
+        "power": 15,
+        "accuracy": 85,
+        "pp": 20,
+        "maxPp": 20,
+        "hits": 3,
+        "currentPp": 20
+      },
+      {
+        "name": "Aerial Ace",
+        "type": "Flying",
+        "category": "Physical",
+        "power": 60,
+        "accuracy": 100,
+        "pp": 20,
+        "maxPp": 20,
+        "currentPp": 20
+      }
+    ],
+    "shiny": false,
+    "status": "none"
+  },
+  {
+    "id": 155,
+    "name": "Cyndaquil",
+    "type": "Fire",
+    "rarity": "common",
+    "hp": 39,
+    "maxHp": 39,
+    "attack": 20,
+    "defense": 16,
+    "xpYield": 62,
+    "habitats": [
+      "volcano"
+    ],
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "level": 1,
+    "xp": 72,
+    "currentHp": 39,
+    "types": [
+      "Fire"
+    ],
+    "specialAttack": 52,
+    "specialDefense": 43,
+    "moves": [
+      {
+        "name": "Tackle",
+        "type": "Normal",
+        "category": "Physical",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 35,
+        "maxPp": 35,
+        "currentPp": 35
+      },
+      {
+        "name": "Ember",
+        "type": "Fire",
+        "category": "Special",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 25,
+        "maxPp": 25,
+        "effect": {
+          "type": "status",
+          "status": "burned",
+          "chance": 10
+        },
+        "currentPp": 25
+      },
+      {
+        "name": "Quick Attack",
+        "type": "Normal",
+        "category": "Physical",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 30,
+        "maxPp": 30,
+        "priority": 1,
+        "currentPp": 30
+      },
+      {
+        "name": "Flame Wheel",
+        "type": "Fire",
+        "category": "Physical",
+        "power": 60,
+        "accuracy": 100,
+        "pp": 25,
+        "maxPp": 25,
+        "effect": {
+          "type": "status",
+          "status": "burned",
+          "chance": 10
+        },
+        "currentPp": 25
+      }
+    ],
+    "evolvesTo": "Quilava",
+    "evolveLevel": 16,
+    "evolveType": "Fire",
+    "shiny": false,
+    "status": "none"
+  },
+  {
+    "id": 69,
+    "name": "Bellsprout",
+    "type": "Grass",
+    "rarity": "common",
+    "hp": 30,
+    "maxHp": 30,
+    "attack": 75,
+    "defense": 35,
+    "xpYield": 72,
+    "habitats": [
+      "forest"
+    ],
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "level": 1,
+    "xp": 0,
+    "currentHp": 30,
+    "types": [
+      "Grass"
+    ],
+    "specialAttack": 75,
+    "specialDefense": 35,
+    "moves": [
+      {
+        "name": "Vine Whip",
+        "type": "Grass",
+        "category": "Physical",
+        "power": 45,
+        "accuracy": 100,
+        "pp": 25,
+        "maxPp": 25,
+        "currentPp": 25
+      },
+      {
+        "name": "Acid",
+        "type": "Poison",
+        "category": "Special",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 30,
+        "maxPp": 30,
+        "effect": {
+          "type": "statChange",
+          "target": "opponent",
+          "stat": "specialDefense",
+          "stages": -1,
+          "chance": 10
+        },
+        "currentPp": 30
+      },
+      {
+        "name": "Sleep Powder",
+        "type": "Grass",
+        "category": "Status",
+        "power": 0,
+        "accuracy": 75,
+        "pp": 15,
+        "maxPp": 15,
+        "effect": {
+          "type": "status",
+          "status": "asleep",
+          "chance": 100
+        },
+        "currentPp": 15
+      },
+      {
+        "name": "Razor Leaf",
+        "type": "Grass",
+        "category": "Physical",
+        "power": 55,
+        "accuracy": 95,
+        "pp": 25,
+        "maxPp": 25,
+        "effect": {
+          "type": "criticalBoost",
+          "chance": 20
+        },
+        "currentPp": 25
+      }
+    ],
+    "status": "none",
+    "shiny": false
+  }
+]

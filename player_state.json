@@ -1,0 +1,74 @@
+{
+  "trainerName": "Player",
+  "coins": 1250,
+  "money": 1250,
+  "level": 1,
+  "xp": 46,
+  "badges": [
+    "Volt Badge"
+  ],
+  "championDefeated": false,
+  "unlockedAreas": [
+    "forest",
+    "cave"
+  ],
+  "unlockedGyms": [
+    1,
+    2
+  ],
+  "items": {
+    "standard": 9,
+    "great": 6,
+    "ultra": 3,
+    "master": 1,
+    "potion": 5,
+    "superPotion": 1,
+    "antidote": 2,
+    "paralyzeHeal": 2,
+    "burnHeal": 1,
+    "iceHeal": 1,
+    "awakening": 1,
+    "fullHeal": 1
+  },
+  "pokedex": {
+    "seen": [
+      25,
+      7,
+      1,
+      155,
+      21,
+      152,
+      74,
+      151,
+      172,
+      104,
+      158,
+      35,
+      143,
+      194,
+      54,
+      100,
+      69
+    ],
+    "caught": [
+      25,
+      7,
+      1,
+      155,
+      21,
+      104,
+      158,
+      74,
+      35,
+      143,
+      69
+    ]
+  },
+  "defeatedNpcs": [],
+  "achievements": [
+    "First Encounter",
+    "First Catch",
+    "Rookie Collector",
+    "Pokedex Scout"
+  ]
+}

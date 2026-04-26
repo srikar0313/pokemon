@@ -7,15 +7,105 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Pokémon Adventure</h1>
-    <div id="current-player"></div>
-    <div id="stats"></div>
-    <div id="main-panel">
-      <div id="areas"></div>
-      <div id="inventory"></div>
+    <div class="app-shell">
+      <div id="stats"></div>
+      <div id="main-nav" class="main-nav">
+        <button class="nav-tab active" data-screen="explore" onclick="setActiveScreen('explore')">Explore</button>
+        <button class="nav-tab" data-screen="battle" onclick="setActiveScreen('battle')">Battle</button>
+        <button class="nav-tab" data-screen="party" onclick="setActiveScreen('party')">Party</button>
+        <button class="nav-tab" data-screen="inventory" onclick="setActiveScreen('inventory')">Inventory</button>
+        <button class="nav-tab" data-screen="gym" onclick="setActiveScreen('gym')">Gym</button>
+      </div>
+
+      <div id="screen-stack" class="screen-stack">
+        <section id="explore-screen" class="screen-panel active">
+          <div class="screen-card">
+            <div class="screen-header">
+              <div>
+                <h2>Explore</h2>
+                <p>Choose where to travel next.</p>
+              </div>
+              <div class="screen-actions">
+                <button class="secondary-btn" onclick="openOverlay('center')">Pokemon Center</button>
+                <button class="secondary-btn" onclick="openOverlay('shop')">Shop</button>
+              </div>
+            </div>
+            <div id="areas"></div>
+            <div id="route-world"></div>
+            <div id="npc-dialogue"></div>
+            <button id="explore-btn" class="primary-action" style="display: none">Explore</button>
+          </div>
+        </section>
+
+        <section id="battle-screen" class="screen-panel">
+          <div class="screen-card battle-screen-card">
+            <div id="encounter"></div>
+          </div>
+        </section>
+
+        <section id="party-screen" class="screen-panel">
+          <div class="screen-card">
+            <div class="screen-header">
+              <div>
+                <h2>Party</h2>
+                <p>Manage your team and active Pokemon.</p>
+              </div>
+            </div>
+            <div id="current-player"></div>
+            <div id="party-panel"></div>
+          </div>
+        </section>
+
+        <section id="inventory-screen" class="screen-panel">
+          <div class="screen-card">
+            <div class="screen-header">
+              <div>
+                <h2>Inventory</h2>
+                <p>Use items on your active Pokemon.</p>
+              </div>
+              <div class="screen-actions">
+                <button class="secondary-btn" onclick="openOverlay('shop')">Open Shop</button>
+              </div>
+            </div>
+            <div id="bag-panel"></div>
+          </div>
+        </section>
+
+        <section id="gym-screen" class="screen-panel">
+          <div class="screen-grid">
+            <div class="screen-card">
+              <div id="gyms"></div>
+            </div>
+            <div class="screen-card">
+              <div id="elite"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div id="overlay-backdrop" class="overlay-backdrop hidden" onclick="closeOverlay(event)">
+        <div class="overlay-card" onclick="event.stopPropagation()">
+          <div class="overlay-header">
+            <h2 id="overlay-title">Menu</h2>
+            <button class="close-btn" onclick="closeOverlay()">Close</button>
+          </div>
+          <div id="shop-panel" class="overlay-panel hidden">
+            <div id="shop"></div>
+          </div>
+          <div id="center-panel" class="overlay-panel hidden">
+            <div class="center-panel">
+              <h3>Pokemon Center</h3>
+              <p>Heal your full team and storage in one visit.</p>
+              <button class="primary-action" onclick="healTeam()">Heal All</button>
+              <div id="center-message" class="overlay-message"></div>
+            </div>
+          </div>
+          <div id="swap-panel" class="overlay-panel hidden">
+            <div id="swap-picker"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <button id="explore-btn" style="display: none">Explore</button>
-    <div id="encounter"></div>
     <script src="script.js"></script>
   </body>
 </html>
