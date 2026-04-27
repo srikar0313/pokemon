@@ -1,9 +1,9 @@
 {
   "trainerName": "Player",
-  "coins": 111,
-  "money": 111,
+  "coins": 161,
+  "money": 161,
   "level": 7,
-  "xp": 615,
+  "xp": 620,
   "badges": [
     "Volt Badge",
     "Aqua Badge"
@@ -23,7 +23,7 @@
   "items": {
     "standard": 29,
     "great": 29,
-    "ultra": 21,
+    "ultra": 18,
     "master": 5,
     "potion": 5,
     "superPotion": 0,
@@ -69,7 +69,8 @@
       219,
       230,
       260,
-      227
+      227,
+      3
     ],
     "caught": [
       25,
@@ -88,7 +89,8 @@
       220,
       232,
       225,
-      131
+      131,
+      3
     ]
   },
   "defeatedNpcs": [

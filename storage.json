@@ -929,5 +929,94 @@
     "status": "none",
     "shiny": false,
     "learnset": []
+  },
+  {
+    "id": 3,
+    "name": "Venusaur",
+    "type": "Grass",
+    "types": [
+      "Grass",
+      "Poison"
+    ],
+    "rarity": "rare",
+    "hp": 80,
+    "maxHp": 80,
+    "attack": 82,
+    "defense": 83,
+    "specialAttack": 100,
+    "specialDefense": 100,
+    "xpYield": 236,
+    "habitats": [
+      "forest"
+    ],
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "level": 1,
+    "xp": 0,
+    "moves": [
+      {
+        "name": "Razor Leaf",
+        "type": "Grass",
+        "category": "Physical",
+        "power": 55,
+        "accuracy": 95,
+        "pp": 25,
+        "maxPp": 25,
+        "effect": {
+          "type": "criticalBoost",
+          "chance": 20
+        },
+        "currentPp": 25
+      },
+      {
+        "name": "Sleep Powder",
+        "type": "Grass",
+        "category": "Status",
+        "power": 0,
+        "accuracy": 75,
+        "pp": 15,
+        "maxPp": 15,
+        "effect": {
+          "type": "status",
+          "status": "asleep",
+          "chance": 100
+        },
+        "currentPp": 15
+      },
+      {
+        "name": "Energy Ball",
+        "type": "Grass",
+        "category": "Special",
+        "power": 90,
+        "accuracy": 100,
+        "pp": 10,
+        "effect": {
+          "type": "statChange",
+          "target": "opponent",
+          "stat": "specialDefense",
+          "stages": -1,
+          "chance": 10
+        },
+        "maxPp": 10,
+        "currentPp": 10
+      },
+      {
+        "name": "Solar Beam",
+        "type": "Grass",
+        "category": "Special",
+        "power": 120,
+        "accuracy": 100,
+        "pp": 10,
+        "maxPp": 10,
+        "currentPp": 10
+      }
+    ],
+    "imageId": 3,
+    "currentHp": 80,
+    "status": "none",
+    "learnset": [],
+    "shiny": false
   }
 ]
