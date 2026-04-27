@@ -548,7 +548,7 @@ h3 {
   background: #f7fbff;
 }
 
-.pokedex-card.hidden {
+.pokedex-card.unknown {
   background: repeating-linear-gradient(
     135deg,
     #f3f6fb,

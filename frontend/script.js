@@ -1844,7 +1844,7 @@ function renderLegendaryHint(entry, canShowDetails) {
 function renderPokedexCard(entry) {
   const canShowDetails = entry.seen || entry.caught;
   const status = entry.caught ? "Caught" : entry.seen ? "Seen" : "Unknown";
-  const cardClass = `pokedex-card ${entry.caught ? "caught" : entry.seen ? "seen" : "hidden"}`;
+  const cardClass = `pokedex-card ${entry.caught ? "caught" : entry.seen ? "seen" : "unknown"}`;
   const habitats = formatList(entry.habitats, formatAreaName);
   const times = formatList(entry.times);
   const displayName = canShowDetails ? entry.name : "???";
