@@ -1344,7 +1344,8 @@
     "pp": 10,
     "effect": {
       "type": "heal",
-      "amount": "50%"
+      "target": "self",
+      "percent": 50
     },
     "maxPp": 10
   },
@@ -1541,11 +1542,7 @@
     "accuracy": 100,
     "pp": 30,
     "maxPp": 30,
-    "priority": 1,
-    "effect": {
-      "type": "priority",
-      "amount": 1
-    }
+    "priority": 1
   },
   "Rapid Spin": {
     "name": "Rapid Spin",
@@ -1579,7 +1576,8 @@
     "maxPp": 10,
     "effect": {
       "type": "heal",
-      "amount": "50%"
+      "target": "self",
+      "percent": 50
     }
   },
   "Rest": {
@@ -1658,7 +1656,8 @@
     "pp": 10,
     "effect": {
       "type": "heal",
-      "amount": "50%"
+      "target": "self",
+      "percent": 50
     },
     "maxPp": 10
   },

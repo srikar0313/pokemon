@@ -205,6 +205,21 @@ function createBattleEngine({ getRandomInt }) {
     return true;
   }
 
+  function getUnsupportedEffectMessage(effect) {
+    const labels = {
+      weather: "Weather effect",
+      trap: "Trap effect",
+      recoil: "Recoil effect",
+      flinch: "Flinch effect",
+      flinched: "Flinch effect",
+      curse: "Curse effect",
+      taunted: "Taunt effect",
+      priority: "Priority effect",
+    };
+    const label = labels[effect?.type] || `${effect?.type || "Move"} effect`;
+    return `${label} is not implemented yet.`;
+  }
+
   function applyMoveEffect(move, attacker, defender) {
     const effect = move.effect;
     const log = [];
@@ -246,6 +261,10 @@ function createBattleEngine({ getRandomInt }) {
       log.push(`${attacker.name}'s stats rose!`);
     } else if (effect.type === "randomMove") {
       log.push("A mysterious power sparked, but nothing happened.");
+    } else if (effect.type === "criticalBoost") {
+      return log;
+    } else {
+      log.push(getUnsupportedEffectMessage(effect));
     }
 
     return log;
