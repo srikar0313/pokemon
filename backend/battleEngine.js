@@ -220,6 +220,45 @@ function createBattleEngine({ getRandomInt }) {
     return `${label} is not implemented yet.`;
   }
 
+  function applyStatusDamage(pokemon, divisor, message, log) {
+    const maxHp = Math.max(1, pokemon.maxHp || pokemon.hp || 1);
+    const damage = Math.min(
+      pokemon.currentHp,
+      Math.max(1, Math.floor(maxHp / divisor)),
+    );
+    pokemon.currentHp = Math.max(0, pokemon.currentHp - damage);
+    log.push(`${pokemon.name} ${message} It lost ${damage} HP.`);
+  }
+
+  function applyEndOfTurnStatus(pokemon, log = []) {
+    if (!pokemon || pokemon.currentHp <= 0) return log;
+
+    const status = pokemon.status || "none";
+    if (status === "burned") {
+      applyStatusDamage(pokemon, 16, "is hurt by its burn.", log);
+    } else if (status === "poisoned") {
+      applyStatusDamage(pokemon, 8, "is hurt by poison.", log);
+    } else if (status === "badpoison") {
+      applyStatusDamage(pokemon, 6, "is badly hurt by poison.", log);
+    } else if (status === "asleep") {
+      if (Math.random() < 0.33) {
+        pokemon.status = "none";
+        log.push(`${pokemon.name} woke up!`);
+      }
+    } else if (status === "frozen") {
+      if (Math.random() < 0.2) {
+        pokemon.status = "none";
+        log.push(`${pokemon.name} thawed out!`);
+      }
+    } else if (status === "confused") {
+      if (Math.random() < 0.33) {
+        applyStatusDamage(pokemon, 10, "hurt itself in confusion.", log);
+      }
+    }
+
+    return log;
+  }
+
   function applyMoveEffect(move, attacker, defender) {
     const effect = move.effect;
     const log = [];
@@ -567,6 +606,7 @@ function createBattleEngine({ getRandomInt }) {
     checkAccuracy,
     changeStat,
     applyMoveEffect,
+    applyEndOfTurnStatus,
     calculateMoveDamage,
     executeBattleMove,
     getAvailableMoves,

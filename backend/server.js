@@ -136,6 +136,7 @@ const battleEngine = createBattleEngine({ getRandomInt });
 const {
   aiDifficulty,
   executeBattleMove,
+  applyEndOfTurnStatus,
   chooseBestMove,
   chooseGymAction,
   chooseTrainerAction,
@@ -147,6 +148,15 @@ const encounterEngine = createEncounterEngine({
   getPokemonTypes,
 });
 const { selectEncounter } = encounterEngine;
+
+function applyBattleEndOfTurnStatus(playerPokemon, opponentPokemon, log) {
+  if (playerPokemon?.currentHp > 0) {
+    applyEndOfTurnStatus(playerPokemon, log);
+  }
+  if (opponentPokemon?.currentHp > 0) {
+    applyEndOfTurnStatus(opponentPokemon, log);
+  }
+}
 
 const rewardEngine = createRewardEngine({
   normalizePokemon,
@@ -897,6 +907,35 @@ app.post("/api/gym/move", (req, res) => {
     );
   }
 
+  const activeGymPokemon = session.gymTeam[session.gymIndex];
+  applyBattleEndOfTurnStatus(playerPokemon, activeGymPokemon, log);
+
+  if (activeGymPokemon?.currentHp <= 0) {
+    const xpAward = calculateBattleXp(activeGymPokemon, 2.5);
+    const xpResult = applyXpToParticipants(
+      session.playerTeam,
+      session.participantIndexes || [session.playerIndex],
+      xpAward,
+    );
+    session.playerTeam = xpResult.team;
+    log.push(`Gym ${activeGymPokemon.name} fainted!`);
+    appendXpLog(log, xpResult.results);
+    session.participantIndexes = [session.playerIndex];
+    session.gymIndex += 1;
+    if (session.gymIndex >= session.gymTeam.length) {
+      return res.json(completeGymSession(session, log));
+    }
+    log.push(
+      `${session.gym.name} sent out ${session.gymTeam[session.gymIndex].name}!`,
+    );
+    persistGymPlayerTeam(session);
+    return res.json({
+      success: true,
+      log,
+      session: getGymSessionView(session),
+    });
+  }
+
   if (playerPokemon.currentHp <= 0) {
     log.push(`${playerPokemon.name} fainted!`);
     const nextIndex = getFirstHealthyPokemonIndex(session.playerTeam);
@@ -1064,6 +1103,61 @@ app.post("/api/elite/move", (req, res) => {
         eliteAction.move.name,
       ).log,
     );
+  }
+
+  const activeOpponentPokemon = session.opponentTeam[session.opponentIndex];
+  applyBattleEndOfTurnStatus(playerPokemon, activeOpponentPokemon, log);
+
+  if (activeOpponentPokemon?.currentHp <= 0) {
+    const xpAward = calculateBattleXp(
+      activeOpponentPokemon,
+      session.isChampion ? 3.5 : 3,
+    );
+    const xpResult = applyXpToParticipants(
+      session.playerTeam,
+      session.participantIndexes || [session.playerIndex],
+      xpAward,
+    );
+    session.playerTeam = xpResult.team;
+    log.push(`${activeOpponentPokemon.name} fainted!`);
+    appendXpLog(log, xpResult.results);
+    session.participantIndexes = [session.playerIndex];
+    session.opponentIndex = getFirstHealthyPokemonIndex(session.opponentTeam);
+    if (session.opponentIndex < 0) {
+      if (session.isChampion) {
+        log.push(`${champion.name} has been defeated!`);
+        return res.json(completeEliteSession(session, log));
+      }
+
+      session.stageIndex += 1;
+      refreshEliteStage(session);
+      log.push(`${session.currentTrainer.name} entered the arena!`);
+      if (session.isChampion) {
+        log.push(`${champion.name} awaits as the final battle!`);
+      } else {
+        log.push(`Elite Four progress: ${session.stageIndex}/${eliteFour.length}`);
+      }
+      log.push(
+        `${session.currentTrainer.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
+      );
+      persistBattlePlayerTeam(session);
+      return res.json({
+        success: true,
+        stageCleared: true,
+        log,
+        session: getEliteSessionView(session),
+      });
+    }
+
+    log.push(
+      `${session.currentTrainer.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
+    );
+    persistBattlePlayerTeam(session);
+    return res.json({
+      success: true,
+      log,
+      session: getEliteSessionView(session),
+    });
   }
 
   if (playerPokemon.currentHp <= 0) {
@@ -1435,6 +1529,35 @@ app.post("/api/npc/move", (req, res) => {
     );
   }
 
+  const activeNpcPokemon = session.opponentTeam[session.opponentIndex];
+  applyBattleEndOfTurnStatus(playerPokemon, activeNpcPokemon, log);
+
+  if (activeNpcPokemon?.currentHp <= 0) {
+    const xpAward = calculateBattleXp(activeNpcPokemon, 2);
+    const xpResult = applyXpToParticipants(
+      session.playerTeam,
+      session.participantIndexes || [session.playerIndex],
+      xpAward,
+    );
+    session.playerTeam = xpResult.team;
+    log.push(`${session.npc.name}'s ${activeNpcPokemon.name} fainted!`);
+    appendXpLog(log, xpResult.results);
+    session.participantIndexes = [session.playerIndex];
+    session.opponentIndex = getFirstHealthyPokemonIndex(session.opponentTeam);
+    if (session.opponentIndex < 0) {
+      return res.json(completeNpcBattle(session, log));
+    }
+    log.push(
+      `${session.npc.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
+    );
+    persistBattlePlayerTeam(session);
+    return res.json({
+      success: true,
+      log,
+      session: getNpcSessionView(session),
+    });
+  }
+
   if (playerPokemon.currentHp <= 0) {
     log.push(`${playerPokemon.name} fainted!`);
     const nextIndex = getFirstHealthyPokemonIndex(session.playerTeam);
@@ -1571,6 +1694,14 @@ app.post("/api/battle", (req, res) => {
           wildMove.name,
         );
         log.push(...wildTurn.log);
+      }
+    }
+
+    if (!winner) {
+      applyBattleEndOfTurnStatus(playerPokemon, wildPokemon, log);
+      if (wildPokemon.currentHp <= 0) {
+        winner = "player";
+        log.push(`Wild ${wildPokemon.name} fainted!`);
       }
     }
 
