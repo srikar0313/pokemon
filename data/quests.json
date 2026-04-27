@@ -1,0 +1,109 @@
+[
+  {
+    "id": "first-catch",
+    "title": "First Catch",
+    "description": "Catch your first wild Pokemon.",
+    "type": "pokemonCaught",
+    "goal": 1,
+    "reward": {
+      "coins": 150,
+      "items": {
+        "standard": 3
+      }
+    }
+  },
+  {
+    "id": "field-training",
+    "title": "Field Training",
+    "description": "Win 3 wild Pokemon battles.",
+    "type": "wildBattlesWon",
+    "goal": 3,
+    "reward": {
+      "coins": 250,
+      "items": {
+        "potion": 2
+      }
+    }
+  },
+  {
+    "id": "rookie-collector",
+    "title": "Rookie Collector",
+    "description": "Register 5 caught Pokemon in the Pokedex.",
+    "type": "pokedexCaught",
+    "goal": 5,
+    "reward": {
+      "coins": 300,
+      "items": {
+        "great": 2
+      }
+    }
+  },
+  {
+    "id": "route-rival",
+    "title": "Route Rival",
+    "description": "Defeat 1 trainer NPC.",
+    "type": "npcBattlesWon",
+    "goal": 1,
+    "reward": {
+      "coins": 400,
+      "items": {
+        "superPotion": 1
+      }
+    }
+  },
+  {
+    "id": "badge-step",
+    "title": "Badge Step",
+    "description": "Earn your first Gym Badge.",
+    "type": "badges",
+    "goal": 1,
+    "reward": {
+      "coins": 600,
+      "items": {
+        "ultra": 1
+      }
+    }
+  },
+  {
+    "id": "arena-climber",
+    "title": "Arena Climber",
+    "description": "Earn 3 Gym Badges.",
+    "type": "badges",
+    "goal": 3,
+    "reward": {
+      "coins": 900,
+      "items": {
+        "hyperPotion": 1,
+        "ultra": 2
+      }
+    }
+  },
+  {
+    "id": "league-ready",
+    "title": "League Ready",
+    "description": "Earn all 8 Gym Badges.",
+    "type": "badges",
+    "goal": 8,
+    "reward": {
+      "coins": 1500,
+      "items": {
+        "master": 1,
+        "maxPotion": 1
+      }
+    }
+  },
+  {
+    "id": "champion-path",
+    "title": "Champion Path",
+    "description": "Defeat the Champion.",
+    "type": "championDefeated",
+    "goal": 1,
+    "reward": {
+      "coins": 2500,
+      "items": {
+        "master": 1,
+        "fullHeal": 3
+      }
+    }
+  }
+]

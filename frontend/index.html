@@ -47,6 +47,13 @@
         </button>
         <button
           class="nav-tab"
+          data-screen="quests"
+          onclick="setActiveScreen('quests')"
+        >
+          Quests
+        </button>
+        <button
+          class="nav-tab"
           data-screen="gym"
           onclick="setActiveScreen('gym')"
         >
@@ -124,6 +131,12 @@
         <section id="pokedex-screen" class="screen-panel">
           <div class="screen-card">
             <div id="pokedex-panel"></div>
+          </div>
+        </section>
+
+        <section id="quests-screen" class="screen-panel">
+          <div class="screen-card">
+            <div id="quests-panel"></div>
           </div>
         </section>
 

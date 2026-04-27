@@ -35,6 +35,7 @@ const areas = gameData.areas;
 const areaUnlocks = gameData.areaUnlocks;
 const rarityWeights = gameData.rarityWeights;
 const weatherBoosts = gameData.weatherBoosts;
+const quests = gameData.quests || [];
 const pokemonUtils = createPokemonUtils({
   pokemonPath,
   readJsonFile: loadJson,
@@ -126,6 +127,7 @@ const {
   saveTeamAndStorage,
   getAllOwnedPokemon,
   uniqueNumbers,
+  uniqueStrings,
   loadPlayerState,
   savePlayerState,
   markPokedexSeen,
@@ -229,6 +231,112 @@ function getPokedexEntries(state) {
       };
     })
     .sort((a, b) => a.id - b.id);
+}
+
+function incrementQuestStat(state, stat, amount = 1) {
+  state.questStats = {
+    wildBattlesWon: 0,
+    pokemonCaught: 0,
+    npcBattlesWon: 0,
+    gymBattlesWon: 0,
+    eliteWins: 0,
+    questsCompleted: 0,
+    ...(state.questStats || {}),
+  };
+  state.questStats[stat] =
+    (Number(state.questStats[stat]) || 0) + Math.max(1, Number(amount) || 1);
+  return state;
+}
+
+function getQuestProgressValue(state, quest) {
+  const questStats = state.questStats || {};
+  switch (quest.type) {
+    case "pokemonCaught":
+    case "catch":
+      return Math.max(
+        Number(questStats.pokemonCaught) || 0,
+        state.pokedex?.caught?.length || 0,
+      );
+    case "pokedexCaught":
+      return state.pokedex?.caught?.length || 0;
+    case "wildBattlesWon":
+      return Number(questStats.wildBattlesWon) || 0;
+    case "npcBattlesWon":
+      return Math.max(
+        Number(questStats.npcBattlesWon) || 0,
+        state.defeatedNpcs?.length || 0,
+      );
+    case "gymBattlesWon":
+      return Math.max(
+        Number(questStats.gymBattlesWon) || 0,
+        (state.badges || []).filter((badge) => allGymBadges.includes(badge))
+          .length,
+      );
+    case "badges":
+      return (state.badges || []).filter((badge) => allGymBadges.includes(badge))
+        .length;
+    case "eliteWins":
+      return Math.max(
+        Number(questStats.eliteWins) || 0,
+        state.championDefeated ? 1 : 0,
+      );
+    case "championDefeated":
+      return state.championDefeated ? 1 : 0;
+    default:
+      return Number(questStats[quest.type]) || 0;
+  }
+}
+
+function getQuestView(quest, state) {
+  const goal = Math.max(1, Number(quest.goal) || 1);
+  const progress = Math.min(goal, getQuestProgressValue(state, quest));
+  const claimed = Boolean((state.quests?.claimed || []).includes(quest.id));
+  const completed = progress >= goal;
+  return {
+    ...quest,
+    goal,
+    progress,
+    percent: Math.round((progress / goal) * 100),
+    completed,
+    claimed,
+    claimable: completed && !claimed,
+  };
+}
+
+function getQuestList(state) {
+  return quests.map((quest) => getQuestView(quest, state));
+}
+
+function getQuestSummary(questList) {
+  return {
+    total: questList.length,
+    completed: questList.filter((quest) => quest.completed).length,
+    claimable: questList.filter((quest) => quest.claimable).length,
+    claimed: questList.filter((quest) => quest.claimed).length,
+  };
+}
+
+function applyQuestReward(state, reward = {}) {
+  const granted = {
+    coins: Math.max(0, Number(reward.coins) || 0),
+    items: [],
+  };
+
+  if (granted.coins > 0) {
+    awardCoins(state, granted.coins);
+  }
+
+  Object.entries(reward.items || {}).forEach(([itemId, quantity]) => {
+    const count = Math.max(1, Number(quantity) || 1);
+    state.items[itemId] = (state.items[itemId] || 0) + count;
+    granted.items.push({
+      id: itemId,
+      name: itemCatalog[itemId]?.name || itemId,
+      quantity: count,
+    });
+  });
+
+  return granted;
 }
 
 function getGymById(gymId) {
@@ -378,6 +486,7 @@ function completeNpcBattle(session, log = []) {
   const state = loadPlayerState();
   if (!isTrainerDefeated(state, session.npc.id)) {
     state.defeatedNpcs = [...(state.defeatedNpcs || []), session.npc.id];
+    incrementQuestStat(state, "npcBattlesWon");
     const rewardCoins = getNpcRewardCoins(session.npc);
     awardCoins(state, rewardCoins);
     log.push(`You defeated ${session.npc.name}!`);
@@ -427,6 +536,7 @@ function finishNpcLoss(session, log = []) {
 
 function completeGymSession(session, log = []) {
   const state = loadPlayerState();
+  incrementQuestStat(state, "gymBattlesWon");
   if (!state.badges.includes(session.gym.badge)) {
     state.badges.push(session.gym.badge);
     awardCoins(state, session.gym.rewardCoins);
@@ -471,6 +581,7 @@ function refreshEliteStage(session) {
 
 function completeEliteSession(session, log = []) {
   const state = loadPlayerState();
+  incrementQuestStat(state, "eliteWins");
   if (!state.badges.includes(champion.badge)) {
     state.badges.push(champion.badge);
     state.championDefeated = true;
@@ -638,6 +749,50 @@ app.get("/api/pokedex", (req, res) => {
     caught: caughtCount,
     entries,
     achievements: state.achievements,
+  });
+});
+
+app.get("/api/quests", (req, res) => {
+  const state = loadPlayerState();
+  const questList = getQuestList(state);
+  res.json({
+    summary: getQuestSummary(questList),
+    stats: state.questStats || {},
+    claimed: state.quests?.claimed || [],
+    quests: questList,
+  });
+});
+
+app.post("/api/quests/claim", (req, res) => {
+  const { questId } = req.body;
+  const quest = quests.find((entry) => entry.id === questId);
+  if (!quest) return res.status(404).json({ error: "Quest not found" });
+
+  const state = loadPlayerState();
+  const questView = getQuestView(quest, state);
+  if (questView.claimed) {
+    return res.status(400).json({ error: "Quest reward already claimed" });
+  }
+  if (!questView.completed) {
+    return res.status(400).json({ error: "Quest is not complete yet" });
+  }
+
+  const reward = applyQuestReward(state, quest.reward);
+  state.quests = {
+    ...(state.quests || {}),
+    claimed: uniqueStrings([...(state.quests?.claimed || []), quest.id]),
+  };
+  incrementQuestStat(state, "questsCompleted");
+
+  const savedState = savePlayerState(state);
+  const questList = getQuestList(savedState);
+  res.json({
+    success: true,
+    message: `${quest.title} complete! Reward claimed.`,
+    reward,
+    state: savedState,
+    summary: getQuestSummary(questList),
+    quests: questList,
   });
 });
 
@@ -1726,6 +1881,7 @@ app.post("/api/battle", (req, res) => {
       );
       const state = loadPlayerState();
       awardCoins(state, moneyReward);
+      incrementQuestStat(state, "wildBattlesWon");
       savePlayerState(state);
       log.push(`You earned ${moneyReward} coins.`);
     }
@@ -1851,6 +2007,7 @@ app.post("/api/catch", (req, res) => {
         target.id,
       ]);
       awardCoins(state, coinRewards.catch);
+      incrementQuestStat(state, "pokemonCaught");
 
       saveTeamAndStorage(team, storage);
       savePlayerState(state);

@@ -28,6 +28,17 @@ const defaultPlayerState = {
     seen: [],
     caught: [],
   },
+  questStats: {
+    pokemonCaught: 0,
+    wildBattlesWon: 0,
+    npcBattlesWon: 0,
+    gymBattlesWon: 0,
+    eliteWins: 0,
+    questsCompleted: 0,
+  },
+  quests: {
+    claimed: [],
+  },
   defeatedNpcs: [],
   achievements: [],
 };
@@ -119,6 +130,15 @@ function createGameState({
       pokedex: {
         seen: uniqueNumbers(state.pokedex?.seen || []),
         caught: uniqueNumbers(state.pokedex?.caught || []),
+      },
+      questStats: {
+        ...defaultPlayerState.questStats,
+        ...(state.questStats || {}),
+      },
+      quests: {
+        ...defaultPlayerState.quests,
+        ...(state.quests || {}),
+        claimed: uniqueStrings(state.quests?.claimed || []),
       },
       defeatedNpcs: uniqueNumbers(state.defeatedNpcs || []),
       badges,

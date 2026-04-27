@@ -398,6 +398,7 @@ function loadGameData(options = {}) {
     areaUnlocks: areaData.areaUnlocks || {},
     rarityWeights: encounterData.rarityWeights || {},
     weatherBoosts: encounterData.weatherBoosts || {},
+    quests: loadJson(path.join(dataDir, "quests.json"), []),
   };
   if (shouldValidate) {
     logValidationGroups(validateGameData(gameData));

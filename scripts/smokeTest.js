@@ -87,6 +87,7 @@ function main() {
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
   assert(pokemon.length >= 1, "pokemon.json has no Pokemon");
+  assert(Array.isArray(gameData.quests), "quests did not load");
   assert(starter.name === "Pikachu", "starter Pokemon is not Pikachu");
   assert(starter.id === starterTemplate.id, "starter Pikachu did not use template id");
   assert(

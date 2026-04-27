@@ -34,7 +34,7 @@ h3 {
 
 .main-nav {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -404,7 +404,8 @@ h3 {
 #shop,
 #party-panel,
 #bag-panel,
-#pokedex-panel {
+#pokedex-panel,
+#quests-panel {
   background: white;
   padding: 0;
   border-radius: 12px;
@@ -414,6 +415,152 @@ h3 {
 
 #pokedex-screen .screen-card {
   overflow-y: auto;
+}
+
+#quests-screen .screen-card {
+  overflow-y: auto;
+}
+
+.quests-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.quests-header p {
+  color: #506783;
+  font-weight: 700;
+}
+
+.quest-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.quest-summary div {
+  border: 1px solid #d8e3ef;
+  border-radius: 10px;
+  background: #f8fbff;
+  padding: 12px;
+}
+
+.quest-summary span {
+  display: block;
+  color: #60758d;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.quest-summary strong {
+  display: block;
+  color: #233a58;
+  font-size: 24px;
+  margin-top: 4px;
+}
+
+.quest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.quest-card {
+  border: 2px solid #d8e3ef;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.quest-card.claimable {
+  border-color: #f0b429;
+  background: #fffaf0;
+}
+
+.quest-card.claimed {
+  border-color: #b8d6bf;
+  background: #f3fbf5;
+}
+
+.quest-card h3 {
+  margin: 0;
+  color: #233a58;
+}
+
+.quest-card p {
+  color: #506783;
+  font-weight: 700;
+  min-height: 42px;
+}
+
+.quest-card-head,
+.quest-progress-line,
+.quest-rewards {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.quest-card-head span,
+.quest-card-head em {
+  border-radius: 999px;
+  padding: 5px 8px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.quest-card-head span {
+  background: #e9f1fb;
+  color: #284c7a;
+}
+
+.quest-card-head em {
+  background: #eef7ef;
+  color: #2f7d42;
+}
+
+.quest-progress-line {
+  color: #28405f;
+  font-weight: 900;
+}
+
+.quest-progress-bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e6edf6;
+}
+
+.quest-progress-bar div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2f80ed, #27ae60);
+}
+
+.quest-rewards {
+  justify-content: flex-start;
+}
+
+.quest-rewards span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 8px;
+  background: #f4f7fb;
+  color: #28405f;
+  padding: 6px 8px;
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .pokedex-header {
@@ -2185,6 +2332,7 @@ button:disabled {
   .top-bar,
   .main-nav,
   .party-grid,
+  .quest-summary,
   .route-layout,
   .route-map-body {
     grid-template-columns: 1fr;
