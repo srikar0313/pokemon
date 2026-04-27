@@ -469,6 +469,12 @@ h3 {
   gap: 12px;
 }
 
+.quest-chain-note {
+  color: #506783;
+  font-weight: 800;
+  margin: 0 0 12px;
+}
+
 .quest-card {
   border: 2px solid #d8e3ef;
   border-radius: 12px;
@@ -2240,8 +2246,73 @@ button:disabled {
   font-size: 13px;
 }
 
-.badges-metric small {
-  overflow-wrap: anywhere;
+.metric-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.badge-collection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(74px, 1fr));
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.badge-collection.compact {
+  grid-template-columns: repeat(9, 30px);
+  gap: 5px;
+  margin: 4px 0 0;
+}
+
+.badge-display {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  border: 2px solid #d8e3ef;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
+  padding: 10px 8px;
+  min-width: 0;
+}
+
+.badge-display img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.34;
+}
+
+.badge-display span {
+  color: #41556f;
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.badge-display.earned {
+  border-color: #f0c14b;
+  background: linear-gradient(180deg, #fffdf2 0%, #fff3bf 100%);
+  box-shadow: 0 8px 18px rgba(140, 100, 10, 0.12);
+}
+
+.badge-display.earned img {
+  filter: none;
+  opacity: 1;
+}
+
+.badge-collection.compact .badge-display {
+  border-width: 1px;
+  border-radius: 8px;
+  padding: 3px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.badge-collection.compact .badge-display img {
+  width: 22px;
+  height: 22px;
 }
 
 .panel-header {

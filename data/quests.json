@@ -5,10 +5,60 @@
     "description": "Catch your first wild Pokemon.",
     "type": "pokemonCaught",
     "goal": 1,
+    "chain": "catch",
+    "tier": 1,
     "reward": {
       "coins": 150,
       "items": {
         "standard": 3
+      }
+    }
+  },
+  {
+    "id": "rookie-collector",
+    "title": "Rookie Collector",
+    "description": "Catch 5 Pokemon.",
+    "type": "pokemonCaught",
+    "goal": 5,
+    "chain": "catch",
+    "tier": 2,
+    "requiresQuest": "first-catch",
+    "reward": {
+      "coins": 300,
+      "items": {
+        "great": 2
+      }
+    }
+  },
+  {
+    "id": "catch-specialist",
+    "title": "Catch Specialist",
+    "description": "Catch 15 Pokemon.",
+    "type": "pokemonCaught",
+    "goal": 15,
+    "chain": "catch",
+    "tier": 3,
+    "requiresQuest": "rookie-collector",
+    "reward": {
+      "coins": 700,
+      "items": {
+        "ultra": 3
+      }
+    }
+  },
+  {
+    "id": "catch-master",
+    "title": "Catch Master",
+    "description": "Catch 30 Pokemon.",
+    "type": "pokemonCaught",
+    "goal": 30,
+    "chain": "catch",
+    "tier": 4,
+    "requiresQuest": "catch-specialist",
+    "reward": {
+      "coins": 1500,
+      "items": {
+        "master": 1
       }
     }
   },
@@ -18,6 +68,8 @@
     "description": "Win 3 wild Pokemon battles.",
     "type": "wildBattlesWon",
     "goal": 3,
+    "chain": "battle",
+    "tier": 1,
     "reward": {
       "coins": 250,
       "items": {
@@ -26,15 +78,34 @@
     }
   },
   {
-    "id": "rookie-collector",
-    "title": "Rookie Collector",
-    "description": "Register 5 caught Pokemon in the Pokedex.",
-    "type": "pokedexCaught",
-    "goal": 5,
+    "id": "battle-hardened",
+    "title": "Battle Hardened",
+    "description": "Win 10 wild Pokemon battles.",
+    "type": "wildBattlesWon",
+    "goal": 10,
+    "chain": "battle",
+    "tier": 2,
+    "requiresQuest": "field-training",
     "reward": {
-      "coins": 300,
+      "coins": 650,
       "items": {
-        "great": 2
+        "superPotion": 2
+      }
+    }
+  },
+  {
+    "id": "route-champion",
+    "title": "Route Champion",
+    "description": "Win 25 wild Pokemon battles.",
+    "type": "wildBattlesWon",
+    "goal": 25,
+    "chain": "battle",
+    "tier": 3,
+    "requiresQuest": "battle-hardened",
+    "reward": {
+      "coins": 1200,
+      "items": {
+        "hyperPotion": 2
       }
     }
   },
@@ -44,10 +115,28 @@
     "description": "Defeat 1 trainer NPC.",
     "type": "npcBattlesWon",
     "goal": 1,
+    "chain": "trainer",
+    "tier": 1,
     "reward": {
       "coins": 400,
       "items": {
         "superPotion": 1
+      }
+    }
+  },
+  {
+    "id": "trainer-breaker",
+    "title": "Trainer Breaker",
+    "description": "Defeat 3 trainer NPCs.",
+    "type": "npcBattlesWon",
+    "goal": 3,
+    "chain": "trainer",
+    "tier": 2,
+    "requiresQuest": "route-rival",
+    "reward": {
+      "coins": 850,
+      "items": {
+        "fullHeal": 1
       }
     }
   },
@@ -57,6 +146,8 @@
     "description": "Earn your first Gym Badge.",
     "type": "badges",
     "goal": 1,
+    "chain": "badge",
+    "tier": 1,
     "reward": {
       "coins": 600,
       "items": {
@@ -70,6 +161,9 @@
     "description": "Earn 3 Gym Badges.",
     "type": "badges",
     "goal": 3,
+    "chain": "badge",
+    "tier": 2,
+    "requiresQuest": "badge-step",
     "reward": {
       "coins": 900,
       "items": {
@@ -84,6 +178,9 @@
     "description": "Earn all 8 Gym Badges.",
     "type": "badges",
     "goal": 8,
+    "chain": "badge",
+    "tier": 3,
+    "requiresQuest": "arena-climber",
     "reward": {
       "coins": 1500,
       "items": {
@@ -98,6 +195,9 @@
     "description": "Defeat the Champion.",
     "type": "championDefeated",
     "goal": 1,
+    "chain": "badge",
+    "tier": 4,
+    "requiresQuest": "league-ready",
     "reward": {
       "coins": 2500,
       "items": {

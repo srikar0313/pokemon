@@ -126,6 +126,22 @@ const leaderThemes = {
   Legendary: { className: "champion", badge: "Champion Badge", icon: "👑" },
 };
 
+const badgeCollection = [
+  { name: "Volt Badge", label: "Volt", icon: "assets/badges/volt.svg" },
+  { name: "Aqua Badge", label: "Aqua", icon: "assets/badges/aqua.svg" },
+  { name: "Blaze Badge", label: "Blaze", icon: "assets/badges/blaze.svg" },
+  { name: "Forest Badge", label: "Forest", icon: "assets/badges/forest.svg" },
+  { name: "Storm Badge", label: "Storm", icon: "assets/badges/storm.svg" },
+  { name: "Rock Badge", label: "Rock", icon: "assets/badges/rock.svg" },
+  { name: "Psychic Badge", label: "Psychic", icon: "assets/badges/psychic.svg" },
+  { name: "Ice Badge", label: "Ice", icon: "assets/badges/ice.svg" },
+  {
+    name: "Champion Badge",
+    label: "Champion",
+    icon: "assets/badges/champion.svg",
+  },
+];
+
 async function init() {
   try {
     renderBattlePlaceholder();
@@ -1091,7 +1107,13 @@ function displayGyms() {
   if (!gymsDiv) return;
 
   gymsDiv.innerHTML = `
-    <h3>Gym Arenas</h3>
+    <div class="panel-header">
+      <div>
+        <h3>Gym Arenas</h3>
+        <p>Earn badges and build your collection case.</p>
+      </div>
+    </div>
+    ${renderBadgeCollection(playerState?.badges || [])}
     <div class="gym-list">
       ${gymCache
         .map((gym) => {
@@ -1671,6 +1693,25 @@ async function loadProfile() {
   displayStats();
 }
 
+function renderBadgeCollection(earnedBadges = [], compact = false) {
+  const earned = new Set(earnedBadges || []);
+  return `
+    <div class="badge-collection ${compact ? "compact" : ""}">
+      ${badgeCollection
+        .map((badge) => {
+          const unlocked = earned.has(badge.name);
+          return `
+            <div class="badge-display ${unlocked ? "earned" : "locked"}" title="${unlocked ? badge.name : `${badge.name} locked`}">
+              <img src="${badge.icon}" alt="${badge.name}">
+              ${compact ? "" : `<span>${badge.label}</span>`}
+            </div>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
 function displayStats() {
   const stats = document.getElementById("stats");
   if (!stats || !playerState) return;
@@ -1685,9 +1726,11 @@ function displayStats() {
         <strong>${playerState.coins ?? playerState.money}</strong>
       </div>
       <div class="top-metric badges-metric">
-        <span>Badges</span>
-        <strong>${playerState.badges?.length || 0}</strong>
-        <small>${playerState.badges?.length ? playerState.badges.join(", ") : "No badges yet"}</small>
+        <div class="metric-title-row">
+          <span>Badges</span>
+          <strong>${playerState.badges?.length || 0}/${badgeCollection.length}</strong>
+        </div>
+        ${renderBadgeCollection(playerState.badges || [], true)}
       </div>
     </div>
   `;
@@ -1760,11 +1803,12 @@ function displayQuests() {
       <button class="secondary-btn" onclick="loadQuests()">Refresh</button>
     </div>
     <div class="quest-summary">
-      <div><span>Total</span><strong>${summary.total ?? quests.length}</strong></div>
+      <div><span>Available</span><strong>${summary.available ?? quests.length}</strong></div>
       <div><span>Complete</span><strong>${summary.completed ?? 0}</strong></div>
       <div><span>Claimable</span><strong>${summary.claimable ?? 0}</strong></div>
-      <div><span>Claimed</span><strong>${summary.claimed ?? 0}</strong></div>
+      <div><span>Locked Next</span><strong>${summary.hidden ?? 0}</strong></div>
     </div>
+    <p class="quest-chain-note">Claim a completed quest to unlock the next tier, like Catch 1 -> Catch 5 -> Catch 15.</p>
     <div class="quest-grid">
       ${quests
         .map((quest) => {

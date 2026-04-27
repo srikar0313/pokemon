@@ -303,13 +303,22 @@ function getQuestView(quest, state) {
   };
 }
 
+function isQuestUnlocked(quest, state) {
+  if (!quest.requiresQuest) return true;
+  return Boolean((state.quests?.claimed || []).includes(quest.requiresQuest));
+}
+
 function getQuestList(state) {
-  return quests.map((quest) => getQuestView(quest, state));
+  return quests
+    .filter((quest) => isQuestUnlocked(quest, state))
+    .map((quest) => getQuestView(quest, state));
 }
 
 function getQuestSummary(questList) {
   return {
-    total: questList.length,
+    total: quests.length,
+    available: questList.length,
+    hidden: Math.max(0, quests.length - questList.length),
     completed: questList.filter((quest) => quest.completed).length,
     claimable: questList.filter((quest) => quest.claimable).length,
     claimed: questList.filter((quest) => quest.claimed).length,
