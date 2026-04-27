@@ -5,6 +5,7 @@ const { createGameState } = require("../backend/gameState");
 
 const rootDir = path.join(__dirname, "..");
 const teamLimit = 6;
+const memoryFiles = new Map();
 const legacyBadgeMap = {
   "Spark Badge": "Volt Badge",
   "Thunder Badge": "Volt Badge",
@@ -30,6 +31,30 @@ function assert(condition, message) {
   }
 }
 
+function createMemoryGameState(pokemonUtils) {
+  const memoryRead = (filePath, fallback) =>
+    memoryFiles.has(filePath) ? memoryFiles.get(filePath) : fallback;
+  const memoryWrite = (filePath, data) =>
+    memoryFiles.set(filePath, JSON.parse(JSON.stringify(data)));
+
+  return createGameState({
+    inventoryPath: "memory-inventory.json",
+    storagePath: "memory-storage.json",
+    playerStatePath: "memory-player-state.json",
+    teamLimit,
+    gyms: [],
+    areaUnlocks: {},
+    gymUnlocks: {},
+    legacyBadgeMap,
+    championBadge: "Champion Badge",
+    readJsonFile: memoryRead,
+    writeJsonFile: memoryWrite,
+    normalizePokemon: pokemonUtils.normalizePokemon,
+    starterPokemon: pokemonUtils.starterPikachu,
+    getStarterPokemon: pokemonUtils.getStarterPokemon,
+  });
+}
+
 function main() {
   const gameData = loadGameData();
   const pokemonUtils = createPokemonUtils({
@@ -51,16 +76,41 @@ function main() {
     writeJsonFile: saveJson,
     normalizePokemon: pokemonUtils.normalizePokemon,
     starterPokemon: pokemonUtils.starterPikachu,
+    getStarterPokemon: pokemonUtils.getStarterPokemon,
   });
 
   const playerState = gameState.loadPlayerState();
   const { team, storage } = gameState.loadTeamAndStorage();
   const pokemon = pokemonUtils.getPokemonTemplates();
+  const starterTemplate = pokemonUtils.getPokemonTemplateByName("Pikachu");
+  const starter = pokemonUtils.getStarterPokemon();
 
   assert(playerState.trainerName, "player state did not load");
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
   assert(pokemon.length >= 1, "pokemon.json has no Pokemon");
+  assert(starter.name === "Pikachu", "starter Pokemon is not Pikachu");
+  assert(starter.id === starterTemplate.id, "starter Pikachu did not use template id");
+  assert(
+    starter.moves.map((move) => move.name).join(",") === starterTemplate.moves.join(","),
+    "starter Pikachu moves drifted from pokemon.json template",
+  );
+
+  memoryFiles.clear();
+  const emptyState = createMemoryGameState(pokemonUtils);
+  const emptyLoad = emptyState.loadTeamAndStorage();
+  assert(emptyLoad.team.length === 1, "empty inventory did not create one starter");
+  assert(emptyLoad.team[0].id === 25, "empty inventory starter is not Pikachu");
+
+  memoryFiles.clear();
+  memoryFiles.set("memory-inventory.json", [starter]);
+  memoryFiles.set("memory-storage.json", []);
+  const existingState = createMemoryGameState(pokemonUtils);
+  const existingLoad = existingState.loadTeamAndStorage();
+  const pikachuCount = [...existingLoad.team, ...existingLoad.storage].filter(
+    (owned) => owned.id === 25,
+  ).length;
+  assert(pikachuCount === 1, "existing player received duplicate starter Pikachu");
 
   const missingPp = pokemon.flatMap((entry) =>
     (entry.moves || [])

@@ -42,6 +42,7 @@ const pokemonUtils = createPokemonUtils({
 });
 const {
   starterPikachu,
+  getStarterPokemon,
   getPokemonTemplates,
   getPokemonTemplateByName,
   getPokemonTypes,
@@ -118,6 +119,7 @@ const gameState = createGameState({
   writeJsonFile: saveJson,
   normalizePokemon,
   starterPokemon: starterPikachu,
+  getStarterPokemon,
 });
 const {
   readJsonFile,

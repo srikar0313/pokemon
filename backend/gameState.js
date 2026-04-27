@@ -54,6 +54,7 @@ function createGameState({
   writeJsonFile,
   normalizePokemon,
   starterPokemon,
+  getStarterPokemon,
 }) {
   function saveTeamAndStorage(team, storage) {
     writeJsonFile(inventoryPath, team.map(normalizePokemon));
@@ -66,7 +67,11 @@ function createGameState({
     const hasPikachu = [...team, ...storage].some((p) => p.id === 25);
 
     if (!hasPikachu) {
-      team.unshift(normalizePokemon(starterPokemon));
+      team.unshift(
+        normalizePokemon(
+          getStarterPokemon ? getStarterPokemon() : starterPokemon,
+        ),
+      );
     }
 
     if (team.length > teamLimit) {

@@ -237,6 +237,14 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     };
   }
 
+  function getStarterPokemon() {
+    const pikachuTemplate =
+      getPokemonTemplate(25) || getPokemonTemplateByName("Pikachu");
+    return normalizePokemon(
+      pikachuTemplate?.name ? { ...pikachuTemplate } : { ...starterPikachu },
+    );
+  }
+
   function getEvolution(pokemon) {
     if (pokemon.evolvesTo && pokemon.evolveLevel) {
       return {
@@ -273,6 +281,7 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
   return {
     defaultMoves,
     starterPikachu,
+    getStarterPokemon,
     getPokemonTemplates,
     getPokemonTemplate,
     getPokemonTemplateByName,
