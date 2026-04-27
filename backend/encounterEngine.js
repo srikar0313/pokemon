@@ -37,6 +37,7 @@ function createEncounterEngine({ rarityWeights, weatherBoosts, getPokemonTypes }
   }
 
   function weightedSelection(items) {
+    if (!items.length) return null;
     const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
     let random = Math.random() * totalWeight;
     for (const item of items) {
@@ -46,41 +47,56 @@ function createEncounterEngine({ rarityWeights, weatherBoosts, getPokemonTypes }
     return items[0].pokemon;
   }
 
+  function getHabitats(pokemon) {
+    if (Array.isArray(pokemon.habitats)) return pokemon.habitats;
+    return pokemon.habitats ? [pokemon.habitats] : [];
+  }
+
+  function isLegendaryPokemon(pokemon) {
+    return pokemon.rarity === "legendary" || pokemon.rarity === "mythical";
+  }
+
+  function createWeightedPool(pool, selectedArea, currentTime, weather) {
+    return pool.map((pokemon) => ({
+      pokemon,
+      weight: calculateSpawnWeight(pokemon, selectedArea, currentTime, weather),
+    }));
+  }
+
   function selectEncounter(allPokemon, area) {
     const currentTime = getTimeOfDay();
     const weather = getCurrentWeather();
     const selectedArea = String(area).toLowerCase();
     const legendaryRoll = Math.random() < 0.02;
-    const areaPool = allPokemon.filter((pokemon) => {
-      const habitats = Array.isArray(pokemon.habitats)
-        ? pokemon.habitats
-        : pokemon.habitats
-          ? [pokemon.habitats]
-          : [];
-      return habitats.includes(selectedArea);
-    });
-    const biomePool = areaPool.length ? areaPool : allPokemon;
-    const spawnPool = biomePool.filter((pokemon) => {
-      const isLegendary =
-        pokemon.rarity === "legendary" || pokemon.rarity === "mythical";
-      return legendaryRoll ? isLegendary : !isLegendary;
-    });
-
-    const weightedPokemon = (spawnPool.length ? spawnPool : biomePool).map(
-      (pokemon) => ({
-        pokemon,
-        weight: calculateSpawnWeight(
-          pokemon,
-          selectedArea,
-          currentTime,
-          weather,
-        ),
-      }),
+    const areaPool = allPokemon.filter((pokemon) =>
+      getHabitats(pokemon).includes(selectedArea),
     );
+    const hasAreaPokemon = areaPool.length > 0;
+    const biomePool = hasAreaPokemon ? areaPool : allPokemon;
+    const areaLegendaryPool = areaPool.filter(isLegendaryPokemon);
+    const normalAreaPool = biomePool.filter((pokemon) => !isLegendaryPokemon(pokemon));
+    const fallbackPool = normalAreaPool.length ? normalAreaPool : biomePool;
+    const spawnPool =
+      legendaryRoll && areaLegendaryPool.length ? areaLegendaryPool : fallbackPool;
+    const weightedPokemon = createWeightedPool(
+      spawnPool,
+      selectedArea,
+      currentTime,
+      weather,
+    );
+    const selectedPokemon = weightedSelection(weightedPokemon);
 
     return {
-      pokemon: weightedSelection(weightedPokemon),
+      pokemon: selectedPokemon,
       weather,
+      metadata: {
+        area: selectedArea,
+        weather,
+        timeOfDay: currentTime,
+        rarity: selectedPokemon?.rarity || null,
+        legendaryRoll,
+        poolSize: spawnPool.length,
+      },
     };
   }
 

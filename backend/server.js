@@ -1604,7 +1604,10 @@ app.post("/api/encounter", (req, res) => {
 
   try {
     const allPokemon = getPokemonTemplates();
-    const { pokemon, weather } = selectEncounter(allPokemon, area);
+    const { pokemon, weather, metadata } = selectEncounter(allPokemon, area);
+    if (!pokemon) {
+      return res.status(404).json({ error: "No Pokemon available for this area" });
+    }
     const encountered = normalizePokemon(pokemon);
     const shiny = Math.random() < 1 / 4096;
     const encounterData = {
@@ -1613,6 +1616,11 @@ app.post("/api/encounter", (req, res) => {
       area,
       level: encountered.level || 1,
       weather,
+      timeOfDay: metadata.timeOfDay,
+      rarity: metadata.rarity,
+      legendaryRoll: metadata.legendaryRoll,
+      poolSize: metadata.poolSize,
+      encounterMetadata: metadata,
       shiny,
       moves: encountered.moves.map((m) => ({
         ...m,
