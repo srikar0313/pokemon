@@ -13,6 +13,7 @@ let playerState = null;
 let shopCatalog = [];
 let pokedexCache = null;
 let questCache = null;
+const pokemonImageIdByName = new Map();
 let pokedexFilters = {
   status: "all",
   habitat: "all",
@@ -1882,6 +1883,11 @@ async function loadPokedex() {
   }
   const response = await fetch("/api/pokedex");
   pokedexCache = await response.json();
+  (pokedexCache.entries || []).forEach((entry) => {
+    if (entry.name && entry.imageId) {
+      pokemonImageIdByName.set(entry.name, entry.imageId);
+    }
+  });
   console.log("Pokedex entries received:", pokedexCache.entries?.length || 0);
   displayPokedex();
 }
@@ -3277,7 +3283,9 @@ function getCombinedTypeEffectiveness(attackerType, defenderTypes) {
 function getPokemonImage(pokemonOrId) {
   const imageId =
     typeof pokemonOrId === "object"
-      ? pokemonOrId.imageId || pokemonOrId.id
+      ? pokemonOrId.imageId ||
+        pokemonImageIdByName.get(pokemonOrId.name) ||
+        pokemonOrId.id
       : pokemonOrId;
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${imageId}.png`;
 }
