@@ -40,7 +40,11 @@ function loadJson(filePath, fallback) {
 }
 
 function saveJson(filePath, data) {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  const directory = path.dirname(filePath);
+  const tempPath = `${filePath}.tmp`;
+  fs.mkdirSync(directory, { recursive: true });
+  fs.writeFileSync(tempPath, JSON.stringify(data, null, 2));
+  fs.renameSync(tempPath, filePath);
 }
 
 function createWarningGroups() {
