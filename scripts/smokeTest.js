@@ -94,6 +94,18 @@ function main() {
     starter.moves.map((move) => move.name).join(",") === starterTemplate.moves.join(","),
     "starter Pikachu moves drifted from pokemon.json template",
   );
+  [...team, ...storage].forEach((owned) => {
+    const template = pokemonUtils.getPokemonTemplateByName(owned.name);
+    assert(template, `owned Pokemon has no template: ${owned.name}`);
+    assert(
+      owned.id === template.id,
+      `${owned.name} has mismatched id ${owned.id}, expected ${template.id}`,
+    );
+    assert(
+      owned.imageId === template.imageId,
+      `${owned.name} has mismatched imageId ${owned.imageId}, expected ${template.imageId}`,
+    );
+  });
 
   memoryFiles.clear();
   const emptyState = createMemoryGameState(pokemonUtils);

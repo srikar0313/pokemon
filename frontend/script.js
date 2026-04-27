@@ -259,6 +259,8 @@ function normalizeMove(move) {
 }
 
 function normalizePokemon(pokemon) {
+  const resolvedImageId =
+    pokemon.imageId || pokemonImageIdByName.get(pokemon.name) || pokemon.id;
   const types =
     Array.isArray(pokemon.types) && pokemon.types.length > 0
       ? pokemon.types
@@ -270,6 +272,7 @@ function normalizePokemon(pokemon) {
 
   return {
     ...pokemon,
+    imageId: resolvedImageId,
     type: pokemon.type || types[0],
     types,
     level: pokemon.level || 1,

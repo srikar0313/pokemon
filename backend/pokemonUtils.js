@@ -123,6 +123,17 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     return getPokemonTemplates().find((pokemon) => pokemon.name === name) || null;
   }
 
+  function getPokemonTemplateForOwnedPokemon(pokemon = {}) {
+    const templateById = pokemon.id ? getPokemonTemplate(pokemon.id) : null;
+    const templateByName = pokemon.name
+      ? getPokemonTemplateByName(pokemon.name)
+      : null;
+    if (templateByName?.name && templateById?.name !== pokemon.name) {
+      return templateByName;
+    }
+    return templateById?.name ? templateById : templateByName || {};
+  }
+
   function getPokemonTypes(pokemon) {
     if (Array.isArray(pokemon.types) && pokemon.types.length > 0) {
       return pokemon.types;
@@ -170,11 +181,15 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
   }
 
   function normalizePokemon(pokemon) {
-    const template = getPokemonTemplate(pokemon.id);
+    const template = getPokemonTemplateForOwnedPokemon(pokemon);
     const merged = {
       ...template,
       ...pokemon,
     };
+    if (template?.name && merged.name === template.name) {
+      merged.id = template.id;
+      merged.imageId = template.imageId || template.id;
+    }
     const hasGenericSavedType =
       pokemon.type === "Normal" &&
       Array.isArray(pokemon.types) &&
