@@ -119,6 +119,10 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     return getPokemonTemplates().find((pokemon) => pokemon.id === id) || {};
   }
 
+  function getPokemonTemplateByName(name) {
+    return getPokemonTemplates().find((pokemon) => pokemon.name === name) || null;
+  }
+
   function getPokemonTypes(pokemon) {
     if (Array.isArray(pokemon.types) && pokemon.types.length > 0) {
       return pokemon.types;
@@ -271,6 +275,7 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     starterPikachu,
     getPokemonTemplates,
     getPokemonTemplate,
+    getPokemonTemplateByName,
     getPokemonTypes,
     normalizeMove,
     normalizePokemon,

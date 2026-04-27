@@ -43,6 +43,7 @@ const pokemonUtils = createPokemonUtils({
 const {
   starterPikachu,
   getPokemonTemplates,
+  getPokemonTemplateByName,
   getPokemonTypes,
   normalizePokemon,
   restorePokemon,
@@ -150,6 +151,7 @@ const { selectEncounter } = encounterEngine;
 const rewardEngine = createRewardEngine({
   normalizePokemon,
   getEvolution,
+  getPokemonTemplateByName,
   updateAchievements,
 });
 const {

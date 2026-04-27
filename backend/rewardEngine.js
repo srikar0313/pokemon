@@ -1,4 +1,9 @@
-function createRewardEngine({ normalizePokemon, getEvolution, updateAchievements }) {
+function createRewardEngine({
+  normalizePokemon,
+  getEvolution,
+  getPokemonTemplateByName,
+  updateAchievements,
+}) {
   const statGrowthByRarity = {
     common: {
       maxHp: 5,
@@ -60,6 +65,40 @@ function createRewardEngine({ normalizePokemon, getEvolution, updateAchievements
     return state;
   }
 
+  function evolvePokemonFromTemplate(pokemon, evolution) {
+    const targetTemplate = getPokemonTemplateByName?.(evolution.name);
+    if (!targetTemplate?.name) {
+      return {
+        pokemon,
+        evolved: false,
+        evolvedFrom: null,
+        evolvedTo: null,
+        message: `${pokemon.name} could not evolve into ${evolution.name} because that species data is missing.`,
+      };
+    }
+
+    const evolvedFrom = pokemon.name;
+    const evolvedPokemon = normalizePokemon({
+      ...targetTemplate,
+      level: pokemon.level || 1,
+      xp: pokemon.xp || 0,
+      shiny: pokemon.shiny || false,
+      status: pokemon.status || "none",
+      pendingMove: pokemon.pendingMove || undefined,
+    });
+
+    evolvedPokemon.currentHp = evolvedPokemon.maxHp || evolvedPokemon.hp || 1;
+    evolvedPokemon.evolvedFrom = evolvedFrom;
+
+    return {
+      pokemon: evolvedPokemon,
+      evolved: true,
+      evolvedFrom,
+      evolvedTo: evolvedPokemon.name,
+      message: `${evolvedFrom} evolved into ${evolvedPokemon.name}!`,
+    };
+  }
+
   function calculateBattleXp(defeatedPokemon, trainerMultiplier = 1) {
     const baseYield = defeatedPokemon?.xpYield || 50;
     const level = defeatedPokemon?.level || 1;
@@ -84,7 +123,7 @@ function createRewardEngine({ normalizePokemon, getEvolution, updateAchievements
     const updatedTeam = team.map((pokemon, index) =>
       index === pokemonIndex ? normalizePokemon({ ...pokemon }) : pokemon,
     );
-    const pokemon = updatedTeam[pokemonIndex];
+    let pokemon = updatedTeam[pokemonIndex];
     pokemon.xp = (pokemon.xp || 0) + xpAmount;
     const startingLevel = pokemon.level || 1;
     let leveledUp = false;
@@ -147,21 +186,14 @@ function createRewardEngine({ normalizePokemon, getEvolution, updateAchievements
 
     const evolution = getEvolution(pokemon);
     if (evolution && pokemon.level >= evolution.level) {
-      evolvedFrom = pokemon.name;
-      pokemon.name = evolution.name;
-      pokemon.type = evolution.type || pokemon.type;
-      pokemon.types = [pokemon.type];
-      pokemon.attack = Math.floor(pokemon.attack * 1.05);
-      pokemon.defense = Math.floor(pokemon.defense * 1.05);
-      pokemon.maxHp = Math.floor(pokemon.maxHp * 1.05);
-      pokemon.specialAttack = Math.floor(pokemon.specialAttack * 1.05);
-      pokemon.specialDefense = Math.floor(pokemon.specialDefense * 1.05);
-      pokemon.currentHp = pokemon.maxHp;
-      pokemon.evolvesTo = null;
-      pokemon.evolveLevel = null;
-      pokemon.evolvedFrom = evolvedFrom;
-      evolved = true;
-      messages.push(`${evolvedFrom} evolved into ${pokemon.name}!`);
+      const evolutionResult = evolvePokemonFromTemplate(pokemon, evolution);
+      messages.push(evolutionResult.message);
+      if (evolutionResult.evolved) {
+        pokemon = evolutionResult.pokemon;
+        updatedTeam[pokemonIndex] = pokemon;
+        evolved = true;
+        evolvedFrom = evolutionResult.evolvedFrom;
+      }
     }
 
     return {
