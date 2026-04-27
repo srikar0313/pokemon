@@ -270,6 +270,12 @@ function normalizePokemon(pokemon) {
       ? pokemon.moves
       : defaultMoves;
 
+  const maxHp = pokemon.maxHp || pokemon.hp || 1;
+  const currentHp = Math.max(
+    0,
+    Math.min(pokemon.currentHp ?? maxHp, maxHp),
+  );
+
   return {
     ...pokemon,
     imageId: resolvedImageId,
@@ -277,8 +283,8 @@ function normalizePokemon(pokemon) {
     types,
     level: pokemon.level || 1,
     xp: pokemon.xp || 0,
-    maxHp: pokemon.maxHp || pokemon.hp || 1,
-    currentHp: pokemon.currentHp ?? pokemon.maxHp ?? pokemon.hp ?? 1,
+    maxHp,
+    currentHp,
     specialAttack: pokemon.specialAttack ?? pokemon.attack ?? 1,
     specialDefense: pokemon.specialDefense ?? pokemon.defense ?? 1,
     status: pokemon.status || "none",

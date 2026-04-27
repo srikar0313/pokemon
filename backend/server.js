@@ -469,26 +469,25 @@ function getEliteSessionView(session) {
   };
 }
 
-function persistGymPlayerTeam(session) {
+function persistPlayerTeamState(session) {
   const { team, storage } = loadTeamAndStorage();
-  const updatedTeam = team.map((pokemon, index) => ({
-    ...pokemon,
-    currentHp: session.playerTeam[index]?.currentHp ?? pokemon.currentHp,
-    status: session.playerTeam[index]?.status ?? pokemon.status,
-    moves: session.playerTeam[index]?.moves ?? pokemon.moves,
-  }));
+  const updatedTeam = team.map((pokemon, index) =>
+    session.playerTeam[index]
+      ? normalizePokemon({
+          ...pokemon,
+          ...session.playerTeam[index],
+        })
+      : pokemon,
+  );
   saveTeamAndStorage(updatedTeam, storage);
 }
 
+function persistGymPlayerTeam(session) {
+  persistPlayerTeamState(session);
+}
+
 function persistBattlePlayerTeam(session) {
-  const { team, storage } = loadTeamAndStorage();
-  const updatedTeam = team.map((pokemon, index) => ({
-    ...pokemon,
-    currentHp: session.playerTeam[index]?.currentHp ?? pokemon.currentHp,
-    status: session.playerTeam[index]?.status ?? pokemon.status,
-    moves: session.playerTeam[index]?.moves ?? pokemon.moves,
-  }));
-  saveTeamAndStorage(updatedTeam, storage);
+  persistPlayerTeamState(session);
 }
 
 function completeNpcBattle(session, log = []) {
@@ -868,6 +867,18 @@ app.post("/api/gym/start", (req, res) => {
   if (activeEliteSessions.get("player")?.status === "active") {
     return res.status(400).json({ error: "Finish your Elite Four run first" });
   }
+  const currentSession = activeGymSessions.get("player");
+  if (currentSession?.status === "active") {
+    return res.json({
+      success: true,
+      log: [
+        currentSession.gym.id === gym.id
+          ? "Gym battle resumed."
+          : `Finish your ${currentSession.gym.name} battle before starting another gym.`,
+      ],
+      session: getGymSessionView(currentSession),
+    });
+  }
 
   const state = loadPlayerState();
   if (!(state.unlockedGyms || []).map(Number).includes(gym.id)) {
@@ -990,6 +1001,7 @@ app.post("/api/gym/move", (req, res) => {
       ...new Set([...(session.participantIndexes || []), nextIndex]),
     ];
     log.push(`Go, ${session.playerTeam[nextIndex].name}!`);
+    persistGymPlayerTeam(session);
     return res.json({
       success: true,
       log,
@@ -1039,6 +1051,7 @@ app.post("/api/gym/move", (req, res) => {
     log.push(
       `${session.gym.name} sent out ${session.gymTeam[session.gymIndex].name}!`,
     );
+    persistGymPlayerTeam(session);
     return res.json({
       success: true,
       log,
@@ -1116,6 +1129,9 @@ app.post("/api/gym/move", (req, res) => {
       });
     }
     session.playerIndex = nextIndex;
+    session.participantIndexes = [
+      ...new Set([...(session.participantIndexes || []), nextIndex]),
+    ];
     log.push("Choose another Pokemon to continue.");
   }
 
@@ -1343,7 +1359,11 @@ app.post("/api/elite/move", (req, res) => {
 });
 
 app.post("/api/gym/end", (req, res) => {
-  activeGymSessions.delete("player");
+  const session = activeGymSessions.get("player");
+  if (session) {
+    persistGymPlayerTeam(session);
+    activeGymSessions.delete("player");
+  }
   res.json({ success: true, message: "Gym battle ended." });
 });
 

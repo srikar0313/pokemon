@@ -231,6 +231,10 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
       moves,
       learnset: normalizeLearnset(merged.learnset || []),
     };
+    normalized.currentHp = Math.max(
+      0,
+      Math.min(normalized.currentHp, normalized.maxHp),
+    );
     if (merged.pendingMove) {
       normalized.pendingMove = normalizeMove(merged.pendingMove);
     } else {
