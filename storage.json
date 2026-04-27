@@ -213,10 +213,6 @@
         "pp": 30,
         "maxPp": 30,
         "priority": 1,
-        "effect": {
-          "type": "priority",
-          "amount": 1
-        },
         "currentPp": 30
       },
       {
