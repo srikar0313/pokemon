@@ -409,6 +409,11 @@ h3 {
   padding: 0;
   border-radius: 12px;
   box-shadow: none;
+  min-height: 0;
+}
+
+#pokedex-screen .screen-card {
+  overflow-y: auto;
 }
 
 .pokedex-header {
@@ -417,7 +422,7 @@ h3 {
 
 .pokedex-summary {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
   margin-bottom: 12px;
 }
@@ -431,6 +436,7 @@ h3 {
 }
 
 .pokedex-summary span,
+.pokedex-search span,
 .pokedex-filter-select span {
   display: block;
   color: #60758d;
@@ -479,17 +485,23 @@ h3 {
   align-items: end;
 }
 
+.pokedex-search {
+  display: block;
+}
+
 .mini-btn.active {
   background: #284c7a;
   color: #ffffff;
   border-color: #284c7a;
 }
 
-.pokedex-filter-select {
+.pokedex-filter-select,
+.pokedex-search {
   min-width: 150px;
 }
 
-.pokedex-filter-select select {
+.pokedex-filter-select select,
+.pokedex-search input {
   width: 100%;
   margin-top: 4px;
   border: 1px solid #c9d8ea;
@@ -510,6 +522,8 @@ h3 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 12px;
+  align-items: stretch;
+  overflow: visible;
 }
 
 .pokedex-card {
@@ -521,6 +535,7 @@ h3 {
   background: #ffffff;
   padding: 12px;
   min-height: 172px;
+  min-width: 0;
 }
 
 .pokedex-card.caught {

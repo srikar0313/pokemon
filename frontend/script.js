@@ -17,6 +17,7 @@ let pokedexFilters = {
   habitat: "all",
   type: "all",
   rarity: "all",
+  search: "",
 };
 let gymCache = [];
 let eliteCache = null;
@@ -1690,6 +1691,7 @@ async function loadPokedex() {
   }
   const response = await fetch("/api/pokedex");
   pokedexCache = await response.json();
+  console.log("Pokedex entries received:", pokedexCache.entries?.length || 0);
   displayPokedex();
 }
 
@@ -1722,18 +1724,25 @@ function updatePokedexSelectFilter(key, value) {
   displayPokedex();
 }
 
+function updatePokedexSearch(value) {
+  pokedexFilters.search = value;
+  displayPokedex();
+}
+
 function resetPokedexFilters() {
   pokedexFilters = {
     status: "all",
     habitat: "all",
     type: "all",
     rarity: "all",
+    search: "",
   };
   displayPokedex();
 }
 
 function getFilteredPokedexEntries() {
   if (!pokedexCache?.entries) return [];
+  const searchTerm = (pokedexFilters.search || "").trim().toLowerCase();
   return pokedexCache.entries.filter((entry) => {
     if (pokedexFilters.status === "seen" && !entry.seen) return false;
     if (pokedexFilters.status === "caught" && !entry.caught) return false;
@@ -1762,8 +1771,23 @@ function getFilteredPokedexEntries() {
     ) {
       return false;
     }
+    if (searchTerm) {
+      const searchable = [
+        entry.name,
+        entry.rarity,
+        ...(entry.types || []),
+        ...(entry.habitats || []),
+      ]
+        .join(" ")
+        .toLowerCase();
+      if (!searchable.includes(searchTerm)) return false;
+    }
     return true;
   });
+}
+
+function escapePokedexSearchValue(value) {
+  return String(value || "").replace(/"/g, "&quot;");
 }
 
 function renderPokedexSelect(key, label, values, formatter = (value) => value) {
@@ -1823,6 +1847,7 @@ function renderPokedexCard(entry) {
   const cardClass = `pokedex-card ${entry.caught ? "caught" : entry.seen ? "seen" : "hidden"}`;
   const habitats = formatList(entry.habitats, formatAreaName);
   const times = formatList(entry.times);
+  const displayName = canShowDetails ? entry.name : "???";
   return `
     <article class="${cardClass}">
       <div class="pokedex-card-art">
@@ -1835,7 +1860,7 @@ function renderPokedexCard(entry) {
       <div class="pokedex-card-body">
         <div class="pokedex-card-head">
           <span>#${String(entry.id).padStart(3, "0")}</span>
-          <strong>${entry.name}</strong>
+          <strong>${displayName}</strong>
           <em>${status}</em>
         </div>
         <div class="pokedex-tags">
@@ -1871,6 +1896,7 @@ function displayPokedex() {
   }
 
   const entries = getFilteredPokedexEntries();
+  console.log("Pokedex entries displayed:", entries.length);
   const habitats = getPokedexFilterOptions("habitat");
   const types = getPokedexFilterOptions("type");
   const rarities = getPokedexFilterOptions("rarity");
@@ -1886,6 +1912,7 @@ function displayPokedex() {
     </div>
     <div class="pokedex-summary">
       <div><span>Total</span><strong>${pokedexCache.total}</strong></div>
+      <div><span>Showing</span><strong>${entries.length}</strong></div>
       <div><span>Seen</span><strong>${pokedexCache.seenCount}</strong></div>
       <div><span>Caught</span><strong>${pokedexCache.caughtCount}</strong></div>
       <div><span>Complete</span><strong>${pokedexCache.caughtPercent}%</strong></div>
@@ -1909,6 +1936,15 @@ function displayPokedex() {
           )
           .join("")}
       </div>
+      <label class="pokedex-search">
+        <span>Search</span>
+        <input
+          type="search"
+          value="${escapePokedexSearchValue(pokedexFilters.search)}"
+          placeholder="Name, type, biome, rarity"
+          oninput="updatePokedexSearch(this.value)"
+        >
+      </label>
       <div class="pokedex-selects">
         ${renderPokedexSelect("habitat", "Biome", habitats, formatAreaName)}
         ${renderPokedexSelect("type", "Type", types)}
