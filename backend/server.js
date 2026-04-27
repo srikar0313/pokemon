@@ -41,7 +41,6 @@ const pokemonUtils = createPokemonUtils({
   moveCatalog: gameData.moves,
 });
 const {
-  starterPikachu,
   getStarterPokemon,
   getPokemonTemplates,
   getPokemonTemplateByName,
@@ -118,7 +117,6 @@ const gameState = createGameState({
   readJsonFile: loadJson,
   writeJsonFile: saveJson,
   normalizePokemon,
-  starterPokemon: starterPikachu,
   getStarterPokemon,
 });
 const {

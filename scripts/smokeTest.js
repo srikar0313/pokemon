@@ -50,7 +50,6 @@ function createMemoryGameState(pokemonUtils) {
     readJsonFile: memoryRead,
     writeJsonFile: memoryWrite,
     normalizePokemon: pokemonUtils.normalizePokemon,
-    starterPokemon: pokemonUtils.starterPikachu,
     getStarterPokemon: pokemonUtils.getStarterPokemon,
   });
 }
@@ -75,7 +74,6 @@ function main() {
     readJsonFile: loadJson,
     writeJsonFile: saveJson,
     normalizePokemon: pokemonUtils.normalizePokemon,
-    starterPokemon: pokemonUtils.starterPikachu,
     getStarterPokemon: pokemonUtils.getStarterPokemon,
   });
 
@@ -111,6 +109,24 @@ function main() {
     (owned) => owned.id === 25,
   ).length;
   assert(pikachuCount === 1, "existing player received duplicate starter Pikachu");
+
+  memoryFiles.clear();
+  const bulbasaur = pokemonUtils.normalizePokemon(
+    pokemonUtils.getPokemonTemplateByName("Bulbasaur"),
+  );
+  memoryFiles.set("memory-inventory.json", [bulbasaur]);
+  memoryFiles.set("memory-storage.json", []);
+  const noPikachuState = createMemoryGameState(pokemonUtils);
+  const noPikachuLoad = noPikachuState.loadTeamAndStorage();
+  const noPikachuOwned = [...noPikachuLoad.team, ...noPikachuLoad.storage];
+  assert(
+    noPikachuOwned.some((owned) => owned.id === 25),
+    "existing inventory without Pikachu did not receive starter Pikachu",
+  );
+  assert(
+    noPikachuOwned.some((owned) => owned.name === "Bulbasaur"),
+    "existing inventory without Pikachu lost existing Pokemon",
+  );
 
   const missingPp = pokemon.flatMap((entry) =>
     (entry.moves || [])

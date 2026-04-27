@@ -67,11 +67,10 @@ function createGameState({
     const hasPikachu = [...team, ...storage].some((p) => p.id === 25);
 
     if (!hasPikachu) {
-      team.unshift(
-        normalizePokemon(
-          getStarterPokemon ? getStarterPokemon() : starterPokemon,
-        ),
-      );
+      const starter = getStarterPokemon ? getStarterPokemon() : starterPokemon;
+      if (starter) {
+        team.unshift(normalizePokemon(starter));
+      }
     }
 
     if (team.length > teamLimit) {

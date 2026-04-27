@@ -238,8 +238,10 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
   }
 
   function getStarterPokemon() {
-    const pikachuTemplate =
-      getPokemonTemplate(25) || getPokemonTemplateByName("Pikachu");
+    const templateById = getPokemonTemplate(25);
+    const pikachuTemplate = templateById?.name
+      ? templateById
+      : getPokemonTemplateByName("Pikachu");
     return normalizePokemon(
       pikachuTemplate?.name ? { ...pikachuTemplate } : { ...starterPikachu },
     );
