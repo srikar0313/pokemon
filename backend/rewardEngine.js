@@ -103,7 +103,7 @@ function createRewardEngine({
     const baseYield = defeatedPokemon?.xpYield || 50;
     const level = defeatedPokemon?.level || 1;
     return Math.max(
-      50,
+      80,
       Math.floor(baseYield * Math.max(1, level / 2) * trainerMultiplier),
     );
   }
