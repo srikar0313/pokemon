@@ -181,7 +181,7 @@ function createBattleEngine({ getRandomInt }) {
         burnReduction,
     );
     return {
-      damage: Math.max(1, damage),
+      damage: effectiveness === 0 ? 0 : Math.max(1, damage),
       effectiveness,
       critical: critical > 1,
       burnReduced: burnReduction < 1,
@@ -325,7 +325,10 @@ function createBattleEngine({ getRandomInt }) {
     return {
       ...baseResult,
       damage:
-        Math.max(1, Math.floor(baseResult.damage * criticalMultiplier)) * hits,
+        baseResult.effectiveness === 0
+          ? 0
+          : Math.max(1, Math.floor(baseResult.damage * criticalMultiplier)) *
+            hits,
       hits,
       critical: baseResult.critical || boostedCritical,
     };
@@ -554,7 +557,9 @@ function createBattleEngine({ getRandomInt }) {
       session.gymIndex,
       opponent,
     );
-    if (switchIndex >= 0) return { type: "switch", index: switchIndex };
+    if (Number.isInteger(switchIndex) && switchIndex >= 0) {
+      return { type: "switch", index: switchIndex };
+    }
 
     return { type: "move", move: chooseGymMove(current, opponent) };
   }
@@ -588,7 +593,9 @@ function createBattleEngine({ getRandomInt }) {
     }
 
     const switchIndex = chooseAiSwitch(team, currentIndex, opponent);
-    if (switchIndex >= 0) return { type: "switch", index: switchIndex };
+    if (Number.isInteger(switchIndex) && switchIndex >= 0) {
+      return { type: "switch", index: switchIndex };
+    }
 
     return { type: "move", move: chooseAiMove(current, opponent, difficulty) };
   }

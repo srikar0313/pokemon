@@ -1309,6 +1309,7 @@ app.post("/api/elite/move", (req, res) => {
       `${session.currentTrainer.name} used a Potion. ${opponentPokemon.name} recovered ${healed} HP.`,
     );
   } else if (eliteAction.move) {
+    log.push(`${session.currentTrainer.name}'s turn:`);
     log.push(
       ...executeBattleMove(
         opponentPokemon,
@@ -1316,6 +1317,24 @@ app.post("/api/elite/move", (req, res) => {
         eliteAction.move.name,
       ).log,
     );
+  } else {
+    const fallbackMove = (opponentPokemon.moves || []).find(
+      (move) => (move.currentPp ?? 0) > 0,
+    );
+    if (fallbackMove) {
+      log.push(`${session.currentTrainer.name}'s turn:`);
+      log.push(
+        ...executeBattleMove(
+          opponentPokemon,
+          playerPokemon,
+          fallbackMove.name,
+        ).log,
+      );
+    } else {
+      log.push(
+        `${session.currentTrainer.name}'s ${opponentPokemon.name} has no moves left!`,
+      );
+    }
   }
 
   const activeOpponentPokemon = session.opponentTeam[session.opponentIndex];

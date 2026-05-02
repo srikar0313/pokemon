@@ -1182,7 +1182,7 @@ function displayEliteFour() {
         .map((stage, index) => {
           const theme = getLeaderTheme(stage.type);
           return `
-            <button class="elite-card${eliteCache.unlocked ? "" : " locked"}" ${eliteCache.unlocked && !eliteCache.completed && index === 0 ? "" : "disabled"} onclick="startEliteRun()">
+            <button class="elite-card${eliteCache.unlocked ? "" : " locked"}" ${eliteCache.unlocked && index === 0 ? "" : "disabled"} onclick="startEliteRun()">
               <div class="leader-card-head leader-${theme.className}">
                 <strong>${stage.name}</strong>
                 <span>${index < 4 ? `Elite Four ${index + 1}` : "Champion"}</span>
