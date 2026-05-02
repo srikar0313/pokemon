@@ -1027,6 +1027,41 @@ h3 {
   image-rendering: pixelated;
 }
 
+.trainer-team-indicator {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.trainer-team-balls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.trainer-team-ball {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+
+.trainer-team-ball.active {
+  transform: translateY(-2px) scale(1.08);
+}
+
+.trainer-team-ball.fainted {
+  opacity: 0.36;
+  filter: grayscale(1);
+}
+
 .gym-battle-container {
   border: 2px solid #3949ab;
   background: #f7f8ff;

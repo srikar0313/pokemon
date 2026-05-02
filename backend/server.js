@@ -399,6 +399,19 @@ function getFirstHealthyPokemonIndex(team) {
   return team.findIndex((pokemon) => pokemon.currentHp > 0);
 }
 
+function preparePlayerTeamForGymBattle(team) {
+  return team.map((pokemon) => {
+    const normalized = normalizePokemon(pokemon);
+    return {
+      ...normalized,
+      moves: (normalized.moves || []).map((move) => ({
+        ...move,
+        currentPp: move.maxPp ?? move.pp ?? move.currentPp ?? 10,
+      })),
+    };
+  });
+}
+
 function getNpcSessionView(session) {
   const playerPokemon = session.playerTeam[session.playerIndex] || null;
   const opponentPokemon = session.opponentTeam[session.opponentIndex] || null;
@@ -886,7 +899,8 @@ app.post("/api/gym/start", (req, res) => {
   }
 
   const { team } = loadTeamAndStorage();
-  const playerIndex = getFirstHealthyPokemonIndex(team);
+  const gymReadyTeam = preparePlayerTeamForGymBattle(team);
+  const playerIndex = getFirstHealthyPokemonIndex(gymReadyTeam);
   if (playerIndex < 0) {
     return res
       .status(400)
@@ -895,7 +909,7 @@ app.post("/api/gym/start", (req, res) => {
 
   const session = {
     gym,
-    playerTeam: team,
+    playerTeam: gymReadyTeam,
     gymTeam: gym.team.map((member) =>
       createLeveledPokemon(member.name, member.level),
     ),

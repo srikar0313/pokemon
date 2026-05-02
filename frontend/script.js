@@ -1236,6 +1236,29 @@ async function startGymBattle(gymId) {
   showGymBattle(data.log);
 }
 
+function renderGymTeamIndicators() {
+  const team = gymBattle?.gymTeam || [];
+  if (!team.length) return "";
+  const remaining = team.filter((pokemon) => (pokemon.currentHp ?? pokemon.maxHp ?? 0) > 0).length;
+  return `
+    <div class="trainer-team-indicator" aria-label="${gymBattle.gym.leaderName} has ${remaining} of ${team.length} Pokémon remaining">
+      <span>Leader team</span>
+      <div class="trainer-team-balls">
+        ${team
+          .map((pokemon, index) => {
+            const hp = pokemon.currentHp ?? pokemon.maxHp ?? 0;
+            const stateClass =
+              hp <= 0 ? "fainted" : index === gymBattle.gymIndex ? "active" : "";
+            const label = `${pokemon.name} ${hp <= 0 ? "fainted" : "ready"}`;
+            return `<img class="trainer-team-ball ${stateClass}" src="${icons.standard}" alt="${label}" title="${label}">`;
+          })
+          .join("")}
+      </div>
+      <strong>${remaining}/${team.length}</strong>
+    </div>
+  `;
+}
+
 function showGymBattle(lines = []) {
   setActiveScreen("battle");
   if (!gymBattle?.playerPokemon || !gymBattle?.gymPokemon) {
@@ -1253,6 +1276,7 @@ function showGymBattle(lines = []) {
         <div>
           <h2>${gymBattle.gym.leaderName}</h2>
           <p class="weather-info">${gymBattle.gym.name} | ${gymBattle.gym.type} leader | No catching | No running</p>
+          ${renderGymTeamIndicators()}
         </div>
         <div class="badge-token badge-${theme.className}">
           <span class="badge-icon">${theme.icon}</span>
