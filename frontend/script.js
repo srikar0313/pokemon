@@ -3130,9 +3130,18 @@ function showRewardPopup(lines = []) {
 
   const popup = document.createElement("div");
   popup.className = "reward-popup";
-  popup.innerHTML = rewardLines.map((line) => `<p>${line}</p>`).join("");
+  const hasXpGrowth = rewardLines.some((line) => /gained .* XP/i.test(line));
+  popup.innerHTML = `
+    ${hasXpGrowth ? `<strong class="reward-popup-title">XP Growth</strong>` : ""}
+    ${rewardLines
+      .map(
+        (line) =>
+          `<p class="${/gained .* XP/i.test(line) ? "xp-growth-line" : ""}">${line}</p>`,
+      )
+      .join("")}
+  `;
   holder.appendChild(popup);
-  setTimeout(() => popup.remove(), 4200);
+  setTimeout(() => popup.remove(), hasXpGrowth ? 7200 : 4200);
 }
 
 function renderTypeBadges(types) {

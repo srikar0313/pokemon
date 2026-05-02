@@ -108,6 +108,10 @@ function createRewardEngine({
     );
   }
 
+  function getXpNeededForLevel(level) {
+    return Math.max(50, (level || 1) * 50);
+  }
+
   function applyXpToPokemon(team, pokemonIndex, xpAmount) {
     if (!team[pokemonIndex] || xpAmount <= 0) {
       return {
@@ -124,8 +128,11 @@ function createRewardEngine({
       index === pokemonIndex ? normalizePokemon({ ...pokemon }) : pokemon,
     );
     let pokemon = updatedTeam[pokemonIndex];
-    pokemon.xp = (pokemon.xp || 0) + xpAmount;
+    const startingName = pokemon.name;
     const startingLevel = pokemon.level || 1;
+    const startingXp = pokemon.xp || 0;
+    const startingXpNeeded = getXpNeededForLevel(startingLevel);
+    pokemon.xp = startingXp + xpAmount;
     let leveledUp = false;
     let evolved = false;
     let evolvedFrom = null;
@@ -133,8 +140,8 @@ function createRewardEngine({
     const statGains = [];
     const learnedMoves = [];
 
-    while (pokemon.xp >= (pokemon.level || 1) * 50) {
-      const xpNeeded = (pokemon.level || 1) * 50;
+    while (pokemon.xp >= getXpNeededForLevel(pokemon.level || 1)) {
+      const xpNeeded = getXpNeededForLevel(pokemon.level || 1);
       pokemon.xp -= xpNeeded;
       pokemon.level = (pokemon.level || 1) + 1;
       const growth = getStatGrowth(pokemon);
@@ -203,6 +210,13 @@ function createRewardEngine({
       evolved,
       evolvedFrom,
       evolvedTo: evolved ? pokemon.name : null,
+      startingName,
+      startingLevel,
+      endingLevel: pokemon.level || startingLevel,
+      startingXp,
+      endingXp: pokemon.xp || 0,
+      startingXpNeeded,
+      endingXpNeeded: getXpNeededForLevel(pokemon.level || startingLevel),
       statGains,
       learnedMoves,
       pendingMove: pokemon.pendingMove || null,
@@ -231,6 +245,13 @@ function createRewardEngine({
         evolved: result.evolved,
         evolvedFrom: result.evolvedFrom,
         evolvedTo: result.evolvedTo,
+        startingName: result.startingName,
+        startingLevel: result.startingLevel,
+        endingLevel: result.endingLevel,
+        startingXp: result.startingXp,
+        endingXp: result.endingXp,
+        startingXpNeeded: result.startingXpNeeded,
+        endingXpNeeded: result.endingXpNeeded,
         statGains: result.statGains,
         learnedMoves: result.learnedMoves,
         pendingMove: result.pendingMove,
@@ -244,7 +265,13 @@ function createRewardEngine({
   function appendXpLog(log, xpResults) {
     (xpResults || []).forEach((result) => {
       if (!result.pokemon || result.xpAward <= 0) return;
-      log.push(`${result.pokemon.name} gained ${result.xpAward} XP.`);
+      const startName = result.startingName || result.pokemon.name;
+      const endName = result.pokemon.name;
+      const nameLabel =
+        startName === endName ? endName : `${startName} -> ${endName}`;
+      log.push(
+        `${nameLabel} gained ${result.xpAward} XP (Lv ${result.startingLevel} ${result.startingXp}/${result.startingXpNeeded} -> Lv ${result.endingLevel} ${result.endingXp}/${result.endingXpNeeded}).`,
+      );
       (result.messages || []).forEach((message) => log.push(message));
     });
   }

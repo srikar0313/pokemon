@@ -308,6 +308,21 @@ h3 {
   font-weight: 800;
 }
 
+.reward-popup-title {
+  display: block;
+  margin-bottom: 6px;
+  color: #0b5f7a;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.reward-popup .xp-growth-line {
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: #e9f8ff;
+  color: #17465f;
+}
+
 @keyframes reward-pop {
   from {
     opacity: 0;
