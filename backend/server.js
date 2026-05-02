@@ -406,7 +406,10 @@ function preparePlayerTeamForGymBattle(team) {
       ...normalized,
       moves: (normalized.moves || []).map((move) => ({
         ...move,
-        currentPp: move.maxPp ?? move.pp ?? move.currentPp ?? 10,
+        currentPp: Math.min(
+          move.currentPp ?? move.maxPp ?? move.pp ?? 10,
+          move.maxPp ?? move.pp ?? move.currentPp ?? 10,
+        ),
       })),
     };
   });
@@ -642,51 +645,6 @@ function finishEliteLoss(session, log = []) {
     lost: true,
     log,
     session: getEliteSessionView(session),
-  };
-}
-
-function runGymBattle(playerTeam, gym) {
-  const log = [`${gym.name} battle started!`];
-  const team = playerTeam.map(restorePokemon);
-  const gymTeam = gym.team.map((member) =>
-    createLeveledPokemon(member.name, member.level),
-  );
-  let playerIndex = 0;
-  let gymIndex = 0;
-  let turns = 0;
-
-  while (playerIndex < team.length && gymIndex < gymTeam.length && turns < 80) {
-    turns += 1;
-    const player = team[playerIndex];
-    const opponent = gymTeam[gymIndex];
-    const playerMove = chooseBestMove(player, opponent);
-    if (!playerMove) {
-      player.currentHp = 0;
-    } else {
-      log.push(
-        ...executeBattleMove(player, opponent, playerMove.name, "Gym ").log,
-      );
-    }
-    if (opponent.currentHp <= 0) {
-      log.push(`Gym ${opponent.name} fainted!`);
-      gymIndex += 1;
-      continue;
-    }
-
-    const gymMove = chooseBestMove(opponent, player);
-    if (gymMove) {
-      log.push(...executeBattleMove(opponent, player, gymMove.name).log);
-    }
-    if (player.currentHp <= 0) {
-      log.push(`${player.name} fainted!`);
-      playerIndex += 1;
-    }
-  }
-
-  return {
-    won: gymIndex >= gymTeam.length,
-    log,
-    team,
   };
 }
 
