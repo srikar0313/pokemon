@@ -412,6 +412,12 @@ function preparePlayerTeamForGymBattle(team) {
   });
 }
 
+function ensureGymSessionReady(session) {
+  if (!session || session.ppPrepared) return;
+  session.playerTeam = preparePlayerTeamForGymBattle(session.playerTeam || []);
+  session.ppPrepared = true;
+}
+
 function getNpcSessionView(session) {
   const playerPokemon = session.playerTeam[session.playerIndex] || null;
   const opponentPokemon = session.opponentTeam[session.opponentIndex] || null;
@@ -882,6 +888,7 @@ app.post("/api/gym/start", (req, res) => {
   }
   const currentSession = activeGymSessions.get("player");
   if (currentSession?.status === "active") {
+    ensureGymSessionReady(currentSession);
     return res.json({
       success: true,
       log: [
@@ -919,6 +926,7 @@ app.post("/api/gym/start", (req, res) => {
     aiItems: {
       potion: gym.difficulty,
     },
+    ppPrepared: true,
     status: "active",
   };
   activeGymSessions.set("player", session);
@@ -998,6 +1006,7 @@ app.post("/api/gym/move", (req, res) => {
   if (!session || session.status !== "active") {
     return res.status(400).json({ error: "No active gym battle" });
   }
+  ensureGymSessionReady(session);
 
   const log = [];
   if (action === "switch") {
@@ -1073,13 +1082,18 @@ app.post("/api/gym/move", (req, res) => {
     });
   }
 
-  const gymAction = chooseGymAction(session, playerPokemon);
+  const gymAction = chooseGymAction(session, playerPokemon) || { type: "none" };
+  let gymActed = false;
   if (gymAction.type === "switch") {
+    const outgoing = session.gymTeam[session.gymIndex];
     const incoming = session.gymTeam[gymAction.index];
-    if (incoming) {
+    if (incoming && outgoing) {
       session.gymTeam[gymAction.index] = session.gymTeam[session.gymIndex];
       session.gymTeam[session.gymIndex] = incoming;
-      log.push(`${session.gym.name} switched to ${incoming.name}!`);
+      log.push(
+        `${session.gym.leaderName} withdrew ${outgoing.name} and sent out ${incoming.name}!`,
+      );
+      gymActed = true;
     }
   } else if (gymAction.type === "item") {
     const healAmount = 50;
@@ -1090,12 +1104,31 @@ app.post("/api/gym/move", (req, res) => {
     gymPokemon.currentHp += healed;
     session.aiItems.potion -= 1;
     log.push(
-      `${session.gym.name} used a Potion. ${gymPokemon.name} recovered ${healed} HP.`,
+      `${session.gym.leaderName} used a Potion. ${gymPokemon.name} recovered ${healed} HP.`,
     );
+    gymActed = true;
   } else if (gymAction.move) {
+    log.push(`${session.gym.leaderName}'s turn:`);
     log.push(
       ...executeBattleMove(gymPokemon, playerPokemon, gymAction.move.name).log,
     );
+    gymActed = true;
+  }
+
+  if (!gymActed) {
+    const fallbackMove = (gymPokemon.moves || []).find(
+      (move) => (move.currentPp ?? 0) > 0,
+    );
+    if (fallbackMove) {
+      log.push(`${session.gym.leaderName}'s turn:`);
+      log.push(
+        ...executeBattleMove(gymPokemon, playerPokemon, fallbackMove.name).log,
+      );
+    } else {
+      log.push(
+        `${session.gym.leaderName}'s ${gymPokemon.name} has no moves left!`,
+      );
+    }
   }
 
   const activeGymPokemon = session.gymTeam[session.gymIndex];
