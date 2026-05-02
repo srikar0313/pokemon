@@ -50,6 +50,7 @@ const {
   restorePokemon,
   getEvolution,
   isPokemonOrEvolutionOf,
+  getEvolutionFamilyKey,
   createLeveledPokemon,
 } = pokemonUtils;
 
@@ -121,6 +122,7 @@ const gameState = createGameState({
   normalizePokemon,
   getStarterPokemon,
   isPokemonOrEvolutionOf,
+  getEvolutionFamilyKey,
 });
 const {
   readJsonFile,

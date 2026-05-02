@@ -52,6 +52,7 @@ function createMemoryGameState(pokemonUtils) {
     normalizePokemon: pokemonUtils.normalizePokemon,
     getStarterPokemon: pokemonUtils.getStarterPokemon,
     isPokemonOrEvolutionOf: pokemonUtils.isPokemonOrEvolutionOf,
+    getEvolutionFamilyKey: pokemonUtils.getEvolutionFamilyKey,
   });
 }
 
@@ -77,6 +78,7 @@ function main() {
     normalizePokemon: pokemonUtils.normalizePokemon,
     getStarterPokemon: pokemonUtils.getStarterPokemon,
     isPokemonOrEvolutionOf: pokemonUtils.isPokemonOrEvolutionOf,
+    getEvolutionFamilyKey: pokemonUtils.getEvolutionFamilyKey,
   });
 
   const playerState = gameState.loadPlayerState();
@@ -157,6 +159,34 @@ function main() {
   assert(
     starterFamilyCount === 1,
     "evolved starter received duplicate level 1 Pikachu",
+  );
+  assert(
+    pokemonUtils.getEvolutionFamilyKey("Geodude") ===
+      pokemonUtils.getEvolutionFamilyKey("Graveler"),
+    "Geodude and Graveler did not map to the same evolution family",
+  );
+
+  memoryFiles.clear();
+  const geodude = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Geodude"),
+    level: 12,
+    xp: 25,
+  });
+  const distinctGeodude = pokemonUtils.normalizePokemon({
+    ...geodude,
+    xp: 26,
+  });
+  memoryFiles.set("memory-inventory.json", [geodude, geodude]);
+  memoryFiles.set("memory-storage.json", [geodude, distinctGeodude]);
+  const duplicateCloneState = createMemoryGameState(pokemonUtils);
+  const duplicateCloneLoad = duplicateCloneState.loadTeamAndStorage();
+  const loadedGeodudes = [
+    ...duplicateCloneLoad.team,
+    ...duplicateCloneLoad.storage,
+  ].filter((owned) => owned.name === "Geodude");
+  assert(
+    loadedGeodudes.length === 2,
+    "exact Geodude clones were not cleaned while distinct catches were kept",
   );
 
   memoryFiles.clear();

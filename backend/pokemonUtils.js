@@ -322,6 +322,37 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     ]);
   }
 
+  function getNextEvolutionNames(name, seen = new Set()) {
+    if (!name || seen.has(name)) return [];
+    seen.add(name);
+    const template = getPokemonTemplateByName(name);
+    const templateNext = template?.evolvesTo ? [template.evolvesTo] : [];
+    const legacyNext = evolutionTriggers[name]?.name
+      ? [evolutionTriggers[name].name]
+      : [];
+    const nextNames = [...new Set([...templateNext, ...legacyNext])];
+    return nextNames.flatMap((nextName) => [
+      nextName,
+      ...getNextEvolutionNames(nextName, seen),
+    ]);
+  }
+
+  function getEvolutionRootName(name) {
+    const previousNames = getPreviousEvolutionNames(name);
+    return previousNames.length ? previousNames[previousNames.length - 1] : name;
+  }
+
+  function getEvolutionFamilyNames(name) {
+    const rootName = getEvolutionRootName(name);
+    return [...new Set([rootName, ...getNextEvolutionNames(rootName)])];
+  }
+
+  function getEvolutionFamilyKey(pokemonOrName) {
+    const name =
+      typeof pokemonOrName === "string" ? pokemonOrName : pokemonOrName?.name;
+    return getEvolutionRootName(name || "unknown");
+  }
+
   function isPokemonOrEvolutionOf(pokemon, ancestor) {
     if (!pokemon || !ancestor) return false;
     const normalizedAncestor =
@@ -335,7 +366,7 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     if (ancestorId && pokemon.id === ancestorId) return true;
     if (ancestorName && pokemon.name === ancestorName) return true;
     if (ancestorName && pokemon.evolvedFrom === ancestorName) return true;
-    return getPreviousEvolutionNames(pokemon.name).includes(ancestorName);
+    return getEvolutionFamilyNames(ancestorName).includes(pokemon.name);
   }
 
   function createLeveledPokemon(name, level) {
@@ -372,6 +403,9 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     normalizePokemon,
     restorePokemon,
     getEvolution,
+    getEvolutionRootName,
+    getEvolutionFamilyNames,
+    getEvolutionFamilyKey,
     isPokemonOrEvolutionOf,
     createLeveledPokemon,
   };

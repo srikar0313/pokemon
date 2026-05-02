@@ -67,7 +67,42 @@ function createGameState({
   starterPokemon,
   getStarterPokemon,
   isPokemonOrEvolutionOf,
+  getEvolutionFamilyKey,
 }) {
+  function getOwnedPokemonSignature(pokemon) {
+    const moveSignature = (pokemon.moves || [])
+      .map(
+        (move) =>
+          `${move.name || move}:${move.currentPp ?? move.maxPp ?? move.pp ?? ""}`,
+      )
+      .join("|");
+    return [
+      getEvolutionFamilyKey ? getEvolutionFamilyKey(pokemon) : pokemon.name,
+      pokemon.id,
+      pokemon.name,
+      pokemon.level || 1,
+      pokemon.xp || 0,
+      pokemon.maxHp || pokemon.hp || 1,
+      pokemon.currentHp ?? pokemon.maxHp ?? pokemon.hp ?? 1,
+      pokemon.evolvedFrom || "",
+      moveSignature,
+    ].join("::");
+  }
+
+  function removeExactOwnedPokemonClones(team, storage) {
+    const seen = new Set();
+    const keepUnique = (pokemon) => {
+      const signature = getOwnedPokemonSignature(pokemon);
+      if (seen.has(signature)) return false;
+      seen.add(signature);
+      return true;
+    };
+    return {
+      team: team.filter(keepUnique),
+      storage: storage.filter(keepUnique),
+    };
+  }
+
   function saveTeamAndStorage(team, storage) {
     writeJsonFile(inventoryPath, team.map(normalizePokemon));
     writeJsonFile(storagePath, storage.map(normalizePokemon));
@@ -76,6 +111,7 @@ function createGameState({
   function loadTeamAndStorage() {
     let team = readJsonFile(inventoryPath, []).map(normalizePokemon);
     let storage = readJsonFile(storagePath, []).map(normalizePokemon);
+    ({ team, storage } = removeExactOwnedPokemonClones(team, storage));
     const starter = getStarterPokemon ? getStarterPokemon() : starterPokemon;
     const hasStarterLineage = starter
       ? [...team, ...storage].some((pokemon) =>
