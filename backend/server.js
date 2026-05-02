@@ -399,6 +399,10 @@ function getFirstHealthyPokemonIndex(team) {
   return team.findIndex((pokemon) => pokemon.currentHp > 0);
 }
 
+function getGymPotionCount() {
+  return 1;
+}
+
 function preparePlayerTeamForGymBattle(team) {
   return team.map((pokemon) => {
     const normalized = normalizePokemon(pokemon);
@@ -416,7 +420,15 @@ function preparePlayerTeamForGymBattle(team) {
 }
 
 function ensureGymSessionReady(session) {
-  if (!session || session.ppPrepared) return;
+  if (!session) return;
+  session.aiItems = {
+    ...(session.aiItems || {}),
+    potion: Math.min(
+      session.aiItems?.potion ?? getGymPotionCount(),
+      getGymPotionCount(),
+    ),
+  };
+  if (session.ppPrepared) return;
   session.playerTeam = preparePlayerTeamForGymBattle(session.playerTeam || []);
   session.ppPrepared = true;
 }
@@ -882,7 +894,7 @@ app.post("/api/gym/start", (req, res) => {
     participantIndexes: [playerIndex],
     gymIndex: 0,
     aiItems: {
-      potion: gym.difficulty,
+      potion: getGymPotionCount(),
     },
     ppPrepared: true,
     status: "active",
