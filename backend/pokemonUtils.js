@@ -231,6 +231,35 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
       moves,
       learnset: normalizeLearnset(merged.learnset || []),
     };
+    if (template?.name) {
+      normalized.imageId = template.imageId || template.id || normalized.imageId;
+      normalized.rarity = template.rarity || normalized.rarity;
+      normalized.habitats = template.habitats || normalized.habitats || [];
+      normalized.times = template.times || normalized.times || ["day", "night"];
+      normalized.baseCatchRate =
+        template.baseCatchRate ?? normalized.baseCatchRate;
+      normalized.xpYield = template.xpYield ?? normalized.xpYield;
+
+      if (template.evolvesTo) {
+        normalized.evolvesTo = template.evolvesTo;
+        normalized.evolveLevel = template.evolveLevel;
+        normalized.evolveType = template.evolveType || template.type;
+      } else {
+        delete normalized.evolvesTo;
+        delete normalized.evolveLevel;
+        delete normalized.evolveType;
+      }
+    }
+
+    if (normalized.evolvedFrom) {
+      const previousTemplate = getPokemonTemplateByName(normalized.evolvedFrom);
+      const validPreviousEvolution =
+        previousTemplate?.evolvesTo === normalized.name ||
+        evolutionTriggers[normalized.evolvedFrom]?.name === normalized.name;
+      if (!validPreviousEvolution) {
+        delete normalized.evolvedFrom;
+      }
+    }
     normalized.currentHp = Math.max(
       0,
       Math.min(normalized.currentHp, normalized.maxHp),

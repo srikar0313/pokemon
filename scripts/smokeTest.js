@@ -105,6 +105,21 @@ function main() {
       owned.imageId === template.imageId,
       `${owned.name} has mismatched imageId ${owned.imageId}, expected ${template.imageId}`,
     );
+    if (template.evolvesTo) {
+      assert(
+        owned.evolvesTo === template.evolvesTo,
+        `${owned.name} has mismatched evolvesTo ${owned.evolvesTo}, expected ${template.evolvesTo}`,
+      );
+    } else {
+      assert(!owned.evolvesTo, `${owned.name} kept stale evolvesTo ${owned.evolvesTo}`);
+    }
+    if (owned.evolvedFrom) {
+      const previousTemplate = pokemonUtils.getPokemonTemplateByName(owned.evolvedFrom);
+      assert(
+        previousTemplate?.evolvesTo === owned.name,
+        `${owned.name} has invalid evolvedFrom ${owned.evolvedFrom}`,
+      );
+    }
   });
 
   memoryFiles.clear();
