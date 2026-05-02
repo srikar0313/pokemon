@@ -49,6 +49,7 @@ const {
   normalizePokemon,
   restorePokemon,
   getEvolution,
+  isPokemonOrEvolutionOf,
   createLeveledPokemon,
 } = pokemonUtils;
 
@@ -119,6 +120,7 @@ const gameState = createGameState({
   writeJsonFile: saveJson,
   normalizePokemon,
   getStarterPokemon,
+  isPokemonOrEvolutionOf,
 });
 const {
   readJsonFile,

@@ -51,6 +51,7 @@ function createMemoryGameState(pokemonUtils) {
     writeJsonFile: memoryWrite,
     normalizePokemon: pokemonUtils.normalizePokemon,
     getStarterPokemon: pokemonUtils.getStarterPokemon,
+    isPokemonOrEvolutionOf: pokemonUtils.isPokemonOrEvolutionOf,
   });
 }
 
@@ -75,6 +76,7 @@ function main() {
     writeJsonFile: saveJson,
     normalizePokemon: pokemonUtils.normalizePokemon,
     getStarterPokemon: pokemonUtils.getStarterPokemon,
+    isPokemonOrEvolutionOf: pokemonUtils.isPokemonOrEvolutionOf,
   });
 
   const playerState = gameState.loadPlayerState();
@@ -137,6 +139,25 @@ function main() {
     (owned) => owned.id === 25,
   ).length;
   assert(pikachuCount === 1, "existing player received duplicate starter Pikachu");
+
+  memoryFiles.clear();
+  const raichu = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Raichu"),
+    level: 12,
+    evolvedFrom: "Pikachu",
+  });
+  memoryFiles.set("memory-inventory.json", [raichu]);
+  memoryFiles.set("memory-storage.json", []);
+  const evolvedStarterState = createMemoryGameState(pokemonUtils);
+  const evolvedStarterLoad = evolvedStarterState.loadTeamAndStorage();
+  const starterFamilyCount = [
+    ...evolvedStarterLoad.team,
+    ...evolvedStarterLoad.storage,
+  ].filter((owned) => pokemonUtils.isPokemonOrEvolutionOf(owned, starter)).length;
+  assert(
+    starterFamilyCount === 1,
+    "evolved starter received duplicate level 1 Pikachu",
+  );
 
   memoryFiles.clear();
   const bulbasaur = pokemonUtils.normalizePokemon(

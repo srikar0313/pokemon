@@ -66,6 +66,7 @@ function createGameState({
   normalizePokemon,
   starterPokemon,
   getStarterPokemon,
+  isPokemonOrEvolutionOf,
 }) {
   function saveTeamAndStorage(team, storage) {
     writeJsonFile(inventoryPath, team.map(normalizePokemon));
@@ -75,13 +76,17 @@ function createGameState({
   function loadTeamAndStorage() {
     let team = readJsonFile(inventoryPath, []).map(normalizePokemon);
     let storage = readJsonFile(storagePath, []).map(normalizePokemon);
-    const hasPikachu = [...team, ...storage].some((p) => p.id === 25);
+    const starter = getStarterPokemon ? getStarterPokemon() : starterPokemon;
+    const hasStarterLineage = starter
+      ? [...team, ...storage].some((pokemon) =>
+          isPokemonOrEvolutionOf
+            ? isPokemonOrEvolutionOf(pokemon, starter)
+            : pokemon.id === starter.id,
+        )
+      : false;
 
-    if (!hasPikachu) {
-      const starter = getStarterPokemon ? getStarterPokemon() : starterPokemon;
-      if (starter) {
-        team.unshift(normalizePokemon(starter));
-      }
+    if (!hasStarterLineage && starter) {
+      team.unshift(normalizePokemon(starter));
     }
 
     if (team.length > teamLimit) {

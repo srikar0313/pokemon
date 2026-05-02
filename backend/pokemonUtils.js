@@ -306,6 +306,38 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     return evolutionTriggers[pokemon.name];
   }
 
+  function getPreviousEvolutionNames(name, seen = new Set()) {
+    if (!name || seen.has(name)) return [];
+    seen.add(name);
+    const directPrevious = getPokemonTemplates()
+      .filter((pokemon) => pokemon.evolvesTo === name)
+      .map((pokemon) => pokemon.name);
+    const legacyPrevious = Object.entries(evolutionTriggers)
+      .filter(([, evolution]) => evolution.name === name)
+      .map(([previousName]) => previousName);
+    const previousNames = [...new Set([...directPrevious, ...legacyPrevious])];
+    return previousNames.flatMap((previousName) => [
+      previousName,
+      ...getPreviousEvolutionNames(previousName, seen),
+    ]);
+  }
+
+  function isPokemonOrEvolutionOf(pokemon, ancestor) {
+    if (!pokemon || !ancestor) return false;
+    const normalizedAncestor =
+      typeof ancestor === "string" ? { name: ancestor } : ancestor;
+    const ancestorTemplate = normalizedAncestor.id
+      ? getPokemonTemplate(normalizedAncestor.id)
+      : getPokemonTemplateByName(normalizedAncestor.name);
+    const ancestorName = ancestorTemplate?.name || normalizedAncestor.name;
+    const ancestorId = ancestorTemplate?.id || normalizedAncestor.id;
+    if (!ancestorName && !ancestorId) return false;
+    if (ancestorId && pokemon.id === ancestorId) return true;
+    if (ancestorName && pokemon.name === ancestorName) return true;
+    if (ancestorName && pokemon.evolvedFrom === ancestorName) return true;
+    return getPreviousEvolutionNames(pokemon.name).includes(ancestorName);
+  }
+
   function createLeveledPokemon(name, level) {
     const template = normalizePokemon(
       getPokemonTemplates().find((pokemon) => pokemon.name === name) || {},
@@ -340,6 +372,7 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     normalizePokemon,
     restorePokemon,
     getEvolution,
+    isPokemonOrEvolutionOf,
     createLeveledPokemon,
   };
 }
