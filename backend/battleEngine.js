@@ -536,9 +536,6 @@ function createBattleEngine({ getRandomInt }) {
     if (!current) return { type: "none" };
 
     const lowHp = current.currentHp / Math.max(1, current.maxHp) < 0.3;
-    if (lowHp && (session.aiItems?.potion || 0) > 0) {
-      return { type: "item", itemId: "potion" };
-    }
     if (lowHp) {
       const defensiveMove = getAvailableMoves(current).find(
         (move) =>
