@@ -637,9 +637,7 @@ function refreshEliteStage(session) {
     createLeveledPokemon(member.name, member.level),
   );
   session.opponentIndex = getFirstHealthyPokemonIndex(session.opponentTeam);
-  session.aiItems = {
-    potion: session.isChampion ? 2 : 1,
-  };
+  session.aiItems = {};
 }
 
 function completeEliteSession(session, log = []) {
@@ -971,9 +969,7 @@ app.post("/api/elite/start", (req, res) => {
     currentTrainer: eliteFour[0],
     isChampion: false,
     status: "active",
-    aiItems: {
-      potion: 1,
-    },
+    aiItems: {},
   };
   refreshEliteStage(session);
   activeEliteSessions.set("player", session);
@@ -1297,17 +1293,6 @@ app.post("/api/elite/move", (req, res) => {
       session.opponentTeam[session.opponentIndex] = incoming;
       log.push(`${session.currentTrainer.name} switched to ${incoming.name}!`);
     }
-  } else if (eliteAction.type === "item") {
-    const healAmount = 50;
-    const healed = Math.min(
-      healAmount,
-      opponentPokemon.maxHp - opponentPokemon.currentHp,
-    );
-    opponentPokemon.currentHp += healed;
-    session.aiItems.potion -= 1;
-    log.push(
-      `${session.currentTrainer.name} used a Potion. ${opponentPokemon.name} recovered ${healed} HP.`,
-    );
   } else if (eliteAction.move) {
     log.push(`${session.currentTrainer.name}'s turn:`);
     log.push(
