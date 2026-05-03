@@ -83,7 +83,7 @@ const defaultMoves = [
 ];
 
 const trainerSprites = {
-  player: "https://play.pokemonshowdown.com/sprites/trainers/red.png",
+  player: "assets/npcs/player.svg",
   spark: "https://play.pokemonshowdown.com/sprites/trainers/volkner.png",
   mistyra: "https://play.pokemonshowdown.com/sprites/trainers/misty.png",
   flint: "https://play.pokemonshowdown.com/sprites/trainers/flint.png",
@@ -97,16 +97,17 @@ const trainerSprites = {
   marinus: "https://play.pokemonshowdown.com/sprites/trainers/wallace.png",
   drakon: "https://play.pokemonshowdown.com/sprites/trainers/lance.png",
   champion: "https://play.pokemonshowdown.com/sprites/trainers/steven.png",
-  trainer: "https://play.pokemonshowdown.com/sprites/trainers/youngster.png",
-  guide: "https://play.pokemonshowdown.com/sprites/trainers/oak.png",
-  shop: "https://play.pokemonshowdown.com/sprites/trainers/clerk.png",
-  healer: "https://play.pokemonshowdown.com/sprites/trainers/nurse.png",
-  hiker: "https://play.pokemonshowdown.com/sprites/trainers/hiker.png",
-  fisherman: "https://play.pokemonshowdown.com/sprites/trainers/fisherman.png",
-  psychic: "https://play.pokemonshowdown.com/sprites/trainers/psychicm.png",
-  ranger: "https://play.pokemonshowdown.com/sprites/trainers/pokemonranger-m.png",
-  ruinManiac: "https://play.pokemonshowdown.com/sprites/trainers/ruinmaniac.png",
-  channeler: "https://play.pokemonshowdown.com/sprites/trainers/channeler.png",
+  trainer: "assets/npcs/trainer.svg",
+  guide: "assets/npcs/guide.svg",
+  shop: "assets/npcs/shop.svg",
+  healer: "assets/npcs/healer.svg",
+  hiker: "assets/npcs/hiker.svg",
+  fisherman: "assets/npcs/fisherman.svg",
+  npcFire: "assets/npcs/fire.svg",
+  psychic: "assets/npcs/psychic.svg",
+  ranger: "assets/npcs/ranger.svg",
+  ruinManiac: "assets/npcs/ruin.svg",
+  channeler: "assets/npcs/ghost.svg",
 };
 
 const npcTypeLabels = {
@@ -3469,9 +3470,9 @@ function getTrainerSprite(type, name = "") {
 function getNpcSprite(npc) {
   const spriteKey = npc?.sprite || npc?.type;
   if (spriteKey === "trainer") return trainerSprites.trainer;
-  if (spriteKey === "trainer-water") return trainerSprites.mistyra;
+  if (spriteKey === "trainer-water") return trainerSprites.fisherman;
   if (spriteKey === "trainer-rock") return trainerSprites.hiker;
-  if (spriteKey === "trainer-fire") return trainerSprites.pyra;
+  if (spriteKey === "trainer-fire") return trainerSprites.npcFire;
   if (spriteKey === "trainer-psychic") return trainerSprites.psychic;
   if (spriteKey === "trainer-ranger") return trainerSprites.ranger;
   if (spriteKey === "trainer-ruin") return trainerSprites.ruinManiac;
