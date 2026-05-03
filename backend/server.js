@@ -1855,6 +1855,14 @@ app.post("/api/encounter", (req, res) => {
   if (activeNpcSessions.get("player")?.status === "active") {
     return res.status(400).json({ error: "Finish your trainer battle first" });
   }
+  if (activeGymSessions.get("player")?.status === "active") {
+    return res.status(400).json({ error: "Finish your gym battle first" });
+  }
+  if (activeEliteSessions.get("player")?.status === "active") {
+    return res
+      .status(400)
+      .json({ error: "Finish your Elite Four run first" });
+  }
 
   try {
     const allPokemon = getPokemonTemplates();

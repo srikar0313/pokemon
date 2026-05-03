@@ -428,7 +428,12 @@ function displayCurrentPlayer() {
     "team",
     activeInventoryIndex,
   );
-  if (exploreBtn) exploreBtn.disabled = fainted || !selectedArea;
+  if (exploreBtn) {
+    exploreBtn.disabled = !selectedArea;
+    exploreBtn.title = fainted
+      ? "Your active Pokemon has fainted. Heal or choose another Pokemon."
+      : "";
+  }
 }
 
 async function displayAreas() {
@@ -480,8 +485,11 @@ async function displayAreas() {
   const exploreBtn = document.getElementById("explore-btn");
   if (exploreBtn) {
     exploreBtn.style.display = selectedArea ? "inline-flex" : "none";
-    exploreBtn.disabled =
-      !activePokemon || activePokemon.currentHp <= 0 || !selectedArea;
+    exploreBtn.disabled = !selectedArea;
+    exploreBtn.title =
+      activePokemon && activePokemon.currentHp <= 0
+        ? "Your active Pokemon has fainted. Heal or choose another Pokemon."
+        : "";
   }
 
   if (selectedArea) {
@@ -498,8 +506,7 @@ async function selectArea(event, area) {
     .querySelectorAll(".area-btn")
     .forEach((btn) => btn.classList.remove("active"));
   event.currentTarget.classList.add("active");
-  document.getElementById("explore-btn").disabled =
-    !activePokemon || activePokemon.currentHp <= 0;
+  document.getElementById("explore-btn").disabled = false;
   updateAreaHelper(area);
   await loadAreaWorld(area);
   displayCurrentPlayer();
@@ -2698,6 +2705,10 @@ document.getElementById("explore-btn")?.addEventListener("click", async () => {
       body: JSON.stringify({ area: selectedArea }),
     });
     const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+      return;
+    }
     wild = normalizePokemon(data);
     currentPlayerHP = activePokemon.currentHp;
     currentWildHP = wild.currentHp;
