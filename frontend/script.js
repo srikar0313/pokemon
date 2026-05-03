@@ -821,7 +821,7 @@ function renderRouteWorld() {
             ? `
               <div class="route-npc-card ${displayNpc.defeated ? "defeated" : ""}">
                 <div class="route-npc-header">
-                  <img class="route-npc-sprite" src="${getNpcSprite(displayNpc)}" alt="${displayNpc.name}">
+                  ${renderNpcPortrait(displayNpc, "route-npc-sprite")}
                   <div>
                     <strong>${displayNpc.name}</strong>
                     <span>${npcTypeLabels[displayNpc.type] || "NPC"}</span>
@@ -893,7 +893,7 @@ function renderRouteTiles(playerPosition, nearbyNpc) {
               ? `<img class="route-player-sprite" src="${trainerSprites.player}" alt="${playerState?.trainerName || "Player"}">`
               : showNpc
                 ? `
-                  <img class="route-npc-map-sprite" src="${getNpcSprite(npc)}" alt="${npc.name}">
+                  ${renderNpcPortrait(npc, "route-npc-map-sprite")}
                   <span class="route-role-badge">${getNpcTypeIcon(npc.type)}</span>
                   ${nearbyNpc?.id === npc.id ? '<span class="route-prompt">E</span>' : ""}
                   ${npc.defeated ? '<span class="route-defeated-badge">Done</span>' : ""}
@@ -1598,7 +1598,7 @@ function showNpcBattle(lines = []) {
   encounter.innerHTML = `
     <div class="arena-log npc-arena-log">
       <div class="arena-trainer-banner npc-trainer-banner">
-        <img class="arena-trainer-sprite" src="${getNpcSprite(npc)}" alt="${npc.name}">
+        ${renderNpcPortrait(npc, "arena-trainer-sprite")}
         <div>
           <h2>${npc.name}</h2>
           <p class="weather-info">${npcTypeLabels[npc.type] || "Trainer"} battle | No catching | No running</p>
@@ -3484,6 +3484,25 @@ function getNpcSprite(npc) {
   if (spriteKey === "healer" || spriteKey === "healer-fire")
     return trainerSprites.healer;
   return trainerSprites.player;
+}
+
+function renderNpcPortrait(npc, className) {
+  const icon = getNpcTypeIcon(npc?.type);
+  const label = npc?.name || "NPC";
+  return `
+    <span class="npc-portrait-shell ${className}-shell">
+      <img
+        class="${className}"
+        src="${getNpcSprite(npc)}"
+        alt="${label}"
+        loading="lazy"
+        onerror="this.classList.add('sprite-load-failed'); this.nextElementSibling.classList.remove('hidden');"
+      >
+      <span class="npc-fallback-avatar hidden" aria-label="${label}">
+        <span>${icon}</span>
+      </span>
+    </span>
+  `;
 }
 
 function getNpcTypeIcon(type) {
