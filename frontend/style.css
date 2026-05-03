@@ -2014,6 +2014,20 @@ button:disabled {
   text-align: right;
 }
 
+.wild-encounter-actions {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.battle-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
 @keyframes encounter-pop {
   from {
     opacity: 0;
