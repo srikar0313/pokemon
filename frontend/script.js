@@ -103,6 +103,10 @@ const trainerSprites = {
   healer: "https://play.pokemonshowdown.com/sprites/trainers/nurse.png",
   hiker: "https://play.pokemonshowdown.com/sprites/trainers/hiker.png",
   fisherman: "https://play.pokemonshowdown.com/sprites/trainers/fisherman.png",
+  psychic: "https://play.pokemonshowdown.com/sprites/trainers/psychicm.png",
+  ranger: "https://play.pokemonshowdown.com/sprites/trainers/pokemonranger-m.png",
+  ruinManiac: "https://play.pokemonshowdown.com/sprites/trainers/ruinmaniac.png",
+  channeler: "https://play.pokemonshowdown.com/sprites/trainers/channeler.png",
 };
 
 const npcTypeLabels = {
@@ -2688,26 +2692,27 @@ async function confirmStorageSwap(
   renderBattlePlaceholder(data.message);
 }
 
-document.getElementById("explore-btn")?.addEventListener("click", async () => {
+async function startWildEncounter(area = selectedArea) {
   if (!selectedArea) {
     alert("Please select an area first!");
-    return;
+    return false;
   }
+  const encounterArea = area || selectedArea;
   if (!activePokemon || activePokemon.currentHp <= 0) {
     alert("Your active Pokemon has fainted. Heal or choose another Pokemon.");
-    return;
+    return false;
   }
 
   try {
     const response = await fetch("/api/encounter", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ area: selectedArea }),
+      body: JSON.stringify({ area: encounterArea }),
     });
     const data = await response.json();
     if (data.error) {
       alert(data.error);
-      return;
+      return false;
     }
     wild = normalizePokemon(data);
     currentPlayerHP = activePokemon.currentHp;
@@ -2717,10 +2722,29 @@ document.getElementById("explore-btn")?.addEventListener("click", async () => {
     wildParticipantIndexes = new Set([activeInventoryIndex]);
     if (pokedexCache) await loadPokedex();
     showBattle();
+    return true;
   } catch (error) {
     console.error("Error:", error);
+    return false;
   }
+}
+
+document.getElementById("explore-btn")?.addEventListener("click", async () => {
+  await startWildEncounter(selectedArea);
 });
+
+async function findAnotherWildPokemon() {
+  if (!wild || !isInBattle) {
+    await startWildEncounter(selectedArea);
+    return;
+  }
+  await loadInventory();
+  activePokemon = normalizePokemon(teamCache[activeInventoryIndex]);
+  const found = await startWildEncounter(selectedArea);
+  if (found) {
+    appendBattleLog([`You searched the ${formatAreaName(selectedArea)} and found another Pokemon!`]);
+  }
+}
 
 function showBattle() {
   openWildEncounterLayer();
@@ -2732,11 +2756,11 @@ function showBattle() {
       </div>
       <div class="wild-encounter-actions">
         <p class="weather-info">${formatAreaName(wild.area)} | Weather: ${wild.weather}${wild.shiny ? " | Shiny encounter!" : ""}</p>
-        <button class="wild-explore-return icon-button" onclick="endEncounter()">${renderIcon("run", "Explore")} Explore</button>
+        <button class="wild-explore-return icon-button" onclick="findAnotherWildPokemon()">${renderIcon("run", "Explore")} Find New Pokemon</button>
       </div>
     </div>
-    <button class="wild-explore-return wild-explore-return-wide icon-button" onclick="endEncounter()">
-      ${renderIcon("run", "Explore")} Return to Explore
+    <button class="wild-explore-return wild-explore-return-wide icon-button" onclick="findAnotherWildPokemon()">
+      ${renderIcon("run", "Explore")} Find New Pokemon
     </button>
     <div class="battle-container">
       <div class="battle-pokemon">
@@ -2766,7 +2790,8 @@ function showBattle() {
     <div id="battle-item-panel"></div>
     <div class="battle-action-row">
       <button onclick="switchPokemon()" class="secondary-btn">Switch Pokémon</button>
-      <button onclick="endEncounter()" class="wild-explore-return icon-button">${renderIcon("run", "Explore")} Back to Explore</button>
+      <button onclick="findAnotherWildPokemon()" class="wild-explore-return icon-button">${renderIcon("run", "Explore")} Find New Pokemon</button>
+      <button onclick="endEncounter()" class="secondary-btn icon-button">${renderIcon("run", "Run")} Leave Battle</button>
     </div>
     <div id="wild-switch-panel"></div>
     <div id="catch-panel"></div>
@@ -3446,8 +3471,15 @@ function getNpcSprite(npc) {
   if (spriteKey === "trainer") return trainerSprites.trainer;
   if (spriteKey === "trainer-water") return trainerSprites.mistyra;
   if (spriteKey === "trainer-rock") return trainerSprites.hiker;
+  if (spriteKey === "trainer-fire") return trainerSprites.pyra;
+  if (spriteKey === "trainer-psychic") return trainerSprites.psychic;
+  if (spriteKey === "trainer-ranger") return trainerSprites.ranger;
+  if (spriteKey === "trainer-ruin") return trainerSprites.ruinManiac;
+  if (spriteKey === "trainer-ghost") return trainerSprites.channeler;
   if (spriteKey === "guide") return trainerSprites.guide;
   if (spriteKey === "guide-sailor") return trainerSprites.fisherman;
+  if (spriteKey === "guide-ranger") return trainerSprites.ranger;
+  if (spriteKey === "guide-ghost") return trainerSprites.channeler;
   if (spriteKey === "shop") return trainerSprites.shop;
   if (spriteKey === "healer" || spriteKey === "healer-fire")
     return trainerSprites.healer;

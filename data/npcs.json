@@ -177,6 +177,198 @@
         "y": 4
       },
       "dialogue": "The heat is brutal out here. Let me patch up your team."
+    },
+    {
+      "id": 9,
+      "area": "ocean",
+      "name": "Fisher Kai",
+      "type": "trainer",
+      "sprite": "guide-sailor",
+      "position": {
+        "x": 6,
+        "y": 2
+      },
+      "dialogue": "Nice fight. The tide is on your side today.",
+      "introDialogue": "Let's see if your team can handle ocean currents!",
+      "team": [
+        {
+          "name": "Tentacool",
+          "level": 20
+        },
+        {
+          "name": "Horsea",
+          "level": 21
+        }
+      ],
+      "rewardCoins": 720,
+      "itemReward": {
+        "id": "great",
+        "quantity": 1
+      }
+    },
+    {
+      "id": 10,
+      "area": "volcano",
+      "name": "Cinder Val",
+      "type": "trainer",
+      "sprite": "trainer-fire",
+      "position": {
+        "x": 5,
+        "y": 2
+      },
+      "dialogue": "Your team kept cool under pressure.",
+      "introDialogue": "Volcano battles burn bright. Ready?",
+      "team": [
+        {
+          "name": "Vulpix",
+          "level": 22
+        },
+        {
+          "name": "Ponyta",
+          "level": 24
+        }
+      ],
+      "rewardCoins": 820
+    },
+    {
+      "id": 11,
+      "area": "mountain",
+      "name": "Ranger Cliff",
+      "type": "guide",
+      "sprite": "guide-ranger",
+      "position": {
+        "x": 2,
+        "y": 2
+      },
+      "dialogue": "Rare flying and dragon Pokemon show up more often on mountain paths at night."
+    },
+    {
+      "id": 12,
+      "area": "mountain",
+      "name": "Peak Ace Mira",
+      "type": "trainer",
+      "sprite": "trainer-ranger",
+      "position": {
+        "x": 6,
+        "y": 4
+      },
+      "dialogue": "You climbed past my best formation.",
+      "introDialogue": "High altitude makes every move count!",
+      "team": [
+        {
+          "name": "Spearow",
+          "level": 26
+        },
+        {
+          "name": "Larvitar",
+          "level": 28
+        }
+      ],
+      "rewardCoins": 920,
+      "itemReward": {
+        "id": "superPotion",
+        "quantity": 1
+      }
+    },
+    {
+      "id": 13,
+      "area": "desert",
+      "name": "Ruin Maniac Sol",
+      "type": "trainer",
+      "sprite": "trainer-ruin",
+      "position": {
+        "x": 3,
+        "y": 3
+      },
+      "dialogue": "The ruins remember that battle.",
+      "introDialogue": "These sands hide strong Ground types!",
+      "team": [
+        {
+          "name": "Sandshrew",
+          "level": 25
+        },
+        {
+          "name": "Trapinch",
+          "level": 27
+        }
+      ],
+      "rewardCoins": 900
+    },
+    {
+      "id": 14,
+      "area": "desert",
+      "name": "Oasis Porter",
+      "type": "shop",
+      "sprite": "shop",
+      "position": {
+        "x": 7,
+        "y": 5
+      },
+      "dialogue": "Sandstorms chew through supplies. Stock up while you can."
+    },
+    {
+      "id": 15,
+      "area": "graveyard",
+      "name": "Medium Luma",
+      "type": "guide",
+      "sprite": "guide-ghost",
+      "position": {
+        "x": 2,
+        "y": 4
+      },
+      "dialogue": "Ghost Pokemon are easier to find here at night. Some legends only answer after dark."
+    },
+    {
+      "id": 16,
+      "area": "graveyard",
+      "name": "Channeler Nyx",
+      "type": "trainer",
+      "sprite": "trainer-ghost",
+      "position": {
+        "x": 6,
+        "y": 2
+      },
+      "dialogue": "The spirits accept your strength.",
+      "introDialogue": "Walk quietly. Battle boldly.",
+      "team": [
+        {
+          "name": "Gastly",
+          "level": 28
+        },
+        {
+          "name": "Misdreavus",
+          "level": 30
+        }
+      ],
+      "rewardCoins": 980,
+      "itemReward": {
+        "id": "fullHeal",
+        "quantity": 1
+      }
+    },
+    {
+      "id": 17,
+      "area": "lake",
+      "name": "Nurse Brook",
+      "type": "healer",
+      "sprite": "healer",
+      "position": {
+        "x": 2,
+        "y": 5
+      },
+      "dialogue": "Rest by the lake. I'll heal your Pokemon."
+    },
+    {
+      "id": 18,
+      "area": "cave",
+      "name": "Cave Merchant",
+      "type": "shop",
+      "sprite": "shop",
+      "position": {
+        "x": 2,
+        "y": 5
+      },
+      "dialogue": "Dark tunnels need extra supplies. Take a look."
     }
   ]
 }
