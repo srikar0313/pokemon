@@ -2732,9 +2732,12 @@ function showBattle() {
       </div>
       <div class="wild-encounter-actions">
         <p class="weather-info">${formatAreaName(wild.area)} | Weather: ${wild.weather}${wild.shiny ? " | Shiny encounter!" : ""}</p>
-        <button class="secondary-btn icon-button" onclick="endEncounter()">${renderIcon("run", "Explore")} Explore</button>
+        <button class="wild-explore-return icon-button" onclick="endEncounter()">${renderIcon("run", "Explore")} Explore</button>
       </div>
     </div>
+    <button class="wild-explore-return wild-explore-return-wide icon-button" onclick="endEncounter()">
+      ${renderIcon("run", "Explore")} Return to Explore
+    </button>
     <div class="battle-container">
       <div class="battle-pokemon">
         <img src="${getPokemonImage(activePokemon)}" alt="${activePokemon.name}">
@@ -2763,7 +2766,7 @@ function showBattle() {
     <div id="battle-item-panel"></div>
     <div class="battle-action-row">
       <button onclick="switchPokemon()" class="secondary-btn">Switch Pokémon</button>
-      <button onclick="endEncounter()" class="secondary-btn icon-button">${renderIcon("run", "Explore")} Back to Explore</button>
+      <button onclick="endEncounter()" class="wild-explore-return icon-button">${renderIcon("run", "Explore")} Back to Explore</button>
     </div>
     <div id="wild-switch-panel"></div>
     <div id="catch-panel"></div>

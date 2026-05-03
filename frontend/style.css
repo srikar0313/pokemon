@@ -2021,11 +2021,51 @@ button:disabled {
   gap: 8px;
 }
 
+.wild-explore-return {
+  background: linear-gradient(180deg, #ffcb05 0%, #f0a51a 100%);
+  border: 2px solid #8c5a00;
+  box-shadow: 0 3px 0 #8c5a00;
+  color: #17233d;
+  font-weight: 900;
+}
+
+.wild-explore-return:hover {
+  background: linear-gradient(180deg, #ffe17a 0%, #f6b83b 100%);
+  color: #17233d;
+  transform: translateY(-1px);
+}
+
+.wild-explore-return-wide {
+  display: none;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 0 0;
+}
+
 .battle-action-row {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+}
+
+@media (max-width: 700px) {
+  .wild-encounter-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .wild-encounter-head .weather-info {
+    text-align: left;
+  }
+
+  .wild-encounter-actions {
+    align-items: stretch;
+  }
+
+  .wild-explore-return-wide {
+    display: flex;
+  }
 }
 
 @keyframes encounter-pop {
