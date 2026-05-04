@@ -235,7 +235,7 @@
       "area": "mountain",
       "name": "Ranger Cliff",
       "type": "guide",
-      "sprite": "guide-ranger",
+      "sprite": "map-mountain",
       "position": {
         "x": 2,
         "y": 2
@@ -247,7 +247,7 @@
       "area": "mountain",
       "name": "Peak Ace Mira",
       "type": "trainer",
-      "sprite": "trainer-ranger",
+      "sprite": "map-mountain",
       "position": {
         "x": 6,
         "y": 4

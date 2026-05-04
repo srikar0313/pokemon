@@ -111,6 +111,7 @@ const trainerSprites = {
   mapGrass: "assets/npcs/map-grass.svg",
   mapLake: "assets/npcs/map-lake.svg",
   mapVolcano: "assets/npcs/map-volcano.svg",
+  mapMountain: "assets/npcs/map-mountain.svg",
   mapGraveyard: "assets/npcs/map-graveyard.svg",
 };
 
@@ -3484,6 +3485,7 @@ function getNpcSprite(npc) {
   if (spriteKey === "map-grass") return trainerSprites.mapGrass;
   if (spriteKey === "map-lake") return trainerSprites.mapLake;
   if (spriteKey === "map-volcano") return trainerSprites.mapVolcano;
+  if (spriteKey === "map-mountain") return trainerSprites.mapMountain;
   if (spriteKey === "map-graveyard") return trainerSprites.mapGraveyard;
   if (spriteKey === "guide") return trainerSprites.guide;
   if (spriteKey === "guide-sailor") return trainerSprites.fisherman;
