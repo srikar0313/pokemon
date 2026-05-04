@@ -111,8 +111,8 @@ const trainerSprites = {
   mapGrass: "assets/npcs/map-grass.svg",
   mapLake: "assets/npcs/map-lake.svg",
   mapVolcano: "assets/npcs/map-volcano.svg",
-  mapMountain: "assets/npcs/map-mountain.svg",
-  mapGraveyard: "assets/npcs/map-graveyard.svg",
+  mapMountain: "assets/npcs/map-mountain.png",
+  mapGraveyard: "assets/npcs/map-graveyard.png",
 };
 
 const npcTypeLabels = {
