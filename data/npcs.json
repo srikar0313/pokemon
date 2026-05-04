@@ -71,7 +71,7 @@
       "area": "forest",
       "name": "Guide Maple",
       "type": "guide",
-      "sprite": "guide",
+      "sprite": "map-grass",
       "position": {
         "x": 2,
         "y": 2
@@ -107,7 +107,7 @@
       "area": "lake",
       "name": "Trainer Marina",
       "type": "trainer",
-      "sprite": "trainer-water",
+      "sprite": "map-lake",
       "position": {
         "x": 5,
         "y": 2
@@ -171,7 +171,7 @@
       "area": "volcano",
       "name": "Medic Ember",
       "type": "healer",
-      "sprite": "healer-fire",
+      "sprite": "map-volcano",
       "position": {
         "x": 2,
         "y": 4
@@ -211,7 +211,7 @@
       "area": "volcano",
       "name": "Cinder Val",
       "type": "trainer",
-      "sprite": "trainer-fire",
+      "sprite": "map-volcano",
       "position": {
         "x": 5,
         "y": 2
@@ -311,7 +311,7 @@
       "area": "graveyard",
       "name": "Medium Luma",
       "type": "guide",
-      "sprite": "guide-ghost",
+      "sprite": "map-graveyard",
       "position": {
         "x": 2,
         "y": 4
@@ -323,7 +323,7 @@
       "area": "graveyard",
       "name": "Channeler Nyx",
       "type": "trainer",
-      "sprite": "trainer-ghost",
+      "sprite": "map-graveyard",
       "position": {
         "x": 6,
         "y": 2
@@ -351,7 +351,7 @@
       "area": "lake",
       "name": "Nurse Brook",
       "type": "healer",
-      "sprite": "healer",
+      "sprite": "map-lake",
       "position": {
         "x": 2,
         "y": 5

@@ -108,6 +108,10 @@ const trainerSprites = {
   ranger: "assets/npcs/ranger.svg",
   ruinManiac: "assets/npcs/ruin.svg",
   channeler: "assets/npcs/ghost.svg",
+  mapGrass: "assets/npcs/map-grass.svg",
+  mapLake: "assets/npcs/map-lake.svg",
+  mapVolcano: "assets/npcs/map-volcano.svg",
+  mapGraveyard: "assets/npcs/map-graveyard.svg",
 };
 
 const npcTypeLabels = {
@@ -3477,6 +3481,10 @@ function getNpcSprite(npc) {
   if (spriteKey === "trainer-ranger") return trainerSprites.ranger;
   if (spriteKey === "trainer-ruin") return trainerSprites.ruinManiac;
   if (spriteKey === "trainer-ghost") return trainerSprites.channeler;
+  if (spriteKey === "map-grass") return trainerSprites.mapGrass;
+  if (spriteKey === "map-lake") return trainerSprites.mapLake;
+  if (spriteKey === "map-volcano") return trainerSprites.mapVolcano;
+  if (spriteKey === "map-graveyard") return trainerSprites.mapGraveyard;
   if (spriteKey === "guide") return trainerSprites.guide;
   if (spriteKey === "guide-sailor") return trainerSprites.fisherman;
   if (spriteKey === "guide-ranger") return trainerSprites.ranger;
