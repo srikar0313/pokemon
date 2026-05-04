@@ -275,7 +275,7 @@
       "area": "desert",
       "name": "Ruin Maniac Sol",
       "type": "trainer",
-      "sprite": "trainer-ruin",
+      "sprite": "map-desert",
       "position": {
         "x": 3,
         "y": 3
@@ -299,7 +299,7 @@
       "area": "desert",
       "name": "Oasis Porter",
       "type": "shop",
-      "sprite": "shop",
+      "sprite": "map-desert",
       "position": {
         "x": 7,
         "y": 5
