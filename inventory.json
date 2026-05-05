@@ -1,149 +1,57 @@
 [
   {
-    "id": 25,
-    "name": "Pikachu",
-    "type": "Electric",
-    "rarity": "uncommon",
-    "hp": 35,
-    "maxHp": 64,
-    "attack": 29,
-    "defense": 10,
-    "xpYield": 112,
-    "habitats": [
-      "forest"
-    ],
-    "times": [
-      "day"
-    ],
-    "baseCatchRate": 190,
-    "level": 6,
-    "xp": 261,
-    "types": [
-      "Electric"
-    ],
-    "specialAttack": 82,
-    "specialDefense": 60,
-    "moves": [
-      {
-        "name": "Quick Attack",
-        "type": "Normal",
-        "category": "Physical",
-        "power": 40,
-        "accuracy": 100,
-        "pp": 30,
-        "maxPp": 30,
-        "priority": 1,
-        "currentPp": 30
-      },
-      {
-        "name": "Thunder Shock",
-        "type": "Electric",
-        "category": "Special",
-        "power": 40,
-        "accuracy": 100,
-        "pp": 30,
-        "maxPp": 30,
-        "effect": {
-          "type": "status",
-          "status": "paralyzed",
-          "chance": 10
-        },
-        "currentPp": 30
-      },
-      {
-        "name": "Thunder Wave",
-        "type": "Electric",
-        "category": "Status",
-        "power": 0,
-        "accuracy": 90,
-        "pp": 20,
-        "maxPp": 20,
-        "effect": {
-          "type": "status",
-          "status": "paralyzed",
-          "chance": 100
-        },
-        "currentPp": 20
-      },
-      {
-        "name": "Thunderbolt",
-        "type": "Electric",
-        "category": "Special",
-        "power": 90,
-        "accuracy": 100,
-        "pp": 15,
-        "maxPp": 15,
-        "effect": {
-          "type": "status",
-          "status": "paralyzed",
-          "chance": 10
-        },
-        "currentPp": 15
-      }
-    ],
-    "evolvesTo": "Raichu",
-    "evolveLevel": 12,
-    "evolveType": "Electric",
-    "learnset": [
-      {
-        "level": 5,
-        "move": {
-          "name": "Electro Ball",
-          "type": "Electric",
-          "category": "Special",
-          "power": 60,
-          "accuracy": 100,
-          "pp": 10,
-          "maxPp": 10,
-          "currentPp": 10
-        }
-      }
-    ],
-    "imageId": 25,
-    "currentHp": 64,
-    "shiny": false,
-    "status": "none",
-    "speed": 1
-  },
-  {
-    "id": 92,
-    "name": "Gastly",
+    "name": "Gengar",
     "type": "Ghost",
+    "types": [
+      "Ghost",
+      "Poison"
+    ],
     "rarity": "rare",
-    "hp": 30,
-    "maxHp": 30,
-    "attack": 28,
-    "defense": 30,
-    "xpYield": 95,
+    "hp": 60,
+    "attack": 163,
+    "defense": 151,
+    "specialAttack": 327,
+    "specialDefense": 189,
+    "xpYield": 180,
     "habitats": [
       "graveyard"
     ],
     "times": [
       "night"
     ],
-    "baseCatchRate": 190,
-    "level": 1,
-    "xp": 0,
-    "types": [
-      "Ghost"
-    ],
-    "specialAttack": 35,
-    "specialDefense": 30,
+    "baseCatchRate": 90,
     "moves": [
       {
-        "name": "Lick",
+        "name": "Shadow Ball",
         "type": "Ghost",
-        "category": "Physical",
-        "power": 30,
+        "category": "Special",
+        "power": 80,
         "accuracy": 100,
-        "pp": 30,
-        "maxPp": 30,
+        "pp": 15,
+        "maxPp": 15,
+        "effect": {
+          "type": "statChange",
+          "target": "opponent",
+          "stat": "specialDefense",
+          "stages": -1,
+          "chance": 20
+        },
+        "currentPp": 15
+      },
+      {
+        "name": "Sludge Bomb",
+        "type": "Poison",
+        "category": "Special",
+        "power": 90,
+        "accuracy": 100,
+        "pp": 10,
         "effect": {
           "type": "status",
-          "status": "paralyzed",
+          "status": "poisoned",
           "chance": 30
         },
-        "currentPp": 30
+        "maxPp": 10,
+        "currentPp": 10
       },
       {
         "name": "Hypnosis",
@@ -161,66 +69,249 @@
         "currentPp": 20
       },
       {
-        "name": "Night Shade",
-        "type": "Ghost",
+        "name": "Dream Eater",
+        "type": "Psychic",
         "category": "Special",
-        "power": 0,
+        "power": 100,
         "accuracy": 100,
         "pp": 15,
         "maxPp": 15,
         "currentPp": 15
+      }
+    ],
+    "id": 246,
+    "level": 20,
+    "xp": 0,
+    "maxHp": 151,
+    "imageId": 94,
+    "currentHp": 151,
+    "status": "none",
+    "learnset": [],
+    "shiny": false,
+    "evolvedFrom": "Haunter"
+  },
+  {
+    "id": 150,
+    "name": "Mewtwo",
+    "type": "Psychic",
+    "rarity": "legendary",
+    "hp": 106,
+    "maxHp": 267,
+    "attack": 277,
+    "defense": 226,
+    "xpYield": 340,
+    "habitats": [
+      "cave"
+    ],
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 3,
+    "level": 20,
+    "xp": 0,
+    "types": [
+      "Psychic"
+    ],
+    "specialAttack": 388,
+    "specialDefense": 226,
+    "moves": [
+      {
+        "name": "Confusion",
+        "type": "Psychic",
+        "category": "Special",
+        "power": 50,
+        "accuracy": 100,
+        "pp": 25,
+        "maxPp": 25,
+        "effect": {
+          "type": "status",
+          "status": "confused",
+          "chance": 10
+        },
+        "currentPp": 25
       },
       {
-        "name": "Shadow Ball",
-        "type": "Ghost",
-        "category": "Special",
-        "power": 80,
+        "name": "Psycho Cut",
+        "type": "Psychic",
+        "category": "Physical",
+        "power": 70,
         "accuracy": 100,
-        "pp": 15,
-        "maxPp": 15,
+        "pp": 20,
+        "maxPp": 20,
+        "effect": {
+          "type": "criticalBoost",
+          "chance": 20
+        },
+        "currentPp": 16
+      },
+      {
+        "name": "Psychic",
+        "type": "Psychic",
+        "category": "Special",
+        "power": 90,
+        "accuracy": 100,
+        "pp": 10,
+        "maxPp": 10,
         "effect": {
           "type": "statChange",
           "target": "opponent",
           "stat": "specialDefense",
           "stages": -1,
-          "chance": 20
+          "chance": 10
         },
-        "currentPp": 15
+        "currentPp": 10
+      },
+      {
+        "name": "Recover",
+        "type": "Normal",
+        "category": "Status",
+        "power": 0,
+        "accuracy": 100,
+        "pp": 10,
+        "maxPp": 10,
+        "effect": {
+          "type": "heal",
+          "target": "self",
+          "percent": 50
+        },
+        "currentPp": 10
       }
     ],
-    "evolvesTo": "Haunter",
-    "evolveLevel": 25,
-    "evolveType": "Ghost",
-    "imageId": 92,
-    "currentHp": 30,
+    "catchRate": 3,
+    "imageId": 150,
+    "currentHp": 267,
     "status": "none",
-    "shiny": false,
-    "learnset": []
+    "learnset": [],
+    "shiny": false
   },
   {
-    "id": 1,
-    "name": "Bulbasaur",
-    "type": "Grass",
-    "rarity": "common",
-    "hp": 45,
-    "maxHp": 58,
-    "attack": 14,
-    "defense": 23,
-    "xpYield": 64,
+    "name": "Magmar",
+    "type": "Fire",
+    "types": [
+      "Fire"
+    ],
+    "rarity": "rare",
+    "hp": 65,
+    "attack": 239,
+    "defense": 143,
+    "specialAttack": 252,
+    "specialDefense": 214,
+    "xpYield": 150,
+    "habitats": [
+      "volcano"
+    ],
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 90,
+    "moves": [
+      {
+        "name": "Fire Punch",
+        "type": "Fire",
+        "category": "Physical",
+        "power": 75,
+        "accuracy": 100,
+        "pp": 15,
+        "effect": {
+          "type": "status",
+          "status": "burned",
+          "chance": 10
+        },
+        "maxPp": 15,
+        "currentPp": 15
+      },
+      {
+        "name": "Flamethrower",
+        "type": "Fire",
+        "category": "Special",
+        "power": 90,
+        "accuracy": 100,
+        "pp": 15,
+        "maxPp": 15,
+        "effect": {
+          "type": "status",
+          "status": "burned",
+          "chance": 10
+        },
+        "currentPp": 15
+      },
+      {
+        "name": "Smokescreen",
+        "type": "Normal",
+        "category": "Status",
+        "power": 0,
+        "accuracy": 100,
+        "pp": 20,
+        "effect": {
+          "type": "statChange",
+          "target": "opponent",
+          "stat": "accuracy",
+          "stages": -1,
+          "chance": 100
+        },
+        "maxPp": 20,
+        "currentPp": 20
+      },
+      {
+        "name": "Confuse Ray",
+        "type": "Ghost",
+        "category": "Status",
+        "power": 0,
+        "accuracy": 100,
+        "pp": 10,
+        "maxPp": 10,
+        "effect": {
+          "type": "status",
+          "status": "confused",
+          "chance": 100
+        },
+        "currentPp": 10
+      }
+    ],
+    "id": 236,
+    "level": 20,
+    "xp": 0,
+    "maxHp": 163,
+    "imageId": 126,
+    "currentHp": 163,
+    "status": "none",
+    "learnset": [],
+    "shiny": false,
+    "pendingMove": {
+      "name": "Electro Ball",
+      "type": "Electric",
+      "category": "Special",
+      "power": 60,
+      "accuracy": 100,
+      "pp": 10,
+      "maxPp": 10,
+      "currentPp": 10
+    }
+  },
+  {
+    "id": 143,
+    "name": "Snorlax",
+    "type": "Normal",
+    "rarity": "rare",
+    "hp": 150,
+    "maxHp": 378,
+    "attack": 277,
+    "defense": 163,
+    "xpYield": 189,
     "habitats": [
       "forest"
     ],
     "times": [
-      "day"
+      "night"
     ],
-    "baseCatchRate": 45,
-    "level": 3,
-    "xp": 46,
+    "baseCatchRate": 25,
+    "level": 20,
+    "xp": 0,
     "types": [
-      "Grass"
+      "Normal"
     ],
-    "specialAttack": 60,
-    "specialDefense": 60,
+    "specialAttack": 277,
+    "specialDefense": 163,
     "moves": [
       {
         "name": "Tackle",
@@ -233,267 +324,130 @@
         "currentPp": 35
       },
       {
-        "name": "Vine Whip",
-        "type": "Grass",
+        "name": "Lick",
+        "type": "Ghost",
         "category": "Physical",
-        "power": 45,
+        "power": 30,
         "accuracy": 100,
-        "pp": 25,
-        "maxPp": 25,
-        "currentPp": 25
-      },
-      {
-        "name": "Razor Leaf",
-        "type": "Grass",
-        "category": "Physical",
-        "power": 55,
-        "accuracy": 95,
-        "pp": 25,
-        "maxPp": 25,
+        "pp": 30,
+        "maxPp": 30,
         "effect": {
-          "type": "criticalBoost",
-          "chance": 20
+          "type": "status",
+          "status": "paralyzed",
+          "chance": 30
         },
-        "currentPp": 25
+        "currentPp": 30
       },
       {
-        "name": "Sleep Powder",
-        "type": "Grass",
-        "category": "Status",
-        "power": 0,
-        "accuracy": 75,
+        "name": "Body Slam",
+        "type": "Normal",
+        "category": "Physical",
+        "power": 85,
+        "accuracy": 100,
         "pp": 15,
         "maxPp": 15,
         "effect": {
           "type": "status",
-          "status": "asleep",
-          "chance": 100
+          "status": "paralyzed",
+          "chance": 30
         },
         "currentPp": 15
+      },
+      {
+        "name": "Rest",
+        "type": "Psychic",
+        "category": "Status",
+        "power": 0,
+        "accuracy": 100,
+        "pp": 5,
+        "maxPp": 5,
+        "effect": {
+          "type": "healAndSleep",
+          "target": "self",
+          "percent": 100,
+          "status": "asleep"
+        },
+        "currentPp": 5
       }
     ],
-    "evolvesTo": "Ivysaur",
-    "evolveLevel": 16,
-    "evolveType": "Grass",
-    "imageId": 1,
-    "currentHp": 58,
-    "shiny": false,
+    "imageId": 143,
+    "currentHp": 378,
     "status": "none",
-    "learnset": []
+    "learnset": [],
+    "shiny": false,
+    "pendingMove": {
+      "name": "Electro Ball",
+      "type": "Electric",
+      "category": "Special",
+      "power": 60,
+      "accuracy": 100,
+      "pp": 10,
+      "maxPp": 10,
+      "currentPp": 10
+    }
   },
   {
-    "id": 35,
-    "name": "Clefairy",
-    "type": "Fairy",
-    "rarity": "uncommon",
-    "hp": 35,
-    "maxHp": 35,
-    "attack": 20,
-    "defense": 24,
-    "xpYield": 146,
+    "id": 131,
+    "name": "Lapras",
+    "type": "Water",
+    "rarity": "rare",
+    "hp": 130,
+    "maxHp": 327,
+    "attack": 214,
+    "defense": 239,
+    "xpYield": 219,
     "habitats": [
-      "mountain"
+      "lake",
+      "ocean"
     ],
     "times": [
       "night"
     ],
-    "baseCatchRate": 150,
-    "level": 1,
+    "baseCatchRate": 45,
+    "level": 20,
     "xp": 0,
     "types": [
-      "Fairy"
+      "Water",
+      "Ice"
     ],
-    "specialAttack": 20,
-    "specialDefense": 24,
+    "specialAttack": 214,
+    "specialDefense": 239,
     "moves": [
       {
-        "name": "Pound",
-        "type": "Normal",
-        "category": "Physical",
-        "power": 40,
-        "accuracy": 100,
-        "pp": 35,
-        "maxPp": 35,
-        "currentPp": 35
-      },
-      {
-        "name": "Sing",
-        "type": "Normal",
-        "category": "Status",
-        "power": 0,
-        "accuracy": 55,
-        "pp": 15,
-        "maxPp": 15,
-        "effect": {
-          "type": "status",
-          "status": "asleep",
-          "chance": 100
-        },
-        "currentPp": 15
-      },
-      {
-        "name": "Disarming Voice",
-        "type": "Fairy",
+        "name": "Water Gun",
+        "type": "Water",
         "category": "Special",
         "power": 40,
         "accuracy": 100,
-        "pp": 15,
-        "maxPp": 15,
-        "currentPp": 15
+        "pp": 25,
+        "maxPp": 25,
+        "currentPp": 25
       },
       {
-        "name": "Moonblast",
-        "type": "Fairy",
-        "category": "Special",
-        "power": 95,
-        "accuracy": 100,
-        "pp": 15,
-        "maxPp": 15,
-        "effect": {
-          "type": "statChange",
-          "target": "opponent",
-          "stat": "specialAttack",
-          "stages": -1,
-          "chance": 30
-        },
-        "currentPp": 15
-      }
-    ],
-    "imageId": 35,
-    "currentHp": 35,
-    "status": "none",
-    "shiny": false,
-    "learnset": []
-  },
-  {
-    "id": 74,
-    "name": "Geodude",
-    "type": "Rock",
-    "rarity": "uncommon",
-    "hp": 40,
-    "maxHp": 40,
-    "attack": 80,
-    "defense": 100,
-    "xpYield": 90,
-    "habitats": [
-      "cave"
-    ],
-    "times": [
-      "day"
-    ],
-    "baseCatchRate": 255,
-    "level": 1,
-    "xp": 0,
-    "types": [
-      "Rock"
-    ],
-    "specialAttack": 80,
-    "specialDefense": 100,
-    "moves": [
-      {
-        "name": "Tackle",
-        "type": "Normal",
+        "name": "Ice Shard",
+        "type": "Ice",
         "category": "Physical",
         "power": 40,
-        "accuracy": 100,
-        "pp": 35,
-        "maxPp": 35,
-        "currentPp": 35
-      },
-      {
-        "name": "Defense Curl",
-        "type": "Normal",
-        "category": "Status",
-        "power": 0,
-        "accuracy": 100,
-        "pp": 40,
-        "maxPp": 40,
-        "effect": {
-          "type": "statChange",
-          "target": "self",
-          "stat": "defense",
-          "stages": 1,
-          "chance": 100
-        },
-        "currentPp": 40
-      },
-      {
-        "name": "Rock Throw",
-        "type": "Rock",
-        "category": "Physical",
-        "power": 50,
-        "accuracy": 90,
-        "pp": 15,
-        "maxPp": 15,
-        "currentPp": 15
-      },
-      {
-        "name": "Magnitude",
-        "type": "Ground",
-        "category": "Physical",
-        "power": 70,
         "accuracy": 100,
         "pp": 30,
         "maxPp": 30,
+        "priority": 1,
         "currentPp": 30
-      }
-    ],
-    "evolvesTo": "Graveler",
-    "evolveLevel": 25,
-    "evolveType": "Rock",
-    "imageId": 74,
-    "currentHp": 40,
-    "status": "none",
-    "shiny": false,
-    "learnset": []
-  },
-  {
-    "name": "Shellder",
-    "type": "Water",
-    "types": [
-      "Water"
-    ],
-    "rarity": "uncommon",
-    "hp": 30,
-    "attack": 65,
-    "defense": 100,
-    "specialAttack": 45,
-    "specialDefense": 45,
-    "xpYield": 72,
-    "habitats": [
-      "ocean"
-    ],
-    "times": [
-      "day"
-    ],
-    "baseCatchRate": 190,
-    "moves": [
-      {
-        "name": "Tackle",
-        "type": "Normal",
-        "category": "Physical",
-        "power": 40,
-        "accuracy": 100,
-        "pp": 35,
-        "maxPp": 35,
-        "currentPp": 35
       },
       {
-        "name": "Withdraw",
-        "type": "Water",
+        "name": "Confuse Ray",
+        "type": "Ghost",
         "category": "Status",
         "power": 0,
         "accuracy": 100,
-        "pp": 40,
+        "pp": 10,
+        "maxPp": 10,
         "effect": {
-          "type": "statChange",
-          "target": "self",
-          "stat": "defense",
-          "stages": 1,
+          "type": "status",
+          "status": "confused",
           "chance": 100
         },
-        "maxPp": 40,
-        "currentPp": 40
+        "currentPp": 10
       },
       {
         "name": "Ice Beam",
@@ -509,26 +463,100 @@
           "chance": 10
         },
         "currentPp": 10
+      }
+    ],
+    "imageId": 131,
+    "currentHp": 327,
+    "status": "none",
+    "learnset": [],
+    "shiny": false,
+    "pendingMove": {
+      "name": "Electro Ball",
+      "type": "Electric",
+      "category": "Special",
+      "power": 60,
+      "accuracy": 100,
+      "pp": 10,
+      "maxPp": 10,
+      "currentPp": 10
+    }
+  },
+  {
+    "name": "Giratina",
+    "type": "Ghost",
+    "types": [
+      "Ghost",
+      "Dragon"
+    ],
+    "rarity": "legendary",
+    "hp": 150,
+    "attack": 252,
+    "defense": 302,
+    "specialAttack": 252,
+    "specialDefense": 302,
+    "xpYield": 360,
+    "habitats": [
+      "graveyard"
+    ],
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "moves": [
+      {
+        "name": "Shadow Force",
+        "type": "Ghost",
+        "category": "Physical",
+        "power": 120,
+        "accuracy": 100,
+        "pp": 5,
+        "maxPp": 5,
+        "currentPp": 5
       },
       {
-        "name": "Clamp",
-        "type": "Water",
-        "category": "Physical",
-        "power": 35,
+        "name": "Dragon Pulse",
+        "type": "Dragon",
+        "category": "Special",
+        "power": 85,
+        "accuracy": 100,
+        "pp": 10,
+        "maxPp": 10,
+        "currentPp": 10
+      },
+      {
+        "name": "Aura Sphere",
+        "type": "Fighting",
+        "category": "Special",
+        "power": 80,
+        "accuracy": 100,
+        "pp": 10,
+        "maxPp": 10,
+        "currentPp": 10
+      },
+      {
+        "name": "Will-O-Wisp",
+        "type": "Fire",
+        "category": "Status",
+        "power": 0,
         "accuracy": 85,
         "pp": 15,
+        "effect": {
+          "type": "status",
+          "status": "burned",
+          "chance": 100
+        },
         "maxPp": 15,
         "currentPp": 15
       }
     ],
-    "id": 232,
-    "level": 1,
+    "id": 257,
+    "level": 20,
     "xp": 0,
-    "maxHp": 30,
-    "imageId": 90,
-    "currentHp": 30,
+    "maxHp": 378,
+    "imageId": 487,
+    "currentHp": 378,
     "status": "none",
-    "shiny": false,
-    "learnset": []
+    "learnset": [],
+    "shiny": false
   }
 ]
