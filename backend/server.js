@@ -19,6 +19,11 @@ const coinRewards = {
   wildBattleMax: 150,
   catch: 50,
 };
+const wildLevelRanges = {
+  default: { min: 1, max: 20 },
+  legendary: { min: 50, max: 70 },
+  mythical: { min: 60, max: 80 },
+};
 
 app.use(express.static("frontend"));
 app.use("/assets", express.static(path.join(rootDir, "assets")));
@@ -79,6 +84,18 @@ const legacyBadgeMap = {
   "Ember Badge": "Blaze Badge",
   "Volcano Badge": "Blaze Badge",
 };
+
+function randomIntBetween(min, max) {
+  const low = Math.ceil(min);
+  const high = Math.floor(max);
+  return Math.floor(Math.random() * (high - low + 1)) + low;
+}
+
+function getWildEncounterLevel(pokemon) {
+  const rarity = pokemon?.rarity;
+  const range = wildLevelRanges[rarity] || wildLevelRanges.default;
+  return randomIntBetween(range.min, range.max);
+}
 
 const legacyGymMap = {
   electric: 1,
@@ -1855,13 +1872,14 @@ app.post("/api/encounter", (req, res) => {
     if (!pokemon) {
       return res.status(404).json({ error: "No Pokemon available for this area" });
     }
-    const encountered = normalizePokemon(pokemon);
+    const encounterLevel = getWildEncounterLevel(pokemon);
+    const encountered = createLeveledPokemon(pokemon.name, encounterLevel);
     const shiny = Math.random() < 1 / 4096;
     const encounterData = {
       ...encountered,
       currentHp: encountered.maxHp || encountered.hp,
       area,
-      level: encountered.level || 1,
+      level: encounterLevel,
       weather,
       timeOfDay: metadata.timeOfDay,
       rarity: metadata.rarity,

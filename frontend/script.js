@@ -2759,9 +2759,6 @@ function showBattle() {
         <button class="wild-explore-return icon-button" onclick="findAnotherWildPokemon()">${renderIcon("run", "Explore")} Find New Pokemon</button>
       </div>
     </div>
-    <button class="wild-explore-return wild-explore-return-wide icon-button" onclick="findAnotherWildPokemon()">
-      ${renderIcon("run", "Explore")} Find New Pokemon
-    </button>
     <div class="battle-container">
       <div class="battle-pokemon">
         <img src="${getPokemonImage(activePokemon)}" alt="${activePokemon.name}">
@@ -2790,7 +2787,6 @@ function showBattle() {
     <div id="battle-item-panel"></div>
     <div class="battle-action-row">
       <button onclick="switchPokemon()" class="secondary-btn">Switch Pokémon</button>
-      <button onclick="findAnotherWildPokemon()" class="wild-explore-return icon-button">${renderIcon("run", "Explore")} Find New Pokemon</button>
       <button onclick="endEncounter()" class="secondary-btn icon-button">${renderIcon("run", "Run")} Leave Battle</button>
     </div>
     <div id="wild-switch-panel"></div>
