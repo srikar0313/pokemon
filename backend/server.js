@@ -39,6 +39,7 @@ const npcMaps = gameData.npcMaps;
 const areas = gameData.areas;
 const areaUnlocks = gameData.areaUnlocks;
 const rarityWeights = gameData.rarityWeights;
+const legendaryRollChance = gameData.legendaryRollChance;
 const weatherBoosts = gameData.weatherBoosts;
 const quests = gameData.quests || [];
 const pokemonUtils = createPokemonUtils({
@@ -167,6 +168,7 @@ const {
 
 const encounterEngine = createEncounterEngine({
   rarityWeights,
+  legendaryRollChance,
   weatherBoosts,
   getPokemonTypes,
 });

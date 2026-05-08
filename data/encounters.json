@@ -6,6 +6,7 @@
     "legendary": 3,
     "mythical": 1
   },
+  "legendaryRollChance": 0.15,
   "weatherBoosts": {
     "Fire": [
       "sunny"

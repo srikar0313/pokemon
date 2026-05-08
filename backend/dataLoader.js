@@ -397,6 +397,7 @@ function loadGameData(options = {}) {
     areas: areaData.areas || [],
     areaUnlocks: areaData.areaUnlocks || {},
     rarityWeights: encounterData.rarityWeights || {},
+    legendaryRollChance: encounterData.legendaryRollChance ?? 0.02,
     weatherBoosts: encounterData.weatherBoosts || {},
     quests: loadJson(path.join(dataDir, "quests.json"), []),
   };

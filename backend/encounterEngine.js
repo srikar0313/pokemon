@@ -1,4 +1,9 @@
-function createEncounterEngine({ rarityWeights, weatherBoosts, getPokemonTypes }) {
+function createEncounterEngine({
+  rarityWeights,
+  legendaryRollChance = 0.02,
+  weatherBoosts,
+  getPokemonTypes,
+}) {
   function getTimeOfDay() {
     const hour = new Date().getHours();
     return hour >= 6 && hour < 18 ? "day" : "night";
@@ -67,7 +72,7 @@ function createEncounterEngine({ rarityWeights, weatherBoosts, getPokemonTypes }
     const currentTime = getTimeOfDay();
     const weather = getCurrentWeather();
     const selectedArea = String(area).toLowerCase();
-    const legendaryRoll = Math.random() < 0.02;
+    const legendaryRoll = Math.random() < legendaryRollChance;
     const areaPool = allPokemon.filter((pokemon) =>
       getHabitats(pokemon).includes(selectedArea),
     );
