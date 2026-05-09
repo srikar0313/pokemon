@@ -199,8 +199,8 @@ const {
 
 function calculateBattleEffortXp(opponentPokemon, battleMultiplier = 1) {
   return Math.max(
-    15,
-    Math.floor(calculateBattleXp(opponentPokemon, battleMultiplier) * 0.08),
+    1,
+    Math.floor(calculateBattleXp(opponentPokemon, battleMultiplier) * 0.05),
   );
 }
 

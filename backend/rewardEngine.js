@@ -102,9 +102,10 @@ function createRewardEngine({
   function calculateBattleXp(defeatedPokemon, trainerMultiplier = 1) {
     const baseYield = defeatedPokemon?.xpYield || 50;
     const level = defeatedPokemon?.level || 1;
+    const multiplier = Math.min(Math.max(trainerMultiplier || 1, 1), 1.5);
     return Math.max(
-      80,
-      Math.floor(baseYield * Math.max(1, level / 2) * trainerMultiplier),
+      1,
+      Math.floor((baseYield * level * multiplier) / 7),
     );
   }
 

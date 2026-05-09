@@ -2302,7 +2302,7 @@ function displayParty(data) {
   let html = `
     <div class="inventory-header">
       <h3>Team (${data.length}/${PARTY_LIMIT})</h3>
-      <span class="xp-help" title="Pokemon gain XP from battles. Any Pokemon used in the battle shares XP. Leveling uses a cubic growth curve, so each higher level needs much more XP.">XP help</span>
+      <span class="xp-help" title="Pokemon gain XP from battles using base yield and defeated Pokemon level. Any Pokemon used in the battle shares XP. Leveling uses a cubic growth curve, so higher levels need much more XP.">XP help</span>
       <button class="secondary-btn icon-button" onclick="healTeam()">${renderIcon("potion", "Potion")} Heal All</button>
     </div>
   `;
