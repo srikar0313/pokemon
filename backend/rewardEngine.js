@@ -78,6 +78,9 @@ function createRewardEngine({
     }
 
     const evolvedFrom = pokemon.name;
+    const previousMaxHp = pokemon.maxHp || pokemon.hp || 1;
+    const previousHpRatio =
+      previousMaxHp > 0 ? Math.max(0, pokemon.currentHp || 0) / previousMaxHp : 1;
     const evolvedPokemon = normalizePokemon({
       ...targetTemplate,
       level: pokemon.level || 1,
@@ -87,7 +90,16 @@ function createRewardEngine({
       pendingMove: pokemon.pendingMove || undefined,
     });
 
-    evolvedPokemon.currentHp = evolvedPokemon.maxHp || evolvedPokemon.hp || 1;
+    evolvedPokemon.currentHp =
+      (pokemon.currentHp || 0) <= 0
+        ? 0
+        : Math.max(
+            1,
+            Math.min(
+              evolvedPokemon.maxHp || evolvedPokemon.hp || 1,
+              Math.round((evolvedPokemon.maxHp || evolvedPokemon.hp || 1) * previousHpRatio),
+            ),
+          );
     evolvedPokemon.evolvedFrom = evolvedFrom;
 
     return {
@@ -136,6 +148,7 @@ function createRewardEngine({
     const startingLevel = pokemon.level || 1;
     const startingXp = pokemon.xp || 0;
     const startingXpNeeded = getXpNeededForLevel(startingLevel);
+    const wasFainted = (pokemon.currentHp || 0) <= 0;
     pokemon.xp = startingXp + xpAmount;
     let leveledUp = false;
     let evolved = false;
@@ -156,10 +169,9 @@ function createRewardEngine({
         (pokemon.specialAttack || pokemon.attack || 1) + growth.specialAttack;
       pokemon.specialDefense =
         (pokemon.specialDefense || pokemon.defense || 1) + growth.specialDefense;
-      pokemon.currentHp = Math.min(
-        pokemon.maxHp,
-        (pokemon.currentHp || 0) + growth.maxHp,
-      );
+      pokemon.currentHp = wasFainted
+        ? 0
+        : Math.min(pokemon.maxHp, (pokemon.currentHp || 0) + growth.maxHp);
       leveledUp = true;
       statGains.push({ level: pokemon.level, ...growth });
       messages.push(`${pokemon.name} grew to level ${pokemon.level}! Stats increased.`);
