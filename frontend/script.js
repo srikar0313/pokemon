@@ -3086,6 +3086,7 @@ async function throwBall(type) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       id: wild.id,
+      pokemon: wild,
       pokeball: type,
       wildHPPercent: hpPercent,
       status: wildStatus,

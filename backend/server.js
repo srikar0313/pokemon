@@ -2073,7 +2073,11 @@ app.post("/api/catch", (req, res) => {
 
   try {
     const pokemon = getPokemonTemplates();
-    const target = normalizePokemon(pokemon.find((p) => p.id === id) || {});
+    const wildPokemon =
+      req.body.pokemon && req.body.pokemon.id === id ? req.body.pokemon : null;
+    const target = normalizePokemon(
+      wildPokemon || pokemon.find((p) => p.id === id) || {},
+    );
     if (!target.id) {
       return res.status(404).json({ error: "Pokemon not found" });
     }
@@ -2114,7 +2118,7 @@ app.post("/api/catch", (req, res) => {
         status: "none",
         moves: target.moves.map((m) => ({
           ...m,
-          currentPp: m.maxPp ?? m.pp,
+          currentPp: m.currentPp ?? m.maxPp ?? m.pp,
         })),
       };
       const catchDestination =
