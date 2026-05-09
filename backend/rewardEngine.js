@@ -109,7 +109,10 @@ function createRewardEngine({
   }
 
   function getXpNeededForLevel(level) {
-    return Math.max(50, (level || 1) * 50);
+    const currentLevel = Math.max(1, level || 1);
+    const currentTotal = currentLevel ** 3;
+    const nextTotal = (currentLevel + 1) ** 3;
+    return Math.max(50, Math.floor((nextTotal - currentTotal) * 1.2));
   }
 
   function applyXpToPokemon(team, pokemonIndex, xpAmount) {

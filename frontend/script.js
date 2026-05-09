@@ -297,7 +297,10 @@ function normalizePokemon(pokemon) {
 }
 
 function getXpNeeded(pokemon) {
-  return Math.max(25, (pokemon?.level || 1) * 50);
+  const level = Math.max(1, pokemon?.level || 1);
+  const currentTotal = level ** 3;
+  const nextTotal = (level + 1) ** 3;
+  return Math.max(50, Math.floor((nextTotal - currentTotal) * 1.2));
 }
 
 function renderXpBar(pokemon) {
@@ -2299,7 +2302,7 @@ function displayParty(data) {
   let html = `
     <div class="inventory-header">
       <h3>Team (${data.length}/${PARTY_LIMIT})</h3>
-      <span class="xp-help" title="Pokemon gain XP from winning battles. Any Pokemon used in the battle shares XP. Level up happens when XP reaches level x 50.">XP help</span>
+      <span class="xp-help" title="Pokemon gain XP from battles. Any Pokemon used in the battle shares XP. Leveling uses a cubic growth curve, so each higher level needs much more XP.">XP help</span>
       <button class="secondary-btn icon-button" onclick="healTeam()">${renderIcon("potion", "Potion")} Heal All</button>
     </div>
   `;
