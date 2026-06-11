@@ -353,9 +353,17 @@ function getQuestView(quest, state) {
   };
 }
 
+function isQuestComplete(quest, state) {
+  return getQuestProgressValue(state, quest) >= Math.max(1, Number(quest.goal) || 1);
+}
+
 function isQuestUnlocked(quest, state) {
   if (!quest.requiresQuest) return true;
-  return Boolean((state.quests?.claimed || []).includes(quest.requiresQuest));
+  const requiredQuest = quests.find((entry) => entry.id === quest.requiresQuest);
+  return Boolean(
+    (state.quests?.claimed || []).includes(quest.requiresQuest) ||
+      (requiredQuest && isQuestComplete(requiredQuest, state)),
+  );
 }
 
 function getQuestList(state) {

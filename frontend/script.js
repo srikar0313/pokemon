@@ -1743,15 +1743,22 @@ async function loadProfile() {
 
 function renderBadgeCollection(earnedBadges = [], compact = false) {
   const earned = new Set(earnedBadges || []);
+  const earnedCount = badgeCollection.filter((badge) => earned.has(badge.name)).length;
   return `
     <div class="badge-collection ${compact ? "compact" : ""}">
+      ${compact ? "" : `
+        <div class="badge-case-header">
+          <strong>Badge Case</strong>
+          <span>${earnedCount}/${badgeCollection.length}</span>
+        </div>
+      `}
       ${badgeCollection
         .map((badge) => {
           const unlocked = earned.has(badge.name);
           return `
             <div class="badge-display ${unlocked ? "earned" : "locked"}" title="${unlocked ? badge.name : `${badge.name} locked`}">
               <img src="${badge.icon}" alt="${badge.name}">
-              ${compact ? "" : `<span>${badge.label}</span>`}
+              ${compact ? "" : `<span>${badge.label}</span><em>${unlocked ? "Earned" : "Locked"}</em>`}
             </div>
           `;
         })
@@ -1832,6 +1839,53 @@ function renderQuestReward(reward = {}) {
   return rewards.length ? rewards.join("") : "<span>No reward listed</span>";
 }
 
+function getQuestChainLabel(chain) {
+  const labels = {
+    catch: "Catching Path",
+    battle: "Battle Path",
+    trainer: "Trainer Path",
+    badge: "Badge Case Path",
+  };
+  return labels[chain] || "Adventure Path";
+}
+
+function groupQuestsByChain(quests = []) {
+  return quests.reduce((groups, quest) => {
+    const chain = quest.chain || "adventure";
+    if (!groups[chain]) groups[chain] = [];
+    groups[chain].push(quest);
+    return groups;
+  }, {});
+}
+
+function renderQuestCard(quest) {
+  const status = quest.claimed ? "Claimed" : quest.claimable ? "Ready" : "Active";
+  const tier = quest.tier ? `Tier ${quest.tier}` : formatQuestType(quest.type);
+  return `
+    <article class="quest-card ${quest.claimed ? "claimed" : ""} ${quest.claimable ? "claimable" : ""}">
+      <div class="quest-card-head">
+        <span>${tier}</span>
+        <em>${status}</em>
+      </div>
+      <h3>${quest.title}</h3>
+      <p>${quest.description}</p>
+      <div class="quest-progress-line">
+        <span>${quest.progress}/${quest.goal}</span>
+        <strong>${quest.percent}%</strong>
+      </div>
+      <div class="quest-progress-bar">
+        <div style="width: ${quest.percent}%"></div>
+      </div>
+      <div class="quest-rewards">
+        ${renderQuestReward(quest.reward)}
+      </div>
+      <button class="primary-action" onclick="claimQuest('${quest.id}')" ${quest.claimable ? "" : "disabled"}>
+        ${quest.claimed ? "Claimed" : quest.claimable ? "Claim Reward" : "In Progress"}
+      </button>
+    </article>
+  `;
+}
+
 function displayQuests() {
   const panel = document.getElementById("quests-panel");
   if (!panel) return;
@@ -1842,6 +1896,7 @@ function displayQuests() {
 
   const summary = questCache.summary || {};
   const quests = questCache.quests;
+  const questGroups = groupQuestsByChain(quests);
   panel.innerHTML = `
     <div class="quests-header">
       <div>
@@ -1856,39 +1911,20 @@ function displayQuests() {
       <div><span>Claimable</span><strong>${summary.claimable ?? 0}</strong></div>
       <div><span>Locked Next</span><strong>${summary.hidden ?? 0}</strong></div>
     </div>
-    <p class="quest-chain-note">Claim a completed quest to unlock the next tier, like Catch 1 -> Catch 5 -> Catch 15.</p>
-    <div class="quest-grid">
-      ${quests
-        .map((quest) => {
-          const status = quest.claimed
-            ? "Claimed"
-            : quest.claimable
-              ? "Ready"
-              : "Active";
-          return `
-            <article class="quest-card ${quest.claimed ? "claimed" : ""} ${quest.claimable ? "claimable" : ""}">
-              <div class="quest-card-head">
-                <span>${formatQuestType(quest.type)}</span>
-                <em>${status}</em>
-              </div>
-              <h3>${quest.title}</h3>
-              <p>${quest.description}</p>
-              <div class="quest-progress-line">
-                <span>${quest.progress}/${quest.goal}</span>
-                <strong>${quest.percent}%</strong>
-              </div>
-              <div class="quest-progress-bar">
-                <div style="width: ${quest.percent}%"></div>
-              </div>
-              <div class="quest-rewards">
-                ${renderQuestReward(quest.reward)}
-              </div>
-              <button class="primary-action" onclick="claimQuest('${quest.id}')" ${quest.claimable ? "" : "disabled"}>
-                ${quest.claimed ? "Claimed" : "Claim Reward"}
-              </button>
-            </article>
-          `;
-        })
+    <p class="quest-chain-note">Completed quests reveal the next tier automatically, like Catch 1 -> Catch 5 -> Catch 15.</p>
+    <div class="quest-chain-list">
+      ${Object.entries(questGroups)
+        .map(([chain, chainQuests]) => `
+          <section class="quest-chain-section">
+            <div class="quest-chain-header">
+              <h3>${getQuestChainLabel(chain)}</h3>
+              <span>${chainQuests.filter((quest) => quest.completed).length}/${chainQuests.length} complete</span>
+            </div>
+            <div class="quest-grid">
+              ${chainQuests.map(renderQuestCard).join("")}
+            </div>
+          </section>
+        `)
         .join("")}
     </div>
   `;
