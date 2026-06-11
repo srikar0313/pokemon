@@ -32,7 +32,8 @@
 		"evolvesTo": "Ivysaur",
 		"evolveLevel": 16,
 		"evolveType": "Grass",
-		"imageId": 1
+		"imageId": 1,
+		"speed": 49
 	},
 	{
 		"id": 4,
@@ -67,7 +68,8 @@
 		"evolvesTo": "Charmeleon",
 		"evolveLevel": 16,
 		"evolveType": "Fire",
-		"imageId": 4
+		"imageId": 4,
+		"speed": 52
 	},
 	{
 		"id": 7,
@@ -102,7 +104,8 @@
 		"evolvesTo": "Wartortle",
 		"evolveLevel": 16,
 		"evolveType": "Water",
-		"imageId": 7
+		"imageId": 7,
+		"speed": 48
 	},
 	{
 		"id": 25,
@@ -143,7 +146,8 @@
 				"move": "Electro Ball"
 			}
 		],
-		"imageId": 25
+		"imageId": 25,
+		"speed": 55
 	},
 	{
 		"id": 35,
@@ -175,7 +179,8 @@
 			"Disarming Voice",
 			"Moonblast"
 		],
-		"imageId": 35
+		"imageId": 35,
+		"speed": 20
 	},
 	{
 		"id": 39,
@@ -208,7 +213,8 @@
 			"Disarming Voice",
 			"Body Slam"
 		],
-		"imageId": 39
+		"imageId": 39,
+		"speed": 20
 	},
 	{
 		"id": 54,
@@ -240,7 +246,8 @@
 			"Confusion",
 			"Water Pulse"
 		],
-		"imageId": 54
+		"imageId": 54,
+		"speed": 52
 	},
 	{
 		"id": 58,
@@ -272,7 +279,8 @@
 			"Flame Wheel",
 			"Flamethrower"
 		],
-		"imageId": 58
+		"imageId": 58,
+		"speed": 70
 	},
 	{
 		"id": 69,
@@ -307,7 +315,8 @@
 		"evolvesTo": "Weepinbell",
 		"evolveLevel": 21,
 		"evolveType": "Grass",
-		"imageId": 69
+		"imageId": 69,
+		"speed": 75
 	},
 	{
 		"id": 74,
@@ -342,7 +351,8 @@
 		"evolvesTo": "Graveler",
 		"evolveLevel": 25,
 		"evolveType": "Rock",
-		"imageId": 74
+		"imageId": 74,
+		"speed": 80
 	},
 	{
 		"id": 92,
@@ -378,7 +388,8 @@
 		"evolvesTo": "Haunter",
 		"evolveLevel": 25,
 		"evolveType": "Ghost",
-		"imageId": 92
+		"imageId": 92,
+		"speed": 35
 	},
 	{
 		"id": 104,
@@ -411,7 +422,8 @@
 			"Bonemerang",
 			"Leer"
 		],
-		"imageId": 104
+		"imageId": 104,
+		"speed": 75
 	},
 	{
 		"id": 133,
@@ -446,7 +458,8 @@
 		"evolvesTo": "Vaporeon",
 		"evolveLevel": 16,
 		"evolveType": "Water",
-		"imageId": 133
+		"imageId": 133,
+		"speed": 55
 	},
 	{
 		"id": 147,
@@ -478,7 +491,8 @@
 			"Dragon Breath",
 			"Aqua Tail"
 		],
-		"imageId": 147
+		"imageId": 147,
+		"speed": 64
 	},
 	{
 		"id": 150,
@@ -511,7 +525,8 @@
 			"Recover"
 		],
 		"catchRate": 3,
-		"imageId": 150
+		"imageId": 150,
+		"speed": 132
 	},
 	{
 		"id": 151,
@@ -544,7 +559,8 @@
 			"Ancient Power"
 		],
 		"catchRate": 10,
-		"imageId": 151
+		"imageId": 151,
+		"speed": 100
 	},
 	{
 		"id": 16,
@@ -576,7 +592,8 @@
 			"Wing Attack",
 			"Air Slash"
 		],
-		"imageId": 18
+		"imageId": 18,
+		"speed": 100
 	},
 	{
 		"id": 21,
@@ -609,7 +626,8 @@
 			"Fury Attack",
 			"Aerial Ace"
 		],
-		"imageId": 21
+		"imageId": 21,
+		"speed": 60
 	},
 	{
 		"id": 95,
@@ -642,7 +660,8 @@
 			"Dig",
 			"Iron Tail"
 		],
-		"imageId": 95
+		"imageId": 95,
+		"speed": 45
 	},
 	{
 		"id": 100,
@@ -674,7 +693,8 @@
 			"Electro Ball",
 			"Screech"
 		],
-		"imageId": 100
+		"imageId": 100,
+		"speed": 30
 	},
 	{
 		"id": 123,
@@ -707,7 +727,8 @@
 			"Slash",
 			"X-Scissor"
 		],
-		"imageId": 123
+		"imageId": 123,
+		"speed": 110
 	},
 	{
 		"id": 131,
@@ -741,7 +762,8 @@
 			"Confuse Ray",
 			"Ice Beam"
 		],
-		"imageId": 131
+		"imageId": 131,
+		"speed": 85
 	},
 	{
 		"id": 143,
@@ -773,7 +795,8 @@
 			"Body Slam",
 			"Rest"
 		],
-		"imageId": 143
+		"imageId": 143,
+		"speed": 110
 	},
 	{
 		"id": 152,
@@ -808,7 +831,8 @@
 		"evolvesTo": "Bayleef",
 		"evolveLevel": 16,
 		"evolveType": "Grass",
-		"imageId": 152
+		"imageId": 152,
+		"speed": 49
 	},
 	{
 		"id": 155,
@@ -843,7 +867,8 @@
 		"evolvesTo": "Quilava",
 		"evolveLevel": 16,
 		"evolveType": "Fire",
-		"imageId": 155
+		"imageId": 155,
+		"speed": 52
 	},
 	{
 		"id": 158,
@@ -878,7 +903,8 @@
 		"evolvesTo": "Croconaw",
 		"evolveLevel": 16,
 		"evolveType": "Water",
-		"imageId": 158
+		"imageId": 158,
+		"speed": 65
 	},
 	{
 		"id": 172,
@@ -913,7 +939,8 @@
 		"evolvesTo": "Pikachu",
 		"evolveLevel": 8,
 		"evolveType": "Electric",
-		"imageId": 172
+		"imageId": 172,
+		"speed": 40
 	},
 	{
 		"id": 175,
@@ -945,7 +972,8 @@
 			"Metronome",
 			"Ancient Power"
 		],
-		"imageId": 175
+		"imageId": 175,
+		"speed": 20
 	},
 	{
 		"id": 183,
@@ -977,7 +1005,8 @@
 			"Rollout",
 			"Aqua Tail"
 		],
-		"imageId": 183
+		"imageId": 183,
+		"speed": 20
 	},
 	{
 		"id": 194,
@@ -1009,7 +1038,8 @@
 			"Slam",
 			"Yawn"
 		],
-		"imageId": 194
+		"imageId": 194,
+		"speed": 75
 	},
 	{
 		"id": 207,
@@ -1043,7 +1073,8 @@
 			"Psybeam",
 			"Agility"
 		],
-		"imageId": 203
+		"imageId": 203,
+		"speed": 70
 	},
 	{
 		"id": 218,
@@ -1075,7 +1106,8 @@
 			"Ice Shard",
 			"Faint Attack"
 		],
-		"imageId": 215
+		"imageId": 215,
+		"speed": 95
 	},
 	{
 		"name": "Caterpie",
@@ -1107,7 +1139,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 45,
-		"imageId": 10
+		"imageId": 10,
+		"speed": 25
 	},
 	{
 		"name": "Weedle",
@@ -1140,7 +1173,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 40,
-		"imageId": 13
+		"imageId": 13,
+		"speed": 28
 	},
 	{
 		"name": "Oddish",
@@ -1173,7 +1207,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 45,
-		"imageId": 43
+		"imageId": 43,
+		"speed": 63
 	},
 	{
 		"name": "Butterfree",
@@ -1206,7 +1241,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 60,
-		"imageId": 12
+		"imageId": 12,
+		"speed": 68
 	},
 	{
 		"name": "Poliwag",
@@ -1238,7 +1274,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 40,
-		"imageId": 60
+		"imageId": 60,
+		"speed": 50
 	},
 	{
 		"name": "Magikarp",
@@ -1270,7 +1307,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 30,
-		"imageId": 129
+		"imageId": 129,
+		"speed": 20
 	},
 	{
 		"name": "Goldeen",
@@ -1302,7 +1340,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 45,
-		"imageId": 118
+		"imageId": 118,
+		"speed": 59
 	},
 	{
 		"name": "Staryu",
@@ -1334,7 +1373,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 30,
-		"imageId": 120
+		"imageId": 120,
+		"speed": 55
 	},
 	{
 		"name": "Zubat",
@@ -1367,7 +1407,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 40,
-		"imageId": 41
+		"imageId": 41,
+		"speed": 38
 	},
 	{
 		"name": "Diglett",
@@ -1399,7 +1440,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 30,
-		"imageId": 50
+		"imageId": 50,
+		"speed": 45
 	},
 	{
 		"name": "Machop",
@@ -1431,7 +1473,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 70,
-		"imageId": 66
+		"imageId": 66,
+		"speed": 58
 	},
 	{
 		"name": "Tentacool",
@@ -1465,7 +1508,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 40,
-		"imageId": 72
+		"imageId": 72,
+		"speed": 45
 	},
 	{
 		"name": "Horsea",
@@ -1497,7 +1541,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 30,
-		"imageId": 116
+		"imageId": 116,
+		"speed": 40
 	},
 	{
 		"name": "Shellder",
@@ -1529,7 +1574,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 30,
-		"imageId": 90
+		"imageId": 90,
+		"speed": 55
 	},
 	{
 		"name": "Seel",
@@ -1563,7 +1609,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 65,
-		"imageId": 86
+		"imageId": 86,
+		"speed": 45
 	},
 	{
 		"name": "Vulpix",
@@ -1595,7 +1642,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 38,
-		"imageId": 37
+		"imageId": 37,
+		"speed": 46
 	},
 	{
 		"name": "Ponyta",
@@ -1627,7 +1675,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 50,
-		"imageId": 77
+		"imageId": 77,
+		"speed": 75
 	},
 	{
 		"name": "Magmar",
@@ -1659,7 +1708,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 65,
-		"imageId": 126
+		"imageId": 126,
+		"speed": 98
 	},
 	{
 		"name": "Pidgey",
@@ -1692,7 +1742,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 40,
-		"imageId": 16
+		"imageId": 16,
+		"speed": 40
 	},
 	{
 		"name": "Larvitar",
@@ -1725,7 +1776,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 60,
-		"imageId": 246
+		"imageId": 246,
+		"speed": 67
 	},
 	{
 		"name": "Sandshrew",
@@ -1757,7 +1809,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 50,
-		"imageId": 27
+		"imageId": 27,
+		"speed": 48
 	},
 	{
 		"name": "Trapinch",
@@ -1789,7 +1842,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 45,
-		"imageId": 328
+		"imageId": 328,
+		"speed": 73
 	},
 	{
 		"name": "Cacnea",
@@ -1821,7 +1875,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 50,
-		"imageId": 331
+		"imageId": 331,
+		"speed": 85
 	},
 	{
 		"name": "Sandile",
@@ -1854,7 +1909,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 50,
-		"imageId": 551
+		"imageId": 551,
+		"speed": 54
 	},
 	{
 		"name": "Misdreavus",
@@ -1886,7 +1942,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 60,
-		"imageId": 200
+		"imageId": 200,
+		"speed": 73
 	},
 	{
 		"name": "Duskull",
@@ -1918,7 +1975,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 20,
-		"imageId": 355
+		"imageId": 355,
+		"speed": 35
 	},
 	{
 		"name": "Sableye",
@@ -1951,7 +2009,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 50,
-		"imageId": 302
+		"imageId": 302,
+		"speed": 70
 	},
 	{
 		"name": "Gengar",
@@ -1984,7 +2043,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 60,
-		"imageId": 94
+		"imageId": 94,
+		"speed": 98
 	},
 	{
 		"name": "Articuno",
@@ -2017,7 +2077,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 90,
-		"imageId": 144
+		"imageId": 144,
+		"speed": 105
 	},
 	{
 		"name": "Zapdos",
@@ -2050,7 +2111,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 90,
-		"imageId": 145
+		"imageId": 145,
+		"speed": 108
 	},
 	{
 		"name": "Moltres",
@@ -2083,7 +2145,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 90,
-		"imageId": 146
+		"imageId": 146,
+		"speed": 113
 	},
 	{
 		"name": "Lugia",
@@ -2116,7 +2179,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 106,
-		"imageId": 249
+		"imageId": 249,
+		"speed": 90
 	},
 	{
 		"name": "Ho-Oh",
@@ -2149,7 +2213,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 106,
-		"imageId": 250
+		"imageId": 250,
+		"speed": 120
 	},
 	{
 		"name": "Rayquaza",
@@ -2182,7 +2247,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 105,
-		"imageId": 384
+		"imageId": 384,
+		"speed": 150
 	},
 	{
 		"name": "Kyogre",
@@ -2214,7 +2280,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
-		"imageId": 382
+		"imageId": 382,
+		"speed": 125
 	},
 	{
 		"name": "Groudon",
@@ -2247,7 +2314,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
-		"imageId": 383
+		"imageId": 383,
+		"speed": 125
 	},
 	{
 		"name": "Dialga",
@@ -2280,7 +2348,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
-		"imageId": 483
+		"imageId": 483,
+		"speed": 135
 	},
 	{
 		"name": "Palkia",
@@ -2313,7 +2382,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 90,
-		"imageId": 484
+		"imageId": 484,
+		"speed": 135
 	},
 	{
 		"name": "Giratina",
@@ -2346,7 +2416,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 150,
-		"imageId": 487
+		"imageId": 487,
+		"speed": 100
 	},
 	{
 		"name": "Zekrom",
@@ -2379,7 +2450,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
-		"imageId": 644
+		"imageId": 644,
+		"speed": 135
 	},
 	{
 		"name": "Reshiram",
@@ -2412,7 +2484,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
-		"imageId": 643
+		"imageId": 643,
+		"speed": 135
 	},
 	{
 		"name": "Xerneas",
@@ -2444,7 +2517,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
-		"imageId": 716
+		"imageId": 716,
+		"speed": 133
 	},
 	{
 		"name": "Yveltal",
@@ -2477,7 +2551,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
-		"imageId": 717
+		"imageId": 717,
+		"speed": 135
 	},
 	{
 		"name": "Arceus",
@@ -2509,7 +2584,8 @@
 		"level": 1,
 		"xp": 0,
 		"maxHp": 120,
-		"imageId": 493
+		"imageId": 493,
+		"speed": 120
 	},
 	{
 		"id": 6,
@@ -2543,7 +2619,8 @@
 			"day",
 			"night"
 		],
-		"imageId": 6
+		"imageId": 6,
+		"speed": 97
 	},
 	{
 		"id": 9,
@@ -2576,7 +2653,8 @@
 			"day",
 			"night"
 		],
-		"imageId": 9
+		"imageId": 9,
+		"speed": 84
 	},
 	{
 		"id": 149,
@@ -2610,7 +2688,8 @@
 			"day",
 			"night"
 		],
-		"imageId": 149
+		"imageId": 149,
+		"speed": 117
 	},
 	{
 		"id": 2,
@@ -2646,7 +2725,8 @@
 		"evolvesTo": "Venusaur",
 		"evolveLevel": 32,
 		"evolveType": "Grass",
-		"imageId": 2
+		"imageId": 2,
+		"speed": 71
 	},
 	{
 		"id": 3,
@@ -2679,7 +2759,8 @@
 			"Energy Ball",
 			"Solar Beam"
 		],
-		"imageId": 3
+		"imageId": 3,
+		"speed": 91
 	},
 	{
 		"id": 5,
@@ -2714,7 +2795,8 @@
 		"evolvesTo": "Charizard",
 		"evolveLevel": 36,
 		"evolveType": "Fire",
-		"imageId": 5
+		"imageId": 5,
+		"speed": 72
 	},
 	{
 		"id": 8,
@@ -2749,7 +2831,8 @@
 		"evolvesTo": "Blastoise",
 		"evolveLevel": 36,
 		"evolveType": "Water",
-		"imageId": 8
+		"imageId": 8,
+		"speed": 64
 	},
 	{
 		"id": 26,
@@ -2853,7 +2936,8 @@
 			"Rock Throw",
 			"Magnitude"
 		],
-		"imageId": 75
+		"imageId": 75,
+		"speed": 70
 	},
 	{
 		"id": 70,
@@ -2886,7 +2970,8 @@
 			"Sleep Powder",
 			"Razor Leaf"
 		],
-		"imageId": 70
+		"imageId": 70,
+		"speed": 88
 	},
 	{
 		"id": 263,
@@ -2952,7 +3037,8 @@
 			"Bullet Seed",
 			"Seed Bomb"
 		],
-		"imageId": 273
+		"imageId": 273,
+		"speed": 35
 	},
 	{
 		"id": 265,
@@ -2984,7 +3070,8 @@
 			"Mega Drain",
 			"Sleep Powder"
 		],
-		"imageId": 285
+		"imageId": 285,
+		"speed": 40
 	},
 	{
 		"id": 266,
@@ -3049,7 +3136,8 @@
 			"Razor Leaf",
 			"Synthesis"
 		],
-		"imageId": 387
+		"imageId": 387,
+		"speed": 57
 	},
 	{
 		"id": 268,
@@ -3081,7 +3169,8 @@
 			"Mud-Slap",
 			"Water Pulse"
 		],
-		"imageId": 258
+		"imageId": 258,
+		"speed": 60
 	},
 	{
 		"id": 269,
@@ -3115,7 +3204,8 @@
 			"Bubble Beam",
 			"Mega Drain"
 		],
-		"imageId": 270
+		"imageId": 270,
+		"speed": 35
 	},
 	{
 		"id": 270,
@@ -3183,7 +3273,8 @@
 			"Flail",
 			"Aqua Tail"
 		],
-		"imageId": 349
+		"imageId": 349,
+		"speed": 20
 	},
 	{
 		"id": 272,
@@ -3251,7 +3342,8 @@
 			"Iron Defense",
 			"Rock Slide"
 		],
-		"imageId": 304
+		"imageId": 304,
+		"speed": 55
 	},
 	{
 		"id": 274,
@@ -3283,7 +3375,8 @@
 			"Thunder Wave",
 			"Rock Slide"
 		],
-		"imageId": 299
+		"imageId": 299,
+		"speed": 45
 	},
 	{
 		"id": 275,
@@ -3316,7 +3409,8 @@
 			"Defense Curl",
 			"Rock Slide"
 		],
-		"imageId": 524
+		"imageId": 524,
+		"speed": 50
 	},
 	{
 		"id": 276,
@@ -3348,7 +3442,8 @@
 			"Dig",
 			"Earthquake"
 		],
-		"imageId": 529
+		"imageId": 529,
+		"speed": 58
 	},
 	{
 		"id": 277,
@@ -3381,7 +3476,8 @@
 			"Crunch",
 			"Play Rough"
 		],
-		"imageId": 303
+		"imageId": 303,
+		"speed": 70
 	},
 	{
 		"id": 278,
@@ -3413,7 +3509,8 @@
 			"Double Kick",
 			"Flame Charge"
 		],
-		"imageId": 255
+		"imageId": 255,
+		"speed": 65
 	},
 	{
 		"id": 279,
@@ -3446,7 +3543,8 @@
 			"Mud Bomb",
 			"Lava Plume"
 		],
-		"imageId": 322
+		"imageId": 322,
+		"speed": 63
 	},
 	{
 		"id": 280,
@@ -3478,7 +3576,8 @@
 			"Flame Charge",
 			"Lava Plume"
 		],
-		"imageId": 218
+		"imageId": 218,
+		"speed": 55
 	},
 	{
 		"id": 281,
@@ -3511,7 +3610,8 @@
 			"Crunch",
 			"Flamethrower"
 		],
-		"imageId": 228
+		"imageId": 228,
+		"speed": 70
 	},
 	{
 		"id": 282,
@@ -3677,7 +3777,8 @@
 			"Dragon Claw",
 			"Dragon Pulse"
 		],
-		"imageId": 371
+		"imageId": 371,
+		"speed": 58
 	},
 	{
 		"id": 287,
@@ -3709,7 +3810,8 @@
 			"Slash",
 			"Dragon Claw"
 		],
-		"imageId": 610
+		"imageId": 610,
+		"speed": 59
 	},
 	{
 		"id": 288,
@@ -3742,7 +3844,8 @@
 			"Psywave",
 			"Rock Tomb"
 		],
-		"imageId": 343
+		"imageId": 343,
+		"speed": 40
 	},
 	{
 		"id": 289,
@@ -3774,7 +3877,8 @@
 			"Dig",
 			"Earthquake"
 		],
-		"imageId": 449
+		"imageId": 449,
+		"speed": 55
 	},
 	{
 		"id": 290,
@@ -3806,7 +3910,8 @@
 			"Fire Punch",
 			"Flame Charge"
 		],
-		"imageId": 554
+		"imageId": 554,
+		"speed": 53
 	},
 	{
 		"id": 291,
@@ -3839,7 +3944,8 @@
 			"Low Kick",
 			"Crunch"
 		],
-		"imageId": 559
+		"imageId": 559,
+		"speed": 55
 	},
 	{
 		"id": 292,
@@ -3871,7 +3977,8 @@
 			"Glare",
 			"Earthquake"
 		],
-		"imageId": 843
+		"imageId": 843,
+		"speed": 46
 	},
 	{
 		"id": 293,
@@ -3903,7 +4010,8 @@
 			"Will-O-Wisp",
 			"Shadow Ball"
 		],
-		"imageId": 353
+		"imageId": 353,
+		"speed": 69
 	},
 	{
 		"id": 294,
@@ -3936,7 +4044,8 @@
 			"Will-O-Wisp",
 			"Shadow Ball"
 		],
-		"imageId": 607
+		"imageId": 607,
+		"speed": 48
 	},
 	{
 		"id": 295,
@@ -3969,7 +4078,8 @@
 			"Shadow Sneak",
 			"Seed Bomb"
 		],
-		"imageId": 708
+		"imageId": 708,
+		"speed": 60
 	},
 	{
 		"id": 296,
@@ -4001,7 +4111,8 @@
 			"Will-O-Wisp",
 			"Shadow Ball"
 		],
-		"imageId": 562
+		"imageId": 562,
+		"speed": 43
 	},
 	{
 		"id": 297,
@@ -4034,7 +4145,8 @@
 			"Dark Pulse",
 			"Shadow Ball"
 		],
-		"imageId": 442
+		"imageId": 442,
+		"speed": 92
 	},
 	{
 		"id": 298,
@@ -4205,5 +4317,247 @@
 			"Moonblast"
 		],
 		"imageId": 488
+	},
+	{
+		"id": 134,
+		"name": "Vaporeon",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "rare",
+		"hp": 130,
+		"maxHp": 130,
+		"attack": 65,
+		"defense": 60,
+		"specialAttack": 110,
+		"specialDefense": 95,
+		"speed": 65,
+		"xpYield": 184,
+		"habitats": [
+			"lake",
+			"ocean"
+		],
+		"times": [
+			"day",
+			"night"
+		],
+		"baseCatchRate": 45,
+		"level": 1,
+		"xp": 0,
+		"moves": [
+			"Water Gun",
+			"Bite",
+			"Water Pulse",
+			"Aurora Beam"
+		],
+		"imageId": 134
+	},
+	{
+		"id": 153,
+		"name": "Bayleef",
+		"type": "Grass",
+		"types": [
+			"Grass"
+		],
+		"rarity": "uncommon",
+		"hp": 60,
+		"maxHp": 60,
+		"attack": 62,
+		"defense": 80,
+		"specialAttack": 63,
+		"specialDefense": 80,
+		"speed": 60,
+		"xpYield": 142,
+		"habitats": [
+			"forest"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 45,
+		"level": 1,
+		"xp": 0,
+		"moves": [
+			"Tackle",
+			"Razor Leaf",
+			"Synthesis",
+			"Magical Leaf"
+		],
+		"evolvesTo": "Meganium",
+		"evolveLevel": 32,
+		"evolveType": "Grass",
+		"imageId": 153
+	},
+	{
+		"id": 156,
+		"name": "Quilava",
+		"type": "Fire",
+		"types": [
+			"Fire"
+		],
+		"rarity": "uncommon",
+		"hp": 58,
+		"maxHp": 58,
+		"attack": 64,
+		"defense": 58,
+		"specialAttack": 80,
+		"specialDefense": 65,
+		"speed": 80,
+		"xpYield": 142,
+		"habitats": [
+			"volcano"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 45,
+		"level": 1,
+		"xp": 0,
+		"moves": [
+			"Tackle",
+			"Ember",
+			"Quick Attack",
+			"Flame Wheel"
+		],
+		"evolvesTo": "Typhlosion",
+		"evolveLevel": 36,
+		"evolveType": "Fire",
+		"imageId": 156
+	},
+	{
+		"id": 159,
+		"name": "Croconaw",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "uncommon",
+		"hp": 65,
+		"maxHp": 65,
+		"attack": 80,
+		"defense": 80,
+		"specialAttack": 59,
+		"specialDefense": 63,
+		"speed": 58,
+		"xpYield": 142,
+		"habitats": [
+			"lake"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 45,
+		"level": 1,
+		"xp": 0,
+		"moves": [
+			"Scratch",
+			"Water Gun",
+			"Bite",
+			"Water Pulse"
+		],
+		"evolvesTo": "Feraligatr",
+		"evolveLevel": 36,
+		"evolveType": "Water",
+		"imageId": 159
+	},
+	{
+		"id": 154,
+		"name": "Meganium",
+		"type": "Grass",
+		"types": [
+			"Grass"
+		],
+		"rarity": "rare",
+		"hp": 80,
+		"maxHp": 80,
+		"attack": 82,
+		"defense": 100,
+		"specialAttack": 83,
+		"specialDefense": 100,
+		"speed": 80,
+		"xpYield": 236,
+		"habitats": [
+			"forest"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 45,
+		"level": 1,
+		"xp": 0,
+		"moves": [
+			"Body Slam",
+			"Razor Leaf",
+			"Synthesis",
+			"Magical Leaf"
+		],
+		"imageId": 154
+	},
+	{
+		"id": 157,
+		"name": "Typhlosion",
+		"type": "Fire",
+		"types": [
+			"Fire"
+		],
+		"rarity": "rare",
+		"hp": 78,
+		"maxHp": 78,
+		"attack": 84,
+		"defense": 78,
+		"specialAttack": 109,
+		"specialDefense": 85,
+		"speed": 100,
+		"xpYield": 240,
+		"habitats": [
+			"volcano"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 45,
+		"level": 1,
+		"xp": 0,
+		"moves": [
+			"Ember",
+			"Quick Attack",
+			"Flame Wheel",
+			"Flamethrower"
+		],
+		"imageId": 157
+	},
+	{
+		"id": 160,
+		"name": "Feraligatr",
+		"type": "Water",
+		"types": [
+			"Water"
+		],
+		"rarity": "rare",
+		"hp": 85,
+		"maxHp": 85,
+		"attack": 105,
+		"defense": 100,
+		"specialAttack": 79,
+		"specialDefense": 83,
+		"speed": 78,
+		"xpYield": 239,
+		"habitats": [
+			"lake"
+		],
+		"times": [
+			"day"
+		],
+		"baseCatchRate": 45,
+		"level": 1,
+		"xp": 0,
+		"moves": [
+			"Scratch",
+			"Water Gun",
+			"Bite",
+			"Aqua Tail"
+		],
+		"imageId": 160
 	}
 ]
