@@ -326,16 +326,60 @@ function renderMoveDetails(pokemon) {
         ${(pokemon.moves || [])
           .map(
             (move) => `
-              <div class="move-summary">
+              <div class="move-summary" style="border-color: ${getTypeColor(move.type)}">
                 <strong>${move.name}</strong>
-                <span>${move.type} | ${move.category}</span>
-                <span>Power ${move.power ?? 0} | Acc ${move.accuracy ?? 100}</span>
+                <span>${renderTypeBadges([move.type])} ${move.category}</span>
+                <span>Power ${move.power ?? 0} | Accuracy ${move.accuracy ?? 100}</span>
                 <span>PP ${move.currentPp}/${move.maxPp ?? move.pp}</span>
               </div>
             `,
           )
           .join("")}
       </div>
+    </div>
+  `;
+}
+
+function renderPokemonStatBars(pokemon) {
+  const stats = [
+    ["HP", pokemon.maxHp || pokemon.hp || 1],
+    ["ATK", pokemon.attack || 1],
+    ["DEF", pokemon.defense || 1],
+    ["SP.ATK", pokemon.specialAttack || pokemon.attack || 1],
+    ["SP.DEF", pokemon.specialDefense || pokemon.defense || 1],
+    ["SPD", pokemon.speed || Math.round(((pokemon.attack || 1) + (pokemon.specialAttack || pokemon.attack || 1)) / 2)],
+  ];
+  const maxStat = Math.max(120, ...stats.map(([, value]) => value));
+  return `
+    <div class="stat-panel">
+      <h4>Stats</h4>
+      ${stats
+        .map(([label, value]) => `
+          <div class="stat-row">
+            <span>${label}</span>
+            <div class="stat-track"><div style="width: ${Math.min(100, (value / maxStat) * 100)}%"></div></div>
+            <strong>${value}</strong>
+          </div>
+        `)
+        .join("")}
+    </div>
+  `;
+}
+
+function renderEvolutionPanel(pokemon) {
+  const remainingLevels =
+    pokemon.evolvesTo && pokemon.evolveLevel
+      ? Math.max(0, pokemon.evolveLevel - (pokemon.level || 1))
+      : null;
+  return `
+    <div class="evolution-panel">
+      <h4>Evolution</h4>
+      ${
+        pokemon.evolvesTo && pokemon.evolveLevel
+          ? `<p>${pokemon.name} evolves into <strong>${pokemon.evolvesTo}</strong> at level ${pokemon.evolveLevel}.</p>
+             <span>${remainingLevels === 0 ? "Ready to evolve after XP check" : `${remainingLevels} level${remainingLevels === 1 ? "" : "s"} to go`}</span>`
+          : "<p>No further evolution data.</p><span>Final or unknown stage</span>"
+      }
     </div>
   `;
 }
@@ -393,15 +437,13 @@ function renderPokemonDetailCard(
           <img class="partner-art" src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
           <div class="partner-stats">
             <p>${renderIcon("heart", "HP")} HP: ${pokemon.currentHp}/${pokemon.maxHp}</p>
-            <p>ATK ${pokemon.attack} | DEF ${pokemon.defense} | SP.ATK ${pokemon.specialAttack} | SP.DEF ${pokemon.specialDefense}</p>
             <p>Status: ${fainted ? renderStatus("fainted") : renderStatus(pokemon.status)}</p>
-            <p>Evolution: ${
-              pokemon.evolvesTo && pokemon.evolveLevel
-                ? `${pokemon.evolvesTo} at level ${pokemon.evolveLevel}`
-                : "No evolution data"
-            }</p>
             ${renderXpBar(pokemon)}
           </div>
+        </div>
+        <div class="pokemon-detail-grid">
+          ${renderPokemonStatBars(pokemon)}
+          ${renderEvolutionPanel(pokemon)}
         </div>
         ${renderMoveDetails(pokemon)}
         ${renderPendingMovePanel(pokemon, section, index)}
@@ -2363,6 +2405,7 @@ function displayParty(data) {
           <p>${renderIcon("heart", "HP")} ${p.currentHp ?? p.hp}/${p.maxHp} HP ${fainted ? renderStatus("fainted") : renderStatus(p.status)}</p>
           <div class="bag-actions">
             <button onclick="setActivePokemonByIndex(event, ${index})" class="mini-item-btn icon-button">Make Active</button>
+            <button onclick="event.stopPropagation(); showPokemonDetail('team', ${index})" class="mini-item-btn icon-button">Details</button>
             ${usableItems.length ? `<button onclick="setActiveScreen('inventory'); setActivePokemonByIndex(event, ${index})" class="mini-item-btn icon-button">Use Items</button>` : ""}
             <button onclick="releasePokemon(event, 'team', ${index})" class="mini-btn">Release</button>
           </div>
@@ -3193,6 +3236,50 @@ function appendBattleLog(lines) {
   logDiv.scrollTop = logDiv.scrollHeight;
 }
 
+function classifyRewardLine(line) {
+  if (/gained .* XP/i.test(line)) return "xp";
+  if (/earned .* coins|caught .* earned/i.test(line)) return "coins";
+  if (/grew to level|stats increased/i.test(line)) return "level";
+  if (/learned|wants to learn/i.test(line)) return "move";
+  if (/evolved/i.test(line)) return "evolution";
+  if (/caught/i.test(line)) return "catch";
+  return "other";
+}
+
+function getRewardGroupLabel(type) {
+  const labels = {
+    xp: "XP Growth",
+    coins: "Coins",
+    level: "Level Up",
+    move: "Move Learning",
+    evolution: "Evolution",
+    catch: "Catch",
+    other: "Rewards",
+  };
+  return labels[type] || "Rewards";
+}
+
+function renderBattleResultGroups(lines) {
+  const groups = lines.reduce((result, line) => {
+    const type = classifyRewardLine(line);
+    if (!result[type]) result[type] = [];
+    result[type].push(line);
+    return result;
+  }, {});
+  const order = ["xp", "level", "move", "evolution", "coins", "catch", "other"];
+  return order
+    .filter((type) => groups[type]?.length)
+    .map(
+      (type) => `
+        <section class="battle-result-group result-${type}">
+          <strong>${getRewardGroupLabel(type)}</strong>
+          ${groups[type].map((line) => `<p>${line}</p>`).join("")}
+        </section>
+      `,
+    )
+    .join("");
+}
+
 function showRewardPopup(lines = []) {
   const rewardLines = lines.filter((line) =>
     /(earned|gained|grew to level|stats increased|learned|wants to learn|evolved|caught)/i.test(
@@ -3210,19 +3297,17 @@ function showRewardPopup(lines = []) {
   }
 
   const popup = document.createElement("div");
-  popup.className = "reward-popup";
+  popup.className = "reward-popup battle-result-popup";
   const hasXpGrowth = rewardLines.some((line) => /gained .* XP/i.test(line));
   popup.innerHTML = `
-    ${hasXpGrowth ? `<strong class="reward-popup-title">XP Growth</strong>` : ""}
-    ${rewardLines
-      .map(
-        (line) =>
-          `<p class="${/gained .* XP/i.test(line) ? "xp-growth-line" : ""}">${line}</p>`,
-      )
-      .join("")}
+    <div class="battle-result-head">
+      <strong class="reward-popup-title">${hasXpGrowth ? "Battle Results" : "Reward Results"}</strong>
+      <button type="button" onclick="this.closest('.reward-popup').remove()">×</button>
+    </div>
+    ${renderBattleResultGroups(rewardLines)}
   `;
   holder.appendChild(popup);
-  setTimeout(() => popup.remove(), hasXpGrowth ? 7200 : 4200);
+  setTimeout(() => popup.remove(), hasXpGrowth ? 9000 : 5200);
 }
 
 function renderTypeBadges(types) {
