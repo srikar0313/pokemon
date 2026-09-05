@@ -335,7 +335,7 @@ function setBattleActionBusy(isBusy) {
   battleActionBusy = isBusy;
   document
     .querySelectorAll(
-      ".move-btn, .battle-action-row button, .battle-item-panel button, .gym-switch-buttons button, .wild-switch-panel button",
+      ".move-btn, .battle-action-row button, .battle-item-panel button, .gym-switch-buttons button, .wild-switch-panel button, .catch-options button, .wild-explore-return",
     )
     .forEach((button) => {
       button.disabled = isBusy || button.dataset.locked === "true";
@@ -418,12 +418,55 @@ function getStatusFeedback(before, after) {
   return "";
 }
 
-function showBattleLogFeedback(lines = []) {
+function getMoveTypeFromLog(pokemon, lines = []) {
+  const moves = pokemon?.moves || [];
+  for (let index = lines.length - 1; index >= 0; index -= 1) {
+    const line = lines[index] || "";
+    if (!/ used /i.test(line)) continue;
+    const move = moves.find((entry) =>
+      new RegExp(`\\bused\\s+${escapeRegExp(entry.name)}!?`, "i").test(line),
+    );
+    if (move) return move.type || "Normal";
+  }
+  return "Normal";
+}
+
+function escapeRegExp(value) {
+  return String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getBattleLogEvents(lines = [], playerPokemon, opponentPokemon) {
+  const events = [];
+  let currentSide = null;
+  const playerName = escapeRegExp(playerPokemon?.name || "");
+  const opponentName = escapeRegExp(opponentPokemon?.name || "");
   lines.forEach((line) => {
-    if (/super effective/i.test(line)) showFloatingBattleText("opponent", "SUPER EFFECTIVE!", "effective");
-    if (/not very effective/i.test(line)) showFloatingBattleText("opponent", "Not very effective...", "weak");
-    if (/no effect/i.test(line)) showFloatingBattleText("opponent", "No effect!", "immune");
-    if (/critical hit/i.test(line)) showFloatingBattleText("opponent", "CRITICAL HIT!", "critical");
+    if (/ used /i.test(line)) {
+      if (playerName && new RegExp(`\\b${playerName}\\b.* used `, "i").test(line)) {
+        currentSide = "player";
+      } else if (
+        opponentName &&
+        new RegExp(`\\b${opponentName}\\b.* used `, "i").test(line)
+      ) {
+        currentSide = "opponent";
+      } else {
+        currentSide = currentSide === "player" ? "opponent" : "player";
+      }
+      events.push({ side: currentSide, line });
+      return;
+    }
+    if (currentSide) events.push({ side: currentSide, line });
+  });
+  return events;
+}
+
+function showBattleLogFeedback(lines = [], playerPokemon, opponentPokemon) {
+  getBattleLogEvents(lines, playerPokemon, opponentPokemon).forEach(({ side, line }) => {
+    const target = side === "player" ? "opponent" : "player";
+    if (/super effective/i.test(line)) showFloatingBattleText(target, "SUPER EFFECTIVE!", "effective");
+    if (/not very effective/i.test(line)) showFloatingBattleText(target, "Not very effective...", "weak");
+    if (/no effect/i.test(line)) showFloatingBattleText(target, "No effect!", "immune");
+    if (/critical hit/i.test(line)) showFloatingBattleText(target, "CRITICAL HIT!", "critical");
   });
 }
 
@@ -440,8 +483,11 @@ async function playBattleTurnAnimation({
   opponentStatusBefore = "none",
   opponentStatusAfter = "none",
   playerMoveType = "Normal",
+  opponentMoveType = "Normal",
+  playerPokemon = null,
+  opponentPokemon = null,
 } = {}) {
-  showBattleLogFeedback(lines);
+  showBattleLogFeedback(lines, playerPokemon, opponentPokemon);
 
   const opponentDamage = Math.max(0, (opponentBeforeHp || 0) - (opponentAfterHp || 0));
   const playerDamage = Math.max(0, (playerBeforeHp || 0) - (playerAfterHp || 0));
@@ -459,7 +505,7 @@ async function playBattleTurnAnimation({
   if (opponentStatus) showFloatingBattleText("opponent", opponentStatus, "status");
 
   if (playerDamage > 0) {
-    await animateAttack("opponent", "Normal");
+    await animateAttack("opponent", opponentMoveType);
     showFloatingBattleText("player", `-${playerDamage}`, "damage");
     animateHpChange("player", playerBeforeHp, playerAfterHp, playerMaxHp);
     await animateHit("player");
@@ -471,6 +517,132 @@ async function playBattleTurnAnimation({
   if ((opponentAfterHp || 0) <= 0 && opponentBeforeHp > 0) await animateFaint("opponent");
   if ((playerAfterHp || 0) <= 0 && playerBeforeHp > 0) await animateFaint("player");
   await wait(prefersReducedMotion() ? 80 : 180);
+}
+
+function getPokemonFromTeamSlot(team = [], index, fallback = null) {
+  return normalizePokemon(team[index] || fallback || {});
+}
+
+function logMentionsFaint(lines = [], pokemon) {
+  if (!pokemon?.name) return false;
+  const name = escapeRegExp(pokemon.name);
+  return lines.some((line) => new RegExp(`\\b${name}\\b.*fainted`, "i").test(line));
+}
+
+function isSameBattlePokemon(left, right) {
+  if (!left || !right) return false;
+  return (
+    left.id === right.id &&
+    left.name === right.name &&
+    (left.level || 1) === (right.level || 1)
+  );
+}
+
+function getPreviousPokemonAfterTurn(team = [], index, fallback, previousPokemon, lines = []) {
+  const candidate = getPokemonFromTeamSlot(team, index, fallback);
+  if (isSameBattlePokemon(previousPokemon, candidate)) return candidate;
+  const movedCandidate = (team || []).map(normalizePokemon).find((pokemon) =>
+    isSameBattlePokemon(previousPokemon, pokemon),
+  );
+  if (movedCandidate) return movedCandidate;
+  if (
+    previousPokemon?.name &&
+    logMentionsFaint(lines, previousPokemon) &&
+    hasBattlePokemonChanged(previousPokemon, candidate)
+  ) {
+    return {
+      ...previousPokemon,
+      currentHp: 0,
+    };
+  }
+  return candidate;
+}
+
+function hasBattlePokemonChanged(previousPokemon, nextPokemon) {
+  if (!previousPokemon || !nextPokemon) return false;
+  return (
+    previousPokemon.id !== nextPokemon.id ||
+    previousPokemon.name !== nextPokemon.name ||
+    previousPokemon.level !== nextPokemon.level
+  );
+}
+
+async function playTrainerBattleTransition({
+  previousState,
+  nextState,
+  lines = [],
+  moveName,
+  opponentField,
+  opponentTeamField,
+  opponentIndexField,
+  renderBattle,
+  renderResult,
+  assignState,
+  won = false,
+  lost = false,
+  afterFinal,
+  afterContinue,
+}) {
+  const playerBefore = normalizePokemon(previousState.playerPokemon);
+  const opponentBefore = normalizePokemon(previousState[opponentField]);
+  const playerMove = getMoveFromPokemon(playerBefore, moveName);
+  const previousPlayerIndex = previousState.playerIndex || 0;
+  const previousOpponentIndex = previousState[opponentIndexField] || 0;
+
+  const oldPlayerAfter = getPreviousPokemonAfterTurn(
+    nextState.playerTeam,
+    previousPlayerIndex,
+    nextState.playerPokemon,
+    playerBefore,
+    lines,
+  );
+  const oldOpponentAfter = getPreviousPokemonAfterTurn(
+    nextState[opponentTeamField],
+    previousOpponentIndex,
+    nextState[opponentField],
+    opponentBefore,
+    lines,
+  );
+  const opponentMoveType = getMoveTypeFromLog(opponentBefore, lines);
+
+  await playBattleTurnAnimation({
+    lines,
+    playerBeforeHp: playerBefore.currentHp,
+    playerAfterHp: oldPlayerAfter.currentHp,
+    playerMaxHp: oldPlayerAfter.maxHp || playerBefore.maxHp,
+    opponentBeforeHp: opponentBefore.currentHp,
+    opponentAfterHp: oldOpponentAfter.currentHp,
+    opponentMaxHp: oldOpponentAfter.maxHp || opponentBefore.maxHp,
+    playerStatusBefore: playerBefore.status || "none",
+    playerStatusAfter: oldPlayerAfter.status || "none",
+    opponentStatusBefore: opponentBefore.status || "none",
+    opponentStatusAfter: oldOpponentAfter.status || "none",
+    playerMoveType: playerMove?.type || "Normal",
+    opponentMoveType,
+    playerPokemon: playerBefore,
+    opponentPokemon: opponentBefore,
+  });
+
+  if (won || lost) {
+    assignState(nextState);
+    setBattleActionBusy(false);
+    renderResult(lines);
+    if (afterFinal) await afterFinal();
+    return;
+  }
+
+  const playerIndexChanged = nextState.playerIndex !== previousState.playerIndex;
+  const opponentIndexChanged =
+    nextState[opponentIndexField] !== previousState[opponentIndexField] ||
+    hasBattlePokemonChanged(opponentBefore, nextState[opponentField]);
+
+  assignState(nextState);
+  renderBattle([]);
+  if (opponentIndexChanged) await animatePokemonSwitch("opponent");
+  if (playerIndexChanged) await animatePokemonSwitch("player");
+  appendBattleLog(lines);
+  setBattleActionBusy(false);
+  if (afterContinue) await afterContinue();
 }
 
 function renderMoveDetails(pokemon) {
@@ -1730,9 +1902,7 @@ function showGymSwitchButtons() {
 
 async function gymMove(moveName) {
   if (battleActionBusy) return;
-  const playerBefore = normalizePokemon(gymBattle.playerPokemon);
-  const opponentBefore = normalizePokemon(gymBattle.gymPokemon);
-  const move = getMoveFromPokemon(playerBefore, moveName);
+  const previousState = { ...gymBattle };
   setBattleActionBusy(true);
   let data;
   try {
@@ -1765,38 +1935,35 @@ async function gymMove(moveName) {
     }
     return;
   }
-  gymBattle = data.session;
   await loadInventory();
-  if (data.won || data.lost) {
-    setBattleActionBusy(false);
-    showGymResult(data.log);
-    gymBattle = null;
-    await loadProfile();
-    await displayAreas();
-    await loadGyms();
-    await loadEliteFour();
-    if (questCache) await loadQuests();
-  } else {
-    showGymBattle([]);
-    await playBattleTurnAnimation({
-      lines: data.log,
-      playerBeforeHp: playerBefore.currentHp,
-      playerAfterHp: gymBattle.playerPokemon.currentHp,
-      playerMaxHp: gymBattle.playerPokemon.maxHp,
-      opponentBeforeHp: opponentBefore.currentHp,
-      opponentAfterHp: gymBattle.gymPokemon.currentHp,
-      opponentMaxHp: gymBattle.gymPokemon.maxHp,
-      playerStatusBefore: playerBefore.status || "none",
-      playerStatusAfter: gymBattle.playerPokemon.status || "none",
-      opponentStatusBefore: opponentBefore.status || "none",
-      opponentStatusAfter: gymBattle.gymPokemon.status || "none",
-      playerMoveType: move?.type || "Normal",
-    });
-    appendBattleLog(data.log);
-    setBattleActionBusy(false);
-    showGymMoveButtons(normalizePokemon(gymBattle.playerPokemon));
-    showGymSwitchButtons();
-  }
+  await playTrainerBattleTransition({
+    previousState,
+    nextState: data.session,
+    lines: data.log,
+    moveName,
+    opponentField: "gymPokemon",
+    opponentTeamField: "gymTeam",
+    opponentIndexField: "gymIndex",
+    renderBattle: showGymBattle,
+    renderResult: showGymResult,
+    assignState: (session) => {
+      gymBattle = session;
+    },
+    won: data.won,
+    lost: data.lost,
+    afterFinal: async () => {
+      gymBattle = null;
+      await loadProfile();
+      await displayAreas();
+      await loadGyms();
+      await loadEliteFour();
+      if (questCache) await loadQuests();
+    },
+    afterContinue: async () => {
+      showGymMoveButtons(normalizePokemon(gymBattle.playerPokemon));
+      showGymSwitchButtons();
+    },
+  });
 }
 
 async function gymSwitch(pokemonIndex) {
@@ -1938,9 +2105,7 @@ function showEliteSwitchButtons() {
 
 async function eliteMove(moveName) {
   if (battleActionBusy) return;
-  const playerBefore = normalizePokemon(eliteBattle.playerPokemon);
-  const opponentBefore = normalizePokemon(eliteBattle.opponentPokemon);
-  const move = getMoveFromPokemon(playerBefore, moveName);
+  const previousState = { ...eliteBattle };
   setBattleActionBusy(true);
   let data;
   try {
@@ -1970,37 +2135,34 @@ async function eliteMove(moveName) {
     }
     return;
   }
-  eliteBattle = data.session;
   await loadInventory();
-  if (data.won || data.lost) {
-    setBattleActionBusy(false);
-    showEliteResult(data.log);
-    eliteBattle = null;
-    await loadProfile();
-    await loadEliteFour();
-    await loadGyms();
-    if (questCache) await loadQuests();
-  } else {
-    showEliteBattle([]);
-    await playBattleTurnAnimation({
-      lines: data.log,
-      playerBeforeHp: playerBefore.currentHp,
-      playerAfterHp: eliteBattle.playerPokemon.currentHp,
-      playerMaxHp: eliteBattle.playerPokemon.maxHp,
-      opponentBeforeHp: opponentBefore.currentHp,
-      opponentAfterHp: eliteBattle.opponentPokemon.currentHp,
-      opponentMaxHp: eliteBattle.opponentPokemon.maxHp,
-      playerStatusBefore: playerBefore.status || "none",
-      playerStatusAfter: eliteBattle.playerPokemon.status || "none",
-      opponentStatusBefore: opponentBefore.status || "none",
-      opponentStatusAfter: eliteBattle.opponentPokemon.status || "none",
-      playerMoveType: move?.type || "Normal",
-    });
-    appendBattleLog(data.log);
-    setBattleActionBusy(false);
-    showEliteMoveButtons(normalizePokemon(eliteBattle.playerPokemon));
-    showEliteSwitchButtons();
-  }
+  await playTrainerBattleTransition({
+    previousState,
+    nextState: data.session,
+    lines: data.log,
+    moveName,
+    opponentField: "opponentPokemon",
+    opponentTeamField: "opponentTeam",
+    opponentIndexField: "opponentIndex",
+    renderBattle: showEliteBattle,
+    renderResult: showEliteResult,
+    assignState: (session) => {
+      eliteBattle = session;
+    },
+    won: data.won,
+    lost: data.lost,
+    afterFinal: async () => {
+      eliteBattle = null;
+      await loadProfile();
+      await loadEliteFour();
+      await loadGyms();
+      if (questCache) await loadQuests();
+    },
+    afterContinue: async () => {
+      showEliteMoveButtons(normalizePokemon(eliteBattle.playerPokemon));
+      showEliteSwitchButtons();
+    },
+  });
 }
 
 async function eliteSwitch(pokemonIndex) {
@@ -2126,9 +2288,7 @@ function showNpcSwitchButtons() {
 
 async function npcMove(moveName) {
   if (battleActionBusy) return;
-  const playerBefore = normalizePokemon(npcBattle.playerPokemon);
-  const opponentBefore = normalizePokemon(npcBattle.opponentPokemon);
-  const move = getMoveFromPokemon(playerBefore, moveName);
+  const previousState = { ...npcBattle };
   setBattleActionBusy(true);
   let data;
   try {
@@ -2159,37 +2319,34 @@ async function npcMove(moveName) {
     return;
   }
 
-  npcBattle = data.session;
   await loadInventory();
-  if (data.won || data.lost) {
-    setBattleActionBusy(false);
-    showNpcResult(data.log);
-    npcBattle = null;
-    await loadProfile();
-    await loadInventory();
-    await loadAreaWorld(selectedArea);
-    if (questCache) await loadQuests();
-  } else {
-    showNpcBattle([]);
-    await playBattleTurnAnimation({
-      lines: data.log,
-      playerBeforeHp: playerBefore.currentHp,
-      playerAfterHp: npcBattle.playerPokemon.currentHp,
-      playerMaxHp: npcBattle.playerPokemon.maxHp,
-      opponentBeforeHp: opponentBefore.currentHp,
-      opponentAfterHp: npcBattle.opponentPokemon.currentHp,
-      opponentMaxHp: npcBattle.opponentPokemon.maxHp,
-      playerStatusBefore: playerBefore.status || "none",
-      playerStatusAfter: npcBattle.playerPokemon.status || "none",
-      opponentStatusBefore: opponentBefore.status || "none",
-      opponentStatusAfter: npcBattle.opponentPokemon.status || "none",
-      playerMoveType: move?.type || "Normal",
-    });
-    appendBattleLog(data.log);
-    setBattleActionBusy(false);
-    showNpcMoveButtons(normalizePokemon(npcBattle.playerPokemon));
-    showNpcSwitchButtons();
-  }
+  await playTrainerBattleTransition({
+    previousState,
+    nextState: data.session,
+    lines: data.log,
+    moveName,
+    opponentField: "opponentPokemon",
+    opponentTeamField: "opponentTeam",
+    opponentIndexField: "opponentIndex",
+    renderBattle: showNpcBattle,
+    renderResult: showNpcResult,
+    assignState: (session) => {
+      npcBattle = session;
+    },
+    won: data.won,
+    lost: data.lost,
+    afterFinal: async () => {
+      npcBattle = null;
+      await loadProfile();
+      await loadInventory();
+      await loadAreaWorld(selectedArea);
+      if (questCache) await loadQuests();
+    },
+    afterContinue: async () => {
+      showNpcMoveButtons(normalizePokemon(npcBattle.playerPokemon));
+      showNpcSwitchButtons();
+    },
+  });
 }
 
 async function npcSwitch(pokemonIndex) {
@@ -3214,6 +3371,7 @@ async function confirmStorageSwap(
 }
 
 async function startWildEncounter(area = selectedArea) {
+  if (battleActionBusy) return false;
   if (!selectedArea) {
     alert("Please select an area first!");
     return false;
@@ -3256,6 +3414,7 @@ document.getElementById("explore-btn")?.addEventListener("click", async () => {
 });
 
 async function findAnotherWildPokemon() {
+  if (battleActionBusy) return;
   if (!wild || !isInBattle) {
     await startWildEncounter(selectedArea);
     return;
@@ -3278,7 +3437,7 @@ function showBattle() {
       </div>
       <div class="wild-encounter-actions">
         <p class="weather-info">${formatAreaName(wild.area)} | Weather: ${wild.weather}${wild.shiny ? " | Shiny encounter!" : ""}</p>
-        <button class="wild-explore-return icon-button" onclick="findAnotherWildPokemon()">${renderIcon("run", "Explore")} Find New Pokemon</button>
+        <button class="wild-explore-return icon-button" ${battleActionBusy ? "disabled" : ""} onclick="findAnotherWildPokemon()">${renderIcon("run", "Explore")} Find New Pokemon</button>
       </div>
     </div>
     <div class="battle-container">
@@ -3387,6 +3546,7 @@ function showBattleItemPanel(disabled = false) {
 }
 
 function switchPokemon() {
+  if (battleActionBusy) return;
   isSwitching = true;
   if (wild && isInBattle) {
     showWildSwitchPanel();
@@ -3511,6 +3671,7 @@ async function attack(moveName) {
     playerStatus = activePokemon.status || "none";
   }
   wild = normalizePokemon(data.wild);
+  const opponentMoveType = getMoveTypeFromLog(opponentBefore, data.log);
 
   await playBattleTurnAnimation({
     lines: data.log,
@@ -3525,6 +3686,9 @@ async function attack(moveName) {
     opponentStatusBefore: opponentBefore.status || "none",
     opponentStatusAfter: wildStatus,
     playerMoveType: move?.type || "Normal",
+    opponentMoveType,
+    playerPokemon: playerBefore,
+    opponentPokemon: opponentBefore,
   });
   appendBattleLog(data.log);
   updateBattleDisplay();
@@ -3598,7 +3762,9 @@ async function useBattleItem(itemId) {
   displayStorage(storageCache);
   displayBag();
   setBattleActionBusy(false);
+  showMoveButtons();
   showBattleItemPanel();
+  showCatchOptions();
 }
 
 function updateBattleDisplay() {
@@ -3629,16 +3795,17 @@ function showCatchOptions(disabled = false) {
   catchPanel.innerHTML = `
     <div class="catch-options">
       <h3>${renderIcon("backpack", "Bag")} Throw a Poke Ball</h3>
-      <button class="icon-button" ${disabled ? "disabled" : ""} onclick="throwBall('standard')">${renderIcon("standard", "Poke Ball")} Poke Ball (${getItemCount("standard")})</button>
-      <button class="icon-button" ${disabled ? "disabled" : ""} onclick="throwBall('great')">${renderIcon("great", "Great Ball")} Great Ball (${getItemCount("great")})</button>
-      <button class="icon-button" ${disabled ? "disabled" : ""} onclick="throwBall('ultra')">${renderIcon("ultra", "Ultra Ball")} Ultra Ball (${getItemCount("ultra")})</button>
-      <button class="icon-button" ${disabled ? "disabled" : ""} onclick="throwBall('master')">${renderIcon("master", "Master Ball")} Master Ball (${getItemCount("master")})</button>
-      <button class="secondary-btn icon-button" onclick="endEncounter()">${renderIcon("run", "Run")} Run</button>
+      <button class="icon-button" ${battleActionBusy || disabled ? "disabled" : ""} onclick="throwBall('standard')">${renderIcon("standard", "Poke Ball")} Poke Ball (${getItemCount("standard")})</button>
+      <button class="icon-button" ${battleActionBusy || disabled ? "disabled" : ""} onclick="throwBall('great')">${renderIcon("great", "Great Ball")} Great Ball (${getItemCount("great")})</button>
+      <button class="icon-button" ${battleActionBusy || disabled ? "disabled" : ""} onclick="throwBall('ultra')">${renderIcon("ultra", "Ultra Ball")} Ultra Ball (${getItemCount("ultra")})</button>
+      <button class="icon-button" ${battleActionBusy || disabled ? "disabled" : ""} onclick="throwBall('master')">${renderIcon("master", "Master Ball")} Master Ball (${getItemCount("master")})</button>
+      <button class="secondary-btn icon-button" ${battleActionBusy ? "disabled" : ""} onclick="endEncounter()">${renderIcon("run", "Run")} Run</button>
     </div>
   `;
 }
 
 async function throwBall(type) {
+  if (battleActionBusy) return;
   if (getItemCount(type) <= 0) {
     alert("You don't have any " + type + " balls!");
     return;
@@ -3649,26 +3816,37 @@ async function throwBall(type) {
   }
 
   const hpPercent = currentWildHP / wild.maxHp;
-  const response = await fetch("/api/catch", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      id: wild.id,
-      pokemon: wild,
-      pokeball: type,
-      wildHPPercent: hpPercent,
-      status: wildStatus,
-      shiny: wild.shiny,
-    }),
-  });
-  const data = await response.json();
+  setBattleActionBusy(true);
+  let data;
+  try {
+    const response = await fetch("/api/catch", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: wild.id,
+        pokemon: wild,
+        pokeball: type,
+        wildHPPercent: hpPercent,
+        status: wildStatus,
+        shiny: wild.shiny,
+      }),
+    });
+    data = await response.json();
+  } catch (error) {
+    console.error("Catch failed:", error);
+    setBattleActionBusy(false);
+    alert("Catch attempt failed.");
+    return;
+  }
   if (data.error) {
     alert(data.error);
+    setBattleActionBusy(false);
     return;
   }
   if (data.state) playerState = data.state;
   appendBattleLog([`${data.message} (${data.catchRate}% chance)`]);
   displayStats();
+  setBattleActionBusy(false);
   showCatchOptions();
   if (pokedexCache) await loadPokedex();
   if (questCache) await loadQuests();
@@ -3705,6 +3883,7 @@ async function gainXP(amount) {
 }
 
 function endEncounter() {
+  if (battleActionBusy) return;
   clearWildEncounterState();
   renderBattlePlaceholder(
     "You returned safely. Pick an area to explore again.",
