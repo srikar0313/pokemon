@@ -176,6 +176,7 @@ async function resolveSpeciesMap(localPokemon) {
     generatedAt: new Date().toISOString(),
     source: "https://pokeapi.co",
     resolutionKey: "localName",
+    dexMax: existing?.dexMax || 400,
     summary: {
       currentPokemon: localPokemon.length,
       resolved: species.filter(isResolvedMapping).length,
@@ -185,6 +186,25 @@ async function resolveSpeciesMap(localPokemon) {
         (mapping) => mapping.status === "ID_MISMATCH",
       ).length,
       unresolved: species.filter((mapping) => !isResolvedMapping(mapping)).length,
+      nationalDexCoverage: new Set(
+        species
+          .map((mapping) => mapping.canonicalSpeciesId)
+          .filter(
+            (speciesId) =>
+              speciesId >= 1 && speciesId <= (existing?.dexMax || 400),
+          ),
+      ).size,
+      existingAboveDexMax: species.filter(
+        (mapping) =>
+          mapping.existingBeforeExpansion &&
+          mapping.canonicalSpeciesId > (existing?.dexMax || 400),
+      ).length,
+      existingBeforeExpansion: species.filter(
+        (mapping) => mapping.existingBeforeExpansion,
+      ).length,
+      addedByExpansion: species.filter(
+        (mapping) => mapping.existingBeforeExpansion === false,
+      ).length,
     },
     species,
   };

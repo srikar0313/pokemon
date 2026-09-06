@@ -1,21 +1,21 @@
 # PokéAPI Data Audit
 
-Generated: 2026-09-06T13:50:18.614Z
+Generated: 2026-09-06T17:11:40.270Z
 
-- Pokémon audited: **134**
-- Canonical mappings resolved: **134**
-- Correct local IDs: **48**
-- Incorrect local IDs: **86**
+- Pokémon audited: **426**
+- Canonical mappings resolved: **426**
+- Correct local IDs: **268**
+- Incorrect local IDs: **158**
 - Unresolved species: **0**
-- Fully matched: **7**
-- With mismatches: **127**
+- Fully matched: **128**
+- With mismatches: **298**
 - Failed species audits: **0**
 - Type mismatches: **14**
 - Base-stat mismatches: **216**
 - Capture-rate mismatches: **31**
-- Evolution mismatches: **81**
-- Branching families: **7**
-- Missing family members: **115**
+- Evolution mismatches: **212**
+- Branching families: **15**
+- Missing family members: **65**
 - Request failures: **0**
 
 > Game-specific habitats, rarity balance, times, movesets, encounter weights, teams, rewards, and quests are intentionally not audited as canonical errors.
@@ -23,301 +23,632 @@ Generated: 2026-09-06T13:50:18.614Z
 ## Canonical Identity Mapping
 
 - **Bulbasaur** — Local ID: 1; National Dex ID: 1; Canonical name: bulbasaur; Status: **MATCH**.
+- **Ivysaur** — Local ID: 2; National Dex ID: 2; Canonical name: ivysaur; Status: **MATCH**.
+- **Venusaur** — Local ID: 3; National Dex ID: 3; Canonical name: venusaur; Status: **MATCH**.
 - **Charmander** — Local ID: 4; National Dex ID: 4; Canonical name: charmander; Status: **MATCH**.
+- **Charmeleon** — Local ID: 5; National Dex ID: 5; Canonical name: charmeleon; Status: **MATCH**.
+- **Charizard** — Local ID: 6; National Dex ID: 6; Canonical name: charizard; Status: **MATCH**.
 - **Squirtle** — Local ID: 7; National Dex ID: 7; Canonical name: squirtle; Status: **MATCH**.
-- **Pikachu** — Local ID: 25; National Dex ID: 25; Canonical name: pikachu; Status: **MATCH**.
-- **Clefairy** — Local ID: 35; National Dex ID: 35; Canonical name: clefairy; Status: **MATCH**.
-- **Jigglypuff** — Local ID: 39; National Dex ID: 39; Canonical name: jigglypuff; Status: **MATCH**.
-- **Psyduck** — Local ID: 54; National Dex ID: 54; Canonical name: psyduck; Status: **MATCH**.
-- **Growlithe** — Local ID: 58; National Dex ID: 58; Canonical name: growlithe; Status: **MATCH**.
-- **Bellsprout** — Local ID: 69; National Dex ID: 69; Canonical name: bellsprout; Status: **MATCH**.
-- **Geodude** — Local ID: 74; National Dex ID: 74; Canonical name: geodude; Status: **MATCH**.
-- **Gastly** — Local ID: 92; National Dex ID: 92; Canonical name: gastly; Status: **MATCH**.
-- **Cubone** — Local ID: 104; National Dex ID: 104; Canonical name: cubone; Status: **MATCH**.
-- **Eevee** — Local ID: 133; National Dex ID: 133; Canonical name: eevee; Status: **MATCH**.
-- **Dratini** — Local ID: 147; National Dex ID: 147; Canonical name: dratini; Status: **MATCH**.
-- **Mewtwo** — Local ID: 150; National Dex ID: 150; Canonical name: mewtwo; Status: **MATCH**.
-- **Mew** — Local ID: 151; National Dex ID: 151; Canonical name: mew; Status: **MATCH**.
-- **Pidgeot** — Local ID: 16; National Dex ID: 18; Canonical name: pidgeot; Status: **ID_MISMATCH**.
-- **Spearow** — Local ID: 21; National Dex ID: 21; Canonical name: spearow; Status: **MATCH**.
-- **Onix** — Local ID: 95; National Dex ID: 95; Canonical name: onix; Status: **MATCH**.
-- **Voltorb** — Local ID: 100; National Dex ID: 100; Canonical name: voltorb; Status: **MATCH**.
-- **Scyther** — Local ID: 123; National Dex ID: 123; Canonical name: scyther; Status: **MATCH**.
-- **Lapras** — Local ID: 131; National Dex ID: 131; Canonical name: lapras; Status: **MATCH**.
-- **Snorlax** — Local ID: 143; National Dex ID: 143; Canonical name: snorlax; Status: **MATCH**.
-- **Chikorita** — Local ID: 152; National Dex ID: 152; Canonical name: chikorita; Status: **MATCH**.
-- **Cyndaquil** — Local ID: 155; National Dex ID: 155; Canonical name: cyndaquil; Status: **MATCH**.
-- **Totodile** — Local ID: 158; National Dex ID: 158; Canonical name: totodile; Status: **MATCH**.
-- **Pichu** — Local ID: 172; National Dex ID: 172; Canonical name: pichu; Status: **MATCH**.
-- **Togepi** — Local ID: 175; National Dex ID: 175; Canonical name: togepi; Status: **MATCH**.
-- **Marill** — Local ID: 183; National Dex ID: 183; Canonical name: marill; Status: **MATCH**.
-- **Wooper** — Local ID: 194; National Dex ID: 194; Canonical name: wooper; Status: **MATCH**.
-- **Girafarig** — Local ID: 207; National Dex ID: 203; Canonical name: girafarig; Status: **ID_MISMATCH**.
-- **Sneasel** — Local ID: 218; National Dex ID: 215; Canonical name: sneasel; Status: **ID_MISMATCH**.
+- **Wartortle** — Local ID: 8; National Dex ID: 8; Canonical name: wartortle; Status: **MATCH**.
+- **Blastoise** — Local ID: 9; National Dex ID: 9; Canonical name: blastoise; Status: **MATCH**.
 - **Caterpie** — Local ID: 219; National Dex ID: 10; Canonical name: caterpie; Status: **ID_MISMATCH**.
-- **Weedle** — Local ID: 220; National Dex ID: 13; Canonical name: weedle; Status: **ID_MISMATCH**.
-- **Oddish** — Local ID: 221; National Dex ID: 43; Canonical name: oddish; Status: **ID_MISMATCH**.
+- **Metapod** — Local ID: 11; National Dex ID: 11; Canonical name: metapod; Status: **MATCH**.
 - **Butterfree** — Local ID: 222; National Dex ID: 12; Canonical name: butterfree; Status: **ID_MISMATCH**.
-- **Poliwag** — Local ID: 223; National Dex ID: 60; Canonical name: poliwag; Status: **ID_MISMATCH**.
-- **Magikarp** — Local ID: 224; National Dex ID: 129; Canonical name: magikarp; Status: **ID_MISMATCH**.
-- **Goldeen** — Local ID: 225; National Dex ID: 118; Canonical name: goldeen; Status: **ID_MISMATCH**.
-- **Staryu** — Local ID: 226; National Dex ID: 120; Canonical name: staryu; Status: **ID_MISMATCH**.
-- **Zubat** — Local ID: 227; National Dex ID: 41; Canonical name: zubat; Status: **ID_MISMATCH**.
-- **Diglett** — Local ID: 228; National Dex ID: 50; Canonical name: diglett; Status: **ID_MISMATCH**.
-- **Machop** — Local ID: 229; National Dex ID: 66; Canonical name: machop; Status: **ID_MISMATCH**.
-- **Tentacool** — Local ID: 230; National Dex ID: 72; Canonical name: tentacool; Status: **ID_MISMATCH**.
-- **Horsea** — Local ID: 231; National Dex ID: 116; Canonical name: horsea; Status: **ID_MISMATCH**.
-- **Shellder** — Local ID: 232; National Dex ID: 90; Canonical name: shellder; Status: **ID_MISMATCH**.
-- **Seel** — Local ID: 233; National Dex ID: 86; Canonical name: seel; Status: **ID_MISMATCH**.
-- **Vulpix** — Local ID: 234; National Dex ID: 37; Canonical name: vulpix; Status: **ID_MISMATCH**.
-- **Ponyta** — Local ID: 235; National Dex ID: 77; Canonical name: ponyta; Status: **ID_MISMATCH**.
-- **Magmar** — Local ID: 236; National Dex ID: 126; Canonical name: magmar; Status: **ID_MISMATCH**.
+- **Weedle** — Local ID: 220; National Dex ID: 13; Canonical name: weedle; Status: **ID_MISMATCH**.
+- **Kakuna** — Local ID: 14; National Dex ID: 14; Canonical name: kakuna; Status: **MATCH**.
+- **Beedrill** — Local ID: 15; National Dex ID: 15; Canonical name: beedrill; Status: **MATCH**.
 - **Pidgey** — Local ID: 237; National Dex ID: 16; Canonical name: pidgey; Status: **ID_MISMATCH**.
-- **Larvitar** — Local ID: 238; National Dex ID: 246; Canonical name: larvitar; Status: **ID_MISMATCH**.
+- **Pidgeotto** — Local ID: 17; National Dex ID: 17; Canonical name: pidgeotto; Status: **MATCH**.
+- **Pidgeot** — Local ID: 16; National Dex ID: 18; Canonical name: pidgeot; Status: **ID_MISMATCH**.
+- **Rattata** — Local ID: 19; National Dex ID: 19; Canonical name: rattata; Status: **MATCH**.
+- **Raticate** — Local ID: 20; National Dex ID: 20; Canonical name: raticate; Status: **MATCH**.
+- **Spearow** — Local ID: 21; National Dex ID: 21; Canonical name: spearow; Status: **MATCH**.
+- **Fearow** — Local ID: 22; National Dex ID: 22; Canonical name: fearow; Status: **MATCH**.
+- **Ekans** — Local ID: 23; National Dex ID: 23; Canonical name: ekans; Status: **MATCH**.
+- **Arbok** — Local ID: 24; National Dex ID: 24; Canonical name: arbok; Status: **MATCH**.
+- **Pikachu** — Local ID: 25; National Dex ID: 25; Canonical name: pikachu; Status: **MATCH**.
+- **Raichu** — Local ID: 26; National Dex ID: 26; Canonical name: raichu; Status: **MATCH**.
 - **Sandshrew** — Local ID: 239; National Dex ID: 27; Canonical name: sandshrew; Status: **ID_MISMATCH**.
-- **Trapinch** — Local ID: 240; National Dex ID: 328; Canonical name: trapinch; Status: **ID_MISMATCH**.
-- **Cacnea** — Local ID: 241; National Dex ID: 331; Canonical name: cacnea; Status: **ID_MISMATCH**.
-- **Sandile** — Local ID: 242; National Dex ID: 551; Canonical name: sandile; Status: **ID_MISMATCH**.
-- **Misdreavus** — Local ID: 243; National Dex ID: 200; Canonical name: misdreavus; Status: **ID_MISMATCH**.
-- **Duskull** — Local ID: 244; National Dex ID: 355; Canonical name: duskull; Status: **ID_MISMATCH**.
-- **Sableye** — Local ID: 245; National Dex ID: 302; Canonical name: sableye; Status: **ID_MISMATCH**.
+- **Sandslash** — Local ID: 28; National Dex ID: 28; Canonical name: sandslash; Status: **MATCH**.
+- **Nidoran♀** — Local ID: 29; National Dex ID: 29; Canonical name: nidoran-f; Status: **MATCH**.
+- **Nidorina** — Local ID: 30; National Dex ID: 30; Canonical name: nidorina; Status: **MATCH**.
+- **Nidoqueen** — Local ID: 31; National Dex ID: 31; Canonical name: nidoqueen; Status: **MATCH**.
+- **Nidoran♂** — Local ID: 32; National Dex ID: 32; Canonical name: nidoran-m; Status: **MATCH**.
+- **Nidorino** — Local ID: 33; National Dex ID: 33; Canonical name: nidorino; Status: **MATCH**.
+- **Nidoking** — Local ID: 34; National Dex ID: 34; Canonical name: nidoking; Status: **MATCH**.
+- **Clefairy** — Local ID: 35; National Dex ID: 35; Canonical name: clefairy; Status: **MATCH**.
+- **Clefable** — Local ID: 36; National Dex ID: 36; Canonical name: clefable; Status: **MATCH**.
+- **Vulpix** — Local ID: 234; National Dex ID: 37; Canonical name: vulpix; Status: **ID_MISMATCH**.
+- **Ninetales** — Local ID: 38; National Dex ID: 38; Canonical name: ninetales; Status: **MATCH**.
+- **Jigglypuff** — Local ID: 39; National Dex ID: 39; Canonical name: jigglypuff; Status: **MATCH**.
+- **Wigglytuff** — Local ID: 40; National Dex ID: 40; Canonical name: wigglytuff; Status: **MATCH**.
+- **Zubat** — Local ID: 227; National Dex ID: 41; Canonical name: zubat; Status: **ID_MISMATCH**.
+- **Golbat** — Local ID: 42; National Dex ID: 42; Canonical name: golbat; Status: **MATCH**.
+- **Oddish** — Local ID: 221; National Dex ID: 43; Canonical name: oddish; Status: **ID_MISMATCH**.
+- **Gloom** — Local ID: 44; National Dex ID: 44; Canonical name: gloom; Status: **MATCH**.
+- **Vileplume** — Local ID: 45; National Dex ID: 45; Canonical name: vileplume; Status: **MATCH**.
+- **Paras** — Local ID: 46; National Dex ID: 46; Canonical name: paras; Status: **MATCH**.
+- **Parasect** — Local ID: 47; National Dex ID: 47; Canonical name: parasect; Status: **MATCH**.
+- **Venonat** — Local ID: 48; National Dex ID: 48; Canonical name: venonat; Status: **MATCH**.
+- **Venomoth** — Local ID: 49; National Dex ID: 49; Canonical name: venomoth; Status: **MATCH**.
+- **Diglett** — Local ID: 228; National Dex ID: 50; Canonical name: diglett; Status: **ID_MISMATCH**.
+- **Dugtrio** — Local ID: 51; National Dex ID: 51; Canonical name: dugtrio; Status: **MATCH**.
+- **Meowth** — Local ID: 52; National Dex ID: 52; Canonical name: meowth; Status: **MATCH**.
+- **Persian** — Local ID: 53; National Dex ID: 53; Canonical name: persian; Status: **MATCH**.
+- **Psyduck** — Local ID: 54; National Dex ID: 54; Canonical name: psyduck; Status: **MATCH**.
+- **Golduck** — Local ID: 55; National Dex ID: 55; Canonical name: golduck; Status: **MATCH**.
+- **Mankey** — Local ID: 56; National Dex ID: 56; Canonical name: mankey; Status: **MATCH**.
+- **Primeape** — Local ID: 57; National Dex ID: 57; Canonical name: primeape; Status: **MATCH**.
+- **Growlithe** — Local ID: 58; National Dex ID: 58; Canonical name: growlithe; Status: **MATCH**.
+- **Arcanine** — Local ID: 59; National Dex ID: 59; Canonical name: arcanine; Status: **MATCH**.
+- **Poliwag** — Local ID: 223; National Dex ID: 60; Canonical name: poliwag; Status: **ID_MISMATCH**.
+- **Poliwhirl** — Local ID: 61; National Dex ID: 61; Canonical name: poliwhirl; Status: **MATCH**.
+- **Poliwrath** — Local ID: 62; National Dex ID: 62; Canonical name: poliwrath; Status: **MATCH**.
+- **Abra** — Local ID: 63; National Dex ID: 63; Canonical name: abra; Status: **MATCH**.
+- **Kadabra** — Local ID: 64; National Dex ID: 64; Canonical name: kadabra; Status: **MATCH**.
+- **Alakazam** — Local ID: 65; National Dex ID: 65; Canonical name: alakazam; Status: **MATCH**.
+- **Machop** — Local ID: 229; National Dex ID: 66; Canonical name: machop; Status: **ID_MISMATCH**.
+- **Machoke** — Local ID: 67; National Dex ID: 67; Canonical name: machoke; Status: **MATCH**.
+- **Machamp** — Local ID: 68; National Dex ID: 68; Canonical name: machamp; Status: **MATCH**.
+- **Bellsprout** — Local ID: 69; National Dex ID: 69; Canonical name: bellsprout; Status: **MATCH**.
+- **Weepinbell** — Local ID: 70; National Dex ID: 70; Canonical name: weepinbell; Status: **MATCH**.
+- **Victreebel** — Local ID: 71; National Dex ID: 71; Canonical name: victreebel; Status: **MATCH**.
+- **Tentacool** — Local ID: 230; National Dex ID: 72; Canonical name: tentacool; Status: **ID_MISMATCH**.
+- **Tentacruel** — Local ID: 73; National Dex ID: 73; Canonical name: tentacruel; Status: **MATCH**.
+- **Geodude** — Local ID: 74; National Dex ID: 74; Canonical name: geodude; Status: **MATCH**.
+- **Graveler** — Local ID: 75; National Dex ID: 75; Canonical name: graveler; Status: **MATCH**.
+- **Golem** — Local ID: 76; National Dex ID: 76; Canonical name: golem; Status: **MATCH**.
+- **Ponyta** — Local ID: 235; National Dex ID: 77; Canonical name: ponyta; Status: **ID_MISMATCH**.
+- **Rapidash** — Local ID: 78; National Dex ID: 78; Canonical name: rapidash; Status: **MATCH**.
+- **Slowpoke** — Local ID: 79; National Dex ID: 79; Canonical name: slowpoke; Status: **MATCH**.
+- **Slowbro** — Local ID: 80; National Dex ID: 80; Canonical name: slowbro; Status: **MATCH**.
+- **Magnemite** — Local ID: 81; National Dex ID: 81; Canonical name: magnemite; Status: **MATCH**.
+- **Magneton** — Local ID: 82; National Dex ID: 82; Canonical name: magneton; Status: **MATCH**.
+- **Farfetch’d** — Local ID: 83; National Dex ID: 83; Canonical name: farfetchd; Status: **MATCH**.
+- **Doduo** — Local ID: 84; National Dex ID: 84; Canonical name: doduo; Status: **MATCH**.
+- **Dodrio** — Local ID: 85; National Dex ID: 85; Canonical name: dodrio; Status: **MATCH**.
+- **Seel** — Local ID: 233; National Dex ID: 86; Canonical name: seel; Status: **ID_MISMATCH**.
+- **Dewgong** — Local ID: 87; National Dex ID: 87; Canonical name: dewgong; Status: **MATCH**.
+- **Grimer** — Local ID: 88; National Dex ID: 88; Canonical name: grimer; Status: **MATCH**.
+- **Muk** — Local ID: 89; National Dex ID: 89; Canonical name: muk; Status: **MATCH**.
+- **Shellder** — Local ID: 232; National Dex ID: 90; Canonical name: shellder; Status: **ID_MISMATCH**.
+- **Cloyster** — Local ID: 91; National Dex ID: 91; Canonical name: cloyster; Status: **MATCH**.
+- **Gastly** — Local ID: 92; National Dex ID: 92; Canonical name: gastly; Status: **MATCH**.
+- **Haunter** — Local ID: 93; National Dex ID: 93; Canonical name: haunter; Status: **MATCH**.
 - **Gengar** — Local ID: 94; National Dex ID: 94; Canonical name: gengar; Status: **MATCH**.
+- **Onix** — Local ID: 95; National Dex ID: 95; Canonical name: onix; Status: **MATCH**.
+- **Drowzee** — Local ID: 96; National Dex ID: 96; Canonical name: drowzee; Status: **MATCH**.
+- **Hypno** — Local ID: 97; National Dex ID: 97; Canonical name: hypno; Status: **MATCH**.
+- **Krabby** — Local ID: 98; National Dex ID: 98; Canonical name: krabby; Status: **MATCH**.
+- **Kingler** — Local ID: 99; National Dex ID: 99; Canonical name: kingler; Status: **MATCH**.
+- **Voltorb** — Local ID: 100; National Dex ID: 100; Canonical name: voltorb; Status: **MATCH**.
+- **Electrode** — Local ID: 101; National Dex ID: 101; Canonical name: electrode; Status: **MATCH**.
+- **Exeggcute** — Local ID: 102; National Dex ID: 102; Canonical name: exeggcute; Status: **MATCH**.
+- **Exeggutor** — Local ID: 103; National Dex ID: 103; Canonical name: exeggutor; Status: **MATCH**.
+- **Cubone** — Local ID: 104; National Dex ID: 104; Canonical name: cubone; Status: **MATCH**.
+- **Marowak** — Local ID: 105; National Dex ID: 105; Canonical name: marowak; Status: **MATCH**.
+- **Hitmonlee** — Local ID: 106; National Dex ID: 106; Canonical name: hitmonlee; Status: **MATCH**.
+- **Hitmonchan** — Local ID: 107; National Dex ID: 107; Canonical name: hitmonchan; Status: **MATCH**.
+- **Lickitung** — Local ID: 108; National Dex ID: 108; Canonical name: lickitung; Status: **MATCH**.
+- **Koffing** — Local ID: 109; National Dex ID: 109; Canonical name: koffing; Status: **MATCH**.
+- **Weezing** — Local ID: 110; National Dex ID: 110; Canonical name: weezing; Status: **MATCH**.
+- **Rhyhorn** — Local ID: 111; National Dex ID: 111; Canonical name: rhyhorn; Status: **MATCH**.
+- **Rhydon** — Local ID: 112; National Dex ID: 112; Canonical name: rhydon; Status: **MATCH**.
+- **Chansey** — Local ID: 113; National Dex ID: 113; Canonical name: chansey; Status: **MATCH**.
+- **Tangela** — Local ID: 114; National Dex ID: 114; Canonical name: tangela; Status: **MATCH**.
+- **Kangaskhan** — Local ID: 115; National Dex ID: 115; Canonical name: kangaskhan; Status: **MATCH**.
+- **Horsea** — Local ID: 231; National Dex ID: 116; Canonical name: horsea; Status: **ID_MISMATCH**.
+- **Seadra** — Local ID: 117; National Dex ID: 117; Canonical name: seadra; Status: **MATCH**.
+- **Goldeen** — Local ID: 225; National Dex ID: 118; Canonical name: goldeen; Status: **ID_MISMATCH**.
+- **Seaking** — Local ID: 119; National Dex ID: 119; Canonical name: seaking; Status: **MATCH**.
+- **Staryu** — Local ID: 226; National Dex ID: 120; Canonical name: staryu; Status: **ID_MISMATCH**.
+- **Starmie** — Local ID: 121; National Dex ID: 121; Canonical name: starmie; Status: **MATCH**.
+- **Mr. Mime** — Local ID: 122; National Dex ID: 122; Canonical name: mr-mime; Status: **MATCH**.
+- **Scyther** — Local ID: 123; National Dex ID: 123; Canonical name: scyther; Status: **MATCH**.
+- **Jynx** — Local ID: 124; National Dex ID: 124; Canonical name: jynx; Status: **MATCH**.
+- **Electabuzz** — Local ID: 125; National Dex ID: 125; Canonical name: electabuzz; Status: **MATCH**.
+- **Magmar** — Local ID: 236; National Dex ID: 126; Canonical name: magmar; Status: **ID_MISMATCH**.
+- **Pinsir** — Local ID: 127; National Dex ID: 127; Canonical name: pinsir; Status: **MATCH**.
+- **Tauros** — Local ID: 128; National Dex ID: 128; Canonical name: tauros; Status: **MATCH**.
+- **Magikarp** — Local ID: 224; National Dex ID: 129; Canonical name: magikarp; Status: **ID_MISMATCH**.
+- **Gyarados** — Local ID: 130; National Dex ID: 130; Canonical name: gyarados; Status: **MATCH**.
+- **Lapras** — Local ID: 131; National Dex ID: 131; Canonical name: lapras; Status: **MATCH**.
+- **Ditto** — Local ID: 132; National Dex ID: 132; Canonical name: ditto; Status: **MATCH**.
+- **Eevee** — Local ID: 133; National Dex ID: 133; Canonical name: eevee; Status: **MATCH**.
+- **Vaporeon** — Local ID: 134; National Dex ID: 134; Canonical name: vaporeon; Status: **MATCH**.
+- **Jolteon** — Local ID: 135; National Dex ID: 135; Canonical name: jolteon; Status: **MATCH**.
+- **Flareon** — Local ID: 136; National Dex ID: 136; Canonical name: flareon; Status: **MATCH**.
+- **Porygon** — Local ID: 137; National Dex ID: 137; Canonical name: porygon; Status: **MATCH**.
+- **Omanyte** — Local ID: 138; National Dex ID: 138; Canonical name: omanyte; Status: **MATCH**.
+- **Omastar** — Local ID: 139; National Dex ID: 139; Canonical name: omastar; Status: **MATCH**.
+- **Kabuto** — Local ID: 140; National Dex ID: 140; Canonical name: kabuto; Status: **MATCH**.
+- **Kabutops** — Local ID: 141; National Dex ID: 141; Canonical name: kabutops; Status: **MATCH**.
+- **Aerodactyl** — Local ID: 142; National Dex ID: 142; Canonical name: aerodactyl; Status: **MATCH**.
+- **Snorlax** — Local ID: 143; National Dex ID: 143; Canonical name: snorlax; Status: **MATCH**.
 - **Articuno** — Local ID: 247; National Dex ID: 144; Canonical name: articuno; Status: **ID_MISMATCH**.
 - **Zapdos** — Local ID: 248; National Dex ID: 145; Canonical name: zapdos; Status: **ID_MISMATCH**.
 - **Moltres** — Local ID: 249; National Dex ID: 146; Canonical name: moltres; Status: **ID_MISMATCH**.
+- **Dratini** — Local ID: 147; National Dex ID: 147; Canonical name: dratini; Status: **MATCH**.
+- **Dragonair** — Local ID: 148; National Dex ID: 148; Canonical name: dragonair; Status: **MATCH**.
+- **Dragonite** — Local ID: 149; National Dex ID: 149; Canonical name: dragonite; Status: **MATCH**.
+- **Mewtwo** — Local ID: 150; National Dex ID: 150; Canonical name: mewtwo; Status: **MATCH**.
+- **Mew** — Local ID: 151; National Dex ID: 151; Canonical name: mew; Status: **MATCH**.
+- **Chikorita** — Local ID: 152; National Dex ID: 152; Canonical name: chikorita; Status: **MATCH**.
+- **Bayleef** — Local ID: 153; National Dex ID: 153; Canonical name: bayleef; Status: **MATCH**.
+- **Meganium** — Local ID: 154; National Dex ID: 154; Canonical name: meganium; Status: **MATCH**.
+- **Cyndaquil** — Local ID: 155; National Dex ID: 155; Canonical name: cyndaquil; Status: **MATCH**.
+- **Quilava** — Local ID: 156; National Dex ID: 156; Canonical name: quilava; Status: **MATCH**.
+- **Typhlosion** — Local ID: 157; National Dex ID: 157; Canonical name: typhlosion; Status: **MATCH**.
+- **Totodile** — Local ID: 158; National Dex ID: 158; Canonical name: totodile; Status: **MATCH**.
+- **Croconaw** — Local ID: 159; National Dex ID: 159; Canonical name: croconaw; Status: **MATCH**.
+- **Feraligatr** — Local ID: 160; National Dex ID: 160; Canonical name: feraligatr; Status: **MATCH**.
+- **Sentret** — Local ID: 161; National Dex ID: 161; Canonical name: sentret; Status: **MATCH**.
+- **Furret** — Local ID: 162; National Dex ID: 162; Canonical name: furret; Status: **MATCH**.
+- **Hoothoot** — Local ID: 263; National Dex ID: 163; Canonical name: hoothoot; Status: **ID_MISMATCH**.
+- **Noctowl** — Local ID: 164; National Dex ID: 164; Canonical name: noctowl; Status: **MATCH**.
+- **Ledyba** — Local ID: 165; National Dex ID: 165; Canonical name: ledyba; Status: **MATCH**.
+- **Ledian** — Local ID: 166; National Dex ID: 166; Canonical name: ledian; Status: **MATCH**.
+- **Spinarak** — Local ID: 167; National Dex ID: 167; Canonical name: spinarak; Status: **MATCH**.
+- **Ariados** — Local ID: 168; National Dex ID: 168; Canonical name: ariados; Status: **MATCH**.
+- **Crobat** — Local ID: 169; National Dex ID: 169; Canonical name: crobat; Status: **MATCH**.
+- **Chinchou** — Local ID: 170; National Dex ID: 170; Canonical name: chinchou; Status: **MATCH**.
+- **Lanturn** — Local ID: 171; National Dex ID: 171; Canonical name: lanturn; Status: **MATCH**.
+- **Pichu** — Local ID: 172; National Dex ID: 172; Canonical name: pichu; Status: **MATCH**.
+- **Cleffa** — Local ID: 173; National Dex ID: 173; Canonical name: cleffa; Status: **MATCH**.
+- **Igglybuff** — Local ID: 174; National Dex ID: 174; Canonical name: igglybuff; Status: **MATCH**.
+- **Togepi** — Local ID: 175; National Dex ID: 175; Canonical name: togepi; Status: **MATCH**.
+- **Togetic** — Local ID: 176; National Dex ID: 176; Canonical name: togetic; Status: **MATCH**.
+- **Natu** — Local ID: 177; National Dex ID: 177; Canonical name: natu; Status: **MATCH**.
+- **Xatu** — Local ID: 178; National Dex ID: 178; Canonical name: xatu; Status: **MATCH**.
+- **Mareep** — Local ID: 179; National Dex ID: 179; Canonical name: mareep; Status: **MATCH**.
+- **Flaaffy** — Local ID: 180; National Dex ID: 180; Canonical name: flaaffy; Status: **MATCH**.
+- **Ampharos** — Local ID: 181; National Dex ID: 181; Canonical name: ampharos; Status: **MATCH**.
+- **Bellossom** — Local ID: 182; National Dex ID: 182; Canonical name: bellossom; Status: **MATCH**.
+- **Marill** — Local ID: 183; National Dex ID: 183; Canonical name: marill; Status: **MATCH**.
+- **Azumarill** — Local ID: 184; National Dex ID: 184; Canonical name: azumarill; Status: **MATCH**.
+- **Sudowoodo** — Local ID: 185; National Dex ID: 185; Canonical name: sudowoodo; Status: **MATCH**.
+- **Politoed** — Local ID: 186; National Dex ID: 186; Canonical name: politoed; Status: **MATCH**.
+- **Hoppip** — Local ID: 187; National Dex ID: 187; Canonical name: hoppip; Status: **MATCH**.
+- **Skiploom** — Local ID: 188; National Dex ID: 188; Canonical name: skiploom; Status: **MATCH**.
+- **Jumpluff** — Local ID: 189; National Dex ID: 189; Canonical name: jumpluff; Status: **MATCH**.
+- **Aipom** — Local ID: 190; National Dex ID: 190; Canonical name: aipom; Status: **MATCH**.
+- **Sunkern** — Local ID: 191; National Dex ID: 191; Canonical name: sunkern; Status: **MATCH**.
+- **Sunflora** — Local ID: 192; National Dex ID: 192; Canonical name: sunflora; Status: **MATCH**.
+- **Yanma** — Local ID: 193; National Dex ID: 193; Canonical name: yanma; Status: **MATCH**.
+- **Wooper** — Local ID: 194; National Dex ID: 194; Canonical name: wooper; Status: **MATCH**.
+- **Quagsire** — Local ID: 195; National Dex ID: 195; Canonical name: quagsire; Status: **MATCH**.
+- **Espeon** — Local ID: 196; National Dex ID: 196; Canonical name: espeon; Status: **MATCH**.
+- **Umbreon** — Local ID: 197; National Dex ID: 197; Canonical name: umbreon; Status: **MATCH**.
+- **Murkrow** — Local ID: 198; National Dex ID: 198; Canonical name: murkrow; Status: **MATCH**.
+- **Slowking** — Local ID: 199; National Dex ID: 199; Canonical name: slowking; Status: **MATCH**.
+- **Misdreavus** — Local ID: 243; National Dex ID: 200; Canonical name: misdreavus; Status: **ID_MISMATCH**.
+- **Unown** — Local ID: 201; National Dex ID: 201; Canonical name: unown; Status: **MATCH**.
+- **Wobbuffet** — Local ID: 202; National Dex ID: 202; Canonical name: wobbuffet; Status: **MATCH**.
+- **Girafarig** — Local ID: 207; National Dex ID: 203; Canonical name: girafarig; Status: **ID_MISMATCH**.
+- **Pineco** — Local ID: 204; National Dex ID: 204; Canonical name: pineco; Status: **MATCH**.
+- **Forretress** — Local ID: 205; National Dex ID: 205; Canonical name: forretress; Status: **MATCH**.
+- **Dunsparce** — Local ID: 206; National Dex ID: 206; Canonical name: dunsparce; Status: **MATCH**.
+- **Gligar** — Local ID: 10001; National Dex ID: 207; Canonical name: gligar; Status: **ID_MISMATCH**.
+- **Steelix** — Local ID: 208; National Dex ID: 208; Canonical name: steelix; Status: **MATCH**.
+- **Snubbull** — Local ID: 209; National Dex ID: 209; Canonical name: snubbull; Status: **MATCH**.
+- **Granbull** — Local ID: 210; National Dex ID: 210; Canonical name: granbull; Status: **MATCH**.
+- **Qwilfish** — Local ID: 211; National Dex ID: 211; Canonical name: qwilfish; Status: **MATCH**.
+- **Scizor** — Local ID: 212; National Dex ID: 212; Canonical name: scizor; Status: **MATCH**.
+- **Shuckle** — Local ID: 213; National Dex ID: 213; Canonical name: shuckle; Status: **MATCH**.
+- **Heracross** — Local ID: 214; National Dex ID: 214; Canonical name: heracross; Status: **MATCH**.
+- **Sneasel** — Local ID: 218; National Dex ID: 215; Canonical name: sneasel; Status: **ID_MISMATCH**.
+- **Teddiursa** — Local ID: 216; National Dex ID: 216; Canonical name: teddiursa; Status: **MATCH**.
+- **Ursaring** — Local ID: 217; National Dex ID: 217; Canonical name: ursaring; Status: **MATCH**.
+- **Slugma** — Local ID: 280; National Dex ID: 218; Canonical name: slugma; Status: **ID_MISMATCH**.
+- **Magcargo** — Local ID: 10002; National Dex ID: 219; Canonical name: magcargo; Status: **ID_MISMATCH**.
+- **Swinub** — Local ID: 10003; National Dex ID: 220; Canonical name: swinub; Status: **ID_MISMATCH**.
+- **Piloswine** — Local ID: 10004; National Dex ID: 221; Canonical name: piloswine; Status: **ID_MISMATCH**.
+- **Corsola** — Local ID: 10005; National Dex ID: 222; Canonical name: corsola; Status: **ID_MISMATCH**.
+- **Remoraid** — Local ID: 10006; National Dex ID: 223; Canonical name: remoraid; Status: **ID_MISMATCH**.
+- **Octillery** — Local ID: 10007; National Dex ID: 224; Canonical name: octillery; Status: **ID_MISMATCH**.
+- **Delibird** — Local ID: 10008; National Dex ID: 225; Canonical name: delibird; Status: **ID_MISMATCH**.
+- **Mantine** — Local ID: 10009; National Dex ID: 226; Canonical name: mantine; Status: **ID_MISMATCH**.
+- **Skarmory** — Local ID: 10010; National Dex ID: 227; Canonical name: skarmory; Status: **ID_MISMATCH**.
+- **Houndour** — Local ID: 281; National Dex ID: 228; Canonical name: houndour; Status: **ID_MISMATCH**.
+- **Houndoom** — Local ID: 10011; National Dex ID: 229; Canonical name: houndoom; Status: **ID_MISMATCH**.
+- **Kingdra** — Local ID: 10012; National Dex ID: 230; Canonical name: kingdra; Status: **ID_MISMATCH**.
+- **Phanpy** — Local ID: 10013; National Dex ID: 231; Canonical name: phanpy; Status: **ID_MISMATCH**.
+- **Donphan** — Local ID: 10014; National Dex ID: 232; Canonical name: donphan; Status: **ID_MISMATCH**.
+- **Porygon2** — Local ID: 10015; National Dex ID: 233; Canonical name: porygon2; Status: **ID_MISMATCH**.
+- **Stantler** — Local ID: 10016; National Dex ID: 234; Canonical name: stantler; Status: **ID_MISMATCH**.
+- **Smeargle** — Local ID: 10017; National Dex ID: 235; Canonical name: smeargle; Status: **ID_MISMATCH**.
+- **Tyrogue** — Local ID: 10018; National Dex ID: 236; Canonical name: tyrogue; Status: **ID_MISMATCH**.
+- **Hitmontop** — Local ID: 10019; National Dex ID: 237; Canonical name: hitmontop; Status: **ID_MISMATCH**.
+- **Smoochum** — Local ID: 10020; National Dex ID: 238; Canonical name: smoochum; Status: **ID_MISMATCH**.
+- **Elekid** — Local ID: 10021; National Dex ID: 239; Canonical name: elekid; Status: **ID_MISMATCH**.
+- **Magby** — Local ID: 10022; National Dex ID: 240; Canonical name: magby; Status: **ID_MISMATCH**.
+- **Miltank** — Local ID: 10023; National Dex ID: 241; Canonical name: miltank; Status: **ID_MISMATCH**.
+- **Blissey** — Local ID: 10024; National Dex ID: 242; Canonical name: blissey; Status: **ID_MISMATCH**.
+- **Raikou** — Local ID: 10025; National Dex ID: 243; Canonical name: raikou; Status: **ID_MISMATCH**.
+- **Entei** — Local ID: 10026; National Dex ID: 244; Canonical name: entei; Status: **ID_MISMATCH**.
+- **Suicune** — Local ID: 10027; National Dex ID: 245; Canonical name: suicune; Status: **ID_MISMATCH**.
+- **Larvitar** — Local ID: 238; National Dex ID: 246; Canonical name: larvitar; Status: **ID_MISMATCH**.
+- **Pupitar** — Local ID: 10028; National Dex ID: 247; Canonical name: pupitar; Status: **ID_MISMATCH**.
+- **Tyranitar** — Local ID: 10029; National Dex ID: 248; Canonical name: tyranitar; Status: **ID_MISMATCH**.
 - **Lugia** — Local ID: 250; National Dex ID: 249; Canonical name: lugia; Status: **ID_MISMATCH**.
 - **Ho-Oh** — Local ID: 251; National Dex ID: 250; Canonical name: ho-oh; Status: **ID_MISMATCH**.
-- **Rayquaza** — Local ID: 252; National Dex ID: 384; Canonical name: rayquaza; Status: **ID_MISMATCH**.
+- **Celebi** — Local ID: 10030; National Dex ID: 251; Canonical name: celebi; Status: **ID_MISMATCH**.
+- **Treecko** — Local ID: 266; National Dex ID: 252; Canonical name: treecko; Status: **ID_MISMATCH**.
+- **Grovyle** — Local ID: 10031; National Dex ID: 253; Canonical name: grovyle; Status: **ID_MISMATCH**.
+- **Sceptile** — Local ID: 10032; National Dex ID: 254; Canonical name: sceptile; Status: **ID_MISMATCH**.
+- **Torchic** — Local ID: 278; National Dex ID: 255; Canonical name: torchic; Status: **ID_MISMATCH**.
+- **Combusken** — Local ID: 10033; National Dex ID: 256; Canonical name: combusken; Status: **ID_MISMATCH**.
+- **Blaziken** — Local ID: 10034; National Dex ID: 257; Canonical name: blaziken; Status: **ID_MISMATCH**.
+- **Mudkip** — Local ID: 268; National Dex ID: 258; Canonical name: mudkip; Status: **ID_MISMATCH**.
+- **Marshtomp** — Local ID: 10035; National Dex ID: 259; Canonical name: marshtomp; Status: **ID_MISMATCH**.
+- **Swampert** — Local ID: 10036; National Dex ID: 260; Canonical name: swampert; Status: **ID_MISMATCH**.
+- **Poochyena** — Local ID: 10037; National Dex ID: 261; Canonical name: poochyena; Status: **ID_MISMATCH**.
+- **Mightyena** — Local ID: 10038; National Dex ID: 262; Canonical name: mightyena; Status: **ID_MISMATCH**.
+- **Zigzagoon** — Local ID: 10039; National Dex ID: 263; Canonical name: zigzagoon; Status: **ID_MISMATCH**.
+- **Linoone** — Local ID: 10040; National Dex ID: 264; Canonical name: linoone; Status: **ID_MISMATCH**.
+- **Wurmple** — Local ID: 10041; National Dex ID: 265; Canonical name: wurmple; Status: **ID_MISMATCH**.
+- **Silcoon** — Local ID: 10042; National Dex ID: 266; Canonical name: silcoon; Status: **ID_MISMATCH**.
+- **Beautifly** — Local ID: 10043; National Dex ID: 267; Canonical name: beautifly; Status: **ID_MISMATCH**.
+- **Cascoon** — Local ID: 10044; National Dex ID: 268; Canonical name: cascoon; Status: **ID_MISMATCH**.
+- **Dustox** — Local ID: 10045; National Dex ID: 269; Canonical name: dustox; Status: **ID_MISMATCH**.
+- **Lotad** — Local ID: 269; National Dex ID: 270; Canonical name: lotad; Status: **ID_MISMATCH**.
+- **Lombre** — Local ID: 10046; National Dex ID: 271; Canonical name: lombre; Status: **ID_MISMATCH**.
+- **Ludicolo** — Local ID: 10047; National Dex ID: 272; Canonical name: ludicolo; Status: **ID_MISMATCH**.
+- **Seedot** — Local ID: 264; National Dex ID: 273; Canonical name: seedot; Status: **ID_MISMATCH**.
+- **Nuzleaf** — Local ID: 10048; National Dex ID: 274; Canonical name: nuzleaf; Status: **ID_MISMATCH**.
+- **Shiftry** — Local ID: 10049; National Dex ID: 275; Canonical name: shiftry; Status: **ID_MISMATCH**.
+- **Taillow** — Local ID: 10050; National Dex ID: 276; Canonical name: taillow; Status: **ID_MISMATCH**.
+- **Swellow** — Local ID: 10051; National Dex ID: 277; Canonical name: swellow; Status: **ID_MISMATCH**.
+- **Wingull** — Local ID: 270; National Dex ID: 278; Canonical name: wingull; Status: **ID_MISMATCH**.
+- **Pelipper** — Local ID: 10052; National Dex ID: 279; Canonical name: pelipper; Status: **ID_MISMATCH**.
+- **Ralts** — Local ID: 10053; National Dex ID: 280; Canonical name: ralts; Status: **ID_MISMATCH**.
+- **Kirlia** — Local ID: 10054; National Dex ID: 281; Canonical name: kirlia; Status: **ID_MISMATCH**.
+- **Gardevoir** — Local ID: 10055; National Dex ID: 282; Canonical name: gardevoir; Status: **ID_MISMATCH**.
+- **Surskit** — Local ID: 10056; National Dex ID: 283; Canonical name: surskit; Status: **ID_MISMATCH**.
+- **Masquerain** — Local ID: 10057; National Dex ID: 284; Canonical name: masquerain; Status: **ID_MISMATCH**.
+- **Shroomish** — Local ID: 265; National Dex ID: 285; Canonical name: shroomish; Status: **ID_MISMATCH**.
+- **Breloom** — Local ID: 10058; National Dex ID: 286; Canonical name: breloom; Status: **ID_MISMATCH**.
+- **Slakoth** — Local ID: 10059; National Dex ID: 287; Canonical name: slakoth; Status: **ID_MISMATCH**.
+- **Vigoroth** — Local ID: 10060; National Dex ID: 288; Canonical name: vigoroth; Status: **ID_MISMATCH**.
+- **Slaking** — Local ID: 10061; National Dex ID: 289; Canonical name: slaking; Status: **ID_MISMATCH**.
+- **Nincada** — Local ID: 10062; National Dex ID: 290; Canonical name: nincada; Status: **ID_MISMATCH**.
+- **Ninjask** — Local ID: 10063; National Dex ID: 291; Canonical name: ninjask; Status: **ID_MISMATCH**.
+- **Shedinja** — Local ID: 10064; National Dex ID: 292; Canonical name: shedinja; Status: **ID_MISMATCH**.
+- **Whismur** — Local ID: 10065; National Dex ID: 293; Canonical name: whismur; Status: **ID_MISMATCH**.
+- **Loudred** — Local ID: 10066; National Dex ID: 294; Canonical name: loudred; Status: **ID_MISMATCH**.
+- **Exploud** — Local ID: 10067; National Dex ID: 295; Canonical name: exploud; Status: **ID_MISMATCH**.
+- **Makuhita** — Local ID: 10068; National Dex ID: 296; Canonical name: makuhita; Status: **ID_MISMATCH**.
+- **Hariyama** — Local ID: 10069; National Dex ID: 297; Canonical name: hariyama; Status: **ID_MISMATCH**.
+- **Azurill** — Local ID: 10070; National Dex ID: 298; Canonical name: azurill; Status: **ID_MISMATCH**.
+- **Nosepass** — Local ID: 274; National Dex ID: 299; Canonical name: nosepass; Status: **ID_MISMATCH**.
+- **Skitty** — Local ID: 10071; National Dex ID: 300; Canonical name: skitty; Status: **ID_MISMATCH**.
+- **Delcatty** — Local ID: 10072; National Dex ID: 301; Canonical name: delcatty; Status: **ID_MISMATCH**.
+- **Sableye** — Local ID: 245; National Dex ID: 302; Canonical name: sableye; Status: **ID_MISMATCH**.
+- **Mawile** — Local ID: 277; National Dex ID: 303; Canonical name: mawile; Status: **ID_MISMATCH**.
+- **Aron** — Local ID: 273; National Dex ID: 304; Canonical name: aron; Status: **ID_MISMATCH**.
+- **Lairon** — Local ID: 305; National Dex ID: 305; Canonical name: lairon; Status: **MATCH**.
+- **Aggron** — Local ID: 306; National Dex ID: 306; Canonical name: aggron; Status: **MATCH**.
+- **Meditite** — Local ID: 307; National Dex ID: 307; Canonical name: meditite; Status: **MATCH**.
+- **Medicham** — Local ID: 308; National Dex ID: 308; Canonical name: medicham; Status: **MATCH**.
+- **Electrike** — Local ID: 309; National Dex ID: 309; Canonical name: electrike; Status: **MATCH**.
+- **Manectric** — Local ID: 310; National Dex ID: 310; Canonical name: manectric; Status: **MATCH**.
+- **Plusle** — Local ID: 311; National Dex ID: 311; Canonical name: plusle; Status: **MATCH**.
+- **Minun** — Local ID: 312; National Dex ID: 312; Canonical name: minun; Status: **MATCH**.
+- **Volbeat** — Local ID: 313; National Dex ID: 313; Canonical name: volbeat; Status: **MATCH**.
+- **Illumise** — Local ID: 314; National Dex ID: 314; Canonical name: illumise; Status: **MATCH**.
+- **Roselia** — Local ID: 315; National Dex ID: 315; Canonical name: roselia; Status: **MATCH**.
+- **Gulpin** — Local ID: 316; National Dex ID: 316; Canonical name: gulpin; Status: **MATCH**.
+- **Swalot** — Local ID: 317; National Dex ID: 317; Canonical name: swalot; Status: **MATCH**.
+- **Carvanha** — Local ID: 318; National Dex ID: 318; Canonical name: carvanha; Status: **MATCH**.
+- **Sharpedo** — Local ID: 319; National Dex ID: 319; Canonical name: sharpedo; Status: **MATCH**.
+- **Wailmer** — Local ID: 320; National Dex ID: 320; Canonical name: wailmer; Status: **MATCH**.
+- **Wailord** — Local ID: 321; National Dex ID: 321; Canonical name: wailord; Status: **MATCH**.
+- **Numel** — Local ID: 279; National Dex ID: 322; Canonical name: numel; Status: **ID_MISMATCH**.
+- **Camerupt** — Local ID: 323; National Dex ID: 323; Canonical name: camerupt; Status: **MATCH**.
+- **Torkoal** — Local ID: 324; National Dex ID: 324; Canonical name: torkoal; Status: **MATCH**.
+- **Spoink** — Local ID: 325; National Dex ID: 325; Canonical name: spoink; Status: **MATCH**.
+- **Grumpig** — Local ID: 326; National Dex ID: 326; Canonical name: grumpig; Status: **MATCH**.
+- **Spinda** — Local ID: 327; National Dex ID: 327; Canonical name: spinda; Status: **MATCH**.
+- **Trapinch** — Local ID: 240; National Dex ID: 328; Canonical name: trapinch; Status: **ID_MISMATCH**.
+- **Vibrava** — Local ID: 329; National Dex ID: 329; Canonical name: vibrava; Status: **MATCH**.
+- **Flygon** — Local ID: 330; National Dex ID: 330; Canonical name: flygon; Status: **MATCH**.
+- **Cacnea** — Local ID: 241; National Dex ID: 331; Canonical name: cacnea; Status: **ID_MISMATCH**.
+- **Cacturne** — Local ID: 332; National Dex ID: 332; Canonical name: cacturne; Status: **MATCH**.
+- **Swablu** — Local ID: 333; National Dex ID: 333; Canonical name: swablu; Status: **MATCH**.
+- **Altaria** — Local ID: 334; National Dex ID: 334; Canonical name: altaria; Status: **MATCH**.
+- **Zangoose** — Local ID: 335; National Dex ID: 335; Canonical name: zangoose; Status: **MATCH**.
+- **Seviper** — Local ID: 336; National Dex ID: 336; Canonical name: seviper; Status: **MATCH**.
+- **Lunatone** — Local ID: 337; National Dex ID: 337; Canonical name: lunatone; Status: **MATCH**.
+- **Solrock** — Local ID: 338; National Dex ID: 338; Canonical name: solrock; Status: **MATCH**.
+- **Barboach** — Local ID: 339; National Dex ID: 339; Canonical name: barboach; Status: **MATCH**.
+- **Whiscash** — Local ID: 340; National Dex ID: 340; Canonical name: whiscash; Status: **MATCH**.
+- **Corphish** — Local ID: 341; National Dex ID: 341; Canonical name: corphish; Status: **MATCH**.
+- **Crawdaunt** — Local ID: 342; National Dex ID: 342; Canonical name: crawdaunt; Status: **MATCH**.
+- **Baltoy** — Local ID: 288; National Dex ID: 343; Canonical name: baltoy; Status: **ID_MISMATCH**.
+- **Claydol** — Local ID: 344; National Dex ID: 344; Canonical name: claydol; Status: **MATCH**.
+- **Lileep** — Local ID: 345; National Dex ID: 345; Canonical name: lileep; Status: **MATCH**.
+- **Cradily** — Local ID: 346; National Dex ID: 346; Canonical name: cradily; Status: **MATCH**.
+- **Anorith** — Local ID: 347; National Dex ID: 347; Canonical name: anorith; Status: **MATCH**.
+- **Armaldo** — Local ID: 348; National Dex ID: 348; Canonical name: armaldo; Status: **MATCH**.
+- **Feebas** — Local ID: 271; National Dex ID: 349; Canonical name: feebas; Status: **ID_MISMATCH**.
+- **Milotic** — Local ID: 350; National Dex ID: 350; Canonical name: milotic; Status: **MATCH**.
+- **Castform** — Local ID: 351; National Dex ID: 351; Canonical name: castform; Status: **MATCH**.
+- **Kecleon** — Local ID: 352; National Dex ID: 352; Canonical name: kecleon; Status: **MATCH**.
+- **Shuppet** — Local ID: 293; National Dex ID: 353; Canonical name: shuppet; Status: **ID_MISMATCH**.
+- **Banette** — Local ID: 354; National Dex ID: 354; Canonical name: banette; Status: **MATCH**.
+- **Duskull** — Local ID: 244; National Dex ID: 355; Canonical name: duskull; Status: **ID_MISMATCH**.
+- **Dusclops** — Local ID: 356; National Dex ID: 356; Canonical name: dusclops; Status: **MATCH**.
+- **Tropius** — Local ID: 357; National Dex ID: 357; Canonical name: tropius; Status: **MATCH**.
+- **Chimecho** — Local ID: 358; National Dex ID: 358; Canonical name: chimecho; Status: **MATCH**.
+- **Absol** — Local ID: 285; National Dex ID: 359; Canonical name: absol; Status: **ID_MISMATCH**.
+- **Wynaut** — Local ID: 360; National Dex ID: 360; Canonical name: wynaut; Status: **MATCH**.
+- **Snorunt** — Local ID: 361; National Dex ID: 361; Canonical name: snorunt; Status: **MATCH**.
+- **Glalie** — Local ID: 362; National Dex ID: 362; Canonical name: glalie; Status: **MATCH**.
+- **Spheal** — Local ID: 363; National Dex ID: 363; Canonical name: spheal; Status: **MATCH**.
+- **Sealeo** — Local ID: 364; National Dex ID: 364; Canonical name: sealeo; Status: **MATCH**.
+- **Walrein** — Local ID: 365; National Dex ID: 365; Canonical name: walrein; Status: **MATCH**.
+- **Clamperl** — Local ID: 366; National Dex ID: 366; Canonical name: clamperl; Status: **MATCH**.
+- **Huntail** — Local ID: 367; National Dex ID: 367; Canonical name: huntail; Status: **MATCH**.
+- **Gorebyss** — Local ID: 368; National Dex ID: 368; Canonical name: gorebyss; Status: **MATCH**.
+- **Relicanth** — Local ID: 369; National Dex ID: 369; Canonical name: relicanth; Status: **MATCH**.
+- **Luvdisc** — Local ID: 370; National Dex ID: 370; Canonical name: luvdisc; Status: **MATCH**.
+- **Bagon** — Local ID: 286; National Dex ID: 371; Canonical name: bagon; Status: **ID_MISMATCH**.
+- **Shelgon** — Local ID: 372; National Dex ID: 372; Canonical name: shelgon; Status: **MATCH**.
+- **Salamence** — Local ID: 373; National Dex ID: 373; Canonical name: salamence; Status: **MATCH**.
+- **Beldum** — Local ID: 374; National Dex ID: 374; Canonical name: beldum; Status: **MATCH**.
+- **Metang** — Local ID: 375; National Dex ID: 375; Canonical name: metang; Status: **MATCH**.
+- **Metagross** — Local ID: 376; National Dex ID: 376; Canonical name: metagross; Status: **MATCH**.
+- **Regirock** — Local ID: 377; National Dex ID: 377; Canonical name: regirock; Status: **MATCH**.
+- **Regice** — Local ID: 378; National Dex ID: 378; Canonical name: regice; Status: **MATCH**.
+- **Registeel** — Local ID: 379; National Dex ID: 379; Canonical name: registeel; Status: **MATCH**.
+- **Latias** — Local ID: 299; National Dex ID: 380; Canonical name: latias; Status: **ID_MISMATCH**.
+- **Latios** — Local ID: 298; National Dex ID: 381; Canonical name: latios; Status: **ID_MISMATCH**.
 - **Kyogre** — Local ID: 253; National Dex ID: 382; Canonical name: kyogre; Status: **ID_MISMATCH**.
 - **Groudon** — Local ID: 254; National Dex ID: 383; Canonical name: groudon; Status: **ID_MISMATCH**.
+- **Rayquaza** — Local ID: 252; National Dex ID: 384; Canonical name: rayquaza; Status: **ID_MISMATCH**.
+- **Jirachi** — Local ID: 300; National Dex ID: 385; Canonical name: jirachi; Status: **ID_MISMATCH**.
+- **Deoxys** — Local ID: 386; National Dex ID: 386; Canonical name: deoxys; Status: **MATCH**.
+- **Turtwig** — Local ID: 267; National Dex ID: 387; Canonical name: turtwig; Status: **ID_MISMATCH**.
+- **Grotle** — Local ID: 388; National Dex ID: 388; Canonical name: grotle; Status: **MATCH**.
+- **Torterra** — Local ID: 389; National Dex ID: 389; Canonical name: torterra; Status: **MATCH**.
+- **Chimchar** — Local ID: 390; National Dex ID: 390; Canonical name: chimchar; Status: **MATCH**.
+- **Monferno** — Local ID: 391; National Dex ID: 391; Canonical name: monferno; Status: **MATCH**.
+- **Infernape** — Local ID: 392; National Dex ID: 392; Canonical name: infernape; Status: **MATCH**.
+- **Piplup** — Local ID: 393; National Dex ID: 393; Canonical name: piplup; Status: **MATCH**.
+- **Prinplup** — Local ID: 394; National Dex ID: 394; Canonical name: prinplup; Status: **MATCH**.
+- **Empoleon** — Local ID: 395; National Dex ID: 395; Canonical name: empoleon; Status: **MATCH**.
+- **Starly** — Local ID: 396; National Dex ID: 396; Canonical name: starly; Status: **MATCH**.
+- **Staravia** — Local ID: 397; National Dex ID: 397; Canonical name: staravia; Status: **MATCH**.
+- **Staraptor** — Local ID: 398; National Dex ID: 398; Canonical name: staraptor; Status: **MATCH**.
+- **Bidoof** — Local ID: 399; National Dex ID: 399; Canonical name: bidoof; Status: **MATCH**.
+- **Bibarel** — Local ID: 400; National Dex ID: 400; Canonical name: bibarel; Status: **MATCH**.
+- **Buizel** — Local ID: 272; National Dex ID: 418; Canonical name: buizel; Status: **ID_MISMATCH**.
+- **Spiritomb** — Local ID: 297; National Dex ID: 442; Canonical name: spiritomb; Status: **ID_MISMATCH**.
+- **Riolu** — Local ID: 284; National Dex ID: 447; Canonical name: riolu; Status: **ID_MISMATCH**.
+- **Hippopotas** — Local ID: 289; National Dex ID: 449; Canonical name: hippopotas; Status: **ID_MISMATCH**.
 - **Dialga** — Local ID: 255; National Dex ID: 483; Canonical name: dialga; Status: **ID_MISMATCH**.
 - **Palkia** — Local ID: 256; National Dex ID: 484; Canonical name: palkia; Status: **ID_MISMATCH**.
 - **Giratina** — Local ID: 257; National Dex ID: 487; Canonical name: giratina; Status: **ID_MISMATCH**.
-- **Zekrom** — Local ID: 258; National Dex ID: 644; Canonical name: zekrom; Status: **ID_MISMATCH**.
-- **Reshiram** — Local ID: 259; National Dex ID: 643; Canonical name: reshiram; Status: **ID_MISMATCH**.
-- **Xerneas** — Local ID: 260; National Dex ID: 716; Canonical name: xerneas; Status: **ID_MISMATCH**.
-- **Yveltal** — Local ID: 261; National Dex ID: 717; Canonical name: yveltal; Status: **ID_MISMATCH**.
+- **Cresselia** — Local ID: 302; National Dex ID: 488; Canonical name: cresselia; Status: **ID_MISMATCH**.
+- **Darkrai** — Local ID: 301; National Dex ID: 491; Canonical name: darkrai; Status: **ID_MISMATCH**.
 - **Arceus** — Local ID: 262; National Dex ID: 493; Canonical name: arceus; Status: **ID_MISMATCH**.
-- **Charizard** — Local ID: 6; National Dex ID: 6; Canonical name: charizard; Status: **MATCH**.
-- **Blastoise** — Local ID: 9; National Dex ID: 9; Canonical name: blastoise; Status: **MATCH**.
-- **Dragonite** — Local ID: 149; National Dex ID: 149; Canonical name: dragonite; Status: **MATCH**.
-- **Ivysaur** — Local ID: 2; National Dex ID: 2; Canonical name: ivysaur; Status: **MATCH**.
-- **Venusaur** — Local ID: 3; National Dex ID: 3; Canonical name: venusaur; Status: **MATCH**.
-- **Charmeleon** — Local ID: 5; National Dex ID: 5; Canonical name: charmeleon; Status: **MATCH**.
-- **Wartortle** — Local ID: 8; National Dex ID: 8; Canonical name: wartortle; Status: **MATCH**.
-- **Raichu** — Local ID: 26; National Dex ID: 26; Canonical name: raichu; Status: **MATCH**.
-- **Haunter** — Local ID: 93; National Dex ID: 93; Canonical name: haunter; Status: **MATCH**.
-- **Graveler** — Local ID: 75; National Dex ID: 75; Canonical name: graveler; Status: **MATCH**.
-- **Weepinbell** — Local ID: 70; National Dex ID: 70; Canonical name: weepinbell; Status: **MATCH**.
-- **Hoothoot** — Local ID: 263; National Dex ID: 163; Canonical name: hoothoot; Status: **ID_MISMATCH**.
-- **Seedot** — Local ID: 264; National Dex ID: 273; Canonical name: seedot; Status: **ID_MISMATCH**.
-- **Shroomish** — Local ID: 265; National Dex ID: 285; Canonical name: shroomish; Status: **ID_MISMATCH**.
-- **Treecko** — Local ID: 266; National Dex ID: 252; Canonical name: treecko; Status: **ID_MISMATCH**.
-- **Turtwig** — Local ID: 267; National Dex ID: 387; Canonical name: turtwig; Status: **ID_MISMATCH**.
-- **Mudkip** — Local ID: 268; National Dex ID: 258; Canonical name: mudkip; Status: **ID_MISMATCH**.
-- **Lotad** — Local ID: 269; National Dex ID: 270; Canonical name: lotad; Status: **ID_MISMATCH**.
-- **Wingull** — Local ID: 270; National Dex ID: 278; Canonical name: wingull; Status: **ID_MISMATCH**.
-- **Feebas** — Local ID: 271; National Dex ID: 349; Canonical name: feebas; Status: **ID_MISMATCH**.
-- **Buizel** — Local ID: 272; National Dex ID: 418; Canonical name: buizel; Status: **ID_MISMATCH**.
-- **Aron** — Local ID: 273; National Dex ID: 304; Canonical name: aron; Status: **ID_MISMATCH**.
-- **Nosepass** — Local ID: 274; National Dex ID: 299; Canonical name: nosepass; Status: **ID_MISMATCH**.
 - **Roggenrola** — Local ID: 275; National Dex ID: 524; Canonical name: roggenrola; Status: **ID_MISMATCH**.
 - **Drilbur** — Local ID: 276; National Dex ID: 529; Canonical name: drilbur; Status: **ID_MISMATCH**.
-- **Mawile** — Local ID: 277; National Dex ID: 303; Canonical name: mawile; Status: **ID_MISMATCH**.
-- **Torchic** — Local ID: 278; National Dex ID: 255; Canonical name: torchic; Status: **ID_MISMATCH**.
-- **Numel** — Local ID: 279; National Dex ID: 322; Canonical name: numel; Status: **ID_MISMATCH**.
-- **Slugma** — Local ID: 280; National Dex ID: 218; Canonical name: slugma; Status: **ID_MISMATCH**.
-- **Houndour** — Local ID: 281; National Dex ID: 228; Canonical name: houndour; Status: **ID_MISMATCH**.
-- **Salandit** — Local ID: 282; National Dex ID: 757; Canonical name: salandit; Status: **ID_MISMATCH**.
-- **Rookidee** — Local ID: 283; National Dex ID: 821; Canonical name: rookidee; Status: **ID_MISMATCH**.
-- **Riolu** — Local ID: 284; National Dex ID: 447; Canonical name: riolu; Status: **ID_MISMATCH**.
-- **Absol** — Local ID: 285; National Dex ID: 359; Canonical name: absol; Status: **ID_MISMATCH**.
-- **Bagon** — Local ID: 286; National Dex ID: 371; Canonical name: bagon; Status: **ID_MISMATCH**.
-- **Axew** — Local ID: 287; National Dex ID: 610; Canonical name: axew; Status: **ID_MISMATCH**.
-- **Baltoy** — Local ID: 288; National Dex ID: 343; Canonical name: baltoy; Status: **ID_MISMATCH**.
-- **Hippopotas** — Local ID: 289; National Dex ID: 449; Canonical name: hippopotas; Status: **ID_MISMATCH**.
+- **Sandile** — Local ID: 242; National Dex ID: 551; Canonical name: sandile; Status: **ID_MISMATCH**.
 - **Darumaka** — Local ID: 290; National Dex ID: 554; Canonical name: darumaka; Status: **ID_MISMATCH**.
 - **Scraggy** — Local ID: 291; National Dex ID: 559; Canonical name: scraggy; Status: **ID_MISMATCH**.
-- **Silicobra** — Local ID: 292; National Dex ID: 843; Canonical name: silicobra; Status: **ID_MISMATCH**.
-- **Shuppet** — Local ID: 293; National Dex ID: 353; Canonical name: shuppet; Status: **ID_MISMATCH**.
-- **Litwick** — Local ID: 294; National Dex ID: 607; Canonical name: litwick; Status: **ID_MISMATCH**.
-- **Phantump** — Local ID: 295; National Dex ID: 708; Canonical name: phantump; Status: **ID_MISMATCH**.
 - **Yamask** — Local ID: 296; National Dex ID: 562; Canonical name: yamask; Status: **ID_MISMATCH**.
-- **Spiritomb** — Local ID: 297; National Dex ID: 442; Canonical name: spiritomb; Status: **ID_MISMATCH**.
-- **Latios** — Local ID: 298; National Dex ID: 381; Canonical name: latios; Status: **ID_MISMATCH**.
-- **Latias** — Local ID: 299; National Dex ID: 380; Canonical name: latias; Status: **ID_MISMATCH**.
-- **Jirachi** — Local ID: 300; National Dex ID: 385; Canonical name: jirachi; Status: **ID_MISMATCH**.
-- **Darkrai** — Local ID: 301; National Dex ID: 491; Canonical name: darkrai; Status: **ID_MISMATCH**.
-- **Cresselia** — Local ID: 302; National Dex ID: 488; Canonical name: cresselia; Status: **ID_MISMATCH**.
-- **Vaporeon** — Local ID: 134; National Dex ID: 134; Canonical name: vaporeon; Status: **MATCH**.
-- **Bayleef** — Local ID: 153; National Dex ID: 153; Canonical name: bayleef; Status: **MATCH**.
-- **Quilava** — Local ID: 156; National Dex ID: 156; Canonical name: quilava; Status: **MATCH**.
-- **Croconaw** — Local ID: 159; National Dex ID: 159; Canonical name: croconaw; Status: **MATCH**.
-- **Meganium** — Local ID: 154; National Dex ID: 154; Canonical name: meganium; Status: **MATCH**.
-- **Typhlosion** — Local ID: 157; National Dex ID: 157; Canonical name: typhlosion; Status: **MATCH**.
-- **Feraligatr** — Local ID: 160; National Dex ID: 160; Canonical name: feraligatr; Status: **MATCH**.
+- **Litwick** — Local ID: 294; National Dex ID: 607; Canonical name: litwick; Status: **ID_MISMATCH**.
+- **Axew** — Local ID: 287; National Dex ID: 610; Canonical name: axew; Status: **ID_MISMATCH**.
+- **Reshiram** — Local ID: 259; National Dex ID: 643; Canonical name: reshiram; Status: **ID_MISMATCH**.
+- **Zekrom** — Local ID: 258; National Dex ID: 644; Canonical name: zekrom; Status: **ID_MISMATCH**.
+- **Phantump** — Local ID: 295; National Dex ID: 708; Canonical name: phantump; Status: **ID_MISMATCH**.
+- **Xerneas** — Local ID: 260; National Dex ID: 716; Canonical name: xerneas; Status: **ID_MISMATCH**.
+- **Yveltal** — Local ID: 261; National Dex ID: 717; Canonical name: yveltal; Status: **ID_MISMATCH**.
+- **Salandit** — Local ID: 282; National Dex ID: 757; Canonical name: salandit; Status: **ID_MISMATCH**.
+- **Rookidee** — Local ID: 283; National Dex ID: 821; Canonical name: rookidee; Status: **ID_MISMATCH**.
+- **Silicobra** — Local ID: 292; National Dex ID: 843; Canonical name: silicobra; Status: **ID_MISMATCH**.
 
 ## Critical Identity Problems
 
-- **Pidgeot** (local 16, National Dex 18) [CRITICAL] Pidgeot's local game ID differs from its National Pokédex species ID. Current: `16`; canonical: `18`.
-- **Girafarig** (local 207, National Dex 203) [CRITICAL] Girafarig's local game ID differs from its National Pokédex species ID. Current: `207`; canonical: `203`.
-- **Sneasel** (local 218, National Dex 215) [CRITICAL] Sneasel's local game ID differs from its National Pokédex species ID. Current: `218`; canonical: `215`.
 - **Caterpie** (local 219, National Dex 10) [CRITICAL] Caterpie's local game ID differs from its National Pokédex species ID. Current: `219`; canonical: `10`.
-- **Weedle** (local 220, National Dex 13) [CRITICAL] Weedle's local game ID differs from its National Pokédex species ID. Current: `220`; canonical: `13`.
-- **Oddish** (local 221, National Dex 43) [CRITICAL] Oddish's local game ID differs from its National Pokédex species ID. Current: `221`; canonical: `43`.
 - **Butterfree** (local 222, National Dex 12) [CRITICAL] Butterfree's local game ID differs from its National Pokédex species ID. Current: `222`; canonical: `12`.
-- **Poliwag** (local 223, National Dex 60) [CRITICAL] Poliwag's local game ID differs from its National Pokédex species ID. Current: `223`; canonical: `60`.
-- **Magikarp** (local 224, National Dex 129) [CRITICAL] Magikarp's local game ID differs from its National Pokédex species ID. Current: `224`; canonical: `129`.
-- **Goldeen** (local 225, National Dex 118) [CRITICAL] Goldeen's local game ID differs from its National Pokédex species ID. Current: `225`; canonical: `118`.
-- **Staryu** (local 226, National Dex 120) [CRITICAL] Staryu's local game ID differs from its National Pokédex species ID. Current: `226`; canonical: `120`.
+- **Weedle** (local 220, National Dex 13) [CRITICAL] Weedle's local game ID differs from its National Pokédex species ID. Current: `220`; canonical: `13`.
+- **Pidgey** (local 237, National Dex 16) [CRITICAL] Pidgey's local game ID differs from its National Pokédex species ID. Current: `237`; canonical: `16`.
+- **Pidgeot** (local 16, National Dex 18) [CRITICAL] Pidgeot's local game ID differs from its National Pokédex species ID. Current: `16`; canonical: `18`.
+- **Sandshrew** (local 239, National Dex 27) [CRITICAL] Sandshrew's local game ID differs from its National Pokédex species ID. Current: `239`; canonical: `27`.
+- **Vulpix** (local 234, National Dex 37) [CRITICAL] Vulpix's local game ID differs from its National Pokédex species ID. Current: `234`; canonical: `37`.
 - **Zubat** (local 227, National Dex 41) [CRITICAL] Zubat's local game ID differs from its National Pokédex species ID. Current: `227`; canonical: `41`.
+- **Oddish** (local 221, National Dex 43) [CRITICAL] Oddish's local game ID differs from its National Pokédex species ID. Current: `221`; canonical: `43`.
 - **Diglett** (local 228, National Dex 50) [CRITICAL] Diglett's local game ID differs from its National Pokédex species ID. Current: `228`; canonical: `50`.
+- **Poliwag** (local 223, National Dex 60) [CRITICAL] Poliwag's local game ID differs from its National Pokédex species ID. Current: `223`; canonical: `60`.
 - **Machop** (local 229, National Dex 66) [CRITICAL] Machop's local game ID differs from its National Pokédex species ID. Current: `229`; canonical: `66`.
 - **Tentacool** (local 230, National Dex 72) [CRITICAL] Tentacool's local game ID differs from its National Pokédex species ID. Current: `230`; canonical: `72`.
-- **Horsea** (local 231, National Dex 116) [CRITICAL] Horsea's local game ID differs from its National Pokédex species ID. Current: `231`; canonical: `116`.
-- **Shellder** (local 232, National Dex 90) [CRITICAL] Shellder's local game ID differs from its National Pokédex species ID. Current: `232`; canonical: `90`.
-- **Seel** (local 233, National Dex 86) [CRITICAL] Seel's local game ID differs from its National Pokédex species ID. Current: `233`; canonical: `86`.
-- **Vulpix** (local 234, National Dex 37) [CRITICAL] Vulpix's local game ID differs from its National Pokédex species ID. Current: `234`; canonical: `37`.
 - **Ponyta** (local 235, National Dex 77) [CRITICAL] Ponyta's local game ID differs from its National Pokédex species ID. Current: `235`; canonical: `77`.
+- **Seel** (local 233, National Dex 86) [CRITICAL] Seel's local game ID differs from its National Pokédex species ID. Current: `233`; canonical: `86`.
+- **Shellder** (local 232, National Dex 90) [CRITICAL] Shellder's local game ID differs from its National Pokédex species ID. Current: `232`; canonical: `90`.
+- **Horsea** (local 231, National Dex 116) [CRITICAL] Horsea's local game ID differs from its National Pokédex species ID. Current: `231`; canonical: `116`.
+- **Goldeen** (local 225, National Dex 118) [CRITICAL] Goldeen's local game ID differs from its National Pokédex species ID. Current: `225`; canonical: `118`.
+- **Staryu** (local 226, National Dex 120) [CRITICAL] Staryu's local game ID differs from its National Pokédex species ID. Current: `226`; canonical: `120`.
 - **Magmar** (local 236, National Dex 126) [CRITICAL] Magmar's local game ID differs from its National Pokédex species ID. Current: `236`; canonical: `126`.
-- **Pidgey** (local 237, National Dex 16) [CRITICAL] Pidgey's local game ID differs from its National Pokédex species ID. Current: `237`; canonical: `16`.
-- **Larvitar** (local 238, National Dex 246) [CRITICAL] Larvitar's local game ID differs from its National Pokédex species ID. Current: `238`; canonical: `246`.
-- **Sandshrew** (local 239, National Dex 27) [CRITICAL] Sandshrew's local game ID differs from its National Pokédex species ID. Current: `239`; canonical: `27`.
-- **Trapinch** (local 240, National Dex 328) [CRITICAL] Trapinch's local game ID differs from its National Pokédex species ID. Current: `240`; canonical: `328`.
-- **Cacnea** (local 241, National Dex 331) [CRITICAL] Cacnea's local game ID differs from its National Pokédex species ID. Current: `241`; canonical: `331`.
-- **Sandile** (local 242, National Dex 551) [CRITICAL] Sandile's local game ID differs from its National Pokédex species ID. Current: `242`; canonical: `551`.
-- **Misdreavus** (local 243, National Dex 200) [CRITICAL] Misdreavus's local game ID differs from its National Pokédex species ID. Current: `243`; canonical: `200`.
-- **Duskull** (local 244, National Dex 355) [CRITICAL] Duskull's local game ID differs from its National Pokédex species ID. Current: `244`; canonical: `355`.
-- **Sableye** (local 245, National Dex 302) [CRITICAL] Sableye's local game ID differs from its National Pokédex species ID. Current: `245`; canonical: `302`.
+- **Magikarp** (local 224, National Dex 129) [CRITICAL] Magikarp's local game ID differs from its National Pokédex species ID. Current: `224`; canonical: `129`.
 - **Articuno** (local 247, National Dex 144) [CRITICAL] Articuno's local game ID differs from its National Pokédex species ID. Current: `247`; canonical: `144`.
 - **Zapdos** (local 248, National Dex 145) [CRITICAL] Zapdos's local game ID differs from its National Pokédex species ID. Current: `248`; canonical: `145`.
 - **Moltres** (local 249, National Dex 146) [CRITICAL] Moltres's local game ID differs from its National Pokédex species ID. Current: `249`; canonical: `146`.
+- **Hoothoot** (local 263, National Dex 163) [CRITICAL] Hoothoot's local game ID differs from its National Pokédex species ID. Current: `263`; canonical: `163`.
+- **Misdreavus** (local 243, National Dex 200) [CRITICAL] Misdreavus's local game ID differs from its National Pokédex species ID. Current: `243`; canonical: `200`.
+- **Girafarig** (local 207, National Dex 203) [CRITICAL] Girafarig's local game ID differs from its National Pokédex species ID. Current: `207`; canonical: `203`.
+- **Gligar** (local 10001, National Dex 207) [CRITICAL] Gligar's local game ID differs from its National Pokédex species ID. Current: `10001`; canonical: `207`.
+- **Sneasel** (local 218, National Dex 215) [CRITICAL] Sneasel's local game ID differs from its National Pokédex species ID. Current: `218`; canonical: `215`.
+- **Slugma** (local 280, National Dex 218) [CRITICAL] Slugma's local game ID differs from its National Pokédex species ID. Current: `280`; canonical: `218`.
+- **Magcargo** (local 10002, National Dex 219) [CRITICAL] Magcargo's local game ID differs from its National Pokédex species ID. Current: `10002`; canonical: `219`.
+- **Swinub** (local 10003, National Dex 220) [CRITICAL] Swinub's local game ID differs from its National Pokédex species ID. Current: `10003`; canonical: `220`.
+- **Piloswine** (local 10004, National Dex 221) [CRITICAL] Piloswine's local game ID differs from its National Pokédex species ID. Current: `10004`; canonical: `221`.
+- **Corsola** (local 10005, National Dex 222) [CRITICAL] Corsola's local game ID differs from its National Pokédex species ID. Current: `10005`; canonical: `222`.
+- **Remoraid** (local 10006, National Dex 223) [CRITICAL] Remoraid's local game ID differs from its National Pokédex species ID. Current: `10006`; canonical: `223`.
+- **Octillery** (local 10007, National Dex 224) [CRITICAL] Octillery's local game ID differs from its National Pokédex species ID. Current: `10007`; canonical: `224`.
+- **Delibird** (local 10008, National Dex 225) [CRITICAL] Delibird's local game ID differs from its National Pokédex species ID. Current: `10008`; canonical: `225`.
+- **Mantine** (local 10009, National Dex 226) [CRITICAL] Mantine's local game ID differs from its National Pokédex species ID. Current: `10009`; canonical: `226`.
+- **Skarmory** (local 10010, National Dex 227) [CRITICAL] Skarmory's local game ID differs from its National Pokédex species ID. Current: `10010`; canonical: `227`.
+- **Houndour** (local 281, National Dex 228) [CRITICAL] Houndour's local game ID differs from its National Pokédex species ID. Current: `281`; canonical: `228`.
+- **Houndoom** (local 10011, National Dex 229) [CRITICAL] Houndoom's local game ID differs from its National Pokédex species ID. Current: `10011`; canonical: `229`.
+- **Kingdra** (local 10012, National Dex 230) [CRITICAL] Kingdra's local game ID differs from its National Pokédex species ID. Current: `10012`; canonical: `230`.
+- **Phanpy** (local 10013, National Dex 231) [CRITICAL] Phanpy's local game ID differs from its National Pokédex species ID. Current: `10013`; canonical: `231`.
+- **Donphan** (local 10014, National Dex 232) [CRITICAL] Donphan's local game ID differs from its National Pokédex species ID. Current: `10014`; canonical: `232`.
+- **Porygon2** (local 10015, National Dex 233) [CRITICAL] Porygon2's local game ID differs from its National Pokédex species ID. Current: `10015`; canonical: `233`.
+- **Stantler** (local 10016, National Dex 234) [CRITICAL] Stantler's local game ID differs from its National Pokédex species ID. Current: `10016`; canonical: `234`.
+- **Smeargle** (local 10017, National Dex 235) [CRITICAL] Smeargle's local game ID differs from its National Pokédex species ID. Current: `10017`; canonical: `235`.
+- **Tyrogue** (local 10018, National Dex 236) [CRITICAL] Tyrogue's local game ID differs from its National Pokédex species ID. Current: `10018`; canonical: `236`.
+- **Hitmontop** (local 10019, National Dex 237) [CRITICAL] Hitmontop's local game ID differs from its National Pokédex species ID. Current: `10019`; canonical: `237`.
+- **Smoochum** (local 10020, National Dex 238) [CRITICAL] Smoochum's local game ID differs from its National Pokédex species ID. Current: `10020`; canonical: `238`.
+- **Elekid** (local 10021, National Dex 239) [CRITICAL] Elekid's local game ID differs from its National Pokédex species ID. Current: `10021`; canonical: `239`.
+- **Magby** (local 10022, National Dex 240) [CRITICAL] Magby's local game ID differs from its National Pokédex species ID. Current: `10022`; canonical: `240`.
+- **Miltank** (local 10023, National Dex 241) [CRITICAL] Miltank's local game ID differs from its National Pokédex species ID. Current: `10023`; canonical: `241`.
+- **Blissey** (local 10024, National Dex 242) [CRITICAL] Blissey's local game ID differs from its National Pokédex species ID. Current: `10024`; canonical: `242`.
+- **Raikou** (local 10025, National Dex 243) [CRITICAL] Raikou's local game ID differs from its National Pokédex species ID. Current: `10025`; canonical: `243`.
+- **Entei** (local 10026, National Dex 244) [CRITICAL] Entei's local game ID differs from its National Pokédex species ID. Current: `10026`; canonical: `244`.
+- **Suicune** (local 10027, National Dex 245) [CRITICAL] Suicune's local game ID differs from its National Pokédex species ID. Current: `10027`; canonical: `245`.
+- **Larvitar** (local 238, National Dex 246) [CRITICAL] Larvitar's local game ID differs from its National Pokédex species ID. Current: `238`; canonical: `246`.
+- **Pupitar** (local 10028, National Dex 247) [CRITICAL] Pupitar's local game ID differs from its National Pokédex species ID. Current: `10028`; canonical: `247`.
+- **Tyranitar** (local 10029, National Dex 248) [CRITICAL] Tyranitar's local game ID differs from its National Pokédex species ID. Current: `10029`; canonical: `248`.
 - **Lugia** (local 250, National Dex 249) [CRITICAL] Lugia's local game ID differs from its National Pokédex species ID. Current: `250`; canonical: `249`.
 - **Ho-Oh** (local 251, National Dex 250) [CRITICAL] Ho-Oh's local game ID differs from its National Pokédex species ID. Current: `251`; canonical: `250`.
-- **Rayquaza** (local 252, National Dex 384) [CRITICAL] Rayquaza's local game ID differs from its National Pokédex species ID. Current: `252`; canonical: `384`.
+- **Celebi** (local 10030, National Dex 251) [CRITICAL] Celebi's local game ID differs from its National Pokédex species ID. Current: `10030`; canonical: `251`.
+- **Treecko** (local 266, National Dex 252) [CRITICAL] Treecko's local game ID differs from its National Pokédex species ID. Current: `266`; canonical: `252`.
+- **Grovyle** (local 10031, National Dex 253) [CRITICAL] Grovyle's local game ID differs from its National Pokédex species ID. Current: `10031`; canonical: `253`.
+- **Sceptile** (local 10032, National Dex 254) [CRITICAL] Sceptile's local game ID differs from its National Pokédex species ID. Current: `10032`; canonical: `254`.
+- **Torchic** (local 278, National Dex 255) [CRITICAL] Torchic's local game ID differs from its National Pokédex species ID. Current: `278`; canonical: `255`.
+- **Combusken** (local 10033, National Dex 256) [CRITICAL] Combusken's local game ID differs from its National Pokédex species ID. Current: `10033`; canonical: `256`.
+- **Blaziken** (local 10034, National Dex 257) [CRITICAL] Blaziken's local game ID differs from its National Pokédex species ID. Current: `10034`; canonical: `257`.
+- **Mudkip** (local 268, National Dex 258) [CRITICAL] Mudkip's local game ID differs from its National Pokédex species ID. Current: `268`; canonical: `258`.
+- **Marshtomp** (local 10035, National Dex 259) [CRITICAL] Marshtomp's local game ID differs from its National Pokédex species ID. Current: `10035`; canonical: `259`.
+- **Swampert** (local 10036, National Dex 260) [CRITICAL] Swampert's local game ID differs from its National Pokédex species ID. Current: `10036`; canonical: `260`.
+- **Poochyena** (local 10037, National Dex 261) [CRITICAL] Poochyena's local game ID differs from its National Pokédex species ID. Current: `10037`; canonical: `261`.
+- **Mightyena** (local 10038, National Dex 262) [CRITICAL] Mightyena's local game ID differs from its National Pokédex species ID. Current: `10038`; canonical: `262`.
+- **Zigzagoon** (local 10039, National Dex 263) [CRITICAL] Zigzagoon's local game ID differs from its National Pokédex species ID. Current: `10039`; canonical: `263`.
+- **Linoone** (local 10040, National Dex 264) [CRITICAL] Linoone's local game ID differs from its National Pokédex species ID. Current: `10040`; canonical: `264`.
+- **Wurmple** (local 10041, National Dex 265) [CRITICAL] Wurmple's local game ID differs from its National Pokédex species ID. Current: `10041`; canonical: `265`.
+- **Silcoon** (local 10042, National Dex 266) [CRITICAL] Silcoon's local game ID differs from its National Pokédex species ID. Current: `10042`; canonical: `266`.
+- **Beautifly** (local 10043, National Dex 267) [CRITICAL] Beautifly's local game ID differs from its National Pokédex species ID. Current: `10043`; canonical: `267`.
+- **Cascoon** (local 10044, National Dex 268) [CRITICAL] Cascoon's local game ID differs from its National Pokédex species ID. Current: `10044`; canonical: `268`.
+- **Dustox** (local 10045, National Dex 269) [CRITICAL] Dustox's local game ID differs from its National Pokédex species ID. Current: `10045`; canonical: `269`.
+- **Lotad** (local 269, National Dex 270) [CRITICAL] Lotad's local game ID differs from its National Pokédex species ID. Current: `269`; canonical: `270`.
+- **Lombre** (local 10046, National Dex 271) [CRITICAL] Lombre's local game ID differs from its National Pokédex species ID. Current: `10046`; canonical: `271`.
+- **Ludicolo** (local 10047, National Dex 272) [CRITICAL] Ludicolo's local game ID differs from its National Pokédex species ID. Current: `10047`; canonical: `272`.
+- **Seedot** (local 264, National Dex 273) [CRITICAL] Seedot's local game ID differs from its National Pokédex species ID. Current: `264`; canonical: `273`.
+- **Nuzleaf** (local 10048, National Dex 274) [CRITICAL] Nuzleaf's local game ID differs from its National Pokédex species ID. Current: `10048`; canonical: `274`.
+- **Shiftry** (local 10049, National Dex 275) [CRITICAL] Shiftry's local game ID differs from its National Pokédex species ID. Current: `10049`; canonical: `275`.
+- **Taillow** (local 10050, National Dex 276) [CRITICAL] Taillow's local game ID differs from its National Pokédex species ID. Current: `10050`; canonical: `276`.
+- **Swellow** (local 10051, National Dex 277) [CRITICAL] Swellow's local game ID differs from its National Pokédex species ID. Current: `10051`; canonical: `277`.
+- **Wingull** (local 270, National Dex 278) [CRITICAL] Wingull's local game ID differs from its National Pokédex species ID. Current: `270`; canonical: `278`.
+- **Pelipper** (local 10052, National Dex 279) [CRITICAL] Pelipper's local game ID differs from its National Pokédex species ID. Current: `10052`; canonical: `279`.
+- **Ralts** (local 10053, National Dex 280) [CRITICAL] Ralts's local game ID differs from its National Pokédex species ID. Current: `10053`; canonical: `280`.
+- **Kirlia** (local 10054, National Dex 281) [CRITICAL] Kirlia's local game ID differs from its National Pokédex species ID. Current: `10054`; canonical: `281`.
+- **Gardevoir** (local 10055, National Dex 282) [CRITICAL] Gardevoir's local game ID differs from its National Pokédex species ID. Current: `10055`; canonical: `282`.
+- **Surskit** (local 10056, National Dex 283) [CRITICAL] Surskit's local game ID differs from its National Pokédex species ID. Current: `10056`; canonical: `283`.
+- **Masquerain** (local 10057, National Dex 284) [CRITICAL] Masquerain's local game ID differs from its National Pokédex species ID. Current: `10057`; canonical: `284`.
+- **Shroomish** (local 265, National Dex 285) [CRITICAL] Shroomish's local game ID differs from its National Pokédex species ID. Current: `265`; canonical: `285`.
+- **Breloom** (local 10058, National Dex 286) [CRITICAL] Breloom's local game ID differs from its National Pokédex species ID. Current: `10058`; canonical: `286`.
+- **Slakoth** (local 10059, National Dex 287) [CRITICAL] Slakoth's local game ID differs from its National Pokédex species ID. Current: `10059`; canonical: `287`.
+- **Vigoroth** (local 10060, National Dex 288) [CRITICAL] Vigoroth's local game ID differs from its National Pokédex species ID. Current: `10060`; canonical: `288`.
+- **Slaking** (local 10061, National Dex 289) [CRITICAL] Slaking's local game ID differs from its National Pokédex species ID. Current: `10061`; canonical: `289`.
+- **Nincada** (local 10062, National Dex 290) [CRITICAL] Nincada's local game ID differs from its National Pokédex species ID. Current: `10062`; canonical: `290`.
+- **Ninjask** (local 10063, National Dex 291) [CRITICAL] Ninjask's local game ID differs from its National Pokédex species ID. Current: `10063`; canonical: `291`.
+- **Shedinja** (local 10064, National Dex 292) [CRITICAL] Shedinja's local game ID differs from its National Pokédex species ID. Current: `10064`; canonical: `292`.
+- **Whismur** (local 10065, National Dex 293) [CRITICAL] Whismur's local game ID differs from its National Pokédex species ID. Current: `10065`; canonical: `293`.
+- **Loudred** (local 10066, National Dex 294) [CRITICAL] Loudred's local game ID differs from its National Pokédex species ID. Current: `10066`; canonical: `294`.
+- **Exploud** (local 10067, National Dex 295) [CRITICAL] Exploud's local game ID differs from its National Pokédex species ID. Current: `10067`; canonical: `295`.
+- **Makuhita** (local 10068, National Dex 296) [CRITICAL] Makuhita's local game ID differs from its National Pokédex species ID. Current: `10068`; canonical: `296`.
+- **Hariyama** (local 10069, National Dex 297) [CRITICAL] Hariyama's local game ID differs from its National Pokédex species ID. Current: `10069`; canonical: `297`.
+- **Azurill** (local 10070, National Dex 298) [CRITICAL] Azurill's local game ID differs from its National Pokédex species ID. Current: `10070`; canonical: `298`.
+- **Nosepass** (local 274, National Dex 299) [CRITICAL] Nosepass's local game ID differs from its National Pokédex species ID. Current: `274`; canonical: `299`.
+- **Skitty** (local 10071, National Dex 300) [CRITICAL] Skitty's local game ID differs from its National Pokédex species ID. Current: `10071`; canonical: `300`.
+- **Delcatty** (local 10072, National Dex 301) [CRITICAL] Delcatty's local game ID differs from its National Pokédex species ID. Current: `10072`; canonical: `301`.
+- **Sableye** (local 245, National Dex 302) [CRITICAL] Sableye's local game ID differs from its National Pokédex species ID. Current: `245`; canonical: `302`.
+- **Mawile** (local 277, National Dex 303) [CRITICAL] Mawile's local game ID differs from its National Pokédex species ID. Current: `277`; canonical: `303`.
+- **Aron** (local 273, National Dex 304) [CRITICAL] Aron's local game ID differs from its National Pokédex species ID. Current: `273`; canonical: `304`.
+- **Numel** (local 279, National Dex 322) [CRITICAL] Numel's local game ID differs from its National Pokédex species ID. Current: `279`; canonical: `322`.
+- **Trapinch** (local 240, National Dex 328) [CRITICAL] Trapinch's local game ID differs from its National Pokédex species ID. Current: `240`; canonical: `328`.
+- **Cacnea** (local 241, National Dex 331) [CRITICAL] Cacnea's local game ID differs from its National Pokédex species ID. Current: `241`; canonical: `331`.
+- **Baltoy** (local 288, National Dex 343) [CRITICAL] Baltoy's local game ID differs from its National Pokédex species ID. Current: `288`; canonical: `343`.
+- **Feebas** (local 271, National Dex 349) [CRITICAL] Feebas's local game ID differs from its National Pokédex species ID. Current: `271`; canonical: `349`.
+- **Shuppet** (local 293, National Dex 353) [CRITICAL] Shuppet's local game ID differs from its National Pokédex species ID. Current: `293`; canonical: `353`.
+- **Duskull** (local 244, National Dex 355) [CRITICAL] Duskull's local game ID differs from its National Pokédex species ID. Current: `244`; canonical: `355`.
+- **Absol** (local 285, National Dex 359) [CRITICAL] Absol's local game ID differs from its National Pokédex species ID. Current: `285`; canonical: `359`.
+- **Bagon** (local 286, National Dex 371) [CRITICAL] Bagon's local game ID differs from its National Pokédex species ID. Current: `286`; canonical: `371`.
+- **Latias** (local 299, National Dex 380) [CRITICAL] Latias's local game ID differs from its National Pokédex species ID. Current: `299`; canonical: `380`.
+- **Latios** (local 298, National Dex 381) [CRITICAL] Latios's local game ID differs from its National Pokédex species ID. Current: `298`; canonical: `381`.
 - **Kyogre** (local 253, National Dex 382) [CRITICAL] Kyogre's local game ID differs from its National Pokédex species ID. Current: `253`; canonical: `382`.
 - **Groudon** (local 254, National Dex 383) [CRITICAL] Groudon's local game ID differs from its National Pokédex species ID. Current: `254`; canonical: `383`.
+- **Rayquaza** (local 252, National Dex 384) [CRITICAL] Rayquaza's local game ID differs from its National Pokédex species ID. Current: `252`; canonical: `384`.
+- **Jirachi** (local 300, National Dex 385) [CRITICAL] Jirachi's local game ID differs from its National Pokédex species ID. Current: `300`; canonical: `385`.
+- **Turtwig** (local 267, National Dex 387) [CRITICAL] Turtwig's local game ID differs from its National Pokédex species ID. Current: `267`; canonical: `387`.
+- **Buizel** (local 272, National Dex 418) [CRITICAL] Buizel's local game ID differs from its National Pokédex species ID. Current: `272`; canonical: `418`.
+- **Spiritomb** (local 297, National Dex 442) [CRITICAL] Spiritomb's local game ID differs from its National Pokédex species ID. Current: `297`; canonical: `442`.
+- **Riolu** (local 284, National Dex 447) [CRITICAL] Riolu's local game ID differs from its National Pokédex species ID. Current: `284`; canonical: `447`.
+- **Hippopotas** (local 289, National Dex 449) [CRITICAL] Hippopotas's local game ID differs from its National Pokédex species ID. Current: `289`; canonical: `449`.
 - **Dialga** (local 255, National Dex 483) [CRITICAL] Dialga's local game ID differs from its National Pokédex species ID. Current: `255`; canonical: `483`.
 - **Palkia** (local 256, National Dex 484) [CRITICAL] Palkia's local game ID differs from its National Pokédex species ID. Current: `256`; canonical: `484`.
 - **Giratina** (local 257, National Dex 487) [CRITICAL] Giratina's local game ID differs from its National Pokédex species ID. Current: `257`; canonical: `487`.
-- **Zekrom** (local 258, National Dex 644) [CRITICAL] Zekrom's local game ID differs from its National Pokédex species ID. Current: `258`; canonical: `644`.
-- **Reshiram** (local 259, National Dex 643) [CRITICAL] Reshiram's local game ID differs from its National Pokédex species ID. Current: `259`; canonical: `643`.
-- **Xerneas** (local 260, National Dex 716) [CRITICAL] Xerneas's local game ID differs from its National Pokédex species ID. Current: `260`; canonical: `716`.
-- **Yveltal** (local 261, National Dex 717) [CRITICAL] Yveltal's local game ID differs from its National Pokédex species ID. Current: `261`; canonical: `717`.
+- **Cresselia** (local 302, National Dex 488) [CRITICAL] Cresselia's local game ID differs from its National Pokédex species ID. Current: `302`; canonical: `488`.
+- **Darkrai** (local 301, National Dex 491) [CRITICAL] Darkrai's local game ID differs from its National Pokédex species ID. Current: `301`; canonical: `491`.
 - **Arceus** (local 262, National Dex 493) [CRITICAL] Arceus's local game ID differs from its National Pokédex species ID. Current: `262`; canonical: `493`.
-- **Hoothoot** (local 263, National Dex 163) [CRITICAL] Hoothoot's local game ID differs from its National Pokédex species ID. Current: `263`; canonical: `163`.
-- **Seedot** (local 264, National Dex 273) [CRITICAL] Seedot's local game ID differs from its National Pokédex species ID. Current: `264`; canonical: `273`.
-- **Shroomish** (local 265, National Dex 285) [CRITICAL] Shroomish's local game ID differs from its National Pokédex species ID. Current: `265`; canonical: `285`.
-- **Treecko** (local 266, National Dex 252) [CRITICAL] Treecko's local game ID differs from its National Pokédex species ID. Current: `266`; canonical: `252`.
-- **Turtwig** (local 267, National Dex 387) [CRITICAL] Turtwig's local game ID differs from its National Pokédex species ID. Current: `267`; canonical: `387`.
-- **Mudkip** (local 268, National Dex 258) [CRITICAL] Mudkip's local game ID differs from its National Pokédex species ID. Current: `268`; canonical: `258`.
-- **Lotad** (local 269, National Dex 270) [CRITICAL] Lotad's local game ID differs from its National Pokédex species ID. Current: `269`; canonical: `270`.
-- **Wingull** (local 270, National Dex 278) [CRITICAL] Wingull's local game ID differs from its National Pokédex species ID. Current: `270`; canonical: `278`.
-- **Feebas** (local 271, National Dex 349) [CRITICAL] Feebas's local game ID differs from its National Pokédex species ID. Current: `271`; canonical: `349`.
-- **Buizel** (local 272, National Dex 418) [CRITICAL] Buizel's local game ID differs from its National Pokédex species ID. Current: `272`; canonical: `418`.
-- **Aron** (local 273, National Dex 304) [CRITICAL] Aron's local game ID differs from its National Pokédex species ID. Current: `273`; canonical: `304`.
-- **Nosepass** (local 274, National Dex 299) [CRITICAL] Nosepass's local game ID differs from its National Pokédex species ID. Current: `274`; canonical: `299`.
 - **Roggenrola** (local 275, National Dex 524) [CRITICAL] Roggenrola's local game ID differs from its National Pokédex species ID. Current: `275`; canonical: `524`.
 - **Drilbur** (local 276, National Dex 529) [CRITICAL] Drilbur's local game ID differs from its National Pokédex species ID. Current: `276`; canonical: `529`.
-- **Mawile** (local 277, National Dex 303) [CRITICAL] Mawile's local game ID differs from its National Pokédex species ID. Current: `277`; canonical: `303`.
-- **Torchic** (local 278, National Dex 255) [CRITICAL] Torchic's local game ID differs from its National Pokédex species ID. Current: `278`; canonical: `255`.
-- **Numel** (local 279, National Dex 322) [CRITICAL] Numel's local game ID differs from its National Pokédex species ID. Current: `279`; canonical: `322`.
-- **Slugma** (local 280, National Dex 218) [CRITICAL] Slugma's local game ID differs from its National Pokédex species ID. Current: `280`; canonical: `218`.
-- **Houndour** (local 281, National Dex 228) [CRITICAL] Houndour's local game ID differs from its National Pokédex species ID. Current: `281`; canonical: `228`.
-- **Salandit** (local 282, National Dex 757) [CRITICAL] Salandit's local game ID differs from its National Pokédex species ID. Current: `282`; canonical: `757`.
-- **Rookidee** (local 283, National Dex 821) [CRITICAL] Rookidee's local game ID differs from its National Pokédex species ID. Current: `283`; canonical: `821`.
-- **Riolu** (local 284, National Dex 447) [CRITICAL] Riolu's local game ID differs from its National Pokédex species ID. Current: `284`; canonical: `447`.
-- **Absol** (local 285, National Dex 359) [CRITICAL] Absol's local game ID differs from its National Pokédex species ID. Current: `285`; canonical: `359`.
-- **Bagon** (local 286, National Dex 371) [CRITICAL] Bagon's local game ID differs from its National Pokédex species ID. Current: `286`; canonical: `371`.
-- **Axew** (local 287, National Dex 610) [CRITICAL] Axew's local game ID differs from its National Pokédex species ID. Current: `287`; canonical: `610`.
-- **Baltoy** (local 288, National Dex 343) [CRITICAL] Baltoy's local game ID differs from its National Pokédex species ID. Current: `288`; canonical: `343`.
-- **Hippopotas** (local 289, National Dex 449) [CRITICAL] Hippopotas's local game ID differs from its National Pokédex species ID. Current: `289`; canonical: `449`.
+- **Sandile** (local 242, National Dex 551) [CRITICAL] Sandile's local game ID differs from its National Pokédex species ID. Current: `242`; canonical: `551`.
 - **Darumaka** (local 290, National Dex 554) [CRITICAL] Darumaka's local game ID differs from its National Pokédex species ID. Current: `290`; canonical: `554`.
 - **Scraggy** (local 291, National Dex 559) [CRITICAL] Scraggy's local game ID differs from its National Pokédex species ID. Current: `291`; canonical: `559`.
-- **Silicobra** (local 292, National Dex 843) [CRITICAL] Silicobra's local game ID differs from its National Pokédex species ID. Current: `292`; canonical: `843`.
-- **Shuppet** (local 293, National Dex 353) [CRITICAL] Shuppet's local game ID differs from its National Pokédex species ID. Current: `293`; canonical: `353`.
-- **Litwick** (local 294, National Dex 607) [CRITICAL] Litwick's local game ID differs from its National Pokédex species ID. Current: `294`; canonical: `607`.
-- **Phantump** (local 295, National Dex 708) [CRITICAL] Phantump's local game ID differs from its National Pokédex species ID. Current: `295`; canonical: `708`.
 - **Yamask** (local 296, National Dex 562) [CRITICAL] Yamask's local game ID differs from its National Pokédex species ID. Current: `296`; canonical: `562`.
-- **Spiritomb** (local 297, National Dex 442) [CRITICAL] Spiritomb's local game ID differs from its National Pokédex species ID. Current: `297`; canonical: `442`.
-- **Latios** (local 298, National Dex 381) [CRITICAL] Latios's local game ID differs from its National Pokédex species ID. Current: `298`; canonical: `381`.
-- **Latias** (local 299, National Dex 380) [CRITICAL] Latias's local game ID differs from its National Pokédex species ID. Current: `299`; canonical: `380`.
-- **Jirachi** (local 300, National Dex 385) [CRITICAL] Jirachi's local game ID differs from its National Pokédex species ID. Current: `300`; canonical: `385`.
-- **Darkrai** (local 301, National Dex 491) [CRITICAL] Darkrai's local game ID differs from its National Pokédex species ID. Current: `301`; canonical: `491`.
-- **Cresselia** (local 302, National Dex 488) [CRITICAL] Cresselia's local game ID differs from its National Pokédex species ID. Current: `302`; canonical: `488`.
+- **Litwick** (local 294, National Dex 607) [CRITICAL] Litwick's local game ID differs from its National Pokédex species ID. Current: `294`; canonical: `607`.
+- **Axew** (local 287, National Dex 610) [CRITICAL] Axew's local game ID differs from its National Pokédex species ID. Current: `287`; canonical: `610`.
+- **Reshiram** (local 259, National Dex 643) [CRITICAL] Reshiram's local game ID differs from its National Pokédex species ID. Current: `259`; canonical: `643`.
+- **Zekrom** (local 258, National Dex 644) [CRITICAL] Zekrom's local game ID differs from its National Pokédex species ID. Current: `258`; canonical: `644`.
+- **Phantump** (local 295, National Dex 708) [CRITICAL] Phantump's local game ID differs from its National Pokédex species ID. Current: `295`; canonical: `708`.
+- **Xerneas** (local 260, National Dex 716) [CRITICAL] Xerneas's local game ID differs from its National Pokédex species ID. Current: `260`; canonical: `716`.
+- **Yveltal** (local 261, National Dex 717) [CRITICAL] Yveltal's local game ID differs from its National Pokédex species ID. Current: `261`; canonical: `717`.
+- **Salandit** (local 282, National Dex 757) [CRITICAL] Salandit's local game ID differs from its National Pokédex species ID. Current: `282`; canonical: `757`.
+- **Rookidee** (local 283, National Dex 821) [CRITICAL] Rookidee's local game ID differs from its National Pokédex species ID. Current: `283`; canonical: `821`.
+- **Silicobra** (local 292, National Dex 843) [CRITICAL] Silicobra's local game ID differs from its National Pokédex species ID. Current: `292`; canonical: `843`.
 
 ## Type Mismatches
 
 - **Bulbasaur** (local 1, National Dex 1) [MEDIUM] Bulbasaur's types array differs from PokéAPI. Current: `Grass`; canonical: `Grass, Poison`.
-- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's types array differs from PokéAPI. Current: `Grass`; canonical: `Grass, Poison`.
-- **Geodude** (local 74, National Dex 74) [MEDIUM] Geodude's types array differs from PokéAPI. Current: `Rock`; canonical: `Rock, Ground`.
 - **Pidgeot** (local 16, National Dex 18) [MEDIUM] Pidgeot's primary type differs from PokéAPI. Current: `Flying`; canonical: `Normal`.
 - **Pidgeot** (local 16, National Dex 18) [MEDIUM] Pidgeot's types array differs from PokéAPI. Current: `Flying`; canonical: `Normal, Flying`.
+- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's types array differs from PokéAPI. Current: `Grass`; canonical: `Grass, Poison`.
+- **Geodude** (local 74, National Dex 74) [MEDIUM] Geodude's types array differs from PokéAPI. Current: `Rock`; canonical: `Rock, Ground`.
+- **Seel** (local 233, National Dex 86) [MEDIUM] Seel's types array differs from PokéAPI. Current: `Water, Ice`; canonical: `Water`.
 - **Marill** (local 183, National Dex 183) [MEDIUM] Marill's types array differs from PokéAPI. Current: `Water`; canonical: `Water, Fairy`.
 - **Wooper** (local 194, National Dex 194) [MEDIUM] Wooper's types array differs from PokéAPI. Current: `Water`; canonical: `Water, Ground`.
 - **Girafarig** (local 207, National Dex 203) [MEDIUM] Girafarig's primary type differs from PokéAPI. Current: `Psychic`; canonical: `Normal`.
 - **Sneasel** (local 218, National Dex 215) [MEDIUM] Sneasel's types array differs from PokéAPI. Current: `Dark`; canonical: `Dark, Ice`.
-- **Seel** (local 233, National Dex 86) [MEDIUM] Seel's types array differs from PokéAPI. Current: `Water, Ice`; canonical: `Water`.
-- **Zekrom** (local 258, National Dex 644) [MEDIUM] Zekrom's primary type differs from PokéAPI. Current: `Electric`; canonical: `Dragon`.
-- **Zekrom** (local 258, National Dex 644) [MEDIUM] Zekrom's types array differs from PokéAPI. Current: `Electric, Dragon`; canonical: `Dragon, Electric`.
 - **Reshiram** (local 259, National Dex 643) [MEDIUM] Reshiram's primary type differs from PokéAPI. Current: `Fire`; canonical: `Dragon`.
 - **Reshiram** (local 259, National Dex 643) [MEDIUM] Reshiram's types array differs from PokéAPI. Current: `Fire, Dragon`; canonical: `Dragon, Fire`.
+- **Zekrom** (local 258, National Dex 644) [MEDIUM] Zekrom's primary type differs from PokéAPI. Current: `Electric`; canonical: `Dragon`.
+- **Zekrom** (local 258, National Dex 644) [MEDIUM] Zekrom's types array differs from PokéAPI. Current: `Electric, Dragon`; canonical: `Dragon, Electric`.
 
 ## Base Stat Mismatches
 
 - **Bulbasaur** (local 1, National Dex 1) [MEDIUM] Bulbasaur's specialAttack base stat differs from PokéAPI. Current: `49`; canonical: `65`.
 - **Bulbasaur** (local 1, National Dex 1) [MEDIUM] Bulbasaur's specialDefense base stat differs from PokéAPI. Current: `49`; canonical: `65`.
 - **Bulbasaur** (local 1, National Dex 1) [MEDIUM] Bulbasaur's speed base stat differs from PokéAPI. Current: `49`; canonical: `45`.
+- **Ivysaur** (local 2, National Dex 2) [MEDIUM] Ivysaur's speed base stat differs from PokéAPI. Current: `71`; canonical: `60`.
+- **Venusaur** (local 3, National Dex 3) [MEDIUM] Venusaur's speed base stat differs from PokéAPI. Current: `91`; canonical: `80`.
 - **Charmander** (local 4, National Dex 4) [MEDIUM] Charmander's specialAttack base stat differs from PokéAPI. Current: `52`; canonical: `60`.
 - **Charmander** (local 4, National Dex 4) [MEDIUM] Charmander's specialDefense base stat differs from PokéAPI. Current: `43`; canonical: `50`.
 - **Charmander** (local 4, National Dex 4) [MEDIUM] Charmander's speed base stat differs from PokéAPI. Current: `52`; canonical: `65`.
+- **Charmeleon** (local 5, National Dex 5) [MEDIUM] Charmeleon's speed base stat differs from PokéAPI. Current: `72`; canonical: `80`.
+- **Charizard** (local 6, National Dex 6) [MEDIUM] Charizard's speed base stat differs from PokéAPI. Current: `97`; canonical: `100`.
 - **Squirtle** (local 7, National Dex 7) [MEDIUM] Squirtle's specialAttack base stat differs from PokéAPI. Current: `48`; canonical: `50`.
 - **Squirtle** (local 7, National Dex 7) [MEDIUM] Squirtle's specialDefense base stat differs from PokéAPI. Current: `65`; canonical: `64`.
 - **Squirtle** (local 7, National Dex 7) [MEDIUM] Squirtle's speed base stat differs from PokéAPI. Current: `48`; canonical: `43`.
-- **Pikachu** (local 25, National Dex 25) [MEDIUM] Pikachu's specialAttack base stat differs from PokéAPI. Current: `55`; canonical: `50`.
-- **Pikachu** (local 25, National Dex 25) [MEDIUM] Pikachu's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `50`.
-- **Pikachu** (local 25, National Dex 25) [MEDIUM] Pikachu's speed base stat differs from PokéAPI. Current: `55`; canonical: `90`.
-- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's hp base stat differs from PokéAPI. Current: `35`; canonical: `70`.
-- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's attack base stat differs from PokéAPI. Current: `20`; canonical: `45`.
-- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's defense base stat differs from PokéAPI. Current: `24`; canonical: `48`.
-- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `60`.
-- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's specialDefense base stat differs from PokéAPI. Current: `24`; canonical: `65`.
-- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's speed base stat differs from PokéAPI. Current: `20`; canonical: `35`.
-- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's maxHp template value differs from canonical base HP. Current: `35`; canonical: `70`.
-- **Jigglypuff** (local 39, National Dex 39) [MEDIUM] Jigglypuff's hp base stat differs from PokéAPI. Current: `45`; canonical: `115`.
-- **Jigglypuff** (local 39, National Dex 39) [MEDIUM] Jigglypuff's attack base stat differs from PokéAPI. Current: `20`; canonical: `45`.
-- **Jigglypuff** (local 39, National Dex 39) [MEDIUM] Jigglypuff's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `45`.
-- **Jigglypuff** (local 39, National Dex 39) [MEDIUM] Jigglypuff's specialDefense base stat differs from PokéAPI. Current: `20`; canonical: `25`.
-- **Jigglypuff** (local 39, National Dex 39) [MEDIUM] Jigglypuff's maxHp template value differs from canonical base HP. Current: `45`; canonical: `115`.
-- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's hp base stat differs from PokéAPI. Current: `35`; canonical: `50`.
-- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's specialAttack base stat differs from PokéAPI. Current: `52`; canonical: `65`.
-- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's specialDefense base stat differs from PokéAPI. Current: `48`; canonical: `50`.
-- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's speed base stat differs from PokéAPI. Current: `52`; canonical: `55`.
-- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's maxHp template value differs from canonical base HP. Current: `35`; canonical: `50`.
-- **Growlithe** (local 58, National Dex 58) [MEDIUM] Growlithe's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `50`.
-- **Growlithe** (local 58, National Dex 58) [MEDIUM] Growlithe's speed base stat differs from PokéAPI. Current: `70`; canonical: `60`.
-- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's hp base stat differs from PokéAPI. Current: `30`; canonical: `50`.
-- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's specialAttack base stat differs from PokéAPI. Current: `75`; canonical: `70`.
-- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's specialDefense base stat differs from PokéAPI. Current: `35`; canonical: `30`.
-- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's speed base stat differs from PokéAPI. Current: `75`; canonical: `40`.
-- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's maxHp template value differs from canonical base HP. Current: `30`; canonical: `50`.
-- **Geodude** (local 74, National Dex 74) [MEDIUM] Geodude's specialAttack base stat differs from PokéAPI. Current: `80`; canonical: `30`.
-- **Geodude** (local 74, National Dex 74) [MEDIUM] Geodude's specialDefense base stat differs from PokéAPI. Current: `100`; canonical: `30`.
-- **Geodude** (local 74, National Dex 74) [MEDIUM] Geodude's speed base stat differs from PokéAPI. Current: `80`; canonical: `20`.
-- **Gastly** (local 92, National Dex 92) [MEDIUM] Gastly's specialAttack base stat differs from PokéAPI. Current: `35`; canonical: `100`.
-- **Gastly** (local 92, National Dex 92) [MEDIUM] Gastly's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `35`.
-- **Gastly** (local 92, National Dex 92) [MEDIUM] Gastly's speed base stat differs from PokéAPI. Current: `35`; canonical: `80`.
-- **Cubone** (local 104, National Dex 104) [MEDIUM] Cubone's attack base stat differs from PokéAPI. Current: `75`; canonical: `50`.
-- **Cubone** (local 104, National Dex 104) [MEDIUM] Cubone's defense base stat differs from PokéAPI. Current: `40`; canonical: `95`.
-- **Cubone** (local 104, National Dex 104) [MEDIUM] Cubone's specialAttack base stat differs from PokéAPI. Current: `75`; canonical: `40`.
-- **Cubone** (local 104, National Dex 104) [MEDIUM] Cubone's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `50`.
-- **Cubone** (local 104, National Dex 104) [MEDIUM] Cubone's speed base stat differs from PokéAPI. Current: `75`; canonical: `35`.
-- **Eevee** (local 133, National Dex 133) [MEDIUM] Eevee's specialAttack base stat differs from PokéAPI. Current: `55`; canonical: `45`.
-- **Eevee** (local 133, National Dex 133) [MEDIUM] Eevee's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `65`.
-- **Dratini** (local 147, National Dex 147) [MEDIUM] Dratini's specialAttack base stat differs from PokéAPI. Current: `64`; canonical: `50`.
-- **Dratini** (local 147, National Dex 147) [MEDIUM] Dratini's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `50`.
-- **Dratini** (local 147, National Dex 147) [MEDIUM] Dratini's speed base stat differs from PokéAPI. Current: `64`; canonical: `50`.
-- **Mewtwo** (local 150, National Dex 150) [MEDIUM] Mewtwo's speed base stat differs from PokéAPI. Current: `132`; canonical: `130`.
+- **Wartortle** (local 8, National Dex 8) [MEDIUM] Wartortle's speed base stat differs from PokéAPI. Current: `64`; canonical: `58`.
+- **Blastoise** (local 9, National Dex 9) [MEDIUM] Blastoise's speed base stat differs from PokéAPI. Current: `84`; canonical: `78`.
+- **Caterpie** (local 219, National Dex 10) [MEDIUM] Caterpie's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `20`.
+- **Caterpie** (local 219, National Dex 10) [MEDIUM] Caterpie's speed base stat differs from PokéAPI. Current: `25`; canonical: `45`.
+- **Butterfree** (local 222, National Dex 12) [MEDIUM] Butterfree's speed base stat differs from PokéAPI. Current: `68`; canonical: `70`.
+- **Weedle** (local 220, National Dex 13) [MEDIUM] Weedle's speed base stat differs from PokéAPI. Current: `28`; canonical: `50`.
+- **Pidgey** (local 237, National Dex 16) [MEDIUM] Pidgey's speed base stat differs from PokéAPI. Current: `40`; canonical: `56`.
 - **Pidgeot** (local 16, National Dex 18) [MEDIUM] Pidgeot's attack base stat differs from PokéAPI. Current: `100`; canonical: `80`.
 - **Pidgeot** (local 16, National Dex 18) [MEDIUM] Pidgeot's defense base stat differs from PokéAPI. Current: `95`; canonical: `75`.
 - **Pidgeot** (local 16, National Dex 18) [MEDIUM] Pidgeot's specialAttack base stat differs from PokéAPI. Current: `100`; canonical: `70`.
@@ -326,21 +657,103 @@ Generated: 2026-09-06T13:50:18.614Z
 - **Spearow** (local 21, National Dex 21) [MEDIUM] Spearow's specialAttack base stat differs from PokéAPI. Current: `60`; canonical: `31`.
 - **Spearow** (local 21, National Dex 21) [MEDIUM] Spearow's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `31`.
 - **Spearow** (local 21, National Dex 21) [MEDIUM] Spearow's speed base stat differs from PokéAPI. Current: `60`; canonical: `70`.
+- **Pikachu** (local 25, National Dex 25) [MEDIUM] Pikachu's specialAttack base stat differs from PokéAPI. Current: `55`; canonical: `50`.
+- **Pikachu** (local 25, National Dex 25) [MEDIUM] Pikachu's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `50`.
+- **Pikachu** (local 25, National Dex 25) [MEDIUM] Pikachu's speed base stat differs from PokéAPI. Current: `55`; canonical: `90`.
+- **Sandshrew** (local 239, National Dex 27) [MEDIUM] Sandshrew's speed base stat differs from PokéAPI. Current: `48`; canonical: `40`.
+- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's hp base stat differs from PokéAPI. Current: `35`; canonical: `70`.
+- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's attack base stat differs from PokéAPI. Current: `20`; canonical: `45`.
+- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's defense base stat differs from PokéAPI. Current: `24`; canonical: `48`.
+- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `60`.
+- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's specialDefense base stat differs from PokéAPI. Current: `24`; canonical: `65`.
+- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's speed base stat differs from PokéAPI. Current: `20`; canonical: `35`.
+- **Clefairy** (local 35, National Dex 35) [MEDIUM] Clefairy's maxHp template value differs from canonical base HP. Current: `35`; canonical: `70`.
+- **Vulpix** (local 234, National Dex 37) [MEDIUM] Vulpix's speed base stat differs from PokéAPI. Current: `46`; canonical: `65`.
+- **Jigglypuff** (local 39, National Dex 39) [MEDIUM] Jigglypuff's hp base stat differs from PokéAPI. Current: `45`; canonical: `115`.
+- **Jigglypuff** (local 39, National Dex 39) [MEDIUM] Jigglypuff's attack base stat differs from PokéAPI. Current: `20`; canonical: `45`.
+- **Jigglypuff** (local 39, National Dex 39) [MEDIUM] Jigglypuff's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `45`.
+- **Jigglypuff** (local 39, National Dex 39) [MEDIUM] Jigglypuff's specialDefense base stat differs from PokéAPI. Current: `20`; canonical: `25`.
+- **Jigglypuff** (local 39, National Dex 39) [MEDIUM] Jigglypuff's maxHp template value differs from canonical base HP. Current: `45`; canonical: `115`.
+- **Zubat** (local 227, National Dex 41) [MEDIUM] Zubat's speed base stat differs from PokéAPI. Current: `38`; canonical: `55`.
+- **Oddish** (local 221, National Dex 43) [MEDIUM] Oddish's speed base stat differs from PokéAPI. Current: `63`; canonical: `30`.
+- **Diglett** (local 228, National Dex 50) [MEDIUM] Diglett's hp base stat differs from PokéAPI. Current: `30`; canonical: `10`.
+- **Diglett** (local 228, National Dex 50) [MEDIUM] Diglett's speed base stat differs from PokéAPI. Current: `45`; canonical: `95`.
+- **Diglett** (local 228, National Dex 50) [MEDIUM] Diglett's maxHp template value differs from canonical base HP. Current: `30`; canonical: `10`.
+- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's hp base stat differs from PokéAPI. Current: `35`; canonical: `50`.
+- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's specialAttack base stat differs from PokéAPI. Current: `52`; canonical: `65`.
+- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's specialDefense base stat differs from PokéAPI. Current: `48`; canonical: `50`.
+- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's speed base stat differs from PokéAPI. Current: `52`; canonical: `55`.
+- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's maxHp template value differs from canonical base HP. Current: `35`; canonical: `50`.
+- **Growlithe** (local 58, National Dex 58) [MEDIUM] Growlithe's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `50`.
+- **Growlithe** (local 58, National Dex 58) [MEDIUM] Growlithe's speed base stat differs from PokéAPI. Current: `70`; canonical: `60`.
+- **Poliwag** (local 223, National Dex 60) [MEDIUM] Poliwag's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `40`.
+- **Poliwag** (local 223, National Dex 60) [MEDIUM] Poliwag's speed base stat differs from PokéAPI. Current: `50`; canonical: `90`.
+- **Machop** (local 229, National Dex 66) [MEDIUM] Machop's speed base stat differs from PokéAPI. Current: `58`; canonical: `35`.
+- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's hp base stat differs from PokéAPI. Current: `30`; canonical: `50`.
+- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's specialAttack base stat differs from PokéAPI. Current: `75`; canonical: `70`.
+- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's specialDefense base stat differs from PokéAPI. Current: `35`; canonical: `30`.
+- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's speed base stat differs from PokéAPI. Current: `75`; canonical: `40`.
+- **Bellsprout** (local 69, National Dex 69) [MEDIUM] Bellsprout's maxHp template value differs from canonical base HP. Current: `30`; canonical: `50`.
+- **Weepinbell** (local 70, National Dex 70) [MEDIUM] Weepinbell's speed base stat differs from PokéAPI. Current: `88`; canonical: `55`.
+- **Tentacool** (local 230, National Dex 72) [MEDIUM] Tentacool's speed base stat differs from PokéAPI. Current: `45`; canonical: `70`.
+- **Geodude** (local 74, National Dex 74) [MEDIUM] Geodude's specialAttack base stat differs from PokéAPI. Current: `80`; canonical: `30`.
+- **Geodude** (local 74, National Dex 74) [MEDIUM] Geodude's specialDefense base stat differs from PokéAPI. Current: `100`; canonical: `30`.
+- **Geodude** (local 74, National Dex 74) [MEDIUM] Geodude's speed base stat differs from PokéAPI. Current: `80`; canonical: `20`.
+- **Graveler** (local 75, National Dex 75) [MEDIUM] Graveler's speed base stat differs from PokéAPI. Current: `70`; canonical: `35`.
+- **Ponyta** (local 235, National Dex 77) [MEDIUM] Ponyta's speed base stat differs from PokéAPI. Current: `75`; canonical: `90`.
+- **Shellder** (local 232, National Dex 90) [MEDIUM] Shellder's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `25`.
+- **Shellder** (local 232, National Dex 90) [MEDIUM] Shellder's speed base stat differs from PokéAPI. Current: `55`; canonical: `40`.
+- **Gastly** (local 92, National Dex 92) [MEDIUM] Gastly's specialAttack base stat differs from PokéAPI. Current: `35`; canonical: `100`.
+- **Gastly** (local 92, National Dex 92) [MEDIUM] Gastly's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `35`.
+- **Gastly** (local 92, National Dex 92) [MEDIUM] Gastly's speed base stat differs from PokéAPI. Current: `35`; canonical: `80`.
+- **Gengar** (local 94, National Dex 94) [MEDIUM] Gengar's speed base stat differs from PokéAPI. Current: `98`; canonical: `110`.
 - **Onix** (local 95, National Dex 95) [MEDIUM] Onix's specialAttack base stat differs from PokéAPI. Current: `45`; canonical: `30`.
 - **Onix** (local 95, National Dex 95) [MEDIUM] Onix's specialDefense base stat differs from PokéAPI. Current: `160`; canonical: `45`.
 - **Onix** (local 95, National Dex 95) [MEDIUM] Onix's speed base stat differs from PokéAPI. Current: `45`; canonical: `70`.
 - **Voltorb** (local 100, National Dex 100) [MEDIUM] Voltorb's specialAttack base stat differs from PokéAPI. Current: `30`; canonical: `55`.
 - **Voltorb** (local 100, National Dex 100) [MEDIUM] Voltorb's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `55`.
 - **Voltorb** (local 100, National Dex 100) [MEDIUM] Voltorb's speed base stat differs from PokéAPI. Current: `30`; canonical: `100`.
+- **Cubone** (local 104, National Dex 104) [MEDIUM] Cubone's attack base stat differs from PokéAPI. Current: `75`; canonical: `50`.
+- **Cubone** (local 104, National Dex 104) [MEDIUM] Cubone's defense base stat differs from PokéAPI. Current: `40`; canonical: `95`.
+- **Cubone** (local 104, National Dex 104) [MEDIUM] Cubone's specialAttack base stat differs from PokéAPI. Current: `75`; canonical: `40`.
+- **Cubone** (local 104, National Dex 104) [MEDIUM] Cubone's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `50`.
+- **Cubone** (local 104, National Dex 104) [MEDIUM] Cubone's speed base stat differs from PokéAPI. Current: `75`; canonical: `35`.
+- **Horsea** (local 231, National Dex 116) [MEDIUM] Horsea's specialAttack base stat differs from PokéAPI. Current: `40`; canonical: `70`.
+- **Horsea** (local 231, National Dex 116) [MEDIUM] Horsea's specialDefense base stat differs from PokéAPI. Current: `70`; canonical: `25`.
+- **Horsea** (local 231, National Dex 116) [MEDIUM] Horsea's speed base stat differs from PokéAPI. Current: `40`; canonical: `60`.
+- **Goldeen** (local 225, National Dex 118) [MEDIUM] Goldeen's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `35`.
+- **Goldeen** (local 225, National Dex 118) [MEDIUM] Goldeen's speed base stat differs from PokéAPI. Current: `59`; canonical: `63`.
+- **Staryu** (local 226, National Dex 120) [MEDIUM] Staryu's specialAttack base stat differs from PokéAPI. Current: `65`; canonical: `70`.
+- **Staryu** (local 226, National Dex 120) [MEDIUM] Staryu's specialDefense base stat differs from PokéAPI. Current: `70`; canonical: `55`.
+- **Staryu** (local 226, National Dex 120) [MEDIUM] Staryu's speed base stat differs from PokéAPI. Current: `55`; canonical: `85`.
 - **Scyther** (local 123, National Dex 123) [MEDIUM] Scyther's specialAttack base stat differs from PokéAPI. Current: `110`; canonical: `55`.
 - **Scyther** (local 123, National Dex 123) [MEDIUM] Scyther's speed base stat differs from PokéAPI. Current: `110`; canonical: `105`.
+- **Magmar** (local 236, National Dex 126) [MEDIUM] Magmar's speed base stat differs from PokéAPI. Current: `98`; canonical: `93`.
+- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's hp base stat differs from PokéAPI. Current: `30`; canonical: `20`.
+- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's attack base stat differs from PokéAPI. Current: `20`; canonical: `10`.
+- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `15`.
+- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's specialDefense base stat differs from PokéAPI. Current: `55`; canonical: `20`.
+- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's speed base stat differs from PokéAPI. Current: `20`; canonical: `80`.
+- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's maxHp template value differs from canonical base HP. Current: `30`; canonical: `20`.
 - **Lapras** (local 131, National Dex 131) [MEDIUM] Lapras's defense base stat differs from PokéAPI. Current: `95`; canonical: `80`.
 - **Lapras** (local 131, National Dex 131) [MEDIUM] Lapras's speed base stat differs from PokéAPI. Current: `85`; canonical: `60`.
+- **Eevee** (local 133, National Dex 133) [MEDIUM] Eevee's specialAttack base stat differs from PokéAPI. Current: `55`; canonical: `45`.
+- **Eevee** (local 133, National Dex 133) [MEDIUM] Eevee's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `65`.
 - **Snorlax** (local 143, National Dex 143) [MEDIUM] Snorlax's hp base stat differs from PokéAPI. Current: `150`; canonical: `160`.
 - **Snorlax** (local 143, National Dex 143) [MEDIUM] Snorlax's specialAttack base stat differs from PokéAPI. Current: `110`; canonical: `65`.
 - **Snorlax** (local 143, National Dex 143) [MEDIUM] Snorlax's specialDefense base stat differs from PokéAPI. Current: `65`; canonical: `110`.
 - **Snorlax** (local 143, National Dex 143) [MEDIUM] Snorlax's speed base stat differs from PokéAPI. Current: `110`; canonical: `30`.
 - **Snorlax** (local 143, National Dex 143) [MEDIUM] Snorlax's maxHp template value differs from canonical base HP. Current: `150`; canonical: `160`.
+- **Articuno** (local 247, National Dex 144) [MEDIUM] Articuno's specialAttack base stat differs from PokéAPI. Current: `125`; canonical: `95`.
+- **Articuno** (local 247, National Dex 144) [MEDIUM] Articuno's specialDefense base stat differs from PokéAPI. Current: `115`; canonical: `125`.
+- **Articuno** (local 247, National Dex 144) [MEDIUM] Articuno's speed base stat differs from PokéAPI. Current: `105`; canonical: `85`.
+- **Zapdos** (local 248, National Dex 145) [MEDIUM] Zapdos's speed base stat differs from PokéAPI. Current: `108`; canonical: `100`.
+- **Moltres** (local 249, National Dex 146) [MEDIUM] Moltres's speed base stat differs from PokéAPI. Current: `113`; canonical: `90`.
+- **Dratini** (local 147, National Dex 147) [MEDIUM] Dratini's specialAttack base stat differs from PokéAPI. Current: `64`; canonical: `50`.
+- **Dratini** (local 147, National Dex 147) [MEDIUM] Dratini's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `50`.
+- **Dratini** (local 147, National Dex 147) [MEDIUM] Dratini's speed base stat differs from PokéAPI. Current: `64`; canonical: `50`.
+- **Dragonite** (local 149, National Dex 149) [MEDIUM] Dragonite's speed base stat differs from PokéAPI. Current: `117`; canonical: `80`.
+- **Mewtwo** (local 150, National Dex 150) [MEDIUM] Mewtwo's speed base stat differs from PokéAPI. Current: `132`; canonical: `130`.
 - **Chikorita** (local 152, National Dex 152) [MEDIUM] Chikorita's speed base stat differs from PokéAPI. Current: `49`; canonical: `45`.
 - **Cyndaquil** (local 155, National Dex 155) [MEDIUM] Cyndaquil's specialAttack base stat differs from PokéAPI. Current: `52`; canonical: `60`.
 - **Cyndaquil** (local 155, National Dex 155) [MEDIUM] Cyndaquil's specialDefense base stat differs from PokéAPI. Current: `43`; canonical: `50`.
@@ -360,76 +773,64 @@ Generated: 2026-09-06T13:50:18.614Z
 - **Wooper** (local 194, National Dex 194) [MEDIUM] Wooper's specialDefense base stat differs from PokéAPI. Current: `75`; canonical: `25`.
 - **Wooper** (local 194, National Dex 194) [MEDIUM] Wooper's speed base stat differs from PokéAPI. Current: `75`; canonical: `15`.
 - **Wooper** (local 194, National Dex 194) [MEDIUM] Wooper's maxHp template value differs from canonical base HP. Current: `75`; canonical: `55`.
+- **Misdreavus** (local 243, National Dex 200) [MEDIUM] Misdreavus's speed base stat differs from PokéAPI. Current: `73`; canonical: `85`.
 - **Girafarig** (local 207, National Dex 203) [MEDIUM] Girafarig's attack base stat differs from PokéAPI. Current: `70`; canonical: `80`.
 - **Girafarig** (local 207, National Dex 203) [MEDIUM] Girafarig's specialAttack base stat differs from PokéAPI. Current: `70`; canonical: `90`.
 - **Girafarig** (local 207, National Dex 203) [MEDIUM] Girafarig's speed base stat differs from PokéAPI. Current: `70`; canonical: `85`.
 - **Sneasel** (local 218, National Dex 215) [MEDIUM] Sneasel's specialAttack base stat differs from PokéAPI. Current: `95`; canonical: `35`.
 - **Sneasel** (local 218, National Dex 215) [MEDIUM] Sneasel's specialDefense base stat differs from PokéAPI. Current: `55`; canonical: `75`.
 - **Sneasel** (local 218, National Dex 215) [MEDIUM] Sneasel's speed base stat differs from PokéAPI. Current: `95`; canonical: `115`.
-- **Caterpie** (local 219, National Dex 10) [MEDIUM] Caterpie's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `20`.
-- **Caterpie** (local 219, National Dex 10) [MEDIUM] Caterpie's speed base stat differs from PokéAPI. Current: `25`; canonical: `45`.
-- **Weedle** (local 220, National Dex 13) [MEDIUM] Weedle's speed base stat differs from PokéAPI. Current: `28`; canonical: `50`.
-- **Oddish** (local 221, National Dex 43) [MEDIUM] Oddish's speed base stat differs from PokéAPI. Current: `63`; canonical: `30`.
-- **Butterfree** (local 222, National Dex 12) [MEDIUM] Butterfree's speed base stat differs from PokéAPI. Current: `68`; canonical: `70`.
-- **Poliwag** (local 223, National Dex 60) [MEDIUM] Poliwag's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `40`.
-- **Poliwag** (local 223, National Dex 60) [MEDIUM] Poliwag's speed base stat differs from PokéAPI. Current: `50`; canonical: `90`.
-- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's hp base stat differs from PokéAPI. Current: `30`; canonical: `20`.
-- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's attack base stat differs from PokéAPI. Current: `20`; canonical: `10`.
-- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `15`.
-- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's specialDefense base stat differs from PokéAPI. Current: `55`; canonical: `20`.
-- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's speed base stat differs from PokéAPI. Current: `20`; canonical: `80`.
-- **Magikarp** (local 224, National Dex 129) [MEDIUM] Magikarp's maxHp template value differs from canonical base HP. Current: `30`; canonical: `20`.
-- **Goldeen** (local 225, National Dex 118) [MEDIUM] Goldeen's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `35`.
-- **Goldeen** (local 225, National Dex 118) [MEDIUM] Goldeen's speed base stat differs from PokéAPI. Current: `59`; canonical: `63`.
-- **Staryu** (local 226, National Dex 120) [MEDIUM] Staryu's specialAttack base stat differs from PokéAPI. Current: `65`; canonical: `70`.
-- **Staryu** (local 226, National Dex 120) [MEDIUM] Staryu's specialDefense base stat differs from PokéAPI. Current: `70`; canonical: `55`.
-- **Staryu** (local 226, National Dex 120) [MEDIUM] Staryu's speed base stat differs from PokéAPI. Current: `55`; canonical: `85`.
-- **Zubat** (local 227, National Dex 41) [MEDIUM] Zubat's speed base stat differs from PokéAPI. Current: `38`; canonical: `55`.
-- **Diglett** (local 228, National Dex 50) [MEDIUM] Diglett's hp base stat differs from PokéAPI. Current: `30`; canonical: `10`.
-- **Diglett** (local 228, National Dex 50) [MEDIUM] Diglett's speed base stat differs from PokéAPI. Current: `45`; canonical: `95`.
-- **Diglett** (local 228, National Dex 50) [MEDIUM] Diglett's maxHp template value differs from canonical base HP. Current: `30`; canonical: `10`.
-- **Machop** (local 229, National Dex 66) [MEDIUM] Machop's speed base stat differs from PokéAPI. Current: `58`; canonical: `35`.
-- **Tentacool** (local 230, National Dex 72) [MEDIUM] Tentacool's speed base stat differs from PokéAPI. Current: `45`; canonical: `70`.
-- **Horsea** (local 231, National Dex 116) [MEDIUM] Horsea's specialAttack base stat differs from PokéAPI. Current: `40`; canonical: `70`.
-- **Horsea** (local 231, National Dex 116) [MEDIUM] Horsea's specialDefense base stat differs from PokéAPI. Current: `70`; canonical: `25`.
-- **Horsea** (local 231, National Dex 116) [MEDIUM] Horsea's speed base stat differs from PokéAPI. Current: `40`; canonical: `60`.
-- **Shellder** (local 232, National Dex 90) [MEDIUM] Shellder's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `25`.
-- **Shellder** (local 232, National Dex 90) [MEDIUM] Shellder's speed base stat differs from PokéAPI. Current: `55`; canonical: `40`.
-- **Vulpix** (local 234, National Dex 37) [MEDIUM] Vulpix's speed base stat differs from PokéAPI. Current: `46`; canonical: `65`.
-- **Ponyta** (local 235, National Dex 77) [MEDIUM] Ponyta's speed base stat differs from PokéAPI. Current: `75`; canonical: `90`.
-- **Magmar** (local 236, National Dex 126) [MEDIUM] Magmar's speed base stat differs from PokéAPI. Current: `98`; canonical: `93`.
-- **Pidgey** (local 237, National Dex 16) [MEDIUM] Pidgey's speed base stat differs from PokéAPI. Current: `40`; canonical: `56`.
+- **Slugma** (local 280, National Dex 218) [MEDIUM] Slugma's speed base stat differs from PokéAPI. Current: `55`; canonical: `20`.
+- **Houndour** (local 281, National Dex 228) [MEDIUM] Houndour's speed base stat differs from PokéAPI. Current: `70`; canonical: `65`.
 - **Larvitar** (local 238, National Dex 246) [MEDIUM] Larvitar's hp base stat differs from PokéAPI. Current: `60`; canonical: `50`.
 - **Larvitar** (local 238, National Dex 246) [MEDIUM] Larvitar's attack base stat differs from PokéAPI. Current: `84`; canonical: `64`.
 - **Larvitar** (local 238, National Dex 246) [MEDIUM] Larvitar's defense base stat differs from PokéAPI. Current: `70`; canonical: `50`.
 - **Larvitar** (local 238, National Dex 246) [MEDIUM] Larvitar's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `45`.
 - **Larvitar** (local 238, National Dex 246) [MEDIUM] Larvitar's speed base stat differs from PokéAPI. Current: `67`; canonical: `41`.
 - **Larvitar** (local 238, National Dex 246) [MEDIUM] Larvitar's maxHp template value differs from canonical base HP. Current: `60`; canonical: `50`.
-- **Sandshrew** (local 239, National Dex 27) [MEDIUM] Sandshrew's speed base stat differs from PokéAPI. Current: `48`; canonical: `40`.
-- **Trapinch** (local 240, National Dex 328) [MEDIUM] Trapinch's speed base stat differs from PokéAPI. Current: `73`; canonical: `10`.
-- **Cacnea** (local 241, National Dex 331) [MEDIUM] Cacnea's speed base stat differs from PokéAPI. Current: `85`; canonical: `35`.
-- **Sandile** (local 242, National Dex 551) [MEDIUM] Sandile's speed base stat differs from PokéAPI. Current: `54`; canonical: `65`.
-- **Misdreavus** (local 243, National Dex 200) [MEDIUM] Misdreavus's speed base stat differs from PokéAPI. Current: `73`; canonical: `85`.
-- **Duskull** (local 244, National Dex 355) [MEDIUM] Duskull's speed base stat differs from PokéAPI. Current: `35`; canonical: `25`.
-- **Sableye** (local 245, National Dex 302) [MEDIUM] Sableye's specialDefense base stat differs from PokéAPI. Current: `75`; canonical: `65`.
-- **Sableye** (local 245, National Dex 302) [MEDIUM] Sableye's speed base stat differs from PokéAPI. Current: `70`; canonical: `50`.
-- **Gengar** (local 94, National Dex 94) [MEDIUM] Gengar's speed base stat differs from PokéAPI. Current: `98`; canonical: `110`.
-- **Articuno** (local 247, National Dex 144) [MEDIUM] Articuno's specialAttack base stat differs from PokéAPI. Current: `125`; canonical: `95`.
-- **Articuno** (local 247, National Dex 144) [MEDIUM] Articuno's specialDefense base stat differs from PokéAPI. Current: `115`; canonical: `125`.
-- **Articuno** (local 247, National Dex 144) [MEDIUM] Articuno's speed base stat differs from PokéAPI. Current: `105`; canonical: `85`.
-- **Zapdos** (local 248, National Dex 145) [MEDIUM] Zapdos's speed base stat differs from PokéAPI. Current: `108`; canonical: `100`.
-- **Moltres** (local 249, National Dex 146) [MEDIUM] Moltres's speed base stat differs from PokéAPI. Current: `113`; canonical: `90`.
 - **Lugia** (local 250, National Dex 249) [MEDIUM] Lugia's speed base stat differs from PokéAPI. Current: `90`; canonical: `110`.
 - **Ho-Oh** (local 251, National Dex 250) [MEDIUM] Ho-Oh's speed base stat differs from PokéAPI. Current: `120`; canonical: `90`.
-- **Rayquaza** (local 252, National Dex 384) [MEDIUM] Rayquaza's speed base stat differs from PokéAPI. Current: `150`; canonical: `95`.
+- **Torchic** (local 278, National Dex 255) [MEDIUM] Torchic's speed base stat differs from PokéAPI. Current: `65`; canonical: `45`.
+- **Mudkip** (local 268, National Dex 258) [MEDIUM] Mudkip's speed base stat differs from PokéAPI. Current: `60`; canonical: `40`.
+- **Lotad** (local 269, National Dex 270) [MEDIUM] Lotad's speed base stat differs from PokéAPI. Current: `35`; canonical: `30`.
+- **Seedot** (local 264, National Dex 273) [MEDIUM] Seedot's speed base stat differs from PokéAPI. Current: `35`; canonical: `30`.
+- **Shroomish** (local 265, National Dex 285) [MEDIUM] Shroomish's speed base stat differs from PokéAPI. Current: `40`; canonical: `35`.
+- **Nosepass** (local 274, National Dex 299) [MEDIUM] Nosepass's speed base stat differs from PokéAPI. Current: `45`; canonical: `30`.
+- **Sableye** (local 245, National Dex 302) [MEDIUM] Sableye's specialDefense base stat differs from PokéAPI. Current: `75`; canonical: `65`.
+- **Sableye** (local 245, National Dex 302) [MEDIUM] Sableye's speed base stat differs from PokéAPI. Current: `70`; canonical: `50`.
+- **Mawile** (local 277, National Dex 303) [MEDIUM] Mawile's speed base stat differs from PokéAPI. Current: `70`; canonical: `50`.
+- **Aron** (local 273, National Dex 304) [MEDIUM] Aron's speed base stat differs from PokéAPI. Current: `55`; canonical: `30`.
+- **Numel** (local 279, National Dex 322) [MEDIUM] Numel's speed base stat differs from PokéAPI. Current: `63`; canonical: `35`.
+- **Trapinch** (local 240, National Dex 328) [MEDIUM] Trapinch's speed base stat differs from PokéAPI. Current: `73`; canonical: `10`.
+- **Cacnea** (local 241, National Dex 331) [MEDIUM] Cacnea's speed base stat differs from PokéAPI. Current: `85`; canonical: `35`.
+- **Baltoy** (local 288, National Dex 343) [MEDIUM] Baltoy's speed base stat differs from PokéAPI. Current: `40`; canonical: `55`.
+- **Feebas** (local 271, National Dex 349) [MEDIUM] Feebas's speed base stat differs from PokéAPI. Current: `20`; canonical: `80`.
+- **Shuppet** (local 293, National Dex 353) [MEDIUM] Shuppet's speed base stat differs from PokéAPI. Current: `69`; canonical: `45`.
+- **Duskull** (local 244, National Dex 355) [MEDIUM] Duskull's speed base stat differs from PokéAPI. Current: `35`; canonical: `25`.
+- **Bagon** (local 286, National Dex 371) [MEDIUM] Bagon's speed base stat differs from PokéAPI. Current: `58`; canonical: `50`.
 - **Kyogre** (local 253, National Dex 382) [MEDIUM] Kyogre's speed base stat differs from PokéAPI. Current: `125`; canonical: `90`.
 - **Groudon** (local 254, National Dex 383) [MEDIUM] Groudon's speed base stat differs from PokéAPI. Current: `125`; canonical: `90`.
+- **Rayquaza** (local 252, National Dex 384) [MEDIUM] Rayquaza's speed base stat differs from PokéAPI. Current: `150`; canonical: `95`.
+- **Turtwig** (local 267, National Dex 387) [MEDIUM] Turtwig's speed base stat differs from PokéAPI. Current: `57`; canonical: `31`.
+- **Spiritomb** (local 297, National Dex 442) [MEDIUM] Spiritomb's speed base stat differs from PokéAPI. Current: `92`; canonical: `35`.
+- **Hippopotas** (local 289, National Dex 449) [MEDIUM] Hippopotas's speed base stat differs from PokéAPI. Current: `55`; canonical: `32`.
 - **Dialga** (local 255, National Dex 483) [MEDIUM] Dialga's speed base stat differs from PokéAPI. Current: `135`; canonical: `90`.
 - **Palkia** (local 256, National Dex 484) [MEDIUM] Palkia's speed base stat differs from PokéAPI. Current: `135`; canonical: `100`.
 - **Giratina** (local 257, National Dex 487) [MEDIUM] Giratina's speed base stat differs from PokéAPI. Current: `100`; canonical: `90`.
+- **Cresselia** (local 302, National Dex 488) [MEDIUM] Cresselia's defense base stat differs from PokéAPI. Current: `120`; canonical: `110`.
+- **Cresselia** (local 302, National Dex 488) [MEDIUM] Cresselia's specialDefense base stat differs from PokéAPI. Current: `130`; canonical: `120`.
+- **Roggenrola** (local 275, National Dex 524) [MEDIUM] Roggenrola's speed base stat differs from PokéAPI. Current: `50`; canonical: `15`.
+- **Drilbur** (local 276, National Dex 529) [MEDIUM] Drilbur's speed base stat differs from PokéAPI. Current: `58`; canonical: `68`.
+- **Sandile** (local 242, National Dex 551) [MEDIUM] Sandile's speed base stat differs from PokéAPI. Current: `54`; canonical: `65`.
+- **Darumaka** (local 290, National Dex 554) [MEDIUM] Darumaka's speed base stat differs from PokéAPI. Current: `53`; canonical: `50`.
+- **Scraggy** (local 291, National Dex 559) [MEDIUM] Scraggy's speed base stat differs from PokéAPI. Current: `55`; canonical: `48`.
+- **Yamask** (local 296, National Dex 562) [MEDIUM] Yamask's speed base stat differs from PokéAPI. Current: `43`; canonical: `30`.
+- **Litwick** (local 294, National Dex 607) [MEDIUM] Litwick's speed base stat differs from PokéAPI. Current: `48`; canonical: `20`.
+- **Axew** (local 287, National Dex 610) [MEDIUM] Axew's speed base stat differs from PokéAPI. Current: `59`; canonical: `57`.
+- **Reshiram** (local 259, National Dex 643) [MEDIUM] Reshiram's speed base stat differs from PokéAPI. Current: `135`; canonical: `90`.
 - **Zekrom** (local 258, National Dex 644) [MEDIUM] Zekrom's specialDefense base stat differs from PokéAPI. Current: `90`; canonical: `100`.
 - **Zekrom** (local 258, National Dex 644) [MEDIUM] Zekrom's speed base stat differs from PokéAPI. Current: `135`; canonical: `90`.
-- **Reshiram** (local 259, National Dex 643) [MEDIUM] Reshiram's speed base stat differs from PokéAPI. Current: `135`; canonical: `90`.
+- **Phantump** (local 295, National Dex 708) [MEDIUM] Phantump's speed base stat differs from PokéAPI. Current: `60`; canonical: `38`.
 - **Xerneas** (local 260, National Dex 716) [MEDIUM] Xerneas's hp base stat differs from PokéAPI. Current: `100`; canonical: `126`.
 - **Xerneas** (local 260, National Dex 716) [MEDIUM] Xerneas's attack base stat differs from PokéAPI. Current: `115`; canonical: `131`.
 - **Xerneas** (local 260, National Dex 716) [MEDIUM] Xerneas's defense base stat differs from PokéAPI. Current: `115`; canonical: `95`.
@@ -444,357 +845,525 @@ Generated: 2026-09-06T13:50:18.614Z
 - **Yveltal** (local 261, National Dex 717) [MEDIUM] Yveltal's specialDefense base stat differs from PokéAPI. Current: `100`; canonical: `98`.
 - **Yveltal** (local 261, National Dex 717) [MEDIUM] Yveltal's speed base stat differs from PokéAPI. Current: `135`; canonical: `99`.
 - **Yveltal** (local 261, National Dex 717) [MEDIUM] Yveltal's maxHp template value differs from canonical base HP. Current: `100`; canonical: `126`.
-- **Charizard** (local 6, National Dex 6) [MEDIUM] Charizard's speed base stat differs from PokéAPI. Current: `97`; canonical: `100`.
-- **Blastoise** (local 9, National Dex 9) [MEDIUM] Blastoise's speed base stat differs from PokéAPI. Current: `84`; canonical: `78`.
-- **Dragonite** (local 149, National Dex 149) [MEDIUM] Dragonite's speed base stat differs from PokéAPI. Current: `117`; canonical: `80`.
-- **Ivysaur** (local 2, National Dex 2) [MEDIUM] Ivysaur's speed base stat differs from PokéAPI. Current: `71`; canonical: `60`.
-- **Venusaur** (local 3, National Dex 3) [MEDIUM] Venusaur's speed base stat differs from PokéAPI. Current: `91`; canonical: `80`.
-- **Charmeleon** (local 5, National Dex 5) [MEDIUM] Charmeleon's speed base stat differs from PokéAPI. Current: `72`; canonical: `80`.
-- **Wartortle** (local 8, National Dex 8) [MEDIUM] Wartortle's speed base stat differs from PokéAPI. Current: `64`; canonical: `58`.
-- **Graveler** (local 75, National Dex 75) [MEDIUM] Graveler's speed base stat differs from PokéAPI. Current: `70`; canonical: `35`.
-- **Weepinbell** (local 70, National Dex 70) [MEDIUM] Weepinbell's speed base stat differs from PokéAPI. Current: `88`; canonical: `55`.
-- **Seedot** (local 264, National Dex 273) [MEDIUM] Seedot's speed base stat differs from PokéAPI. Current: `35`; canonical: `30`.
-- **Shroomish** (local 265, National Dex 285) [MEDIUM] Shroomish's speed base stat differs from PokéAPI. Current: `40`; canonical: `35`.
-- **Turtwig** (local 267, National Dex 387) [MEDIUM] Turtwig's speed base stat differs from PokéAPI. Current: `57`; canonical: `31`.
-- **Mudkip** (local 268, National Dex 258) [MEDIUM] Mudkip's speed base stat differs from PokéAPI. Current: `60`; canonical: `40`.
-- **Lotad** (local 269, National Dex 270) [MEDIUM] Lotad's speed base stat differs from PokéAPI. Current: `35`; canonical: `30`.
-- **Feebas** (local 271, National Dex 349) [MEDIUM] Feebas's speed base stat differs from PokéAPI. Current: `20`; canonical: `80`.
-- **Aron** (local 273, National Dex 304) [MEDIUM] Aron's speed base stat differs from PokéAPI. Current: `55`; canonical: `30`.
-- **Nosepass** (local 274, National Dex 299) [MEDIUM] Nosepass's speed base stat differs from PokéAPI. Current: `45`; canonical: `30`.
-- **Roggenrola** (local 275, National Dex 524) [MEDIUM] Roggenrola's speed base stat differs from PokéAPI. Current: `50`; canonical: `15`.
-- **Drilbur** (local 276, National Dex 529) [MEDIUM] Drilbur's speed base stat differs from PokéAPI. Current: `58`; canonical: `68`.
-- **Mawile** (local 277, National Dex 303) [MEDIUM] Mawile's speed base stat differs from PokéAPI. Current: `70`; canonical: `50`.
-- **Torchic** (local 278, National Dex 255) [MEDIUM] Torchic's speed base stat differs from PokéAPI. Current: `65`; canonical: `45`.
-- **Numel** (local 279, National Dex 322) [MEDIUM] Numel's speed base stat differs from PokéAPI. Current: `63`; canonical: `35`.
-- **Slugma** (local 280, National Dex 218) [MEDIUM] Slugma's speed base stat differs from PokéAPI. Current: `55`; canonical: `20`.
-- **Houndour** (local 281, National Dex 228) [MEDIUM] Houndour's speed base stat differs from PokéAPI. Current: `70`; canonical: `65`.
-- **Bagon** (local 286, National Dex 371) [MEDIUM] Bagon's speed base stat differs from PokéAPI. Current: `58`; canonical: `50`.
-- **Axew** (local 287, National Dex 610) [MEDIUM] Axew's speed base stat differs from PokéAPI. Current: `59`; canonical: `57`.
-- **Baltoy** (local 288, National Dex 343) [MEDIUM] Baltoy's speed base stat differs from PokéAPI. Current: `40`; canonical: `55`.
-- **Hippopotas** (local 289, National Dex 449) [MEDIUM] Hippopotas's speed base stat differs from PokéAPI. Current: `55`; canonical: `32`.
-- **Darumaka** (local 290, National Dex 554) [MEDIUM] Darumaka's speed base stat differs from PokéAPI. Current: `53`; canonical: `50`.
-- **Scraggy** (local 291, National Dex 559) [MEDIUM] Scraggy's speed base stat differs from PokéAPI. Current: `55`; canonical: `48`.
-- **Shuppet** (local 293, National Dex 353) [MEDIUM] Shuppet's speed base stat differs from PokéAPI. Current: `69`; canonical: `45`.
-- **Litwick** (local 294, National Dex 607) [MEDIUM] Litwick's speed base stat differs from PokéAPI. Current: `48`; canonical: `20`.
-- **Phantump** (local 295, National Dex 708) [MEDIUM] Phantump's speed base stat differs from PokéAPI. Current: `60`; canonical: `38`.
-- **Yamask** (local 296, National Dex 562) [MEDIUM] Yamask's speed base stat differs from PokéAPI. Current: `43`; canonical: `30`.
-- **Spiritomb** (local 297, National Dex 442) [MEDIUM] Spiritomb's speed base stat differs from PokéAPI. Current: `92`; canonical: `35`.
-- **Cresselia** (local 302, National Dex 488) [MEDIUM] Cresselia's defense base stat differs from PokéAPI. Current: `120`; canonical: `110`.
-- **Cresselia** (local 302, National Dex 488) [MEDIUM] Cresselia's specialDefense base stat differs from PokéAPI. Current: `130`; canonical: `120`.
 
 ## Capture Rate Mismatches
 
-- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's base catch rate differs from PokéAPI. Current: `255`; canonical: `190`.
-- **Gastly** (local 92, National Dex 92) [MEDIUM] Gastly's base catch rate differs from PokéAPI. Current: `255`; canonical: `190`.
-- **Mew** (local 151, National Dex 151) [MEDIUM] Mew's base catch rate differs from PokéAPI. Current: `10`; canonical: `45`.
-- **Sneasel** (local 218, National Dex 215) [MEDIUM] Sneasel's base catch rate differs from PokéAPI. Current: `120`; canonical: `60`.
 - **Butterfree** (local 222, National Dex 12) [MEDIUM] Butterfree's base catch rate differs from PokéAPI. Current: `75`; canonical: `45`.
+- **Psyduck** (local 54, National Dex 54) [MEDIUM] Psyduck's base catch rate differs from PokéAPI. Current: `255`; canonical: `190`.
 - **Tentacool** (local 230, National Dex 72) [MEDIUM] Tentacool's base catch rate differs from PokéAPI. Current: `235`; canonical: `190`.
 - **Ponyta** (local 235, National Dex 77) [MEDIUM] Ponyta's base catch rate differs from PokéAPI. Current: `170`; canonical: `190`.
-- **Magmar** (local 236, National Dex 126) [MEDIUM] Magmar's base catch rate differs from PokéAPI. Current: `90`; canonical: `45`.
-- **Larvitar** (local 238, National Dex 246) [MEDIUM] Larvitar's base catch rate differs from PokéAPI. Current: `90`; canonical: `45`.
-- **Trapinch** (local 240, National Dex 328) [MEDIUM] Trapinch's base catch rate differs from PokéAPI. Current: `190`; canonical: `255`.
-- **Sandile** (local 242, National Dex 551) [MEDIUM] Sandile's base catch rate differs from PokéAPI. Current: `90`; canonical: `180`.
-- **Misdreavus** (local 243, National Dex 200) [MEDIUM] Misdreavus's base catch rate differs from PokéAPI. Current: `175`; canonical: `45`.
-- **Sableye** (local 245, National Dex 302) [MEDIUM] Sableye's base catch rate differs from PokéAPI. Current: `90`; canonical: `45`.
+- **Gastly** (local 92, National Dex 92) [MEDIUM] Gastly's base catch rate differs from PokéAPI. Current: `255`; canonical: `190`.
 - **Gengar** (local 94, National Dex 94) [MEDIUM] Gengar's base catch rate differs from PokéAPI. Current: `90`; canonical: `45`.
+- **Magmar** (local 236, National Dex 126) [MEDIUM] Magmar's base catch rate differs from PokéAPI. Current: `90`; canonical: `45`.
 - **Articuno** (local 247, National Dex 144) [MEDIUM] Articuno's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
 - **Zapdos** (local 248, National Dex 145) [MEDIUM] Zapdos's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
 - **Moltres** (local 249, National Dex 146) [MEDIUM] Moltres's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
+- **Mew** (local 151, National Dex 151) [MEDIUM] Mew's base catch rate differs from PokéAPI. Current: `10`; canonical: `45`.
+- **Misdreavus** (local 243, National Dex 200) [MEDIUM] Misdreavus's base catch rate differs from PokéAPI. Current: `175`; canonical: `45`.
+- **Sneasel** (local 218, National Dex 215) [MEDIUM] Sneasel's base catch rate differs from PokéAPI. Current: `120`; canonical: `60`.
+- **Larvitar** (local 238, National Dex 246) [MEDIUM] Larvitar's base catch rate differs from PokéAPI. Current: `90`; canonical: `45`.
 - **Lugia** (local 250, National Dex 249) [MEDIUM] Lugia's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
 - **Ho-Oh** (local 251, National Dex 250) [MEDIUM] Ho-Oh's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
-- **Rayquaza** (local 252, National Dex 384) [MEDIUM] Rayquaza's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Sableye** (local 245, National Dex 302) [MEDIUM] Sableye's base catch rate differs from PokéAPI. Current: `90`; canonical: `45`.
+- **Trapinch** (local 240, National Dex 328) [MEDIUM] Trapinch's base catch rate differs from PokéAPI. Current: `190`; canonical: `255`.
 - **Kyogre** (local 253, National Dex 382) [MEDIUM] Kyogre's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
 - **Groudon** (local 254, National Dex 383) [MEDIUM] Groudon's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
+- **Rayquaza** (local 252, National Dex 384) [MEDIUM] Rayquaza's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Spiritomb** (local 297, National Dex 442) [MEDIUM] Spiritomb's base catch rate differs from PokéAPI. Current: `30`; canonical: `100`.
 - **Dialga** (local 255, National Dex 483) [MEDIUM] Dialga's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
 - **Palkia** (local 256, National Dex 484) [MEDIUM] Palkia's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
 - **Giratina** (local 257, National Dex 487) [MEDIUM] Giratina's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
-- **Zekrom** (local 258, National Dex 644) [MEDIUM] Zekrom's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
+- **Sandile** (local 242, National Dex 551) [MEDIUM] Sandile's base catch rate differs from PokéAPI. Current: `90`; canonical: `180`.
 - **Reshiram** (local 259, National Dex 643) [MEDIUM] Reshiram's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
+- **Zekrom** (local 258, National Dex 644) [MEDIUM] Zekrom's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
 - **Xerneas** (local 260, National Dex 716) [MEDIUM] Xerneas's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
 - **Yveltal** (local 261, National Dex 717) [MEDIUM] Yveltal's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
 - **Silicobra** (local 292, National Dex 843) [MEDIUM] Silicobra's base catch rate differs from PokéAPI. Current: `120`; canonical: `255`.
-- **Spiritomb** (local 297, National Dex 442) [MEDIUM] Spiritomb's base catch rate differs from PokéAPI. Current: `30`; canonical: `100`.
 
 ## Evolution Mismatches
 
-- **Pikachu** (local 25, National Dex 25) [HIGH] Pikachu uses a simplified level evolution for a different canonical method. Current: `{"target":"Raichu","level":12}`; canonical: `{"targets":["Raichu"],"conditions":[{"trigger":"use-item","item":"thunder-stone"},{"trigger":"use-item","item":"thunder-stone"}]}`.
-- **Clefairy** (local 35, National Dex 35) [HIGH] Clefairy is missing canonical evolution target information. Current: `none`; canonical: `Clefable`.
-- **Jigglypuff** (local 39, National Dex 39) [HIGH] Jigglypuff is missing canonical evolution target information. Current: `none`; canonical: `Wigglytuff`.
-- **Psyduck** (local 54, National Dex 54) [HIGH] Psyduck is missing canonical evolution target information. Current: `none`; canonical: `Golduck`.
-- **Growlithe** (local 58, National Dex 58) [HIGH] Growlithe is missing canonical evolution target information. Current: `none`; canonical: `Arcanine`.
-- **Cubone** (local 104, National Dex 104) [HIGH] Cubone is missing canonical evolution target information. Current: `none`; canonical: `Marowak`.
-- **Dratini** (local 147, National Dex 147) [HIGH] Dratini is missing canonical evolution target information. Current: `none`; canonical: `Dragonair`.
-- **Spearow** (local 21, National Dex 21) [HIGH] Spearow is missing canonical evolution target information. Current: `none`; canonical: `Fearow`.
-- **Onix** (local 95, National Dex 95) [HIGH] Onix is missing canonical evolution target information. Current: `none`; canonical: `Steelix`.
-- **Voltorb** (local 100, National Dex 100) [HIGH] Voltorb is missing canonical evolution target information. Current: `none`; canonical: `Electrode`.
-- **Cyndaquil** (local 155, National Dex 155) [HIGH] Cyndaquil's evolution level differs from PokéAPI. Current: `{"target":"Quilava","level":16}`; canonical: `{"targets":["Quilava"],"conditions":[{"trigger":"level-up","minLevel":14},{"trigger":"level-up","minLevel":17}]}`.
-- **Totodile** (local 158, National Dex 158) [HIGH] Totodile's evolution level differs from PokéAPI. Current: `{"target":"Croconaw","level":16}`; canonical: `{"targets":["Croconaw"],"conditions":[{"trigger":"level-up","minLevel":18}]}`.
-- **Pichu** (local 172, National Dex 172) [HIGH] Pichu uses a simplified level evolution for a different canonical method. Current: `{"target":"Pikachu","level":8}`; canonical: `{"targets":["Pikachu"],"conditions":[{"trigger":"level-up","minHappiness":220}]}`.
-- **Togepi** (local 175, National Dex 175) [HIGH] Togepi is missing canonical evolution target information. Current: `none`; canonical: `Togetic`.
-- **Marill** (local 183, National Dex 183) [HIGH] Marill is missing canonical evolution target information. Current: `none`; canonical: `Azumarill`.
-- **Girafarig** (local 207, National Dex 203) [HIGH] Girafarig is missing canonical evolution target information. Current: `none`; canonical: `Farigiraf`.
 - **Caterpie** (local 219, National Dex 10) [HIGH] Caterpie is missing canonical evolution target information. Current: `none`; canonical: `Metapod`.
+- **Metapod** (local 11, National Dex 11) [HIGH] Metapod is missing canonical evolution target information. Current: `none`; canonical: `Butterfree`.
 - **Weedle** (local 220, National Dex 13) [HIGH] Weedle is missing canonical evolution target information. Current: `none`; canonical: `Kakuna`.
+- **Kakuna** (local 14, National Dex 14) [HIGH] Kakuna is missing canonical evolution target information. Current: `none`; canonical: `Beedrill`.
+- **Pidgey** (local 237, National Dex 16) [HIGH] Pidgey is missing canonical evolution target information. Current: `none`; canonical: `Pidgeotto`.
+- **Pidgeotto** (local 17, National Dex 17) [HIGH] Pidgeotto is missing canonical evolution target information. Current: `none`; canonical: `Pidgeot`.
+- **Rattata** (local 19, National Dex 19) [HIGH] Rattata is missing canonical evolution target information. Current: `none`; canonical: `Raticate`.
+- **Spearow** (local 21, National Dex 21) [HIGH] Spearow is missing canonical evolution target information. Current: `none`; canonical: `Fearow`.
+- **Ekans** (local 23, National Dex 23) [HIGH] Ekans is missing canonical evolution target information. Current: `none`; canonical: `Arbok`.
+- **Pikachu** (local 25, National Dex 25) [HIGH] Pikachu uses a simplified level evolution for a different canonical method. Current: `{"target":"Raichu","level":12}`; canonical: `{"targets":["Raichu"],"conditions":[{"trigger":"use-item","item":"thunder-stone"},{"trigger":"use-item","item":"thunder-stone"}]}`.
+- **Sandshrew** (local 239, National Dex 27) [HIGH] Sandshrew is missing canonical evolution target information. Current: `none`; canonical: `Sandslash`.
+- **Nidoran♀** (local 29, National Dex 29) [HIGH] Nidoran♀ is missing canonical evolution target information. Current: `none`; canonical: `Nidorina`.
+- **Nidorina** (local 30, National Dex 30) [HIGH] Nidorina is missing canonical evolution target information. Current: `none`; canonical: `Nidoqueen`.
+- **Nidoran♂** (local 32, National Dex 32) [HIGH] Nidoran♂ is missing canonical evolution target information. Current: `none`; canonical: `Nidorino`.
+- **Nidorino** (local 33, National Dex 33) [HIGH] Nidorino is missing canonical evolution target information. Current: `none`; canonical: `Nidoking`.
+- **Clefairy** (local 35, National Dex 35) [HIGH] Clefairy is missing canonical evolution target information. Current: `none`; canonical: `Clefable`.
+- **Vulpix** (local 234, National Dex 37) [HIGH] Vulpix is missing canonical evolution target information. Current: `none`; canonical: `Ninetales`.
+- **Jigglypuff** (local 39, National Dex 39) [HIGH] Jigglypuff is missing canonical evolution target information. Current: `none`; canonical: `Wigglytuff`.
+- **Zubat** (local 227, National Dex 41) [HIGH] Zubat is missing canonical evolution target information. Current: `none`; canonical: `Golbat`.
+- **Golbat** (local 42, National Dex 42) [HIGH] Golbat is missing canonical evolution target information. Current: `none`; canonical: `Crobat`.
 - **Oddish** (local 221, National Dex 43) [HIGH] Oddish is missing canonical evolution target information. Current: `none`; canonical: `Gloom`.
+- **Paras** (local 46, National Dex 46) [HIGH] Paras is missing canonical evolution target information. Current: `none`; canonical: `Parasect`.
+- **Venonat** (local 48, National Dex 48) [HIGH] Venonat is missing canonical evolution target information. Current: `none`; canonical: `Venomoth`.
+- **Diglett** (local 228, National Dex 50) [HIGH] Diglett is missing canonical evolution target information. Current: `none`; canonical: `Dugtrio`.
+- **Psyduck** (local 54, National Dex 54) [HIGH] Psyduck is missing canonical evolution target information. Current: `none`; canonical: `Golduck`.
+- **Mankey** (local 56, National Dex 56) [HIGH] Mankey is missing canonical evolution target information. Current: `none`; canonical: `Primeape`.
+- **Primeape** (local 57, National Dex 57) [HIGH] Primeape is missing canonical evolution target information. Current: `none`; canonical: `Annihilape`.
+- **Growlithe** (local 58, National Dex 58) [HIGH] Growlithe is missing canonical evolution target information. Current: `none`; canonical: `Arcanine`.
 - **Poliwag** (local 223, National Dex 60) [HIGH] Poliwag is missing canonical evolution target information. Current: `none`; canonical: `Poliwhirl`.
-- **Magikarp** (local 224, National Dex 129) [HIGH] Magikarp is missing canonical evolution target information. Current: `none`; canonical: `Gyarados`.
+- **Abra** (local 63, National Dex 63) [HIGH] Abra is missing canonical evolution target information. Current: `none`; canonical: `Kadabra`.
+- **Kadabra** (local 64, National Dex 64) [HIGH] Kadabra is missing canonical evolution target information. Current: `none`; canonical: `Alakazam`.
+- **Machop** (local 229, National Dex 66) [HIGH] Machop is missing canonical evolution target information. Current: `none`; canonical: `Machoke`.
+- **Machoke** (local 67, National Dex 67) [HIGH] Machoke is missing canonical evolution target information. Current: `none`; canonical: `Machamp`.
+- **Weepinbell** (local 70, National Dex 70) [HIGH] Weepinbell is missing canonical evolution target information. Current: `none`; canonical: `Victreebel`.
+- **Tentacool** (local 230, National Dex 72) [HIGH] Tentacool is missing canonical evolution target information. Current: `none`; canonical: `Tentacruel`.
+- **Graveler** (local 75, National Dex 75) [HIGH] Graveler is missing canonical evolution target information. Current: `none`; canonical: `Golem`.
+- **Ponyta** (local 235, National Dex 77) [HIGH] Ponyta is missing canonical evolution target information. Current: `none`; canonical: `Rapidash`.
+- **Magnemite** (local 81, National Dex 81) [HIGH] Magnemite is missing canonical evolution target information. Current: `none`; canonical: `Magneton`.
+- **Magneton** (local 82, National Dex 82) [HIGH] Magneton is missing canonical evolution target information. Current: `none`; canonical: `Magnezone`.
+- **Farfetch’d** (local 83, National Dex 83) [HIGH] Farfetch’d is missing canonical evolution target information. Current: `none`; canonical: `Sirfetchd`.
+- **Doduo** (local 84, National Dex 84) [HIGH] Doduo is missing canonical evolution target information. Current: `none`; canonical: `Dodrio`.
+- **Seel** (local 233, National Dex 86) [HIGH] Seel is missing canonical evolution target information. Current: `none`; canonical: `Dewgong`.
+- **Grimer** (local 88, National Dex 88) [HIGH] Grimer is missing canonical evolution target information. Current: `none`; canonical: `Muk`.
+- **Shellder** (local 232, National Dex 90) [HIGH] Shellder is missing canonical evolution target information. Current: `none`; canonical: `Cloyster`.
+- **Haunter** (local 93, National Dex 93) [HIGH] Haunter uses a simplified level evolution for a different canonical method. Current: `{"target":"Gengar","level":36}`; canonical: `{"targets":["Gengar"],"conditions":[{"trigger":"trade"}]}`.
+- **Onix** (local 95, National Dex 95) [HIGH] Onix is missing canonical evolution target information. Current: `none`; canonical: `Steelix`.
+- **Drowzee** (local 96, National Dex 96) [HIGH] Drowzee is missing canonical evolution target information. Current: `none`; canonical: `Hypno`.
+- **Krabby** (local 98, National Dex 98) [HIGH] Krabby is missing canonical evolution target information. Current: `none`; canonical: `Kingler`.
+- **Voltorb** (local 100, National Dex 100) [HIGH] Voltorb is missing canonical evolution target information. Current: `none`; canonical: `Electrode`.
+- **Exeggcute** (local 102, National Dex 102) [HIGH] Exeggcute is missing canonical evolution target information. Current: `none`; canonical: `Exeggutor`.
+- **Cubone** (local 104, National Dex 104) [HIGH] Cubone is missing canonical evolution target information. Current: `none`; canonical: `Marowak`.
+- **Lickitung** (local 108, National Dex 108) [HIGH] Lickitung is missing canonical evolution target information. Current: `none`; canonical: `Lickilicky`.
+- **Koffing** (local 109, National Dex 109) [HIGH] Koffing is missing canonical evolution target information. Current: `none`; canonical: `Weezing`.
+- **Rhyhorn** (local 111, National Dex 111) [HIGH] Rhyhorn is missing canonical evolution target information. Current: `none`; canonical: `Rhydon`.
+- **Rhydon** (local 112, National Dex 112) [HIGH] Rhydon is missing canonical evolution target information. Current: `none`; canonical: `Rhyperior`.
+- **Chansey** (local 113, National Dex 113) [HIGH] Chansey is missing canonical evolution target information. Current: `none`; canonical: `Blissey`.
+- **Tangela** (local 114, National Dex 114) [HIGH] Tangela is missing canonical evolution target information. Current: `none`; canonical: `Tangrowth`.
+- **Horsea** (local 231, National Dex 116) [HIGH] Horsea is missing canonical evolution target information. Current: `none`; canonical: `Seadra`.
+- **Seadra** (local 117, National Dex 117) [HIGH] Seadra is missing canonical evolution target information. Current: `none`; canonical: `Kingdra`.
 - **Goldeen** (local 225, National Dex 118) [HIGH] Goldeen is missing canonical evolution target information. Current: `none`; canonical: `Seaking`.
 - **Staryu** (local 226, National Dex 120) [HIGH] Staryu is missing canonical evolution target information. Current: `none`; canonical: `Starmie`.
-- **Zubat** (local 227, National Dex 41) [HIGH] Zubat is missing canonical evolution target information. Current: `none`; canonical: `Golbat`.
-- **Diglett** (local 228, National Dex 50) [HIGH] Diglett is missing canonical evolution target information. Current: `none`; canonical: `Dugtrio`.
-- **Machop** (local 229, National Dex 66) [HIGH] Machop is missing canonical evolution target information. Current: `none`; canonical: `Machoke`.
-- **Tentacool** (local 230, National Dex 72) [HIGH] Tentacool is missing canonical evolution target information. Current: `none`; canonical: `Tentacruel`.
-- **Horsea** (local 231, National Dex 116) [HIGH] Horsea is missing canonical evolution target information. Current: `none`; canonical: `Seadra`.
-- **Shellder** (local 232, National Dex 90) [HIGH] Shellder is missing canonical evolution target information. Current: `none`; canonical: `Cloyster`.
-- **Seel** (local 233, National Dex 86) [HIGH] Seel is missing canonical evolution target information. Current: `none`; canonical: `Dewgong`.
-- **Vulpix** (local 234, National Dex 37) [HIGH] Vulpix is missing canonical evolution target information. Current: `none`; canonical: `Ninetales`.
-- **Ponyta** (local 235, National Dex 77) [HIGH] Ponyta is missing canonical evolution target information. Current: `none`; canonical: `Rapidash`.
+- **Mr. Mime** (local 122, National Dex 122) [HIGH] Mr. Mime is missing canonical evolution target information. Current: `none`; canonical: `Mr Rime`.
+- **Electabuzz** (local 125, National Dex 125) [HIGH] Electabuzz is missing canonical evolution target information. Current: `none`; canonical: `Electivire`.
 - **Magmar** (local 236, National Dex 126) [HIGH] Magmar is missing canonical evolution target information. Current: `none`; canonical: `Magmortar`.
-- **Pidgey** (local 237, National Dex 16) [HIGH] Pidgey is missing canonical evolution target information. Current: `none`; canonical: `Pidgeotto`.
-- **Larvitar** (local 238, National Dex 246) [HIGH] Larvitar is missing canonical evolution target information. Current: `none`; canonical: `Pupitar`.
-- **Sandshrew** (local 239, National Dex 27) [HIGH] Sandshrew is missing canonical evolution target information. Current: `none`; canonical: `Sandslash`.
-- **Trapinch** (local 240, National Dex 328) [HIGH] Trapinch is missing canonical evolution target information. Current: `none`; canonical: `Vibrava`.
-- **Cacnea** (local 241, National Dex 331) [HIGH] Cacnea is missing canonical evolution target information. Current: `none`; canonical: `Cacturne`.
-- **Sandile** (local 242, National Dex 551) [HIGH] Sandile is missing canonical evolution target information. Current: `none`; canonical: `Krokorok`.
-- **Misdreavus** (local 243, National Dex 200) [HIGH] Misdreavus is missing canonical evolution target information. Current: `none`; canonical: `Mismagius`.
-- **Duskull** (local 244, National Dex 355) [HIGH] Duskull is missing canonical evolution target information. Current: `none`; canonical: `Dusclops`.
-- **Haunter** (local 93, National Dex 93) [HIGH] Haunter uses a simplified level evolution for a different canonical method. Current: `{"target":"Gengar","level":36}`; canonical: `{"targets":["Gengar"],"conditions":[{"trigger":"trade"}]}`.
-- **Graveler** (local 75, National Dex 75) [HIGH] Graveler is missing canonical evolution target information. Current: `none`; canonical: `Golem`.
-- **Weepinbell** (local 70, National Dex 70) [HIGH] Weepinbell is missing canonical evolution target information. Current: `none`; canonical: `Victreebel`.
+- **Magikarp** (local 224, National Dex 129) [HIGH] Magikarp is missing canonical evolution target information. Current: `none`; canonical: `Gyarados`.
+- **Porygon** (local 137, National Dex 137) [HIGH] Porygon is missing canonical evolution target information. Current: `none`; canonical: `Porygon2`.
+- **Omanyte** (local 138, National Dex 138) [HIGH] Omanyte is missing canonical evolution target information. Current: `none`; canonical: `Omastar`.
+- **Kabuto** (local 140, National Dex 140) [HIGH] Kabuto is missing canonical evolution target information. Current: `none`; canonical: `Kabutops`.
+- **Dratini** (local 147, National Dex 147) [HIGH] Dratini is missing canonical evolution target information. Current: `none`; canonical: `Dragonair`.
+- **Dragonair** (local 148, National Dex 148) [HIGH] Dragonair is missing canonical evolution target information. Current: `none`; canonical: `Dragonite`.
+- **Cyndaquil** (local 155, National Dex 155) [HIGH] Cyndaquil's evolution level differs from PokéAPI. Current: `{"target":"Quilava","level":16}`; canonical: `{"targets":["Quilava"],"conditions":[{"trigger":"level-up","minLevel":14},{"trigger":"level-up","minLevel":17}]}`.
+- **Totodile** (local 158, National Dex 158) [HIGH] Totodile's evolution level differs from PokéAPI. Current: `{"target":"Croconaw","level":16}`; canonical: `{"targets":["Croconaw"],"conditions":[{"trigger":"level-up","minLevel":18}]}`.
+- **Croconaw** (local 159, National Dex 159) [HIGH] Croconaw's evolution level differs from PokéAPI. Current: `{"target":"Feraligatr","level":36}`; canonical: `{"targets":["Feraligatr"],"conditions":[{"trigger":"level-up","minLevel":30}]}`.
+- **Sentret** (local 161, National Dex 161) [HIGH] Sentret is missing canonical evolution target information. Current: `none`; canonical: `Furret`.
 - **Hoothoot** (local 263, National Dex 163) [HIGH] Hoothoot is missing canonical evolution target information. Current: `none`; canonical: `Noctowl`.
-- **Seedot** (local 264, National Dex 273) [HIGH] Seedot is missing canonical evolution target information. Current: `none`; canonical: `Nuzleaf`.
-- **Shroomish** (local 265, National Dex 285) [HIGH] Shroomish is missing canonical evolution target information. Current: `none`; canonical: `Breloom`.
+- **Ledyba** (local 165, National Dex 165) [HIGH] Ledyba is missing canonical evolution target information. Current: `none`; canonical: `Ledian`.
+- **Spinarak** (local 167, National Dex 167) [HIGH] Spinarak is missing canonical evolution target information. Current: `none`; canonical: `Ariados`.
+- **Chinchou** (local 170, National Dex 170) [HIGH] Chinchou is missing canonical evolution target information. Current: `none`; canonical: `Lanturn`.
+- **Pichu** (local 172, National Dex 172) [HIGH] Pichu uses a simplified level evolution for a different canonical method. Current: `{"target":"Pikachu","level":8}`; canonical: `{"targets":["Pikachu"],"conditions":[{"trigger":"level-up","minHappiness":220}]}`.
+- **Cleffa** (local 173, National Dex 173) [HIGH] Cleffa is missing canonical evolution target information. Current: `none`; canonical: `Clefairy`.
+- **Igglybuff** (local 174, National Dex 174) [HIGH] Igglybuff is missing canonical evolution target information. Current: `none`; canonical: `Jigglypuff`.
+- **Togepi** (local 175, National Dex 175) [HIGH] Togepi is missing canonical evolution target information. Current: `none`; canonical: `Togetic`.
+- **Togetic** (local 176, National Dex 176) [HIGH] Togetic is missing canonical evolution target information. Current: `none`; canonical: `Togekiss`.
+- **Natu** (local 177, National Dex 177) [HIGH] Natu is missing canonical evolution target information. Current: `none`; canonical: `Xatu`.
+- **Mareep** (local 179, National Dex 179) [HIGH] Mareep is missing canonical evolution target information. Current: `none`; canonical: `Flaaffy`.
+- **Flaaffy** (local 180, National Dex 180) [HIGH] Flaaffy is missing canonical evolution target information. Current: `none`; canonical: `Ampharos`.
+- **Marill** (local 183, National Dex 183) [HIGH] Marill is missing canonical evolution target information. Current: `none`; canonical: `Azumarill`.
+- **Hoppip** (local 187, National Dex 187) [HIGH] Hoppip is missing canonical evolution target information. Current: `none`; canonical: `Skiploom`.
+- **Skiploom** (local 188, National Dex 188) [HIGH] Skiploom is missing canonical evolution target information. Current: `none`; canonical: `Jumpluff`.
+- **Aipom** (local 190, National Dex 190) [HIGH] Aipom is missing canonical evolution target information. Current: `none`; canonical: `Ambipom`.
+- **Sunkern** (local 191, National Dex 191) [HIGH] Sunkern is missing canonical evolution target information. Current: `none`; canonical: `Sunflora`.
+- **Yanma** (local 193, National Dex 193) [HIGH] Yanma is missing canonical evolution target information. Current: `none`; canonical: `Yanmega`.
+- **Murkrow** (local 198, National Dex 198) [HIGH] Murkrow is missing canonical evolution target information. Current: `none`; canonical: `Honchkrow`.
+- **Misdreavus** (local 243, National Dex 200) [HIGH] Misdreavus is missing canonical evolution target information. Current: `none`; canonical: `Mismagius`.
+- **Girafarig** (local 207, National Dex 203) [HIGH] Girafarig is missing canonical evolution target information. Current: `none`; canonical: `Farigiraf`.
+- **Pineco** (local 204, National Dex 204) [HIGH] Pineco is missing canonical evolution target information. Current: `none`; canonical: `Forretress`.
+- **Dunsparce** (local 206, National Dex 206) [HIGH] Dunsparce is missing canonical evolution target information. Current: `none`; canonical: `Dudunsparce`.
+- **Gligar** (local 10001, National Dex 207) [HIGH] Gligar is missing canonical evolution target information. Current: `none`; canonical: `Gliscor`.
+- **Snubbull** (local 209, National Dex 209) [HIGH] Snubbull is missing canonical evolution target information. Current: `none`; canonical: `Granbull`.
+- **Qwilfish** (local 211, National Dex 211) [HIGH] Qwilfish is missing canonical evolution target information. Current: `none`; canonical: `Overqwil`.
+- **Teddiursa** (local 216, National Dex 216) [HIGH] Teddiursa is missing canonical evolution target information. Current: `none`; canonical: `Ursaring`.
+- **Ursaring** (local 217, National Dex 217) [HIGH] Ursaring is missing canonical evolution target information. Current: `none`; canonical: `Ursaluna`.
+- **Slugma** (local 280, National Dex 218) [HIGH] Slugma is missing canonical evolution target information. Current: `none`; canonical: `Magcargo`.
+- **Swinub** (local 10003, National Dex 220) [HIGH] Swinub is missing canonical evolution target information. Current: `none`; canonical: `Piloswine`.
+- **Piloswine** (local 10004, National Dex 221) [HIGH] Piloswine is missing canonical evolution target information. Current: `none`; canonical: `Mamoswine`.
+- **Corsola** (local 10005, National Dex 222) [HIGH] Corsola is missing canonical evolution target information. Current: `none`; canonical: `Cursola`.
+- **Remoraid** (local 10006, National Dex 223) [HIGH] Remoraid is missing canonical evolution target information. Current: `none`; canonical: `Octillery`.
+- **Houndour** (local 281, National Dex 228) [HIGH] Houndour is missing canonical evolution target information. Current: `none`; canonical: `Houndoom`.
+- **Phanpy** (local 10013, National Dex 231) [HIGH] Phanpy is missing canonical evolution target information. Current: `none`; canonical: `Donphan`.
+- **Porygon2** (local 10015, National Dex 233) [HIGH] Porygon2 is missing canonical evolution target information. Current: `none`; canonical: `Porygon Z`.
+- **Stantler** (local 10016, National Dex 234) [HIGH] Stantler is missing canonical evolution target information. Current: `none`; canonical: `Wyrdeer`.
+- **Smoochum** (local 10020, National Dex 238) [HIGH] Smoochum is missing canonical evolution target information. Current: `none`; canonical: `Jynx`.
+- **Elekid** (local 10021, National Dex 239) [HIGH] Elekid is missing canonical evolution target information. Current: `none`; canonical: `Electabuzz`.
+- **Magby** (local 10022, National Dex 240) [HIGH] Magby is missing canonical evolution target information. Current: `none`; canonical: `Magmar`.
+- **Larvitar** (local 238, National Dex 246) [HIGH] Larvitar is missing canonical evolution target information. Current: `none`; canonical: `Pupitar`.
+- **Pupitar** (local 10028, National Dex 247) [HIGH] Pupitar is missing canonical evolution target information. Current: `none`; canonical: `Tyranitar`.
 - **Treecko** (local 266, National Dex 252) [HIGH] Treecko is missing canonical evolution target information. Current: `none`; canonical: `Grovyle`.
-- **Turtwig** (local 267, National Dex 387) [HIGH] Turtwig is missing canonical evolution target information. Current: `none`; canonical: `Grotle`.
+- **Grovyle** (local 10031, National Dex 253) [HIGH] Grovyle is missing canonical evolution target information. Current: `none`; canonical: `Sceptile`.
+- **Torchic** (local 278, National Dex 255) [HIGH] Torchic is missing canonical evolution target information. Current: `none`; canonical: `Combusken`.
+- **Combusken** (local 10033, National Dex 256) [HIGH] Combusken is missing canonical evolution target information. Current: `none`; canonical: `Blaziken`.
 - **Mudkip** (local 268, National Dex 258) [HIGH] Mudkip is missing canonical evolution target information. Current: `none`; canonical: `Marshtomp`.
+- **Marshtomp** (local 10035, National Dex 259) [HIGH] Marshtomp is missing canonical evolution target information. Current: `none`; canonical: `Swampert`.
+- **Poochyena** (local 10037, National Dex 261) [HIGH] Poochyena is missing canonical evolution target information. Current: `none`; canonical: `Mightyena`.
+- **Zigzagoon** (local 10039, National Dex 263) [HIGH] Zigzagoon is missing canonical evolution target information. Current: `none`; canonical: `Linoone`.
+- **Linoone** (local 10040, National Dex 264) [HIGH] Linoone is missing canonical evolution target information. Current: `none`; canonical: `Obstagoon`.
+- **Silcoon** (local 10042, National Dex 266) [HIGH] Silcoon is missing canonical evolution target information. Current: `none`; canonical: `Beautifly`.
+- **Cascoon** (local 10044, National Dex 268) [HIGH] Cascoon is missing canonical evolution target information. Current: `none`; canonical: `Dustox`.
 - **Lotad** (local 269, National Dex 270) [HIGH] Lotad is missing canonical evolution target information. Current: `none`; canonical: `Lombre`.
+- **Lombre** (local 10046, National Dex 271) [HIGH] Lombre is missing canonical evolution target information. Current: `none`; canonical: `Ludicolo`.
+- **Seedot** (local 264, National Dex 273) [HIGH] Seedot is missing canonical evolution target information. Current: `none`; canonical: `Nuzleaf`.
+- **Nuzleaf** (local 10048, National Dex 274) [HIGH] Nuzleaf is missing canonical evolution target information. Current: `none`; canonical: `Shiftry`.
+- **Taillow** (local 10050, National Dex 276) [HIGH] Taillow is missing canonical evolution target information. Current: `none`; canonical: `Swellow`.
 - **Wingull** (local 270, National Dex 278) [HIGH] Wingull is missing canonical evolution target information. Current: `none`; canonical: `Pelipper`.
-- **Feebas** (local 271, National Dex 349) [HIGH] Feebas is missing canonical evolution target information. Current: `none`; canonical: `Milotic`.
-- **Buizel** (local 272, National Dex 418) [HIGH] Buizel is missing canonical evolution target information. Current: `none`; canonical: `Floatzel`.
-- **Aron** (local 273, National Dex 304) [HIGH] Aron is missing canonical evolution target information. Current: `none`; canonical: `Lairon`.
+- **Ralts** (local 10053, National Dex 280) [HIGH] Ralts is missing canonical evolution target information. Current: `none`; canonical: `Kirlia`.
+- **Surskit** (local 10056, National Dex 283) [HIGH] Surskit is missing canonical evolution target information. Current: `none`; canonical: `Masquerain`.
+- **Shroomish** (local 265, National Dex 285) [HIGH] Shroomish is missing canonical evolution target information. Current: `none`; canonical: `Breloom`.
+- **Slakoth** (local 10059, National Dex 287) [HIGH] Slakoth is missing canonical evolution target information. Current: `none`; canonical: `Vigoroth`.
+- **Vigoroth** (local 10060, National Dex 288) [HIGH] Vigoroth is missing canonical evolution target information. Current: `none`; canonical: `Slaking`.
+- **Whismur** (local 10065, National Dex 293) [HIGH] Whismur is missing canonical evolution target information. Current: `none`; canonical: `Loudred`.
+- **Loudred** (local 10066, National Dex 294) [HIGH] Loudred is missing canonical evolution target information. Current: `none`; canonical: `Exploud`.
+- **Makuhita** (local 10068, National Dex 296) [HIGH] Makuhita is missing canonical evolution target information. Current: `none`; canonical: `Hariyama`.
+- **Azurill** (local 10070, National Dex 298) [HIGH] Azurill is missing canonical evolution target information. Current: `none`; canonical: `Marill`.
 - **Nosepass** (local 274, National Dex 299) [HIGH] Nosepass is missing canonical evolution target information. Current: `none`; canonical: `Probopass`.
+- **Skitty** (local 10071, National Dex 300) [HIGH] Skitty is missing canonical evolution target information. Current: `none`; canonical: `Delcatty`.
+- **Aron** (local 273, National Dex 304) [HIGH] Aron is missing canonical evolution target information. Current: `none`; canonical: `Lairon`.
+- **Lairon** (local 305, National Dex 305) [HIGH] Lairon is missing canonical evolution target information. Current: `none`; canonical: `Aggron`.
+- **Meditite** (local 307, National Dex 307) [HIGH] Meditite is missing canonical evolution target information. Current: `none`; canonical: `Medicham`.
+- **Electrike** (local 309, National Dex 309) [HIGH] Electrike is missing canonical evolution target information. Current: `none`; canonical: `Manectric`.
+- **Roselia** (local 315, National Dex 315) [HIGH] Roselia is missing canonical evolution target information. Current: `none`; canonical: `Roserade`.
+- **Gulpin** (local 316, National Dex 316) [HIGH] Gulpin is missing canonical evolution target information. Current: `none`; canonical: `Swalot`.
+- **Carvanha** (local 318, National Dex 318) [HIGH] Carvanha is missing canonical evolution target information. Current: `none`; canonical: `Sharpedo`.
+- **Wailmer** (local 320, National Dex 320) [HIGH] Wailmer is missing canonical evolution target information. Current: `none`; canonical: `Wailord`.
+- **Numel** (local 279, National Dex 322) [HIGH] Numel is missing canonical evolution target information. Current: `none`; canonical: `Camerupt`.
+- **Spoink** (local 325, National Dex 325) [HIGH] Spoink is missing canonical evolution target information. Current: `none`; canonical: `Grumpig`.
+- **Trapinch** (local 240, National Dex 328) [HIGH] Trapinch is missing canonical evolution target information. Current: `none`; canonical: `Vibrava`.
+- **Vibrava** (local 329, National Dex 329) [HIGH] Vibrava is missing canonical evolution target information. Current: `none`; canonical: `Flygon`.
+- **Cacnea** (local 241, National Dex 331) [HIGH] Cacnea is missing canonical evolution target information. Current: `none`; canonical: `Cacturne`.
+- **Swablu** (local 333, National Dex 333) [HIGH] Swablu is missing canonical evolution target information. Current: `none`; canonical: `Altaria`.
+- **Barboach** (local 339, National Dex 339) [HIGH] Barboach is missing canonical evolution target information. Current: `none`; canonical: `Whiscash`.
+- **Corphish** (local 341, National Dex 341) [HIGH] Corphish is missing canonical evolution target information. Current: `none`; canonical: `Crawdaunt`.
+- **Baltoy** (local 288, National Dex 343) [HIGH] Baltoy is missing canonical evolution target information. Current: `none`; canonical: `Claydol`.
+- **Lileep** (local 345, National Dex 345) [HIGH] Lileep is missing canonical evolution target information. Current: `none`; canonical: `Cradily`.
+- **Anorith** (local 347, National Dex 347) [HIGH] Anorith is missing canonical evolution target information. Current: `none`; canonical: `Armaldo`.
+- **Feebas** (local 271, National Dex 349) [HIGH] Feebas is missing canonical evolution target information. Current: `none`; canonical: `Milotic`.
+- **Shuppet** (local 293, National Dex 353) [HIGH] Shuppet is missing canonical evolution target information. Current: `none`; canonical: `Banette`.
+- **Duskull** (local 244, National Dex 355) [HIGH] Duskull is missing canonical evolution target information. Current: `none`; canonical: `Dusclops`.
+- **Dusclops** (local 356, National Dex 356) [HIGH] Dusclops is missing canonical evolution target information. Current: `none`; canonical: `Dusknoir`.
+- **Wynaut** (local 360, National Dex 360) [HIGH] Wynaut is missing canonical evolution target information. Current: `none`; canonical: `Wobbuffet`.
+- **Spheal** (local 363, National Dex 363) [HIGH] Spheal is missing canonical evolution target information. Current: `none`; canonical: `Sealeo`.
+- **Sealeo** (local 364, National Dex 364) [HIGH] Sealeo is missing canonical evolution target information. Current: `none`; canonical: `Walrein`.
+- **Bagon** (local 286, National Dex 371) [HIGH] Bagon is missing canonical evolution target information. Current: `none`; canonical: `Shelgon`.
+- **Shelgon** (local 372, National Dex 372) [HIGH] Shelgon is missing canonical evolution target information. Current: `none`; canonical: `Salamence`.
+- **Beldum** (local 374, National Dex 374) [HIGH] Beldum is missing canonical evolution target information. Current: `none`; canonical: `Metang`.
+- **Metang** (local 375, National Dex 375) [HIGH] Metang is missing canonical evolution target information. Current: `none`; canonical: `Metagross`.
+- **Turtwig** (local 267, National Dex 387) [HIGH] Turtwig is missing canonical evolution target information. Current: `none`; canonical: `Grotle`.
+- **Grotle** (local 388, National Dex 388) [HIGH] Grotle is missing canonical evolution target information. Current: `none`; canonical: `Torterra`.
+- **Chimchar** (local 390, National Dex 390) [HIGH] Chimchar is missing canonical evolution target information. Current: `none`; canonical: `Monferno`.
+- **Monferno** (local 391, National Dex 391) [HIGH] Monferno is missing canonical evolution target information. Current: `none`; canonical: `Infernape`.
+- **Piplup** (local 393, National Dex 393) [HIGH] Piplup is missing canonical evolution target information. Current: `none`; canonical: `Prinplup`.
+- **Prinplup** (local 394, National Dex 394) [HIGH] Prinplup is missing canonical evolution target information. Current: `none`; canonical: `Empoleon`.
+- **Starly** (local 396, National Dex 396) [HIGH] Starly is missing canonical evolution target information. Current: `none`; canonical: `Staravia`.
+- **Staravia** (local 397, National Dex 397) [HIGH] Staravia is missing canonical evolution target information. Current: `none`; canonical: `Staraptor`.
+- **Bidoof** (local 399, National Dex 399) [HIGH] Bidoof is missing canonical evolution target information. Current: `none`; canonical: `Bibarel`.
+- **Buizel** (local 272, National Dex 418) [HIGH] Buizel is missing canonical evolution target information. Current: `none`; canonical: `Floatzel`.
+- **Riolu** (local 284, National Dex 447) [HIGH] Riolu is missing canonical evolution target information. Current: `none`; canonical: `Lucario`.
+- **Hippopotas** (local 289, National Dex 449) [HIGH] Hippopotas is missing canonical evolution target information. Current: `none`; canonical: `Hippowdon`.
 - **Roggenrola** (local 275, National Dex 524) [HIGH] Roggenrola is missing canonical evolution target information. Current: `none`; canonical: `Boldore`.
 - **Drilbur** (local 276, National Dex 529) [HIGH] Drilbur is missing canonical evolution target information. Current: `none`; canonical: `Excadrill`.
-- **Torchic** (local 278, National Dex 255) [HIGH] Torchic is missing canonical evolution target information. Current: `none`; canonical: `Combusken`.
-- **Numel** (local 279, National Dex 322) [HIGH] Numel is missing canonical evolution target information. Current: `none`; canonical: `Camerupt`.
-- **Slugma** (local 280, National Dex 218) [HIGH] Slugma is missing canonical evolution target information. Current: `none`; canonical: `Magcargo`.
-- **Houndour** (local 281, National Dex 228) [HIGH] Houndour is missing canonical evolution target information. Current: `none`; canonical: `Houndoom`.
-- **Salandit** (local 282, National Dex 757) [HIGH] Salandit is missing canonical evolution target information. Current: `none`; canonical: `Salazzle`.
-- **Rookidee** (local 283, National Dex 821) [HIGH] Rookidee is missing canonical evolution target information. Current: `none`; canonical: `Corvisquire`.
-- **Riolu** (local 284, National Dex 447) [HIGH] Riolu is missing canonical evolution target information. Current: `none`; canonical: `Lucario`.
-- **Bagon** (local 286, National Dex 371) [HIGH] Bagon is missing canonical evolution target information. Current: `none`; canonical: `Shelgon`.
-- **Axew** (local 287, National Dex 610) [HIGH] Axew is missing canonical evolution target information. Current: `none`; canonical: `Fraxure`.
-- **Baltoy** (local 288, National Dex 343) [HIGH] Baltoy is missing canonical evolution target information. Current: `none`; canonical: `Claydol`.
-- **Hippopotas** (local 289, National Dex 449) [HIGH] Hippopotas is missing canonical evolution target information. Current: `none`; canonical: `Hippowdon`.
+- **Sandile** (local 242, National Dex 551) [HIGH] Sandile is missing canonical evolution target information. Current: `none`; canonical: `Krokorok`.
 - **Darumaka** (local 290, National Dex 554) [HIGH] Darumaka is missing canonical evolution target information. Current: `none`; canonical: `Darmanitan`.
 - **Scraggy** (local 291, National Dex 559) [HIGH] Scraggy is missing canonical evolution target information. Current: `none`; canonical: `Scrafty`.
-- **Silicobra** (local 292, National Dex 843) [HIGH] Silicobra is missing canonical evolution target information. Current: `none`; canonical: `Sandaconda`.
-- **Shuppet** (local 293, National Dex 353) [HIGH] Shuppet is missing canonical evolution target information. Current: `none`; canonical: `Banette`.
 - **Litwick** (local 294, National Dex 607) [HIGH] Litwick is missing canonical evolution target information. Current: `none`; canonical: `Lampent`.
+- **Axew** (local 287, National Dex 610) [HIGH] Axew is missing canonical evolution target information. Current: `none`; canonical: `Fraxure`.
 - **Phantump** (local 295, National Dex 708) [HIGH] Phantump is missing canonical evolution target information. Current: `none`; canonical: `Trevenant`.
-- **Croconaw** (local 159, National Dex 159) [HIGH] Croconaw's evolution level differs from PokéAPI. Current: `{"target":"Feraligatr","level":36}`; canonical: `{"targets":["Feraligatr"],"conditions":[{"trigger":"level-up","minLevel":30}]}`.
+- **Salandit** (local 282, National Dex 757) [HIGH] Salandit is missing canonical evolution target information. Current: `none`; canonical: `Salazzle`.
+- **Rookidee** (local 283, National Dex 821) [HIGH] Rookidee is missing canonical evolution target information. Current: `none`; canonical: `Corvisquire`.
+- **Silicobra** (local 292, National Dex 843) [HIGH] Silicobra is missing canonical evolution target information. Current: `none`; canonical: `Sandaconda`.
 
 ## Branching Evolutions
 
-- **Eevee** (local 133, National Dex 133) [HIGH] Eevee has multiple canonical evolution branches. Current: `{"target":"Vaporeon","level":16}`; canonical: `{"targets":["Vaporeon","Jolteon","Flareon","Espeon","Umbreon","Leafeon","Glaceon","Sylveon"]}`.
+- **Gloom** (local 44, National Dex 44) [HIGH] Gloom is missing canonical evolution target information. Current: `none`; canonical: `Vileplume, Bellossom`.
+- **Meowth** (local 52, National Dex 52) [HIGH] Meowth is missing canonical evolution target information. Current: `none`; canonical: `Persian, Perrserker`.
+- **Poliwhirl** (local 61, National Dex 61) [HIGH] Poliwhirl is missing canonical evolution target information. Current: `none`; canonical: `Poliwrath, Politoed`.
+- **Slowpoke** (local 79, National Dex 79) [HIGH] Slowpoke is missing canonical evolution target information. Current: `none`; canonical: `Slowbro, Slowking`.
 - **Scyther** (local 123, National Dex 123) [HIGH] Scyther is missing canonical evolution target information. Current: `none`; canonical: `Scizor, Kleavor`.
+- **Eevee** (local 133, National Dex 133) [HIGH] Eevee has multiple canonical evolution branches. Current: `{"target":"Vaporeon","level":16}`; canonical: `{"targets":["Vaporeon","Jolteon","Flareon","Espeon","Umbreon","Leafeon","Glaceon","Sylveon"]}`.
 - **Wooper** (local 194, National Dex 194) [HIGH] Wooper is missing canonical evolution target information. Current: `none`; canonical: `Quagsire, Clodsire`.
 - **Sneasel** (local 218, National Dex 215) [HIGH] Sneasel is missing canonical evolution target information. Current: `none`; canonical: `Weavile, Sneasler`.
+- **Tyrogue** (local 10018, National Dex 236) [HIGH] Tyrogue is missing canonical evolution target information. Current: `none`; canonical: `Hitmonlee, Hitmonchan, Hitmontop`.
+- **Wurmple** (local 10041, National Dex 265) [HIGH] Wurmple is missing canonical evolution target information. Current: `none`; canonical: `Silcoon, Cascoon`.
+- **Kirlia** (local 10054, National Dex 281) [HIGH] Kirlia is missing canonical evolution target information. Current: `none`; canonical: `Gardevoir, Gallade`.
+- **Nincada** (local 10062, National Dex 290) [HIGH] Nincada is missing canonical evolution target information. Current: `none`; canonical: `Ninjask, Shedinja`.
+- **Snorunt** (local 361, National Dex 361) [HIGH] Snorunt is missing canonical evolution target information. Current: `none`; canonical: `Glalie, Froslass`.
+- **Clamperl** (local 366, National Dex 366) [HIGH] Clamperl is missing canonical evolution target information. Current: `none`; canonical: `Huntail, Gorebyss`.
 - **Yamask** (local 296, National Dex 562) [HIGH] Yamask is missing canonical evolution target information. Current: `none`; canonical: `Cofagrigus, Runerigus`.
 
 ## Missing Evolution Family Members
 
-- Chain 14: present **Clefairy**; missing **Cleffa, Clefable**.
-- Chain 16: present **Jigglypuff**; missing **Igglybuff, Wigglytuff**.
-- Chain 23: present **Psyduck**; missing **Golduck**.
-- Chain 25: present **Growlithe**; missing **Arcanine**.
-- Chain 29: present **Bellsprout, Weepinbell**; missing **Victreebel**.
-- Chain 31: present **Geodude, Graveler**; missing **Golem**.
-- Chain 46: present **Cubone**; missing **Marowak**.
-- Chain 67: present **Eevee, Vaporeon**; missing **Jolteon, Flareon, Espeon, Umbreon, Leafeon, Glaceon, Sylveon**.
-- Chain 76: present **Dratini, Dragonite**; missing **Dragonair**.
-- Chain 6: present **Pidgey, Pidgeot**; missing **Pidgeotto**.
-- Chain 8: present **Spearow**; missing **Fearow**.
-- Chain 41: present **Onix**; missing **Steelix**.
-- Chain 44: present **Voltorb**; missing **Electrode**.
-- Chain 58: present **Scyther**; missing **Scizor, Kleavor**.
+- Chain 22: present **Meowth, Persian**; missing **Perrserker**.
+- Chain 24: present **Mankey, Primeape**; missing **Annihilape**.
+- Chain 34: present **Magnemite, Magneton**; missing **Magnezone**.
+- Chain 35: present **Farfetchd**; missing **Sirfetchd**.
+- Chain 48: present **Lickitung**; missing **Lickilicky**.
+- Chain 50: present **Rhyhorn, Rhydon**; missing **Rhyperior**.
+- Chain 51: present **Chansey, Blissey**; missing **Happiny**.
+- Chain 52: present **Tangela**; missing **Tangrowth**.
+- Chain 57: present **Mr Mime**; missing **Mime Jr, Mr Rime**.
+- Chain 58: present **Scyther, Scizor**; missing **Kleavor**.
+- Chain 60: present **Elekid, Electabuzz**; missing **Electivire**.
+- Chain 61: present **Magby, Magmar**; missing **Magmortar**.
+- Chain 67: present **Eevee, Vaporeon, Jolteon, Flareon, Espeon, Umbreon**; missing **Leafeon, Glaceon, Sylveon**.
+- Chain 68: present **Porygon, Porygon2**; missing **Porygon Z**.
 - Chain 72: present **Snorlax**; missing **Munchlax**.
-- Chain 87: present **Togepi**; missing **Togetic, Togekiss**.
-- Chain 90: present **Marill**; missing **Azurill, Azumarill**.
-- Chain 96: present **Wooper**; missing **Quagsire, Clodsire**.
-- Chain 101: present **Girafarig**; missing **Farigiraf**.
-- Chain 109: present **Sneasel**; missing **Weavile, Sneasler**.
-- Chain 4: present **Caterpie, Butterfree**; missing **Metapod**.
-- Chain 5: present **Weedle**; missing **Kakuna, Beedrill**.
-- Chain 18: present **Oddish**; missing **Gloom, Vileplume, Bellossom**.
-- Chain 26: present **Poliwag**; missing **Poliwhirl, Poliwrath, Politoed**.
-- Chain 64: present **Magikarp**; missing **Gyarados**.
-- Chain 55: present **Goldeen**; missing **Seaking**.
-- Chain 56: present **Staryu**; missing **Starmie**.
-- Chain 17: present **Zubat**; missing **Golbat, Crobat**.
-- Chain 21: present **Diglett**; missing **Dugtrio**.
-- Chain 28: present **Machop**; missing **Machoke, Machamp**.
-- Chain 30: present **Tentacool**; missing **Tentacruel**.
-- Chain 54: present **Horsea**; missing **Seadra, Kingdra**.
-- Chain 39: present **Shellder**; missing **Cloyster**.
-- Chain 37: present **Seel**; missing **Dewgong**.
-- Chain 15: present **Vulpix**; missing **Ninetales**.
-- Chain 32: present **Ponyta**; missing **Rapidash**.
-- Chain 61: present **Magmar**; missing **Magby, Magmortar**.
-- Chain 126: present **Larvitar**; missing **Pupitar, Tyranitar**.
-- Chain 11: present **Sandshrew**; missing **Sandslash**.
-- Chain 166: present **Trapinch**; missing **Vibrava, Flygon**.
-- Chain 167: present **Cacnea**; missing **Cacturne**.
-- Chain 281: present **Sandile**; missing **Krokorok, Krookodile**.
+- Chain 87: present **Togepi, Togetic**; missing **Togekiss**.
+- Chain 91: present **Sudowoodo**; missing **Bonsly**.
+- Chain 93: present **Aipom**; missing **Ambipom**.
+- Chain 95: present **Yanma**; missing **Yanmega**.
+- Chain 96: present **Wooper, Quagsire**; missing **Clodsire**.
+- Chain 97: present **Murkrow**; missing **Honchkrow**.
 - Chain 98: present **Misdreavus**; missing **Mismagius**.
-- Chain 182: present **Duskull**; missing **Dusclops, Dusknoir**.
-- Chain 83: present **Hoothoot**; missing **Noctowl**.
-- Chain 137: present **Seedot**; missing **Nuzleaf, Shiftry**.
-- Chain 142: present **Shroomish**; missing **Breloom**.
-- Chain 130: present **Treecko**; missing **Grovyle, Sceptile**.
-- Chain 203: present **Turtwig**; missing **Grotle, Torterra**.
-- Chain 132: present **Mudkip**; missing **Marshtomp, Swampert**.
-- Chain 136: present **Lotad**; missing **Lombre, Ludicolo**.
-- Chain 139: present **Wingull**; missing **Pelipper**.
-- Chain 178: present **Feebas**; missing **Milotic**.
-- Chain 216: present **Buizel**; missing **Floatzel**.
-- Chain 151: present **Aron**; missing **Lairon, Aggron**.
+- Chain 101: present **Girafarig**; missing **Farigiraf**.
+- Chain 103: present **Dunsparce**; missing **Dudunsparce**.
+- Chain 104: present **Gligar**; missing **Gliscor**.
+- Chain 106: present **Qwilfish**; missing **Overqwil**.
+- Chain 109: present **Sneasel**; missing **Weavile, Sneasler**.
+- Chain 110: present **Teddiursa, Ursaring**; missing **Ursaluna**.
+- Chain 112: present **Swinub, Piloswine**; missing **Mamoswine**.
+- Chain 113: present **Corsola**; missing **Cursola**.
+- Chain 116: present **Mantine**; missing **Mantyke**.
+- Chain 120: present **Stantler**; missing **Wyrdeer**.
+- Chain 134: present **Zigzagoon, Linoone**; missing **Obstagoon**.
+- Chain 140: present **Ralts, Kirlia, Gardevoir**; missing **Gallade**.
 - Chain 147: present **Nosepass**; missing **Probopass**.
+- Chain 158: present **Roselia**; missing **Budew, Roserade**.
+- Chain 182: present **Duskull, Dusclops**; missing **Dusknoir**.
+- Chain 184: present **Chimecho**; missing **Chingling**.
+- Chain 186: present **Snorunt, Glalie**; missing **Froslass**.
+- Chain 216: present **Buizel**; missing **Floatzel**.
+- Chain 232: present **Riolu**; missing **Lucario**.
+- Chain 233: present **Hippopotas**; missing **Hippowdon**.
 - Chain 268: present **Roggenrola**; missing **Boldore, Gigalith**.
 - Chain 270: present **Drilbur**; missing **Excadrill**.
-- Chain 131: present **Torchic**; missing **Combusken, Blaziken**.
-- Chain 162: present **Numel**; missing **Camerupt**.
-- Chain 111: present **Slugma**; missing **Magcargo**.
-- Chain 118: present **Houndour**; missing **Houndoom**.
-- Chain 390: present **Salandit**; missing **Salazzle**.
-- Chain 434: present **Rookidee**; missing **Corvisquire, Corviknight**.
-- Chain 232: present **Riolu**; missing **Lucario**.
-- Chain 191: present **Bagon**; missing **Shelgon, Salamence**.
-- Chain 309: present **Axew**; missing **Fraxure, Haxorus**.
-- Chain 175: present **Baltoy**; missing **Claydol**.
-- Chain 233: present **Hippopotas**; missing **Hippowdon**.
+- Chain 281: present **Sandile**; missing **Krokorok, Krookodile**.
 - Chain 282: present **Darumaka**; missing **Darmanitan**.
 - Chain 285: present **Scraggy**; missing **Scrafty**.
-- Chain 443: present **Silicobra**; missing **Sandaconda**.
-- Chain 181: present **Shuppet**; missing **Banette**.
-- Chain 308: present **Litwick**; missing **Lampent, Chandelure**.
-- Chain 364: present **Phantump**; missing **Trevenant**.
 - Chain 287: present **Yamask**; missing **Cofagrigus, Runerigus**.
+- Chain 308: present **Litwick**; missing **Lampent, Chandelure**.
+- Chain 309: present **Axew**; missing **Fraxure, Haxorus**.
+- Chain 364: present **Phantump**; missing **Trevenant**.
+- Chain 390: present **Salandit**; missing **Salazzle**.
+- Chain 434: present **Rookidee**; missing **Corvisquire, Corviknight**.
+- Chain 443: present **Silicobra**; missing **Sandaconda**.
 
 ## Forms Found
 
-- **Pikachu**: canonical pikachu-rock-star, pikachu-belle, pikachu-pop-star, pikachu-phd, pikachu-libre, pikachu-cosplay, pikachu-original-cap, pikachu-hoenn-cap, pikachu-sinnoh-cap, pikachu-unova-cap, pikachu-kalos-cap, pikachu-alola-cap, pikachu-partner-cap, pikachu-starter, pikachu-world-cap, pikachu-gmax; configured none; missing pikachu-rock-star, pikachu-belle, pikachu-pop-star, pikachu-phd, pikachu-libre, pikachu-cosplay, pikachu-original-cap, pikachu-hoenn-cap, pikachu-sinnoh-cap, pikachu-unova-cap, pikachu-kalos-cap, pikachu-alola-cap, pikachu-partner-cap, pikachu-starter, pikachu-world-cap, pikachu-gmax.
-- **Growlithe**: canonical growlithe-hisui; configured Hisuian Form; missing none.
-- **Geodude**: canonical geodude-alola; configured none; missing geodude-alola.
-- **Eevee**: canonical eevee-starter, eevee-gmax; configured none; missing eevee-starter, eevee-gmax.
-- **Mewtwo**: canonical mewtwo-mega-x, mewtwo-mega-y; configured none; missing mewtwo-mega-x, mewtwo-mega-y.
-- **Pidgeot**: canonical pidgeot-mega; configured none; missing pidgeot-mega.
-- **Voltorb**: canonical voltorb-hisui; configured Hisuian Form; missing none.
-- **Lapras**: canonical lapras-gmax; configured none; missing lapras-gmax.
-- **Snorlax**: canonical snorlax-gmax; configured none; missing snorlax-gmax.
-- **Wooper**: canonical wooper-paldea; configured none; missing wooper-paldea.
-- **Sneasel**: canonical sneasel-hisui; configured none; missing sneasel-hisui.
+- **Venusaur**: canonical venusaur-mega, venusaur-gmax; configured none; missing venusaur-mega, venusaur-gmax.
+- **Charizard**: canonical charizard-mega-x, charizard-mega-y, charizard-gmax; configured none; missing charizard-mega-x, charizard-mega-y, charizard-gmax.
+- **Blastoise**: canonical blastoise-mega, blastoise-gmax; configured none; missing blastoise-mega, blastoise-gmax.
 - **Butterfree**: canonical butterfree-gmax; configured none; missing butterfree-gmax.
-- **Diglett**: canonical diglett-alola; configured none; missing diglett-alola.
-- **Vulpix**: canonical vulpix-alola; configured Alolan Form; missing none.
-- **Ponyta**: canonical ponyta-galar; configured Galarian Form; missing none.
+- **Beedrill**: canonical beedrill-mega; configured none; missing beedrill-mega.
+- **Pidgeot**: canonical pidgeot-mega; configured none; missing pidgeot-mega.
+- **Rattata**: canonical rattata-alola; configured none; missing rattata-alola.
+- **Raticate**: canonical raticate-alola, raticate-totem-alola; configured none; missing raticate-alola, raticate-totem-alola.
+- **Pikachu**: canonical pikachu-rock-star, pikachu-belle, pikachu-pop-star, pikachu-phd, pikachu-libre, pikachu-cosplay, pikachu-original-cap, pikachu-hoenn-cap, pikachu-sinnoh-cap, pikachu-unova-cap, pikachu-kalos-cap, pikachu-alola-cap, pikachu-partner-cap, pikachu-starter, pikachu-world-cap, pikachu-gmax; configured none; missing pikachu-rock-star, pikachu-belle, pikachu-pop-star, pikachu-phd, pikachu-libre, pikachu-cosplay, pikachu-original-cap, pikachu-hoenn-cap, pikachu-sinnoh-cap, pikachu-unova-cap, pikachu-kalos-cap, pikachu-alola-cap, pikachu-partner-cap, pikachu-starter, pikachu-world-cap, pikachu-gmax.
+- **Raichu**: canonical raichu-alola, raichu-mega-x, raichu-mega-y; configured Alolan Form; missing raichu-mega-x, raichu-mega-y.
 - **Sandshrew**: canonical sandshrew-alola; configured none; missing sandshrew-alola.
-- **Sableye**: canonical sableye-mega; configured none; missing sableye-mega.
+- **Sandslash**: canonical sandslash-alola; configured none; missing sandslash-alola.
+- **Clefable**: canonical clefable-mega; configured none; missing clefable-mega.
+- **Vulpix**: canonical vulpix-alola; configured Alolan Form; missing none.
+- **Ninetales**: canonical ninetales-alola; configured none; missing ninetales-alola.
+- **Diglett**: canonical diglett-alola; configured none; missing diglett-alola.
+- **Dugtrio**: canonical dugtrio-alola; configured none; missing dugtrio-alola.
+- **Meowth**: canonical meowth-alola, meowth-galar, meowth-gmax; configured none; missing meowth-alola, meowth-galar, meowth-gmax.
+- **Persian**: canonical persian-alola; configured none; missing persian-alola.
+- **Growlithe**: canonical growlithe-hisui; configured Hisuian Form; missing none.
+- **Arcanine**: canonical arcanine-hisui; configured none; missing arcanine-hisui.
+- **Alakazam**: canonical alakazam-mega; configured none; missing alakazam-mega.
+- **Machamp**: canonical machamp-gmax; configured none; missing machamp-gmax.
+- **Victreebel**: canonical victreebel-mega; configured none; missing victreebel-mega.
+- **Geodude**: canonical geodude-alola; configured none; missing geodude-alola.
+- **Graveler**: canonical graveler-alola; configured none; missing graveler-alola.
+- **Golem**: canonical golem-alola; configured none; missing golem-alola.
+- **Ponyta**: canonical ponyta-galar; configured Galarian Form; missing none.
+- **Rapidash**: canonical rapidash-galar; configured none; missing rapidash-galar.
+- **Slowpoke**: canonical slowpoke-galar; configured none; missing slowpoke-galar.
+- **Slowbro**: canonical slowbro-mega, slowbro-galar; configured none; missing slowbro-mega, slowbro-galar.
+- **Farfetch’d**: canonical farfetchd-galar; configured none; missing farfetchd-galar.
+- **Grimer**: canonical grimer-alola; configured none; missing grimer-alola.
+- **Muk**: canonical muk-alola; configured none; missing muk-alola.
 - **Gengar**: canonical gengar-mega, gengar-gmax; configured none; missing gengar-mega, gengar-gmax.
+- **Kingler**: canonical kingler-gmax; configured none; missing kingler-gmax.
+- **Voltorb**: canonical voltorb-hisui; configured Hisuian Form; missing none.
+- **Electrode**: canonical electrode-hisui; configured none; missing electrode-hisui.
+- **Exeggutor**: canonical exeggutor-alola; configured none; missing exeggutor-alola.
+- **Marowak**: canonical marowak-alola, marowak-totem; configured none; missing marowak-alola, marowak-totem.
+- **Weezing**: canonical weezing-galar; configured none; missing weezing-galar.
+- **Kangaskhan**: canonical kangaskhan-mega; configured none; missing kangaskhan-mega.
+- **Starmie**: canonical starmie-mega; configured none; missing starmie-mega.
+- **Mr. Mime**: canonical mr-mime-galar; configured none; missing mr-mime-galar.
+- **Pinsir**: canonical pinsir-mega; configured none; missing pinsir-mega.
+- **Tauros**: canonical tauros-paldea-combat-breed, tauros-paldea-blaze-breed, tauros-paldea-aqua-breed; configured none; missing tauros-paldea-combat-breed, tauros-paldea-blaze-breed, tauros-paldea-aqua-breed.
+- **Gyarados**: canonical gyarados-mega; configured none; missing gyarados-mega.
+- **Lapras**: canonical lapras-gmax; configured none; missing lapras-gmax.
+- **Eevee**: canonical eevee-starter, eevee-gmax; configured none; missing eevee-starter, eevee-gmax.
+- **Aerodactyl**: canonical aerodactyl-mega; configured none; missing aerodactyl-mega.
+- **Snorlax**: canonical snorlax-gmax; configured none; missing snorlax-gmax.
 - **Articuno**: canonical articuno-galar; configured none; missing articuno-galar.
 - **Zapdos**: canonical zapdos-galar; configured none; missing zapdos-galar.
 - **Moltres**: canonical moltres-galar; configured none; missing moltres-galar.
-- **Rayquaza**: canonical rayquaza-mega; configured none; missing rayquaza-mega.
-- **Kyogre**: canonical kyogre-primal; configured none; missing kyogre-primal.
-- **Groudon**: canonical groudon-primal; configured none; missing groudon-primal.
-- **Dialga**: canonical dialga-origin; configured none; missing dialga-origin.
-- **Palkia**: canonical palkia-origin; configured none; missing palkia-origin.
-- **Giratina**: canonical giratina-origin; configured none; missing giratina-origin.
-- **Charizard**: canonical charizard-mega-x, charizard-mega-y, charizard-gmax; configured none; missing charizard-mega-x, charizard-mega-y, charizard-gmax.
-- **Blastoise**: canonical blastoise-mega, blastoise-gmax; configured none; missing blastoise-mega, blastoise-gmax.
 - **Dragonite**: canonical dragonite-mega; configured none; missing dragonite-mega.
-- **Venusaur**: canonical venusaur-mega, venusaur-gmax; configured none; missing venusaur-mega, venusaur-gmax.
-- **Raichu**: canonical raichu-alola, raichu-mega-x, raichu-mega-y; configured Alolan Form; missing raichu-mega-x, raichu-mega-y.
-- **Graveler**: canonical graveler-alola; configured none; missing graveler-alola.
-- **Mawile**: canonical mawile-mega; configured none; missing mawile-mega.
-- **Absol**: canonical absol-mega, absol-mega-z; configured none; missing absol-mega, absol-mega-z.
-- **Darumaka**: canonical darumaka-galar; configured none; missing darumaka-galar.
-- **Yamask**: canonical yamask-galar; configured none; missing yamask-galar.
-- **Latios**: canonical latios-mega; configured none; missing latios-mega.
-- **Latias**: canonical latias-mega; configured none; missing latias-mega.
-- **Darkrai**: canonical darkrai-mega; configured none; missing darkrai-mega.
+- **Mewtwo**: canonical mewtwo-mega-x, mewtwo-mega-y; configured none; missing mewtwo-mega-x, mewtwo-mega-y.
 - **Meganium**: canonical meganium-mega; configured none; missing meganium-mega.
 - **Typhlosion**: canonical typhlosion-hisui; configured none; missing typhlosion-hisui.
 - **Feraligatr**: canonical feraligatr-mega; configured none; missing feraligatr-mega.
+- **Ampharos**: canonical ampharos-mega; configured none; missing ampharos-mega.
+- **Wooper**: canonical wooper-paldea; configured none; missing wooper-paldea.
+- **Slowking**: canonical slowking-galar; configured none; missing slowking-galar.
+- **Steelix**: canonical steelix-mega; configured none; missing steelix-mega.
+- **Qwilfish**: canonical qwilfish-hisui; configured none; missing qwilfish-hisui.
+- **Scizor**: canonical scizor-mega; configured none; missing scizor-mega.
+- **Heracross**: canonical heracross-mega; configured none; missing heracross-mega.
+- **Sneasel**: canonical sneasel-hisui; configured none; missing sneasel-hisui.
+- **Corsola**: canonical corsola-galar; configured none; missing corsola-galar.
+- **Skarmory**: canonical skarmory-mega; configured none; missing skarmory-mega.
+- **Houndoom**: canonical houndoom-mega; configured none; missing houndoom-mega.
+- **Tyranitar**: canonical tyranitar-mega; configured none; missing tyranitar-mega.
+- **Sceptile**: canonical sceptile-mega; configured none; missing sceptile-mega.
+- **Blaziken**: canonical blaziken-mega; configured none; missing blaziken-mega.
+- **Swampert**: canonical swampert-mega; configured none; missing swampert-mega.
+- **Zigzagoon**: canonical zigzagoon-galar; configured none; missing zigzagoon-galar.
+- **Linoone**: canonical linoone-galar; configured none; missing linoone-galar.
+- **Gardevoir**: canonical gardevoir-mega; configured none; missing gardevoir-mega.
+- **Sableye**: canonical sableye-mega; configured none; missing sableye-mega.
+- **Mawile**: canonical mawile-mega; configured none; missing mawile-mega.
+- **Aggron**: canonical aggron-mega; configured none; missing aggron-mega.
+- **Medicham**: canonical medicham-mega; configured none; missing medicham-mega.
+- **Manectric**: canonical manectric-mega; configured none; missing manectric-mega.
+- **Sharpedo**: canonical sharpedo-mega; configured none; missing sharpedo-mega.
+- **Camerupt**: canonical camerupt-mega; configured none; missing camerupt-mega.
+- **Altaria**: canonical altaria-mega; configured none; missing altaria-mega.
+- **Castform**: canonical castform-sunny, castform-rainy, castform-snowy; configured none; missing castform-sunny, castform-rainy, castform-snowy.
+- **Banette**: canonical banette-mega; configured none; missing banette-mega.
+- **Chimecho**: canonical chimecho-mega; configured none; missing chimecho-mega.
+- **Absol**: canonical absol-mega, absol-mega-z; configured none; missing absol-mega, absol-mega-z.
+- **Glalie**: canonical glalie-mega; configured none; missing glalie-mega.
+- **Salamence**: canonical salamence-mega; configured none; missing salamence-mega.
+- **Metagross**: canonical metagross-mega; configured none; missing metagross-mega.
+- **Latias**: canonical latias-mega; configured none; missing latias-mega.
+- **Latios**: canonical latios-mega; configured none; missing latios-mega.
+- **Kyogre**: canonical kyogre-primal; configured none; missing kyogre-primal.
+- **Groudon**: canonical groudon-primal; configured none; missing groudon-primal.
+- **Rayquaza**: canonical rayquaza-mega; configured none; missing rayquaza-mega.
+- **Deoxys**: canonical deoxys-attack, deoxys-defense, deoxys-speed; configured none; missing deoxys-attack, deoxys-defense, deoxys-speed.
+- **Staraptor**: canonical staraptor-mega; configured none; missing staraptor-mega.
+- **Dialga**: canonical dialga-origin; configured none; missing dialga-origin.
+- **Palkia**: canonical palkia-origin; configured none; missing palkia-origin.
+- **Giratina**: canonical giratina-origin; configured none; missing giratina-origin.
+- **Darkrai**: canonical darkrai-mega; configured none; missing darkrai-mega.
+- **Darumaka**: canonical darumaka-galar; configured none; missing darumaka-galar.
+- **Yamask**: canonical yamask-galar; configured none; missing yamask-galar.
 
 ## Canonical Evolution Methods
 
-### Item (36)
+### Item (58)
 
 - Pikachu → Raichu: `{"trigger":"use-item","item":"thunder-stone"}`
+- Sandshrew → Sandslash: `{"trigger":"use-item","item":"ice-stone"}`
+- Nidorina → Nidoqueen: `{"trigger":"use-item","item":"moon-stone"}`
+- Nidorino → Nidoking: `{"trigger":"use-item","item":"moon-stone"}`
 - Clefairy → Clefable: `{"trigger":"use-item","item":"moon-stone"}`
+- Vulpix → Ninetales: `{"trigger":"use-item","item":"fire-stone"}`
+- Vulpix → Ninetales: `{"trigger":"use-item","item":"ice-stone"}`
 - Jigglypuff → Wigglytuff: `{"trigger":"use-item","item":"moon-stone"}`
+- Gloom → Vileplume: `{"trigger":"use-item","item":"leaf-stone"}`
+- Gloom → Bellossom: `{"trigger":"use-item","item":"sun-stone"}`
 - Growlithe → Arcanine: `{"trigger":"use-item","item":"fire-stone"}`
+- Poliwhirl → Poliwrath: `{"trigger":"use-item","item":"water-stone"}`
+- Poliwhirl → Politoed: `{"trigger":"trade","heldItem":"kings-rock"}`
 - Weepinbell → Victreebel: `{"trigger":"use-item","item":"leaf-stone"}`
+- Slowpoke → Slowbro: `{"trigger":"use-item","item":"galarica-cuff"}`
+- Slowpoke → Slowking: `{"trigger":"trade","heldItem":"kings-rock"}`
+- Slowpoke → Slowking: `{"trigger":"use-item","item":"galarica-wreath"}`
+- Magneton → Magnezone: `{"trigger":"use-item","item":"thunder-stone"}`
+- Shellder → Cloyster: `{"trigger":"use-item","item":"water-stone"}`
+- Onix → Steelix: `{"trigger":"trade","heldItem":"metal-coat"}`
+- Voltorb → Electrode: `{"trigger":"use-item","item":"leaf-stone"}`
+- Exeggcute → Exeggutor: `{"trigger":"use-item","item":"leaf-stone"}`
+- Rhydon → Rhyperior: `{"trigger":"trade","heldItem":"protector"}`
+- Happiny → Chansey: `{"trigger":"level-up","heldItem":"oval-stone","timeOfDay":"day"}`
+- Seadra → Kingdra: `{"trigger":"trade","heldItem":"dragon-scale"}`
+- Staryu → Starmie: `{"trigger":"use-item","item":"water-stone"}`
+- Scyther → Scizor: `{"trigger":"trade","heldItem":"metal-coat"}`
+- Scyther → Kleavor: `{"trigger":"use-item","item":"black-augurite"}`
+- Electabuzz → Electivire: `{"trigger":"trade","heldItem":"electirizer"}`
+- Magmar → Magmortar: `{"trigger":"trade","heldItem":"magmarizer"}`
 - Eevee → Vaporeon: `{"trigger":"use-item","item":"water-stone"}`
 - Eevee → Jolteon: `{"trigger":"use-item","item":"thunder-stone"}`
 - Eevee → Flareon: `{"trigger":"use-item","item":"fire-stone"}`
 - Eevee → Leafeon: `{"trigger":"use-item","item":"leaf-stone"}`
 - Eevee → Glaceon: `{"trigger":"use-item","item":"ice-stone"}`
-- Onix → Steelix: `{"trigger":"trade","heldItem":"metal-coat"}`
-- Voltorb → Electrode: `{"trigger":"use-item","item":"leaf-stone"}`
-- Scyther → Scizor: `{"trigger":"trade","heldItem":"metal-coat"}`
-- Scyther → Kleavor: `{"trigger":"use-item","item":"black-augurite"}`
+- Porygon → Porygon2: `{"trigger":"trade","heldItem":"up-grade"}`
+- Porygon2 → Porygon Z: `{"trigger":"trade","heldItem":"dubious-disc"}`
 - Togetic → Togekiss: `{"trigger":"use-item","item":"shiny-stone"}`
+- Sunkern → Sunflora: `{"trigger":"use-item","item":"sun-stone"}`
+- Murkrow → Honchkrow: `{"trigger":"use-item","item":"dusk-stone"}`
+- Misdreavus → Mismagius: `{"trigger":"use-item","item":"dusk-stone"}`
+- Gligar → Gliscor: `{"trigger":"level-up","heldItem":"razor-fang","timeOfDay":"night"}`
 - Sneasel → Weavile: `{"trigger":"level-up","heldItem":"razor-claw","timeOfDay":"night"}`
 - Sneasel → Sneasler: `{"trigger":"level-up","heldItem":"razor-claw","timeOfDay":"day"}`
-- Gloom → Vileplume: `{"trigger":"use-item","item":"leaf-stone"}`
-- Gloom → Bellossom: `{"trigger":"use-item","item":"sun-stone"}`
-- Poliwhirl → Poliwrath: `{"trigger":"use-item","item":"water-stone"}`
-- Poliwhirl → Politoed: `{"trigger":"trade","heldItem":"kings-rock"}`
-- Staryu → Starmie: `{"trigger":"use-item","item":"water-stone"}`
-- Seadra → Kingdra: `{"trigger":"trade","heldItem":"dragon-scale"}`
-- Shellder → Cloyster: `{"trigger":"use-item","item":"water-stone"}`
-- Vulpix → Ninetales: `{"trigger":"use-item","item":"fire-stone"}`
-- Vulpix → Ninetales: `{"trigger":"use-item","item":"ice-stone"}`
-- Magmar → Magmortar: `{"trigger":"trade","heldItem":"magmarizer"}`
-- Sandshrew → Sandslash: `{"trigger":"use-item","item":"ice-stone"}`
-- Misdreavus → Mismagius: `{"trigger":"use-item","item":"dusk-stone"}`
-- Dusclops → Dusknoir: `{"trigger":"trade","heldItem":"reaper-cloth"}`
-- Nuzleaf → Shiftry: `{"trigger":"use-item","item":"leaf-stone"}`
+- Ursaring → Ursaluna: `{"trigger":"use-item","item":"peat-block","timeOfDay":"full-moon"}`
 - Lombre → Ludicolo: `{"trigger":"use-item","item":"water-stone"}`
-- Feebas → Milotic: `{"trigger":"trade","heldItem":"prism-scale"}`
+- Nuzleaf → Shiftry: `{"trigger":"use-item","item":"leaf-stone"}`
+- Kirlia → Gallade: `{"trigger":"use-item","item":"dawn-stone","gender":2}`
 - Nosepass → Probopass: `{"trigger":"use-item","item":"thunder-stone"}`
+- Skitty → Delcatty: `{"trigger":"use-item","item":"moon-stone"}`
+- Roselia → Roserade: `{"trigger":"use-item","item":"shiny-stone"}`
+- Feebas → Milotic: `{"trigger":"trade","heldItem":"prism-scale"}`
+- Dusclops → Dusknoir: `{"trigger":"trade","heldItem":"reaper-cloth"}`
+- Snorunt → Froslass: `{"trigger":"use-item","item":"dawn-stone","gender":1}`
+- Clamperl → Huntail: `{"trigger":"trade","heldItem":"deep-sea-tooth"}`
+- Clamperl → Gorebyss: `{"trigger":"trade","heldItem":"deep-sea-scale"}`
 - Darumaka → Darmanitan: `{"trigger":"use-item","item":"ice-stone"}`
 - Lampent → Chandelure: `{"trigger":"use-item","item":"dusk-stone"}`
 
-### Friendship (11)
+### Friendship (15)
 
 - Pichu → Pikachu: `{"trigger":"level-up","minHappiness":220}`
 - Cleffa → Clefairy: `{"trigger":"level-up","minHappiness":160}`
 - Igglybuff → Jigglypuff: `{"trigger":"level-up","minHappiness":160}`
+- Golbat → Crobat: `{"trigger":"level-up","minHappiness":160}`
+- Meowth → Persian: `{"trigger":"level-up","minHappiness":160}`
+- Chansey → Blissey: `{"trigger":"level-up","minHappiness":160}`
 - Eevee → Espeon: `{"trigger":"level-up","minHappiness":160,"timeOfDay":"day"}`
 - Eevee → Umbreon: `{"trigger":"level-up","minHappiness":160,"timeOfDay":"night"}`
 - Eevee → Sylveon: `{"trigger":"level-up","minHappiness":160,"knownMoveType":"fairy"}`
 - Munchlax → Snorlax: `{"trigger":"level-up","minHappiness":160}`
 - Togepi → Togetic: `{"trigger":"level-up","minHappiness":160}`
 - Azurill → Marill: `{"trigger":"level-up","minHappiness":160}`
-- Golbat → Crobat: `{"trigger":"level-up","minHappiness":160}`
+- Budew → Roselia: `{"trigger":"level-up","minHappiness":160,"timeOfDay":"day"}`
+- Chingling → Chimecho: `{"trigger":"level-up","minHappiness":220,"timeOfDay":"night"}`
 - Riolu → Lucario: `{"trigger":"level-up","minHappiness":160,"timeOfDay":"day"}`
 
-### Trade (12)
+### Trade (20)
 
+- Poliwhirl → Politoed: `{"trigger":"trade","heldItem":"kings-rock"}`
+- Kadabra → Alakazam: `{"trigger":"trade"}`
+- Machoke → Machamp: `{"trigger":"trade"}`
 - Graveler → Golem: `{"trigger":"trade"}`
+- Slowpoke → Slowking: `{"trigger":"trade","heldItem":"kings-rock"}`
 - Haunter → Gengar: `{"trigger":"trade"}`
 - Onix → Steelix: `{"trigger":"trade","heldItem":"metal-coat"}`
-- Scyther → Scizor: `{"trigger":"trade","heldItem":"metal-coat"}`
-- Poliwhirl → Politoed: `{"trigger":"trade","heldItem":"kings-rock"}`
-- Machoke → Machamp: `{"trigger":"trade"}`
+- Rhydon → Rhyperior: `{"trigger":"trade","heldItem":"protector"}`
 - Seadra → Kingdra: `{"trigger":"trade","heldItem":"dragon-scale"}`
+- Scyther → Scizor: `{"trigger":"trade","heldItem":"metal-coat"}`
+- Electabuzz → Electivire: `{"trigger":"trade","heldItem":"electirizer"}`
 - Magmar → Magmortar: `{"trigger":"trade","heldItem":"magmarizer"}`
-- Dusclops → Dusknoir: `{"trigger":"trade","heldItem":"reaper-cloth"}`
+- Porygon → Porygon2: `{"trigger":"trade","heldItem":"up-grade"}`
+- Porygon2 → Porygon Z: `{"trigger":"trade","heldItem":"dubious-disc"}`
 - Feebas → Milotic: `{"trigger":"trade","heldItem":"prism-scale"}`
+- Dusclops → Dusknoir: `{"trigger":"trade","heldItem":"reaper-cloth"}`
+- Clamperl → Huntail: `{"trigger":"trade","heldItem":"deep-sea-tooth"}`
+- Clamperl → Gorebyss: `{"trigger":"trade","heldItem":"deep-sea-scale"}`
 - Boldore → Gigalith: `{"trigger":"trade"}`
 - Phantump → Trevenant: `{"trigger":"trade"}`
 

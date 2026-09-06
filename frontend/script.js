@@ -2872,7 +2872,7 @@ function renderEvolutionChain(entry, canShowDetails) {
                 <img src="${getPokemonImage(stage)}" alt="${visible ? stage.name : "Unknown evolution"}" onerror="handleExternalImageError(event)">
                 <div>
                   <strong>${visible ? stage.name : "???"}</strong>
-                  <small>${visible ? `#${String(stage.id).padStart(3, "0")}` : "#???"}</small>
+                  <small>${visible ? `#${String(stage.speciesId ?? stage.id).padStart(3, "0")}` : "#???"}</small>
                   ${visible ? renderTypeBadges(stage.types || [stage.type]) : ""}
                 </div>
               </div>
@@ -2915,7 +2915,7 @@ function renderPokedexCard(entry) {
       </div>
       <div class="pokedex-card-body">
         <div class="pokedex-card-head">
-          <span>#${String(entry.id).padStart(3, "0")}</span>
+          <span>#${String(entry.speciesId ?? entry.id).padStart(3, "0")}</span>
           <strong>${displayName}</strong>
           <em>${status}</em>
         </div>

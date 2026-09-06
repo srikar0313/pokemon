@@ -318,7 +318,7 @@ function getPokedexEntries(state) {
         caught,
       };
     })
-    .sort((a, b) => a.id - b.id);
+    .sort((a, b) => (a.speciesId ?? a.id) - (b.speciesId ?? b.id));
 }
 
 function incrementQuestStat(state, stat, amount = 1) {

@@ -1,5 +1,7 @@
 function normalizeCanonicalName(value) {
   return String(value || "")
+    .replace(/♀/g, "f")
+    .replace(/♂/g, "m")
     .normalize("NFKD")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "");

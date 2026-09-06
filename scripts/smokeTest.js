@@ -11,6 +11,9 @@ const variantUtils = require("../frontend/variantUtils");
 
 const rootDir = path.join(__dirname, "..");
 const teamLimit = 6;
+const expectedNationalDexMax = 400;
+const expectedExistingLaterSpecies = 26;
+const expectedCatalogSize = 426;
 const memoryFiles = new Map();
 const legacyBadgeMap = {
   "Spark Badge": "Volt Badge",
@@ -93,6 +96,14 @@ function main() {
   const playerState = gameState.loadPlayerState();
   const { team, storage } = gameState.loadTeamAndStorage();
   const pokemon = pokemonUtils.getPokemonTemplates();
+  const speciesMap = loadJson(
+    path.join(rootDir, "data", "pokeapi", "species-map.json"),
+    {},
+  );
+  const evolutionData = loadJson(
+    path.join(rootDir, "data", "pokeapi", "evolutions.json"),
+    {},
+  );
   const starterTemplate = pokemonUtils.getPokemonTemplateByName("Pikachu");
   const starter = pokemonUtils.getStarterPokemon();
   const rewardEngine = createRewardEngine({
@@ -119,8 +130,93 @@ function main() {
   assert(playerState.trainerName, "player state did not load");
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
-  assert(pokemon.length >= 1, "pokemon.json has no Pokemon");
+  assert(
+    pokemon.length === expectedCatalogSize,
+    `Pokemon catalog has ${pokemon.length}, expected ${expectedCatalogSize}`,
+  );
   assert(Array.isArray(gameData.quests), "quests did not load");
+
+  const mappings = speciesMap.species || [];
+  const nationalSpeciesIds = new Set(
+    mappings
+      .map((mapping) => mapping.canonicalSpeciesId)
+      .filter(
+        (speciesId) =>
+          speciesId >= 1 && speciesId <= expectedNationalDexMax,
+      ),
+  );
+  assert(
+    nationalSpeciesIds.size === expectedNationalDexMax,
+    `National Dex coverage is ${nationalSpeciesIds.size}/${expectedNationalDexMax}`,
+  );
+  assert(
+    mappings.filter(
+      (mapping) =>
+        mapping.existingBeforeExpansion &&
+        mapping.canonicalSpeciesId > expectedNationalDexMax,
+    ).length === expectedExistingLaterSpecies,
+    "existing later-generation Pokemon were not all preserved",
+  );
+  assert(
+    new Set(mappings.map((mapping) => mapping.localId)).size === mappings.length,
+    "expanded species map has duplicate local IDs",
+  );
+  assert(
+    new Set(mappings.map((mapping) => mapping.canonicalSpeciesId)).size ===
+      mappings.length,
+    "expanded species map has duplicate canonical species IDs",
+  );
+  const catalogOnlyPokemon = pokemon.filter((entry) => entry.catalogOnly);
+  assert(catalogOnlyPokemon.length === 292, "catalog-only Pokemon count is wrong");
+  assert(
+    catalogOnlyPokemon.every(
+      (entry) =>
+        entry.habitats.length === 0 &&
+        entry.times.length === 0 &&
+        entry.movesetPolicy === "temporary-default",
+    ),
+    "a catalog-only Pokemon received an encounter assignment",
+  );
+
+  const sampleSpecies = new Map([
+    [11, "Metapod"],
+    [14, "Kakuna"],
+    [15, "Beedrill"],
+    [17, "Pidgeotto"],
+    [22, "Fearow"],
+    [55, "Golduck"],
+    [59, "Arcanine"],
+    [76, "Golem"],
+    [148, "Dragonair"],
+    [212, "Scizor"],
+    [248, "Tyranitar"],
+    [252, "Treecko"],
+    [257, "Blaziken"],
+    [282, "Gardevoir"],
+    [350, "Milotic"],
+    [389, "Torterra"],
+    [392, "Infernape"],
+    [395, "Empoleon"],
+  ]);
+  sampleSpecies.forEach((name, speciesId) => {
+    const mapping = mappings.find(
+      (entry) => entry.canonicalSpeciesId === speciesId,
+    );
+    const template = pokemon.find((entry) => entry.id === mapping?.localId);
+    assert(
+      template?.name === name && template.speciesId === speciesId,
+      `National Dex #${speciesId} ${name} is unavailable`,
+    );
+  });
+  const evolutionSpeciesIds = new Set(
+    (evolutionData.species || []).map((entry) => entry.speciesId),
+  );
+  assert(
+    [...nationalSpeciesIds].every((speciesId) =>
+      evolutionSpeciesIds.has(speciesId),
+    ),
+    "an evolution-family species inside National Dex #1-400 is unresolved",
+  );
 
   const canonicalSpeciesIds = pokemon.map((entry) => entry.speciesId);
   assert(

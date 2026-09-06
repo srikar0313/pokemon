@@ -190,9 +190,12 @@ function validatePokemonEntry(pokemon, context) {
   if (pokemon?.baseCatchRate === undefined) {
     addWarning(groups, "pokemonWarnings", `${label} has no baseCatchRate`);
   }
-  if (!Array.isArray(pokemon?.habitats) || pokemon.habitats.length === 0) {
+  if (
+    (!Array.isArray(pokemon?.habitats) || pokemon.habitats.length === 0) &&
+    !pokemon?.catalogOnly
+  ) {
     addWarning(groups, "pokemonWarnings", `${label} has no habitats`);
-  } else {
+  } else if (Array.isArray(pokemon?.habitats)) {
     pokemon.habitats.forEach((habitat) => {
       if (!validAreaIds.has(habitat)) {
         addWarning(
@@ -203,9 +206,12 @@ function validatePokemonEntry(pokemon, context) {
       }
     });
   }
-  if (!Array.isArray(pokemon?.times) || pokemon.times.length === 0) {
+  if (
+    (!Array.isArray(pokemon?.times) || pokemon.times.length === 0) &&
+    !pokemon?.catalogOnly
+  ) {
     addWarning(groups, "pokemonWarnings", `${label} has no times`);
-  } else {
+  } else if (Array.isArray(pokemon?.times)) {
     pokemon.times.forEach((time) => {
       if (!validTimes.has(time)) {
         addWarning(groups, "pokemonWarnings", `${label} has invalid time: ${time}`);
@@ -465,6 +471,39 @@ function validateGameData(gameData) {
   addDuplicateWarnings(pokemonNameList, "Pokemon name", groups, "pokemonWarnings");
 
   const canonicalLookup = createCanonicalPokemonLookup(gameData.canonicalPokemon);
+  const canonicalEntries = canonicalLookup.entries;
+  const speciesMappings = gameData.speciesMap?.species || [];
+  const nationalDexCoverage = new Set(
+    speciesMappings
+      .map((mapping) => mapping.canonicalSpeciesId)
+      .filter((speciesId) => speciesId >= 1 && speciesId <= 400),
+  );
+  if (pokemonList.length !== 426 || canonicalEntries.length !== 426) {
+    addWarning(
+      groups,
+      "pokemonWarnings",
+      `Expanded catalog expected 426 species; found ${pokemonList.length} game and ${canonicalEntries.length} canonical entries`,
+    );
+  }
+  if (nationalDexCoverage.size !== 400) {
+    addWarning(
+      groups,
+      "pokemonWarnings",
+      `National Dex coverage is ${nationalDexCoverage.size}/400`,
+    );
+  }
+  if (
+    speciesMappings.filter(
+      (mapping) =>
+        mapping.existingBeforeExpansion && mapping.canonicalSpeciesId > 400,
+    ).length !== 26
+  ) {
+    addWarning(
+      groups,
+      "pokemonWarnings",
+      "Existing species above National Dex #400 were not fully preserved",
+    );
+  }
   const canonicalSpeciesOwners = new Map();
   pokemonList.forEach((pokemon) => {
     const canonical = canonicalLookup.getCanonicalPokemon(pokemon);
@@ -637,6 +676,10 @@ function loadGameData(options = {}) {
     canonicalPokemon: loadJson(
       path.join(dataDir, "pokeapi", "canonical-pokemon.json"),
       { pokemon: [] },
+    ),
+    speciesMap: loadJson(
+      path.join(dataDir, "pokeapi", "species-map.json"),
+      { species: [] },
     ),
     moves: loadJson(path.join(dataDir, "moves.json"), {}),
     items: loadJson(path.join(dataDir, "items.json"), {}),
