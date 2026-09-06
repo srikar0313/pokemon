@@ -483,6 +483,22 @@ function validateGameData(gameData) {
     if (!Array.isArray(canonical.types) || canonical.types.length === 0) {
       addWarning(groups, "pokemonWarnings", `${label} has no canonical types`);
     }
+    [
+      "hp",
+      "attack",
+      "defense",
+      "specialAttack",
+      "specialDefense",
+      "speed",
+    ].forEach((stat) => {
+      if (!isPositiveNumber(canonical.baseStats?.[stat])) {
+        addWarning(
+          groups,
+          "pokemonWarnings",
+          `${label} has invalid canonical base stat: ${stat}`,
+        );
+      }
+    });
     if (Number(canonical.localId) !== Number(pokemon.id)) {
       addWarning(
         groups,

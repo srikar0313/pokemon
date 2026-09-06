@@ -149,6 +149,9 @@ function createRewardEngine({
       evolvedPokemon[stat] = Math.max(1, targetBase + accumulatedGrowth);
     });
     if (knownMoves.length) evolvedPokemon.moves = knownMoves;
+    if (pokemon.statBaseVersion) {
+      evolvedPokemon.statBaseVersion = pokemon.statBaseVersion;
+    }
 
     evolvedPokemon.currentHp =
       (pokemon.currentHp || 0) <= 0

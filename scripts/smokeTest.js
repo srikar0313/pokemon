@@ -1,6 +1,9 @@
 const path = require("path");
 const { loadGameData, loadJson, saveJson } = require("../backend/dataLoader");
-const { createPokemonUtils } = require("../backend/pokemonUtils");
+const {
+  createPokemonUtils,
+  STAT_BASE_VERSION,
+} = require("../backend/pokemonUtils");
 const { createGameState } = require("../backend/gameState");
 const { createRewardEngine } = require("../backend/rewardEngine");
 const { createEncounterEngine } = require("../backend/encounterEngine");
@@ -190,6 +193,93 @@ function main() {
     "storage normalization did not enrich speciesId",
   );
 
+  ["Pikachu", "Bulbasaur", "Pidgeot", "Pidgey", "Geodude", "Eevee"].forEach(
+    (name) => {
+      const template = pokemonUtils.getPokemonTemplateByName(name);
+      const legacyTemplate = pokemonUtils
+        .getLegacyPokemonTemplates()
+        .find((entry) => entry.name === name);
+      const canonical = pokemonUtils.getCanonicalPokemonByName(name);
+      assert(canonical?.baseStats, `${name} has no canonical base stats`);
+      assert(
+        template.statBaseVersion === STAT_BASE_VERSION,
+        `${name} has no stat marker`,
+      );
+      assert(template.hp === canonical.baseStats.hp, `${name} has wrong base HP`);
+      assert(template.maxHp === canonical.baseStats.hp, `${name} has wrong max HP`);
+      assert(
+        template.baseCatchRate === legacyTemplate.baseCatchRate,
+        `${name} catch rate changed during stat migration`,
+      );
+      ["attack", "defense", "specialAttack", "specialDefense", "speed"].forEach(
+        (stat) => {
+          assert(
+            template[stat] === canonical.baseStats[stat],
+            `${name} has wrong canonical ${stat}`,
+          );
+        },
+      );
+    },
+  );
+
+  const legacyEeveeTemplate = pokemonUtils
+    .getLegacyPokemonTemplates()
+    .find((entry) => entry.name === "Eevee");
+  const legacyEeveeBase = pokemonUtils.getLegacyBaseStats(legacyEeveeTemplate);
+  const canonicalEeveeBase = pokemonUtils.getCanonicalBaseStats(legacyEeveeTemplate);
+  const earnedGrowth = {
+    maxHp: 20,
+    attack: 7,
+    defense: 6,
+    specialAttack: 5,
+    specialDefense: 4,
+  };
+  const legacyOwnedEevee = {
+    ...legacyEeveeTemplate,
+    maxHp: legacyEeveeBase.maxHp + earnedGrowth.maxHp,
+    currentHp: Math.round((legacyEeveeBase.maxHp + earnedGrowth.maxHp) * 0.5),
+    attack: legacyEeveeBase.attack + earnedGrowth.attack,
+    defense: legacyEeveeBase.defense + earnedGrowth.defense,
+    specialAttack: legacyEeveeBase.specialAttack + earnedGrowth.specialAttack,
+    specialDefense: legacyEeveeBase.specialDefense + earnedGrowth.specialDefense,
+    speed: legacyEeveeBase.speed,
+  };
+  const migratedEevee = pokemonUtils.normalizePokemon(legacyOwnedEevee);
+  Object.entries(earnedGrowth).forEach(([stat, growth]) => {
+    assert(
+      migratedEevee[stat] - canonicalEeveeBase[stat] === growth,
+      `Eevee lost earned ${stat} growth during migration`,
+    );
+  });
+  assert(
+    migratedEevee.statBaseVersion === STAT_BASE_VERSION,
+    "owned Pokemon migration marker was not set",
+  );
+  assert(migratedEevee.speed === canonicalEeveeBase.speed, "Speed is not canonical");
+  assert(
+    Math.abs(migratedEevee.currentHp / migratedEevee.maxHp - 0.5) <= 0.02,
+    "owned Pokemon migration did not preserve HP ratio",
+  );
+  const migratedEeveeAgain = pokemonUtils.normalizePokemon(migratedEevee);
+  ["maxHp", "currentHp", "attack", "defense", "specialAttack", "specialDefense", "speed"].forEach(
+    (stat) => {
+      assert(
+        migratedEeveeAgain[stat] === migratedEevee[stat],
+        `second normalization changed migrated Eevee ${stat}`,
+      );
+    },
+  );
+  const faintedLegacyEevee = pokemonUtils.normalizePokemon({
+    ...legacyOwnedEevee,
+    currentHp: 0,
+  });
+  assert(faintedLegacyEevee.currentHp === 0, "fainted Pokemon revived during migration");
+  assert(
+    pokemonUtils.createLeveledPokemon("Eevee", 5).statBaseVersion ===
+      STAT_BASE_VERSION,
+    "newly created Pokemon did not start on the canonical stat version",
+  );
+
   [
     ["Bulbasaur", "Ivysaur", "Venusaur"],
     ["Charmander", "Charmeleon", "Charizard"],
@@ -299,6 +389,8 @@ function main() {
     ),
     15,
   ).pokemon;
+  bulbasaurAt15.shiny = true;
+  bulbasaurAt15.status = "burned";
   bulbasaurAt15.currentHp = Math.round(bulbasaurAt15.maxHp * 0.5);
   bulbasaurAt15.moves[0].currentPp = 2;
   const bulbasaurHpBeforeLevel = bulbasaurAt15.currentHp;
@@ -312,11 +404,34 @@ function main() {
   assert(integratedIvysaur.evolved, "real XP path did not evolve Bulbasaur");
   assert(ivysaurAfterXp.name === "Ivysaur", "real XP path skipped Ivysaur");
   assert(ivysaurAfterXp.level === 16, "real XP evolution has wrong level");
+  assert(ivysaurAfterXp.xp === 0, "real XP evolution did not preserve XP");
+  assert(ivysaurAfterXp.shiny, "real XP evolution did not preserve shiny state");
+  assert(ivysaurAfterXp.status === "burned", "real XP evolution lost status");
+  assert(
+    ivysaurAfterXp.statBaseVersion === STAT_BASE_VERSION,
+    "real XP evolution lost the canonical stat marker",
+  );
+  const bulbasaurCanonicalBase = pokemonUtils.getCanonicalBaseStats(bulbasaurAt15);
+  const ivysaurCanonicalBase = pokemonUtils.getCanonicalBaseStats(ivysaurAfterXp);
+  const level16Growth = {
+    maxHp: 5,
+    attack: 2,
+    defense: 2,
+    specialAttack: 2,
+    specialDefense: 2,
+  };
   ["maxHp", "attack", "defense", "specialAttack", "specialDefense"].forEach(
     (stat) => {
       assert(
         ivysaurAfterXp[stat] >= bulbasaurAt15[stat],
         `Bulbasaur -> Ivysaur regressed ${stat}`,
+      );
+      const earnedBeforeEvolution =
+        bulbasaurAt15[stat] - bulbasaurCanonicalBase[stat] + level16Growth[stat];
+      assert(
+        ivysaurAfterXp[stat] - ivysaurCanonicalBase[stat] ===
+          earnedBeforeEvolution,
+        `Bulbasaur -> Ivysaur did not preserve canonical ${stat} growth`,
       );
     },
   );

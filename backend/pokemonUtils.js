@@ -1,5 +1,15 @@
 const { createCanonicalPokemonLookup } = require("./canonicalPokemon");
 
+const STAT_BASE_VERSION = "pokeapi-v1";
+const BASE_STAT_KEYS = [
+  "maxHp",
+  "attack",
+  "defense",
+  "specialAttack",
+  "specialDefense",
+  "speed",
+];
+
 const defaultMoves = [
   {
     name: "Tackle",
@@ -113,15 +123,142 @@ function createPokemonUtils({
   moveCatalog = {},
   canonicalPokemon = {},
 }) {
+  let legacyPokemonTemplateCache = null;
   let pokemonTemplateCache = null;
   const canonicalLookup = createCanonicalPokemonLookup(canonicalPokemon);
+
+  function getLegacyPokemonTemplates() {
+    if (!legacyPokemonTemplateCache) {
+      legacyPokemonTemplateCache = readJsonFile(pokemonPath, []);
+    }
+    return legacyPokemonTemplateCache;
+  }
+
+  function findTemplateForPokemon(templates, pokemon = {}) {
+    const templateById = pokemon.id
+      ? templates.find((template) => template.id === pokemon.id)
+      : null;
+    const templateByName = pokemon.name
+      ? templates.find((template) => template.name === pokemon.name)
+      : null;
+    if (templateByName?.name && templateById?.name !== pokemon.name) {
+      return templateByName;
+    }
+    return templateById?.name ? templateById : templateByName || null;
+  }
+
+  function applyFormBaseOverrides(baseStats, form = null) {
+    if (!form) return { ...baseStats };
+    return {
+      maxHp: form.maxHp ?? form.hp ?? baseStats.maxHp,
+      attack: form.attack ?? baseStats.attack,
+      defense: form.defense ?? baseStats.defense,
+      specialAttack: form.specialAttack ?? baseStats.specialAttack,
+      specialDefense: form.specialDefense ?? baseStats.specialDefense,
+      speed: form.speed ?? baseStats.speed,
+    };
+  }
+
+  function getFormFromTemplate(template, pokemon = {}) {
+    const formId =
+      typeof pokemon.form === "string" ? pokemon.form : pokemon.form?.id;
+    return formId
+      ? (template?.forms || []).find((form) => form.id === formId) || null
+      : null;
+  }
+
+  function getLegacyBaseStats(pokemon = {}) {
+    const template = findTemplateForPokemon(
+      getLegacyPokemonTemplates(),
+      pokemon,
+    );
+    if (!template) return null;
+    const baseStats = {
+      maxHp: template.maxHp ?? template.hp ?? 1,
+      attack: template.attack ?? 1,
+      defense: template.defense ?? 1,
+      specialAttack: template.specialAttack ?? template.attack ?? 1,
+      specialDefense: template.specialDefense ?? template.defense ?? 1,
+      speed: template.speed ?? 1,
+    };
+    return applyFormBaseOverrides(
+      baseStats,
+      getFormFromTemplate(template, pokemon),
+    );
+  }
+
+  function getCanonicalBaseStats(pokemon = {}) {
+    const canonical = canonicalLookup.getCanonicalPokemon(pokemon);
+    if (!canonical?.baseStats) return null;
+    const template = findTemplateForPokemon(
+      getLegacyPokemonTemplates(),
+      pokemon,
+    );
+    const baseStats = {
+      maxHp: canonical.baseStats.hp,
+      attack: canonical.baseStats.attack,
+      defense: canonical.baseStats.defense,
+      specialAttack: canonical.baseStats.specialAttack,
+      specialDefense: canonical.baseStats.specialDefense,
+      speed: canonical.baseStats.speed,
+    };
+    return applyFormBaseOverrides(
+      baseStats,
+      getFormFromTemplate(template, pokemon),
+    );
+  }
+
+  function migrateOwnedPokemonStats(pokemon = {}) {
+    if (pokemon.statBaseVersion === STAT_BASE_VERSION) return { ...pokemon };
+    const legacyBase = getLegacyBaseStats(pokemon);
+    const canonicalBase = getCanonicalBaseStats(pokemon);
+    if (!legacyBase || !canonicalBase) return { ...pokemon };
+
+    const previousMaxHp = Math.max(
+      1,
+      Number(pokemon.maxHp ?? pokemon.hp ?? legacyBase.maxHp) || 1,
+    );
+    const wasFainted = Number(pokemon.currentHp) === 0;
+    const hpRatio = Math.max(
+      0,
+      Math.min(1, Number(pokemon.currentHp ?? previousMaxHp) / previousMaxHp),
+    );
+    const migrated = {
+      ...pokemon,
+      hp: canonicalBase.maxHp,
+      statBaseVersion: STAT_BASE_VERSION,
+    };
+
+    BASE_STAT_KEYS.filter((stat) => stat !== "speed").forEach((stat) => {
+      const ownedStat = Number(pokemon[stat] ?? legacyBase[stat]);
+      const earnedGrowth = Math.max(0, ownedStat - legacyBase[stat]);
+      migrated[stat] = Math.max(1, canonicalBase[stat] + earnedGrowth);
+    });
+    migrated.speed = Math.max(1, canonicalBase.speed);
+    migrated.currentHp = wasFainted
+      ? 0
+      : Math.max(
+          1,
+          Math.min(migrated.maxHp, Math.round(migrated.maxHp * hpRatio)),
+        );
+    return migrated;
+  }
 
   function enrichPokemonTemplate(pokemon = {}) {
     const canonical = canonicalLookup.getCanonicalPokemon(pokemon);
     if (!canonical) return { ...pokemon };
     const types = Array.isArray(canonical.types) ? [...canonical.types] : [];
+    const baseStats = getCanonicalBaseStats(pokemon);
     return {
       ...pokemon,
+      hp: baseStats?.maxHp ?? pokemon.hp,
+      maxHp: baseStats?.maxHp ?? pokemon.maxHp ?? pokemon.hp,
+      attack: baseStats?.attack ?? pokemon.attack,
+      defense: baseStats?.defense ?? pokemon.defense,
+      specialAttack: baseStats?.specialAttack ?? pokemon.specialAttack,
+      specialDefense: baseStats?.specialDefense ?? pokemon.specialDefense,
+      speed: baseStats?.speed ?? pokemon.speed,
+      statBaseVersion: STAT_BASE_VERSION,
       speciesId: canonical.speciesId,
       canonicalName: canonical.canonicalName,
       types: types.length ? types : pokemon.types,
@@ -134,9 +271,8 @@ function createPokemonUtils({
 
   function getPokemonTemplates() {
     if (!pokemonTemplateCache) {
-      pokemonTemplateCache = readJsonFile(pokemonPath, []).map(
-        enrichPokemonTemplate,
-      );
+      pokemonTemplateCache =
+        getLegacyPokemonTemplates().map(enrichPokemonTemplate);
     }
     return pokemonTemplateCache;
   }
@@ -163,14 +299,7 @@ function createPokemonUtils({
   }
 
   function getPokemonTemplateForOwnedPokemon(pokemon = {}) {
-    const templateById = pokemon.id ? getPokemonTemplate(pokemon.id) : null;
-    const templateByName = pokemon.name
-      ? getPokemonTemplateByName(pokemon.name)
-      : null;
-    if (templateByName?.name && templateById?.name !== pokemon.name) {
-      return templateByName;
-    }
-    return templateById?.name ? templateById : templateByName || {};
+    return findTemplateForPokemon(getPokemonTemplates(), pokemon) || {};
   }
 
   function getPokemonTypes(pokemon) {
@@ -236,9 +365,10 @@ function createPokemonUtils({
   function normalizePokemon(pokemon) {
     const template = getPokemonTemplateForOwnedPokemon(pokemon);
     const canonical = getCanonicalPokemon(template?.name ? template : pokemon);
+    const migratedPokemon = migrateOwnedPokemonStats(pokemon);
     const merged = {
       ...template,
-      ...pokemon,
+      ...migratedPokemon,
     };
     if (canonical) {
       const canonicalTypes = Array.isArray(canonical.types)
@@ -546,8 +676,12 @@ function createPokemonUtils({
     starterPikachu,
     getStarterPokemon,
     getPokemonTemplates,
+    getLegacyPokemonTemplates,
     getPokemonTemplate,
     getPokemonTemplateByName,
+    getLegacyBaseStats,
+    getCanonicalBaseStats,
+    migrateOwnedPokemonStats,
     getCanonicalPokemon,
     getCanonicalPokemonByLocalId:
       canonicalLookup.getCanonicalPokemonByLocalId,
@@ -572,6 +706,7 @@ function createPokemonUtils({
 }
 
 module.exports = {
+  STAT_BASE_VERSION,
   createPokemonUtils,
   defaultMoves,
   starterPikachu,
