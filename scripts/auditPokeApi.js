@@ -203,7 +203,12 @@ async function resolveSpeciesMap(localPokemon) {
         (mapping) => mapping.existingBeforeExpansion,
       ).length,
       addedByExpansion: species.filter(
-        (mapping) => mapping.existingBeforeExpansion === false,
+        (mapping) =>
+          mapping.existingBeforeExpansion === false &&
+          mapping.addedByEvolutionClosure !== true,
+      ).length,
+      addedByEvolutionClosure: species.filter(
+        (mapping) => mapping.addedByEvolutionClosure === true,
       ).length,
     },
     species,

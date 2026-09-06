@@ -1,21 +1,21 @@
 # PokéAPI Data Audit
 
-Generated: 2026-09-06T17:11:40.270Z
+Generated: 2026-09-06T17:23:51.855Z
 
-- Pokémon audited: **426**
-- Canonical mappings resolved: **426**
-- Correct local IDs: **268**
+- Pokémon audited: **491**
+- Canonical mappings resolved: **491**
+- Correct local IDs: **333**
 - Incorrect local IDs: **158**
 - Unresolved species: **0**
-- Fully matched: **128**
-- With mismatches: **298**
+- Fully matched: **181**
+- With mismatches: **310**
 - Failed species audits: **0**
 - Type mismatches: **14**
 - Base-stat mismatches: **216**
 - Capture-rate mismatches: **31**
-- Evolution mismatches: **212**
+- Evolution mismatches: **224**
 - Branching families: **15**
-- Missing family members: **65**
+- Missing family members: **0**
 - Request failures: **0**
 
 > Game-specific habitats, rarity balance, times, movesets, encounter weights, teams, rewards, and quests are intentionally not audited as canonical errors.
@@ -422,10 +422,42 @@ Generated: 2026-09-06T17:11:40.270Z
 - **Staraptor** — Local ID: 398; National Dex ID: 398; Canonical name: staraptor; Status: **MATCH**.
 - **Bidoof** — Local ID: 399; National Dex ID: 399; Canonical name: bidoof; Status: **MATCH**.
 - **Bibarel** — Local ID: 400; National Dex ID: 400; Canonical name: bibarel; Status: **MATCH**.
+- **Budew** — Local ID: 406; National Dex ID: 406; Canonical name: budew; Status: **MATCH**.
+- **Roserade** — Local ID: 407; National Dex ID: 407; Canonical name: roserade; Status: **MATCH**.
 - **Buizel** — Local ID: 272; National Dex ID: 418; Canonical name: buizel; Status: **ID_MISMATCH**.
+- **Floatzel** — Local ID: 419; National Dex ID: 419; Canonical name: floatzel; Status: **MATCH**.
+- **Ambipom** — Local ID: 424; National Dex ID: 424; Canonical name: ambipom; Status: **MATCH**.
+- **Mismagius** — Local ID: 429; National Dex ID: 429; Canonical name: mismagius; Status: **MATCH**.
+- **Honchkrow** — Local ID: 430; National Dex ID: 430; Canonical name: honchkrow; Status: **MATCH**.
+- **Chingling** — Local ID: 433; National Dex ID: 433; Canonical name: chingling; Status: **MATCH**.
+- **Bonsly** — Local ID: 438; National Dex ID: 438; Canonical name: bonsly; Status: **MATCH**.
+- **Mime Jr.** — Local ID: 439; National Dex ID: 439; Canonical name: mime-jr; Status: **MATCH**.
+- **Happiny** — Local ID: 440; National Dex ID: 440; Canonical name: happiny; Status: **MATCH**.
 - **Spiritomb** — Local ID: 297; National Dex ID: 442; Canonical name: spiritomb; Status: **ID_MISMATCH**.
+- **Munchlax** — Local ID: 446; National Dex ID: 446; Canonical name: munchlax; Status: **MATCH**.
 - **Riolu** — Local ID: 284; National Dex ID: 447; Canonical name: riolu; Status: **ID_MISMATCH**.
+- **Lucario** — Local ID: 448; National Dex ID: 448; Canonical name: lucario; Status: **MATCH**.
 - **Hippopotas** — Local ID: 289; National Dex ID: 449; Canonical name: hippopotas; Status: **ID_MISMATCH**.
+- **Hippowdon** — Local ID: 450; National Dex ID: 450; Canonical name: hippowdon; Status: **MATCH**.
+- **Mantyke** — Local ID: 458; National Dex ID: 458; Canonical name: mantyke; Status: **MATCH**.
+- **Weavile** — Local ID: 461; National Dex ID: 461; Canonical name: weavile; Status: **MATCH**.
+- **Magnezone** — Local ID: 462; National Dex ID: 462; Canonical name: magnezone; Status: **MATCH**.
+- **Lickilicky** — Local ID: 463; National Dex ID: 463; Canonical name: lickilicky; Status: **MATCH**.
+- **Rhyperior** — Local ID: 464; National Dex ID: 464; Canonical name: rhyperior; Status: **MATCH**.
+- **Tangrowth** — Local ID: 465; National Dex ID: 465; Canonical name: tangrowth; Status: **MATCH**.
+- **Electivire** — Local ID: 466; National Dex ID: 466; Canonical name: electivire; Status: **MATCH**.
+- **Magmortar** — Local ID: 467; National Dex ID: 467; Canonical name: magmortar; Status: **MATCH**.
+- **Togekiss** — Local ID: 468; National Dex ID: 468; Canonical name: togekiss; Status: **MATCH**.
+- **Yanmega** — Local ID: 469; National Dex ID: 469; Canonical name: yanmega; Status: **MATCH**.
+- **Leafeon** — Local ID: 470; National Dex ID: 470; Canonical name: leafeon; Status: **MATCH**.
+- **Glaceon** — Local ID: 471; National Dex ID: 471; Canonical name: glaceon; Status: **MATCH**.
+- **Gliscor** — Local ID: 472; National Dex ID: 472; Canonical name: gliscor; Status: **MATCH**.
+- **Mamoswine** — Local ID: 473; National Dex ID: 473; Canonical name: mamoswine; Status: **MATCH**.
+- **Porygon-Z** — Local ID: 474; National Dex ID: 474; Canonical name: porygon-z; Status: **MATCH**.
+- **Gallade** — Local ID: 475; National Dex ID: 475; Canonical name: gallade; Status: **MATCH**.
+- **Probopass** — Local ID: 476; National Dex ID: 476; Canonical name: probopass; Status: **MATCH**.
+- **Dusknoir** — Local ID: 477; National Dex ID: 477; Canonical name: dusknoir; Status: **MATCH**.
+- **Froslass** — Local ID: 478; National Dex ID: 478; Canonical name: froslass; Status: **MATCH**.
 - **Dialga** — Local ID: 255; National Dex ID: 483; Canonical name: dialga; Status: **ID_MISMATCH**.
 - **Palkia** — Local ID: 256; National Dex ID: 484; Canonical name: palkia; Status: **ID_MISMATCH**.
 - **Giratina** — Local ID: 257; National Dex ID: 487; Canonical name: giratina; Status: **ID_MISMATCH**.
@@ -433,21 +465,54 @@ Generated: 2026-09-06T17:11:40.270Z
 - **Darkrai** — Local ID: 301; National Dex ID: 491; Canonical name: darkrai; Status: **ID_MISMATCH**.
 - **Arceus** — Local ID: 262; National Dex ID: 493; Canonical name: arceus; Status: **ID_MISMATCH**.
 - **Roggenrola** — Local ID: 275; National Dex ID: 524; Canonical name: roggenrola; Status: **ID_MISMATCH**.
+- **Boldore** — Local ID: 525; National Dex ID: 525; Canonical name: boldore; Status: **MATCH**.
+- **Gigalith** — Local ID: 526; National Dex ID: 526; Canonical name: gigalith; Status: **MATCH**.
 - **Drilbur** — Local ID: 276; National Dex ID: 529; Canonical name: drilbur; Status: **ID_MISMATCH**.
+- **Excadrill** — Local ID: 530; National Dex ID: 530; Canonical name: excadrill; Status: **MATCH**.
 - **Sandile** — Local ID: 242; National Dex ID: 551; Canonical name: sandile; Status: **ID_MISMATCH**.
+- **Krokorok** — Local ID: 552; National Dex ID: 552; Canonical name: krokorok; Status: **MATCH**.
+- **Krookodile** — Local ID: 553; National Dex ID: 553; Canonical name: krookodile; Status: **MATCH**.
 - **Darumaka** — Local ID: 290; National Dex ID: 554; Canonical name: darumaka; Status: **ID_MISMATCH**.
+- **Darmanitan** — Local ID: 555; National Dex ID: 555; Canonical name: darmanitan; Status: **MATCH**.
 - **Scraggy** — Local ID: 291; National Dex ID: 559; Canonical name: scraggy; Status: **ID_MISMATCH**.
+- **Scrafty** — Local ID: 560; National Dex ID: 560; Canonical name: scrafty; Status: **MATCH**.
 - **Yamask** — Local ID: 296; National Dex ID: 562; Canonical name: yamask; Status: **ID_MISMATCH**.
+- **Cofagrigus** — Local ID: 563; National Dex ID: 563; Canonical name: cofagrigus; Status: **MATCH**.
 - **Litwick** — Local ID: 294; National Dex ID: 607; Canonical name: litwick; Status: **ID_MISMATCH**.
+- **Lampent** — Local ID: 608; National Dex ID: 608; Canonical name: lampent; Status: **MATCH**.
+- **Chandelure** — Local ID: 609; National Dex ID: 609; Canonical name: chandelure; Status: **MATCH**.
 - **Axew** — Local ID: 287; National Dex ID: 610; Canonical name: axew; Status: **ID_MISMATCH**.
+- **Fraxure** — Local ID: 611; National Dex ID: 611; Canonical name: fraxure; Status: **MATCH**.
+- **Haxorus** — Local ID: 612; National Dex ID: 612; Canonical name: haxorus; Status: **MATCH**.
 - **Reshiram** — Local ID: 259; National Dex ID: 643; Canonical name: reshiram; Status: **ID_MISMATCH**.
 - **Zekrom** — Local ID: 258; National Dex ID: 644; Canonical name: zekrom; Status: **ID_MISMATCH**.
+- **Sylveon** — Local ID: 700; National Dex ID: 700; Canonical name: sylveon; Status: **MATCH**.
 - **Phantump** — Local ID: 295; National Dex ID: 708; Canonical name: phantump; Status: **ID_MISMATCH**.
+- **Trevenant** — Local ID: 709; National Dex ID: 709; Canonical name: trevenant; Status: **MATCH**.
 - **Xerneas** — Local ID: 260; National Dex ID: 716; Canonical name: xerneas; Status: **ID_MISMATCH**.
 - **Yveltal** — Local ID: 261; National Dex ID: 717; Canonical name: yveltal; Status: **ID_MISMATCH**.
 - **Salandit** — Local ID: 282; National Dex ID: 757; Canonical name: salandit; Status: **ID_MISMATCH**.
+- **Salazzle** — Local ID: 758; National Dex ID: 758; Canonical name: salazzle; Status: **MATCH**.
 - **Rookidee** — Local ID: 283; National Dex ID: 821; Canonical name: rookidee; Status: **ID_MISMATCH**.
+- **Corvisquire** — Local ID: 822; National Dex ID: 822; Canonical name: corvisquire; Status: **MATCH**.
+- **Corviknight** — Local ID: 823; National Dex ID: 823; Canonical name: corviknight; Status: **MATCH**.
 - **Silicobra** — Local ID: 292; National Dex ID: 843; Canonical name: silicobra; Status: **ID_MISMATCH**.
+- **Sandaconda** — Local ID: 844; National Dex ID: 844; Canonical name: sandaconda; Status: **MATCH**.
+- **Obstagoon** — Local ID: 862; National Dex ID: 862; Canonical name: obstagoon; Status: **MATCH**.
+- **Perrserker** — Local ID: 863; National Dex ID: 863; Canonical name: perrserker; Status: **MATCH**.
+- **Cursola** — Local ID: 864; National Dex ID: 864; Canonical name: cursola; Status: **MATCH**.
+- **Sirfetch’d** — Local ID: 865; National Dex ID: 865; Canonical name: sirfetchd; Status: **MATCH**.
+- **Mr. Rime** — Local ID: 866; National Dex ID: 866; Canonical name: mr-rime; Status: **MATCH**.
+- **Runerigus** — Local ID: 867; National Dex ID: 867; Canonical name: runerigus; Status: **MATCH**.
+- **Wyrdeer** — Local ID: 899; National Dex ID: 899; Canonical name: wyrdeer; Status: **MATCH**.
+- **Kleavor** — Local ID: 900; National Dex ID: 900; Canonical name: kleavor; Status: **MATCH**.
+- **Ursaluna** — Local ID: 901; National Dex ID: 901; Canonical name: ursaluna; Status: **MATCH**.
+- **Sneasler** — Local ID: 903; National Dex ID: 903; Canonical name: sneasler; Status: **MATCH**.
+- **Overqwil** — Local ID: 904; National Dex ID: 904; Canonical name: overqwil; Status: **MATCH**.
+- **Annihilape** — Local ID: 979; National Dex ID: 979; Canonical name: annihilape; Status: **MATCH**.
+- **Clodsire** — Local ID: 980; National Dex ID: 980; Canonical name: clodsire; Status: **MATCH**.
+- **Farigiraf** — Local ID: 981; National Dex ID: 981; Canonical name: farigiraf; Status: **MATCH**.
+- **Dudunsparce** — Local ID: 982; National Dex ID: 982; Canonical name: dudunsparce; Status: **MATCH**.
 
 ## Critical Identity Problems
 
@@ -1065,19 +1130,31 @@ Generated: 2026-09-06T17:11:40.270Z
 - **Starly** (local 396, National Dex 396) [HIGH] Starly is missing canonical evolution target information. Current: `none`; canonical: `Staravia`.
 - **Staravia** (local 397, National Dex 397) [HIGH] Staravia is missing canonical evolution target information. Current: `none`; canonical: `Staraptor`.
 - **Bidoof** (local 399, National Dex 399) [HIGH] Bidoof is missing canonical evolution target information. Current: `none`; canonical: `Bibarel`.
+- **Budew** (local 406, National Dex 406) [HIGH] Budew is missing canonical evolution target information. Current: `none`; canonical: `Roselia`.
 - **Buizel** (local 272, National Dex 418) [HIGH] Buizel is missing canonical evolution target information. Current: `none`; canonical: `Floatzel`.
+- **Chingling** (local 433, National Dex 433) [HIGH] Chingling is missing canonical evolution target information. Current: `none`; canonical: `Chimecho`.
+- **Bonsly** (local 438, National Dex 438) [HIGH] Bonsly is missing canonical evolution target information. Current: `none`; canonical: `Sudowoodo`.
+- **Mime Jr.** (local 439, National Dex 439) [HIGH] Mime Jr. is missing canonical evolution target information. Current: `none`; canonical: `Mr Mime`.
+- **Happiny** (local 440, National Dex 440) [HIGH] Happiny is missing canonical evolution target information. Current: `none`; canonical: `Chansey`.
+- **Munchlax** (local 446, National Dex 446) [HIGH] Munchlax is missing canonical evolution target information. Current: `none`; canonical: `Snorlax`.
 - **Riolu** (local 284, National Dex 447) [HIGH] Riolu is missing canonical evolution target information. Current: `none`; canonical: `Lucario`.
 - **Hippopotas** (local 289, National Dex 449) [HIGH] Hippopotas is missing canonical evolution target information. Current: `none`; canonical: `Hippowdon`.
+- **Mantyke** (local 458, National Dex 458) [HIGH] Mantyke is missing canonical evolution target information. Current: `none`; canonical: `Mantine`.
 - **Roggenrola** (local 275, National Dex 524) [HIGH] Roggenrola is missing canonical evolution target information. Current: `none`; canonical: `Boldore`.
+- **Boldore** (local 525, National Dex 525) [HIGH] Boldore is missing canonical evolution target information. Current: `none`; canonical: `Gigalith`.
 - **Drilbur** (local 276, National Dex 529) [HIGH] Drilbur is missing canonical evolution target information. Current: `none`; canonical: `Excadrill`.
 - **Sandile** (local 242, National Dex 551) [HIGH] Sandile is missing canonical evolution target information. Current: `none`; canonical: `Krokorok`.
+- **Krokorok** (local 552, National Dex 552) [HIGH] Krokorok is missing canonical evolution target information. Current: `none`; canonical: `Krookodile`.
 - **Darumaka** (local 290, National Dex 554) [HIGH] Darumaka is missing canonical evolution target information. Current: `none`; canonical: `Darmanitan`.
 - **Scraggy** (local 291, National Dex 559) [HIGH] Scraggy is missing canonical evolution target information. Current: `none`; canonical: `Scrafty`.
 - **Litwick** (local 294, National Dex 607) [HIGH] Litwick is missing canonical evolution target information. Current: `none`; canonical: `Lampent`.
+- **Lampent** (local 608, National Dex 608) [HIGH] Lampent is missing canonical evolution target information. Current: `none`; canonical: `Chandelure`.
 - **Axew** (local 287, National Dex 610) [HIGH] Axew is missing canonical evolution target information. Current: `none`; canonical: `Fraxure`.
+- **Fraxure** (local 611, National Dex 611) [HIGH] Fraxure is missing canonical evolution target information. Current: `none`; canonical: `Haxorus`.
 - **Phantump** (local 295, National Dex 708) [HIGH] Phantump is missing canonical evolution target information. Current: `none`; canonical: `Trevenant`.
 - **Salandit** (local 282, National Dex 757) [HIGH] Salandit is missing canonical evolution target information. Current: `none`; canonical: `Salazzle`.
 - **Rookidee** (local 283, National Dex 821) [HIGH] Rookidee is missing canonical evolution target information. Current: `none`; canonical: `Corvisquire`.
+- **Corvisquire** (local 822, National Dex 822) [HIGH] Corvisquire is missing canonical evolution target information. Current: `none`; canonical: `Corviknight`.
 - **Silicobra** (local 292, National Dex 843) [HIGH] Silicobra is missing canonical evolution target information. Current: `none`; canonical: `Sandaconda`.
 
 ## Branching Evolutions
@@ -1100,60 +1177,7 @@ Generated: 2026-09-06T17:11:40.270Z
 
 ## Missing Evolution Family Members
 
-- Chain 22: present **Meowth, Persian**; missing **Perrserker**.
-- Chain 24: present **Mankey, Primeape**; missing **Annihilape**.
-- Chain 34: present **Magnemite, Magneton**; missing **Magnezone**.
-- Chain 35: present **Farfetchd**; missing **Sirfetchd**.
-- Chain 48: present **Lickitung**; missing **Lickilicky**.
-- Chain 50: present **Rhyhorn, Rhydon**; missing **Rhyperior**.
-- Chain 51: present **Chansey, Blissey**; missing **Happiny**.
-- Chain 52: present **Tangela**; missing **Tangrowth**.
-- Chain 57: present **Mr Mime**; missing **Mime Jr, Mr Rime**.
-- Chain 58: present **Scyther, Scizor**; missing **Kleavor**.
-- Chain 60: present **Elekid, Electabuzz**; missing **Electivire**.
-- Chain 61: present **Magby, Magmar**; missing **Magmortar**.
-- Chain 67: present **Eevee, Vaporeon, Jolteon, Flareon, Espeon, Umbreon**; missing **Leafeon, Glaceon, Sylveon**.
-- Chain 68: present **Porygon, Porygon2**; missing **Porygon Z**.
-- Chain 72: present **Snorlax**; missing **Munchlax**.
-- Chain 87: present **Togepi, Togetic**; missing **Togekiss**.
-- Chain 91: present **Sudowoodo**; missing **Bonsly**.
-- Chain 93: present **Aipom**; missing **Ambipom**.
-- Chain 95: present **Yanma**; missing **Yanmega**.
-- Chain 96: present **Wooper, Quagsire**; missing **Clodsire**.
-- Chain 97: present **Murkrow**; missing **Honchkrow**.
-- Chain 98: present **Misdreavus**; missing **Mismagius**.
-- Chain 101: present **Girafarig**; missing **Farigiraf**.
-- Chain 103: present **Dunsparce**; missing **Dudunsparce**.
-- Chain 104: present **Gligar**; missing **Gliscor**.
-- Chain 106: present **Qwilfish**; missing **Overqwil**.
-- Chain 109: present **Sneasel**; missing **Weavile, Sneasler**.
-- Chain 110: present **Teddiursa, Ursaring**; missing **Ursaluna**.
-- Chain 112: present **Swinub, Piloswine**; missing **Mamoswine**.
-- Chain 113: present **Corsola**; missing **Cursola**.
-- Chain 116: present **Mantine**; missing **Mantyke**.
-- Chain 120: present **Stantler**; missing **Wyrdeer**.
-- Chain 134: present **Zigzagoon, Linoone**; missing **Obstagoon**.
-- Chain 140: present **Ralts, Kirlia, Gardevoir**; missing **Gallade**.
-- Chain 147: present **Nosepass**; missing **Probopass**.
-- Chain 158: present **Roselia**; missing **Budew, Roserade**.
-- Chain 182: present **Duskull, Dusclops**; missing **Dusknoir**.
-- Chain 184: present **Chimecho**; missing **Chingling**.
-- Chain 186: present **Snorunt, Glalie**; missing **Froslass**.
-- Chain 216: present **Buizel**; missing **Floatzel**.
-- Chain 232: present **Riolu**; missing **Lucario**.
-- Chain 233: present **Hippopotas**; missing **Hippowdon**.
-- Chain 268: present **Roggenrola**; missing **Boldore, Gigalith**.
-- Chain 270: present **Drilbur**; missing **Excadrill**.
-- Chain 281: present **Sandile**; missing **Krokorok, Krookodile**.
-- Chain 282: present **Darumaka**; missing **Darmanitan**.
-- Chain 285: present **Scraggy**; missing **Scrafty**.
-- Chain 287: present **Yamask**; missing **Cofagrigus, Runerigus**.
-- Chain 308: present **Litwick**; missing **Lampent, Chandelure**.
-- Chain 309: present **Axew**; missing **Fraxure, Haxorus**.
-- Chain 364: present **Phantump**; missing **Trevenant**.
-- Chain 390: present **Salandit**; missing **Salazzle**.
-- Chain 434: present **Rookidee**; missing **Corvisquire, Corviknight**.
-- Chain 443: present **Silicobra**; missing **Sandaconda**.
+None.
 
 ## Forms Found
 
@@ -1256,12 +1280,24 @@ Generated: 2026-09-06T17:11:40.270Z
 - **Rayquaza**: canonical rayquaza-mega; configured none; missing rayquaza-mega.
 - **Deoxys**: canonical deoxys-attack, deoxys-defense, deoxys-speed; configured none; missing deoxys-attack, deoxys-defense, deoxys-speed.
 - **Staraptor**: canonical staraptor-mega; configured none; missing staraptor-mega.
+- **Lucario**: canonical lucario-mega, lucario-mega-z; configured none; missing lucario-mega, lucario-mega-z.
+- **Gallade**: canonical gallade-mega; configured none; missing gallade-mega.
+- **Froslass**: canonical froslass-mega; configured none; missing froslass-mega.
 - **Dialga**: canonical dialga-origin; configured none; missing dialga-origin.
 - **Palkia**: canonical palkia-origin; configured none; missing palkia-origin.
 - **Giratina**: canonical giratina-origin; configured none; missing giratina-origin.
 - **Darkrai**: canonical darkrai-mega; configured none; missing darkrai-mega.
+- **Excadrill**: canonical excadrill-mega; configured none; missing excadrill-mega.
 - **Darumaka**: canonical darumaka-galar; configured none; missing darumaka-galar.
+- **Darmanitan**: canonical darmanitan-zen, darmanitan-galar-standard, darmanitan-galar-zen; configured none; missing darmanitan-zen, darmanitan-galar-standard, darmanitan-galar-zen.
+- **Scrafty**: canonical scrafty-mega; configured none; missing scrafty-mega.
 - **Yamask**: canonical yamask-galar; configured none; missing yamask-galar.
+- **Chandelure**: canonical chandelure-mega; configured none; missing chandelure-mega.
+- **Salazzle**: canonical salazzle-totem; configured none; missing salazzle-totem.
+- **Corviknight**: canonical corviknight-gmax; configured none; missing corviknight-gmax.
+- **Sandaconda**: canonical sandaconda-gmax; configured none; missing sandaconda-gmax.
+- **Ursaluna**: canonical ursaluna-bloodmoon; configured none; missing ursaluna-bloodmoon.
+- **Dudunsparce**: canonical dudunsparce-three-segment; configured none; missing dudunsparce-three-segment.
 
 ## Canonical Evolution Methods
 

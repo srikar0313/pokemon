@@ -478,11 +478,14 @@ function validateGameData(gameData) {
       .map((mapping) => mapping.canonicalSpeciesId)
       .filter((speciesId) => speciesId >= 1 && speciesId <= 400),
   );
-  if (pokemonList.length !== 426 || canonicalEntries.length !== 426) {
+  if (
+    pokemonList.length !== speciesMappings.length ||
+    canonicalEntries.length !== speciesMappings.length
+  ) {
     addWarning(
       groups,
       "pokemonWarnings",
-      `Expanded catalog expected 426 species; found ${pokemonList.length} game and ${canonicalEntries.length} canonical entries`,
+      `Catalog counts differ: ${pokemonList.length} game, ${canonicalEntries.length} canonical, ${speciesMappings.length} mappings`,
     );
   }
   if (nationalDexCoverage.size !== 400) {
@@ -504,6 +507,16 @@ function validateGameData(gameData) {
       "Existing species above National Dex #400 were not fully preserved",
     );
   }
+  const evolutionSpecies = gameData.evolutions?.species || [];
+  evolutionSpecies.forEach((species) => {
+    if (!species.presentInGame || !Number.isInteger(species.localId)) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `Evolution-family species is missing from the runtime catalog: ${species.name || species.speciesId}`,
+      );
+    }
+  });
   const canonicalSpeciesOwners = new Map();
   pokemonList.forEach((pokemon) => {
     const canonical = canonicalLookup.getCanonicalPokemon(pokemon);
@@ -680,6 +693,10 @@ function loadGameData(options = {}) {
     speciesMap: loadJson(
       path.join(dataDir, "pokeapi", "species-map.json"),
       { species: [] },
+    ),
+    evolutions: loadJson(
+      path.join(dataDir, "pokeapi", "evolutions.json"),
+      { chains: [], species: [] },
     ),
     moves: loadJson(path.join(dataDir, "moves.json"), {}),
     items: loadJson(path.join(dataDir, "items.json"), {}),

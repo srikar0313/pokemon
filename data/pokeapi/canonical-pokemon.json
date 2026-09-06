@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-06T17:12:00.076Z",
+  "generatedAt": "2026-09-06T17:23:47.883Z",
   "source": "https://pokeapi.co",
-  "speciesCount": 426,
+  "speciesCount": 491,
   "pokemon": [
     {
       "localId": 1,
@@ -26339,6 +26339,134 @@
       ]
     },
     {
+      "localId": 406,
+      "localName": "Budew",
+      "speciesId": 406,
+      "canonicalName": "budew",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "baseStats": {
+        "hp": 40,
+        "attack": 30,
+        "defense": 35,
+        "specialAttack": 50,
+        "specialDefense": 70,
+        "speed": 55
+      },
+      "captureRate": 255,
+      "baseExperience": 56,
+      "height": 2,
+      "weight": 12,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "natural-cure",
+          "hidden": false
+        },
+        {
+          "name": "poison-point",
+          "hidden": false
+        },
+        {
+          "name": "leaf-guard",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 158,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/406.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/406.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 406,
+          "name": "budew",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Grass",
+            "Poison"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/406.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/406.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 407,
+      "localName": "Roserade",
+      "speciesId": 407,
+      "canonicalName": "roserade",
+      "types": [
+        "Grass",
+        "Poison"
+      ],
+      "baseStats": {
+        "hp": 60,
+        "attack": 70,
+        "defense": 65,
+        "specialAttack": 125,
+        "specialDefense": 105,
+        "speed": 90
+      },
+      "captureRate": 75,
+      "baseExperience": 232,
+      "height": 9,
+      "weight": 145,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "natural-cure",
+          "hidden": false
+        },
+        {
+          "name": "poison-point",
+          "hidden": false
+        },
+        {
+          "name": "technician",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 158,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/407.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/407.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 407,
+          "name": "roserade",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Grass",
+            "Poison"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/407.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/407.png"
+          }
+        }
+      ]
+    },
+    {
       "localId": 272,
       "localName": "Buizel",
       "speciesId": 418,
@@ -26392,6 +26520,486 @@
           "artwork": {
             "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/418.png",
             "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/418.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 419,
+      "localName": "Floatzel",
+      "speciesId": 419,
+      "canonicalName": "floatzel",
+      "types": [
+        "Water"
+      ],
+      "baseStats": {
+        "hp": 85,
+        "attack": 105,
+        "defense": 55,
+        "specialAttack": 85,
+        "specialDefense": 50,
+        "speed": 115
+      },
+      "captureRate": 75,
+      "baseExperience": 173,
+      "height": 11,
+      "weight": 335,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "swift-swim",
+          "hidden": false
+        },
+        {
+          "name": "water-veil",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 216,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/419.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/419.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 419,
+          "name": "floatzel",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Water"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/419.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/419.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 424,
+      "localName": "Ambipom",
+      "speciesId": 424,
+      "canonicalName": "ambipom",
+      "types": [
+        "Normal"
+      ],
+      "baseStats": {
+        "hp": 75,
+        "attack": 100,
+        "defense": 66,
+        "specialAttack": 60,
+        "specialDefense": 66,
+        "speed": 115
+      },
+      "captureRate": 45,
+      "baseExperience": 169,
+      "height": 12,
+      "weight": 203,
+      "growthRate": "fast",
+      "baseHappiness": 100,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "technician",
+          "hidden": false
+        },
+        {
+          "name": "pickup",
+          "hidden": false
+        },
+        {
+          "name": "skill-link",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 93,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/424.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/424.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 424,
+          "name": "ambipom",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Normal"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/424.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/424.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 429,
+      "localName": "Mismagius",
+      "speciesId": 429,
+      "canonicalName": "mismagius",
+      "types": [
+        "Ghost"
+      ],
+      "baseStats": {
+        "hp": 60,
+        "attack": 60,
+        "defense": 60,
+        "specialAttack": 105,
+        "specialDefense": 105,
+        "speed": 105
+      },
+      "captureRate": 45,
+      "baseExperience": 173,
+      "height": 9,
+      "weight": 44,
+      "growthRate": "fast",
+      "baseHappiness": 35,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "levitate",
+          "hidden": false
+        }
+      ],
+      "evolutionChainId": 98,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/429.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/429.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 429,
+          "name": "mismagius",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ghost"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/429.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/429.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 430,
+      "localName": "Honchkrow",
+      "speciesId": 430,
+      "canonicalName": "honchkrow",
+      "types": [
+        "Dark",
+        "Flying"
+      ],
+      "baseStats": {
+        "hp": 100,
+        "attack": 125,
+        "defense": 52,
+        "specialAttack": 105,
+        "specialDefense": 52,
+        "speed": 71
+      },
+      "captureRate": 30,
+      "baseExperience": 177,
+      "height": 9,
+      "weight": 273,
+      "growthRate": "medium-slow",
+      "baseHappiness": 35,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "insomnia",
+          "hidden": false
+        },
+        {
+          "name": "super-luck",
+          "hidden": false
+        },
+        {
+          "name": "moxie",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 97,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/430.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/430.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 430,
+          "name": "honchkrow",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Dark",
+            "Flying"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/430.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/430.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 433,
+      "localName": "Chingling",
+      "speciesId": 433,
+      "canonicalName": "chingling",
+      "types": [
+        "Psychic"
+      ],
+      "baseStats": {
+        "hp": 45,
+        "attack": 30,
+        "defense": 50,
+        "specialAttack": 65,
+        "specialDefense": 50,
+        "speed": 45
+      },
+      "captureRate": 120,
+      "baseExperience": 57,
+      "height": 2,
+      "weight": 6,
+      "growthRate": "fast",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "levitate",
+          "hidden": false
+        }
+      ],
+      "evolutionChainId": 184,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/433.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/433.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 433,
+          "name": "chingling",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Psychic"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/433.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/433.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 438,
+      "localName": "Bonsly",
+      "speciesId": 438,
+      "canonicalName": "bonsly",
+      "types": [
+        "Rock"
+      ],
+      "baseStats": {
+        "hp": 50,
+        "attack": 80,
+        "defense": 95,
+        "specialAttack": 10,
+        "specialDefense": 45,
+        "speed": 10
+      },
+      "captureRate": 255,
+      "baseExperience": 58,
+      "height": 5,
+      "weight": 150,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "sturdy",
+          "hidden": false
+        },
+        {
+          "name": "rock-head",
+          "hidden": false
+        },
+        {
+          "name": "rattled",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 91,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/438.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/438.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 438,
+          "name": "bonsly",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Rock"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/438.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/438.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 439,
+      "localName": "Mime Jr.",
+      "speciesId": 439,
+      "canonicalName": "mime-jr",
+      "types": [
+        "Psychic",
+        "Fairy"
+      ],
+      "baseStats": {
+        "hp": 20,
+        "attack": 25,
+        "defense": 45,
+        "specialAttack": 70,
+        "specialDefense": 90,
+        "speed": 60
+      },
+      "captureRate": 145,
+      "baseExperience": 62,
+      "height": 6,
+      "weight": 130,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "soundproof",
+          "hidden": false
+        },
+        {
+          "name": "filter",
+          "hidden": false
+        },
+        {
+          "name": "technician",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 57,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/439.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/439.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 439,
+          "name": "mime-jr",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Psychic",
+            "Fairy"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/439.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/439.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 440,
+      "localName": "Happiny",
+      "speciesId": 440,
+      "canonicalName": "happiny",
+      "types": [
+        "Normal"
+      ],
+      "baseStats": {
+        "hp": 100,
+        "attack": 5,
+        "defense": 5,
+        "specialAttack": 15,
+        "specialDefense": 65,
+        "speed": 30
+      },
+      "captureRate": 130,
+      "baseExperience": 110,
+      "height": 6,
+      "weight": 244,
+      "growthRate": "fast",
+      "baseHappiness": 140,
+      "genderRate": 8,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "natural-cure",
+          "hidden": false
+        },
+        {
+          "name": "serene-grace",
+          "hidden": false
+        },
+        {
+          "name": "friend-guard",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 51,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/440.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/440.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 440,
+          "name": "happiny",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Normal"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/440.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/440.png"
           }
         }
       ]
@@ -26452,6 +27060,68 @@
           "artwork": {
             "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/442.png",
             "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/442.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 446,
+      "localName": "Munchlax",
+      "speciesId": 446,
+      "canonicalName": "munchlax",
+      "types": [
+        "Normal"
+      ],
+      "baseStats": {
+        "hp": 135,
+        "attack": 85,
+        "defense": 40,
+        "specialAttack": 40,
+        "specialDefense": 85,
+        "speed": 5
+      },
+      "captureRate": 50,
+      "baseExperience": 78,
+      "height": 6,
+      "weight": 1050,
+      "growthRate": "slow",
+      "baseHappiness": 70,
+      "genderRate": 1,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "pickup",
+          "hidden": false
+        },
+        {
+          "name": "thick-fat",
+          "hidden": false
+        },
+        {
+          "name": "gluttony",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 72,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/446.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/446.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 446,
+          "name": "munchlax",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Normal"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/446.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/446.png"
           }
         }
       ]
@@ -26519,6 +27189,100 @@
       ]
     },
     {
+      "localId": 448,
+      "localName": "Lucario",
+      "speciesId": 448,
+      "canonicalName": "lucario",
+      "types": [
+        "Fighting",
+        "Steel"
+      ],
+      "baseStats": {
+        "hp": 70,
+        "attack": 110,
+        "defense": 70,
+        "specialAttack": 115,
+        "specialDefense": 70,
+        "speed": 90
+      },
+      "captureRate": 45,
+      "baseExperience": 184,
+      "height": 12,
+      "weight": 540,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 1,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "steadfast",
+          "hidden": false
+        },
+        {
+          "name": "inner-focus",
+          "hidden": false
+        },
+        {
+          "name": "justified",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 232,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/448.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/448.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 448,
+          "name": "lucario",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Fighting",
+            "Steel"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/448.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/448.png"
+          }
+        },
+        {
+          "pokemonId": 10059,
+          "name": "lucario-mega",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Fighting",
+            "Steel"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10059.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10059.png"
+          }
+        },
+        {
+          "pokemonId": 10310,
+          "name": "lucario-mega-z",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Fighting",
+            "Steel"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10310.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10310.png"
+          }
+        }
+      ]
+    },
+    {
       "localId": 289,
       "localName": "Hippopotas",
       "speciesId": 449,
@@ -26572,6 +27336,1266 @@
           "artwork": {
             "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/449.png",
             "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/449.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 450,
+      "localName": "Hippowdon",
+      "speciesId": 450,
+      "canonicalName": "hippowdon",
+      "types": [
+        "Ground"
+      ],
+      "baseStats": {
+        "hp": 108,
+        "attack": 112,
+        "defense": 118,
+        "specialAttack": 68,
+        "specialDefense": 72,
+        "speed": 47
+      },
+      "captureRate": 60,
+      "baseExperience": 184,
+      "height": 20,
+      "weight": 3000,
+      "growthRate": "slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "sand-stream",
+          "hidden": false
+        },
+        {
+          "name": "sand-force",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 233,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/450.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/450.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 450,
+          "name": "hippowdon",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ground"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/450.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/450.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 458,
+      "localName": "Mantyke",
+      "speciesId": 458,
+      "canonicalName": "mantyke",
+      "types": [
+        "Water",
+        "Flying"
+      ],
+      "baseStats": {
+        "hp": 45,
+        "attack": 20,
+        "defense": 50,
+        "specialAttack": 60,
+        "specialDefense": 120,
+        "speed": 50
+      },
+      "captureRate": 25,
+      "baseExperience": 69,
+      "height": 10,
+      "weight": 650,
+      "growthRate": "slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "swift-swim",
+          "hidden": false
+        },
+        {
+          "name": "water-absorb",
+          "hidden": false
+        },
+        {
+          "name": "water-veil",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 116,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/458.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/458.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 458,
+          "name": "mantyke",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Water",
+            "Flying"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/458.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/458.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 461,
+      "localName": "Weavile",
+      "speciesId": 461,
+      "canonicalName": "weavile",
+      "types": [
+        "Dark",
+        "Ice"
+      ],
+      "baseStats": {
+        "hp": 70,
+        "attack": 120,
+        "defense": 65,
+        "specialAttack": 45,
+        "specialDefense": 85,
+        "speed": 125
+      },
+      "captureRate": 45,
+      "baseExperience": 179,
+      "height": 11,
+      "weight": 340,
+      "growthRate": "medium-slow",
+      "baseHappiness": 35,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "pressure",
+          "hidden": false
+        },
+        {
+          "name": "pickpocket",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 109,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/461.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/461.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 461,
+          "name": "weavile",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Dark",
+            "Ice"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/461.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/461.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 462,
+      "localName": "Magnezone",
+      "speciesId": 462,
+      "canonicalName": "magnezone",
+      "types": [
+        "Electric",
+        "Steel"
+      ],
+      "baseStats": {
+        "hp": 70,
+        "attack": 70,
+        "defense": 115,
+        "specialAttack": 130,
+        "specialDefense": 90,
+        "speed": 60
+      },
+      "captureRate": 30,
+      "baseExperience": 241,
+      "height": 12,
+      "weight": 1800,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": -1,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "magnet-pull",
+          "hidden": false
+        },
+        {
+          "name": "sturdy",
+          "hidden": false
+        },
+        {
+          "name": "analytic",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 34,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/462.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/462.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 462,
+          "name": "magnezone",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Electric",
+            "Steel"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/462.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/462.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 463,
+      "localName": "Lickilicky",
+      "speciesId": 463,
+      "canonicalName": "lickilicky",
+      "types": [
+        "Normal"
+      ],
+      "baseStats": {
+        "hp": 110,
+        "attack": 85,
+        "defense": 95,
+        "specialAttack": 80,
+        "specialDefense": 95,
+        "speed": 50
+      },
+      "captureRate": 30,
+      "baseExperience": 180,
+      "height": 17,
+      "weight": 1400,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "own-tempo",
+          "hidden": false
+        },
+        {
+          "name": "oblivious",
+          "hidden": false
+        },
+        {
+          "name": "cloud-nine",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 48,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/463.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/463.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 463,
+          "name": "lickilicky",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Normal"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/463.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/463.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 464,
+      "localName": "Rhyperior",
+      "speciesId": 464,
+      "canonicalName": "rhyperior",
+      "types": [
+        "Ground",
+        "Rock"
+      ],
+      "baseStats": {
+        "hp": 115,
+        "attack": 140,
+        "defense": 130,
+        "specialAttack": 55,
+        "specialDefense": 55,
+        "speed": 40
+      },
+      "captureRate": 30,
+      "baseExperience": 241,
+      "height": 24,
+      "weight": 2828,
+      "growthRate": "slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "lightning-rod",
+          "hidden": false
+        },
+        {
+          "name": "solid-rock",
+          "hidden": false
+        },
+        {
+          "name": "reckless",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 50,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/464.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/464.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 464,
+          "name": "rhyperior",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ground",
+            "Rock"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/464.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/464.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 465,
+      "localName": "Tangrowth",
+      "speciesId": 465,
+      "canonicalName": "tangrowth",
+      "types": [
+        "Grass"
+      ],
+      "baseStats": {
+        "hp": 100,
+        "attack": 100,
+        "defense": 125,
+        "specialAttack": 110,
+        "specialDefense": 50,
+        "speed": 50
+      },
+      "captureRate": 30,
+      "baseExperience": 187,
+      "height": 20,
+      "weight": 1286,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "chlorophyll",
+          "hidden": false
+        },
+        {
+          "name": "leaf-guard",
+          "hidden": false
+        },
+        {
+          "name": "regenerator",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 52,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/465.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/465.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 465,
+          "name": "tangrowth",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Grass"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/465.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/465.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 466,
+      "localName": "Electivire",
+      "speciesId": 466,
+      "canonicalName": "electivire",
+      "types": [
+        "Electric"
+      ],
+      "baseStats": {
+        "hp": 75,
+        "attack": 123,
+        "defense": 67,
+        "specialAttack": 95,
+        "specialDefense": 85,
+        "speed": 95
+      },
+      "captureRate": 30,
+      "baseExperience": 243,
+      "height": 18,
+      "weight": 1386,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 2,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "motor-drive",
+          "hidden": false
+        },
+        {
+          "name": "vital-spirit",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 60,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/466.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/466.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 466,
+          "name": "electivire",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Electric"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/466.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/466.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 467,
+      "localName": "Magmortar",
+      "speciesId": 467,
+      "canonicalName": "magmortar",
+      "types": [
+        "Fire"
+      ],
+      "baseStats": {
+        "hp": 75,
+        "attack": 95,
+        "defense": 67,
+        "specialAttack": 125,
+        "specialDefense": 95,
+        "speed": 83
+      },
+      "captureRate": 30,
+      "baseExperience": 243,
+      "height": 16,
+      "weight": 680,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 2,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "flame-body",
+          "hidden": false
+        },
+        {
+          "name": "vital-spirit",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 61,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/467.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/467.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 467,
+          "name": "magmortar",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Fire"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/467.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/467.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 468,
+      "localName": "Togekiss",
+      "speciesId": 468,
+      "canonicalName": "togekiss",
+      "types": [
+        "Fairy",
+        "Flying"
+      ],
+      "baseStats": {
+        "hp": 85,
+        "attack": 50,
+        "defense": 95,
+        "specialAttack": 120,
+        "specialDefense": 115,
+        "speed": 80
+      },
+      "captureRate": 30,
+      "baseExperience": 245,
+      "height": 15,
+      "weight": 380,
+      "growthRate": "fast",
+      "baseHappiness": 70,
+      "genderRate": 1,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "hustle",
+          "hidden": false
+        },
+        {
+          "name": "serene-grace",
+          "hidden": false
+        },
+        {
+          "name": "super-luck",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 87,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/468.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/468.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 468,
+          "name": "togekiss",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Fairy",
+            "Flying"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/468.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/468.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 469,
+      "localName": "Yanmega",
+      "speciesId": 469,
+      "canonicalName": "yanmega",
+      "types": [
+        "Bug",
+        "Flying"
+      ],
+      "baseStats": {
+        "hp": 86,
+        "attack": 76,
+        "defense": 86,
+        "specialAttack": 116,
+        "specialDefense": 56,
+        "speed": 95
+      },
+      "captureRate": 30,
+      "baseExperience": 180,
+      "height": 19,
+      "weight": 515,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "speed-boost",
+          "hidden": false
+        },
+        {
+          "name": "tinted-lens",
+          "hidden": false
+        },
+        {
+          "name": "frisk",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 95,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/469.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/469.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 469,
+          "name": "yanmega",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Bug",
+            "Flying"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/469.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/469.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 470,
+      "localName": "Leafeon",
+      "speciesId": 470,
+      "canonicalName": "leafeon",
+      "types": [
+        "Grass"
+      ],
+      "baseStats": {
+        "hp": 65,
+        "attack": 110,
+        "defense": 130,
+        "specialAttack": 60,
+        "specialDefense": 65,
+        "speed": 95
+      },
+      "captureRate": 45,
+      "baseExperience": 184,
+      "height": 10,
+      "weight": 255,
+      "growthRate": "medium",
+      "baseHappiness": 35,
+      "genderRate": 1,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "leaf-guard",
+          "hidden": false
+        },
+        {
+          "name": "chlorophyll",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 67,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/470.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/470.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 470,
+          "name": "leafeon",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Grass"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/470.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/470.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 471,
+      "localName": "Glaceon",
+      "speciesId": 471,
+      "canonicalName": "glaceon",
+      "types": [
+        "Ice"
+      ],
+      "baseStats": {
+        "hp": 65,
+        "attack": 60,
+        "defense": 110,
+        "specialAttack": 130,
+        "specialDefense": 95,
+        "speed": 65
+      },
+      "captureRate": 45,
+      "baseExperience": 184,
+      "height": 8,
+      "weight": 259,
+      "growthRate": "medium",
+      "baseHappiness": 35,
+      "genderRate": 1,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "snow-cloak",
+          "hidden": false
+        },
+        {
+          "name": "ice-body",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 67,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/471.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/471.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 471,
+          "name": "glaceon",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ice"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/471.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/471.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 472,
+      "localName": "Gliscor",
+      "speciesId": 472,
+      "canonicalName": "gliscor",
+      "types": [
+        "Ground",
+        "Flying"
+      ],
+      "baseStats": {
+        "hp": 75,
+        "attack": 95,
+        "defense": 125,
+        "specialAttack": 45,
+        "specialDefense": 75,
+        "speed": 95
+      },
+      "captureRate": 30,
+      "baseExperience": 179,
+      "height": 20,
+      "weight": 425,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "hyper-cutter",
+          "hidden": false
+        },
+        {
+          "name": "sand-veil",
+          "hidden": false
+        },
+        {
+          "name": "poison-heal",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 104,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/472.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/472.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 472,
+          "name": "gliscor",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ground",
+            "Flying"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/472.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/472.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 473,
+      "localName": "Mamoswine",
+      "speciesId": 473,
+      "canonicalName": "mamoswine",
+      "types": [
+        "Ice",
+        "Ground"
+      ],
+      "baseStats": {
+        "hp": 110,
+        "attack": 130,
+        "defense": 80,
+        "specialAttack": 70,
+        "specialDefense": 60,
+        "speed": 80
+      },
+      "captureRate": 50,
+      "baseExperience": 239,
+      "height": 25,
+      "weight": 2910,
+      "growthRate": "slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "oblivious",
+          "hidden": false
+        },
+        {
+          "name": "snow-cloak",
+          "hidden": false
+        },
+        {
+          "name": "thick-fat",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 112,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/473.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/473.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 473,
+          "name": "mamoswine",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ice",
+            "Ground"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/473.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/473.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 474,
+      "localName": "Porygon-Z",
+      "speciesId": 474,
+      "canonicalName": "porygon-z",
+      "types": [
+        "Normal"
+      ],
+      "baseStats": {
+        "hp": 85,
+        "attack": 80,
+        "defense": 70,
+        "specialAttack": 135,
+        "specialDefense": 75,
+        "speed": 90
+      },
+      "captureRate": 30,
+      "baseExperience": 241,
+      "height": 9,
+      "weight": 340,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": -1,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "adaptability",
+          "hidden": false
+        },
+        {
+          "name": "download",
+          "hidden": false
+        },
+        {
+          "name": "analytic",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 68,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/474.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/474.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 474,
+          "name": "porygon-z",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Normal"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/474.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/474.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 475,
+      "localName": "Gallade",
+      "speciesId": 475,
+      "canonicalName": "gallade",
+      "types": [
+        "Psychic",
+        "Fighting"
+      ],
+      "baseStats": {
+        "hp": 68,
+        "attack": 125,
+        "defense": 65,
+        "specialAttack": 65,
+        "specialDefense": 115,
+        "speed": 80
+      },
+      "captureRate": 45,
+      "baseExperience": 233,
+      "height": 16,
+      "weight": 520,
+      "growthRate": "slow",
+      "baseHappiness": 35,
+      "genderRate": 0,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "steadfast",
+          "hidden": false
+        },
+        {
+          "name": "sharpness",
+          "hidden": false
+        },
+        {
+          "name": "justified",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 140,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/475.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/475.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 475,
+          "name": "gallade",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Psychic",
+            "Fighting"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/475.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/475.png"
+          }
+        },
+        {
+          "pokemonId": 10068,
+          "name": "gallade-mega",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Psychic",
+            "Fighting"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10068.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10068.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 476,
+      "localName": "Probopass",
+      "speciesId": 476,
+      "canonicalName": "probopass",
+      "types": [
+        "Rock",
+        "Steel"
+      ],
+      "baseStats": {
+        "hp": 60,
+        "attack": 55,
+        "defense": 145,
+        "specialAttack": 75,
+        "specialDefense": 150,
+        "speed": 40
+      },
+      "captureRate": 60,
+      "baseExperience": 184,
+      "height": 14,
+      "weight": 3400,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "sturdy",
+          "hidden": false
+        },
+        {
+          "name": "magnet-pull",
+          "hidden": false
+        },
+        {
+          "name": "sand-force",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 147,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/476.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/476.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 476,
+          "name": "probopass",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Rock",
+            "Steel"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/476.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/476.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 477,
+      "localName": "Dusknoir",
+      "speciesId": 477,
+      "canonicalName": "dusknoir",
+      "types": [
+        "Ghost"
+      ],
+      "baseStats": {
+        "hp": 45,
+        "attack": 100,
+        "defense": 135,
+        "specialAttack": 65,
+        "specialDefense": 135,
+        "speed": 45
+      },
+      "captureRate": 45,
+      "baseExperience": 236,
+      "height": 22,
+      "weight": 1066,
+      "growthRate": "fast",
+      "baseHappiness": 35,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "pressure",
+          "hidden": false
+        },
+        {
+          "name": "frisk",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 182,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/477.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/477.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 477,
+          "name": "dusknoir",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ghost"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/477.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/477.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 478,
+      "localName": "Froslass",
+      "speciesId": 478,
+      "canonicalName": "froslass",
+      "types": [
+        "Ice",
+        "Ghost"
+      ],
+      "baseStats": {
+        "hp": 70,
+        "attack": 80,
+        "defense": 70,
+        "specialAttack": 80,
+        "specialDefense": 70,
+        "speed": 110
+      },
+      "captureRate": 75,
+      "baseExperience": 168,
+      "height": 13,
+      "weight": 266,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 8,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-iv",
+      "abilities": [
+        {
+          "name": "snow-cloak",
+          "hidden": false
+        },
+        {
+          "name": "cursed-body",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 186,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/478.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/478.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 478,
+          "name": "froslass",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ice",
+            "Ghost"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/478.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/478.png"
+          }
+        },
+        {
+          "pokemonId": 10285,
+          "name": "froslass-mega",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Ice",
+            "Ghost"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10285.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10285.png"
           }
         }
       ]
@@ -27040,6 +29064,130 @@
       ]
     },
     {
+      "localId": 525,
+      "localName": "Boldore",
+      "speciesId": 525,
+      "canonicalName": "boldore",
+      "types": [
+        "Rock"
+      ],
+      "baseStats": {
+        "hp": 70,
+        "attack": 105,
+        "defense": 105,
+        "specialAttack": 50,
+        "specialDefense": 40,
+        "speed": 20
+      },
+      "captureRate": 120,
+      "baseExperience": 137,
+      "height": 9,
+      "weight": 1020,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "sturdy",
+          "hidden": false
+        },
+        {
+          "name": "weak-armor",
+          "hidden": false
+        },
+        {
+          "name": "sand-force",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 268,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/525.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/525.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 525,
+          "name": "boldore",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Rock"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/525.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/525.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 526,
+      "localName": "Gigalith",
+      "speciesId": 526,
+      "canonicalName": "gigalith",
+      "types": [
+        "Rock"
+      ],
+      "baseStats": {
+        "hp": 85,
+        "attack": 135,
+        "defense": 130,
+        "specialAttack": 60,
+        "specialDefense": 80,
+        "speed": 25
+      },
+      "captureRate": 45,
+      "baseExperience": 232,
+      "height": 17,
+      "weight": 2600,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "sturdy",
+          "hidden": false
+        },
+        {
+          "name": "sand-stream",
+          "hidden": false
+        },
+        {
+          "name": "sand-force",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 268,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/526.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/526.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 526,
+          "name": "gigalith",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Rock"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/526.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/526.png"
+          }
+        }
+      ]
+    },
+    {
       "localId": 276,
       "localName": "Drilbur",
       "speciesId": 529,
@@ -27097,6 +29245,85 @@
           "artwork": {
             "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/529.png",
             "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/529.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 530,
+      "localName": "Excadrill",
+      "speciesId": 530,
+      "canonicalName": "excadrill",
+      "types": [
+        "Ground",
+        "Steel"
+      ],
+      "baseStats": {
+        "hp": 110,
+        "attack": 135,
+        "defense": 60,
+        "specialAttack": 50,
+        "specialDefense": 65,
+        "speed": 88
+      },
+      "captureRate": 60,
+      "baseExperience": 178,
+      "height": 7,
+      "weight": 404,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "sand-rush",
+          "hidden": false
+        },
+        {
+          "name": "sand-force",
+          "hidden": false
+        },
+        {
+          "name": "mold-breaker",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 270,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/530.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/530.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 530,
+          "name": "excadrill",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ground",
+            "Steel"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/530.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/530.png"
+          }
+        },
+        {
+          "pokemonId": 10287,
+          "name": "excadrill-mega",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Ground",
+            "Steel"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10287.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10287.png"
           }
         }
       ]
@@ -27161,6 +29388,134 @@
           "artwork": {
             "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/551.png",
             "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/551.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 552,
+      "localName": "Krokorok",
+      "speciesId": 552,
+      "canonicalName": "krokorok",
+      "types": [
+        "Ground",
+        "Dark"
+      ],
+      "baseStats": {
+        "hp": 60,
+        "attack": 82,
+        "defense": 45,
+        "specialAttack": 45,
+        "specialDefense": 45,
+        "speed": 74
+      },
+      "captureRate": 90,
+      "baseExperience": 123,
+      "height": 10,
+      "weight": 334,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "intimidate",
+          "hidden": false
+        },
+        {
+          "name": "moxie",
+          "hidden": false
+        },
+        {
+          "name": "anger-point",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 281,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/552.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/552.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 552,
+          "name": "krokorok",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ground",
+            "Dark"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/552.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/552.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 553,
+      "localName": "Krookodile",
+      "speciesId": 553,
+      "canonicalName": "krookodile",
+      "types": [
+        "Ground",
+        "Dark"
+      ],
+      "baseStats": {
+        "hp": 95,
+        "attack": 117,
+        "defense": 80,
+        "specialAttack": 65,
+        "specialDefense": 70,
+        "speed": 92
+      },
+      "captureRate": 45,
+      "baseExperience": 234,
+      "height": 15,
+      "weight": 963,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "intimidate",
+          "hidden": false
+        },
+        {
+          "name": "moxie",
+          "hidden": false
+        },
+        {
+          "name": "anger-point",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 281,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/553.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/553.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 553,
+          "name": "krookodile",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ground",
+            "Dark"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/553.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/553.png"
           }
         }
       ]
@@ -27238,6 +29593,108 @@
       ]
     },
     {
+      "localId": 555,
+      "localName": "Darmanitan",
+      "speciesId": 555,
+      "canonicalName": "darmanitan",
+      "types": [
+        "Fire"
+      ],
+      "baseStats": {
+        "hp": 105,
+        "attack": 140,
+        "defense": 55,
+        "specialAttack": 30,
+        "specialDefense": 55,
+        "speed": 95
+      },
+      "captureRate": 60,
+      "baseExperience": 168,
+      "height": 13,
+      "weight": 929,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "sheer-force",
+          "hidden": false
+        },
+        {
+          "name": "zen-mode",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 282,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/555.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/555.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 555,
+          "name": "darmanitan-standard",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Fire"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/555.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/555.png"
+          }
+        },
+        {
+          "pokemonId": 10017,
+          "name": "darmanitan-zen",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Fire",
+            "Psychic"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10017.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10017.png"
+          }
+        },
+        {
+          "pokemonId": 10177,
+          "name": "darmanitan-galar-standard",
+          "isDefault": false,
+          "category": "regional",
+          "region": "galar",
+          "types": [
+            "Ice"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10177.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10177.png"
+          }
+        },
+        {
+          "pokemonId": 10178,
+          "name": "darmanitan-galar-zen",
+          "isDefault": false,
+          "category": "regional",
+          "region": "galar",
+          "types": [
+            "Ice",
+            "Fire"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10178.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10178.png"
+          }
+        }
+      ]
+    },
+    {
       "localId": 291,
       "localName": "Scraggy",
       "speciesId": 559,
@@ -27297,6 +29754,85 @@
           "artwork": {
             "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/559.png",
             "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/559.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 560,
+      "localName": "Scrafty",
+      "speciesId": 560,
+      "canonicalName": "scrafty",
+      "types": [
+        "Dark",
+        "Fighting"
+      ],
+      "baseStats": {
+        "hp": 65,
+        "attack": 90,
+        "defense": 115,
+        "specialAttack": 45,
+        "specialDefense": 115,
+        "speed": 58
+      },
+      "captureRate": 90,
+      "baseExperience": 171,
+      "height": 11,
+      "weight": 300,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "shed-skin",
+          "hidden": false
+        },
+        {
+          "name": "moxie",
+          "hidden": false
+        },
+        {
+          "name": "intimidate",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 285,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/560.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/560.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 560,
+          "name": "scrafty",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Dark",
+            "Fighting"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/560.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/560.png"
+          }
+        },
+        {
+          "pokemonId": 10289,
+          "name": "scrafty-mega",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Dark",
+            "Fighting"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10289.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10289.png"
           }
         }
       ]
@@ -27371,6 +29907,60 @@
       ]
     },
     {
+      "localId": 563,
+      "localName": "Cofagrigus",
+      "speciesId": 563,
+      "canonicalName": "cofagrigus",
+      "types": [
+        "Ghost"
+      ],
+      "baseStats": {
+        "hp": 58,
+        "attack": 50,
+        "defense": 145,
+        "specialAttack": 95,
+        "specialDefense": 105,
+        "speed": 30
+      },
+      "captureRate": 90,
+      "baseExperience": 169,
+      "height": 17,
+      "weight": 765,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "mummy",
+          "hidden": false
+        }
+      ],
+      "evolutionChainId": 287,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/563.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/563.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 563,
+          "name": "cofagrigus",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ghost"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/563.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/563.png"
+          }
+        }
+      ]
+    },
+    {
       "localId": 294,
       "localName": "Litwick",
       "speciesId": 607,
@@ -27435,6 +30025,149 @@
       ]
     },
     {
+      "localId": 608,
+      "localName": "Lampent",
+      "speciesId": 608,
+      "canonicalName": "lampent",
+      "types": [
+        "Ghost",
+        "Fire"
+      ],
+      "baseStats": {
+        "hp": 60,
+        "attack": 40,
+        "defense": 60,
+        "specialAttack": 95,
+        "specialDefense": 60,
+        "speed": 55
+      },
+      "captureRate": 90,
+      "baseExperience": 130,
+      "height": 6,
+      "weight": 130,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "flash-fire",
+          "hidden": false
+        },
+        {
+          "name": "flame-body",
+          "hidden": false
+        },
+        {
+          "name": "infiltrator",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 308,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/608.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/608.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 608,
+          "name": "lampent",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ghost",
+            "Fire"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/608.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/608.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 609,
+      "localName": "Chandelure",
+      "speciesId": 609,
+      "canonicalName": "chandelure",
+      "types": [
+        "Ghost",
+        "Fire"
+      ],
+      "baseStats": {
+        "hp": 60,
+        "attack": 55,
+        "defense": 90,
+        "specialAttack": 145,
+        "specialDefense": 90,
+        "speed": 80
+      },
+      "captureRate": 45,
+      "baseExperience": 234,
+      "height": 10,
+      "weight": 343,
+      "growthRate": "medium-slow",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "flash-fire",
+          "hidden": false
+        },
+        {
+          "name": "flame-body",
+          "hidden": false
+        },
+        {
+          "name": "infiltrator",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 308,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/609.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/609.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 609,
+          "name": "chandelure",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ghost",
+            "Fire"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/609.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/609.png"
+          }
+        },
+        {
+          "pokemonId": 10291,
+          "name": "chandelure-mega",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Ghost",
+            "Fire"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10291.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10291.png"
+          }
+        }
+      ]
+    },
+    {
       "localId": 287,
       "localName": "Axew",
       "speciesId": 610,
@@ -27492,6 +30225,130 @@
           "artwork": {
             "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/610.png",
             "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/610.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 611,
+      "localName": "Fraxure",
+      "speciesId": 611,
+      "canonicalName": "fraxure",
+      "types": [
+        "Dragon"
+      ],
+      "baseStats": {
+        "hp": 66,
+        "attack": 117,
+        "defense": 70,
+        "specialAttack": 40,
+        "specialDefense": 50,
+        "speed": 67
+      },
+      "captureRate": 60,
+      "baseExperience": 144,
+      "height": 10,
+      "weight": 360,
+      "growthRate": "slow",
+      "baseHappiness": 35,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "rivalry",
+          "hidden": false
+        },
+        {
+          "name": "mold-breaker",
+          "hidden": false
+        },
+        {
+          "name": "unnerve",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 309,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/611.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/611.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 611,
+          "name": "fraxure",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Dragon"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/611.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/611.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 612,
+      "localName": "Haxorus",
+      "speciesId": 612,
+      "canonicalName": "haxorus",
+      "types": [
+        "Dragon"
+      ],
+      "baseStats": {
+        "hp": 76,
+        "attack": 147,
+        "defense": 90,
+        "specialAttack": 60,
+        "specialDefense": 70,
+        "speed": 97
+      },
+      "captureRate": 45,
+      "baseExperience": 243,
+      "height": 18,
+      "weight": 1055,
+      "growthRate": "slow",
+      "baseHappiness": 35,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-v",
+      "abilities": [
+        {
+          "name": "rivalry",
+          "hidden": false
+        },
+        {
+          "name": "mold-breaker",
+          "hidden": false
+        },
+        {
+          "name": "unnerve",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 309,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/612.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/612.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 612,
+          "name": "haxorus",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Dragon"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/612.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/612.png"
           }
         }
       ]
@@ -27609,6 +30466,64 @@
       ]
     },
     {
+      "localId": 700,
+      "localName": "Sylveon",
+      "speciesId": 700,
+      "canonicalName": "sylveon",
+      "types": [
+        "Fairy"
+      ],
+      "baseStats": {
+        "hp": 95,
+        "attack": 65,
+        "defense": 65,
+        "specialAttack": 110,
+        "specialDefense": 130,
+        "speed": 60
+      },
+      "captureRate": 45,
+      "baseExperience": 184,
+      "height": 10,
+      "weight": 235,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 1,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-vi",
+      "abilities": [
+        {
+          "name": "cute-charm",
+          "hidden": false
+        },
+        {
+          "name": "pixilate",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 67,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/700.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/700.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 700,
+          "name": "sylveon",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Fairy"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/700.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/700.png"
+          }
+        }
+      ]
+    },
+    {
       "localId": 295,
       "localName": "Phantump",
       "speciesId": 708,
@@ -27668,6 +30583,70 @@
           "artwork": {
             "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/708.png",
             "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/708.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 709,
+      "localName": "Trevenant",
+      "speciesId": 709,
+      "canonicalName": "trevenant",
+      "types": [
+        "Ghost",
+        "Grass"
+      ],
+      "baseStats": {
+        "hp": 85,
+        "attack": 110,
+        "defense": 76,
+        "specialAttack": 65,
+        "specialDefense": 82,
+        "speed": 56
+      },
+      "captureRate": 60,
+      "baseExperience": 166,
+      "height": 15,
+      "weight": 710,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-vi",
+      "abilities": [
+        {
+          "name": "natural-cure",
+          "hidden": false
+        },
+        {
+          "name": "frisk",
+          "hidden": false
+        },
+        {
+          "name": "harvest",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 364,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/709.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/709.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 709,
+          "name": "trevenant",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ghost",
+            "Grass"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/709.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/709.png"
           }
         }
       ]
@@ -27843,6 +30822,81 @@
       ]
     },
     {
+      "localId": 758,
+      "localName": "Salazzle",
+      "speciesId": 758,
+      "canonicalName": "salazzle",
+      "types": [
+        "Poison",
+        "Fire"
+      ],
+      "baseStats": {
+        "hp": 68,
+        "attack": 64,
+        "defense": 60,
+        "specialAttack": 111,
+        "specialDefense": 60,
+        "speed": 117
+      },
+      "captureRate": 45,
+      "baseExperience": 168,
+      "height": 12,
+      "weight": 222,
+      "growthRate": "medium",
+      "baseHappiness": 70,
+      "genderRate": 8,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-vii",
+      "abilities": [
+        {
+          "name": "corrosion",
+          "hidden": false
+        },
+        {
+          "name": "oblivious",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 390,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/758.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/758.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 758,
+          "name": "salazzle",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Poison",
+            "Fire"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/758.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/758.png"
+          }
+        },
+        {
+          "pokemonId": 10129,
+          "name": "salazzle-totem",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Poison",
+            "Fire"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10129.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10129.png"
+          }
+        }
+      ]
+    },
+    {
       "localId": 283,
       "localName": "Rookidee",
       "speciesId": 821,
@@ -27905,6 +30959,147 @@
       ]
     },
     {
+      "localId": 822,
+      "localName": "Corvisquire",
+      "speciesId": 822,
+      "canonicalName": "corvisquire",
+      "types": [
+        "Flying"
+      ],
+      "baseStats": {
+        "hp": 68,
+        "attack": 67,
+        "defense": 55,
+        "specialAttack": 43,
+        "specialDefense": 55,
+        "speed": 77
+      },
+      "captureRate": 120,
+      "baseExperience": 128,
+      "height": 8,
+      "weight": 160,
+      "growthRate": "medium-slow",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "keen-eye",
+          "hidden": false
+        },
+        {
+          "name": "unnerve",
+          "hidden": false
+        },
+        {
+          "name": "big-pecks",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 434,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/822.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/822.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 822,
+          "name": "corvisquire",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Flying"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/822.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/822.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 823,
+      "localName": "Corviknight",
+      "speciesId": 823,
+      "canonicalName": "corviknight",
+      "types": [
+        "Flying",
+        "Steel"
+      ],
+      "baseStats": {
+        "hp": 98,
+        "attack": 87,
+        "defense": 105,
+        "specialAttack": 53,
+        "specialDefense": 85,
+        "speed": 67
+      },
+      "captureRate": 45,
+      "baseExperience": 248,
+      "height": 22,
+      "weight": 750,
+      "growthRate": "medium-slow",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "pressure",
+          "hidden": false
+        },
+        {
+          "name": "unnerve",
+          "hidden": false
+        },
+        {
+          "name": "mirror-armor",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 434,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/823.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/823.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 823,
+          "name": "corviknight",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Flying",
+            "Steel"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/823.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/823.png"
+          }
+        },
+        {
+          "pokemonId": 10212,
+          "name": "corviknight-gmax",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Flying",
+            "Steel"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10212.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10212.png"
+          }
+        }
+      ]
+    },
+    {
       "localId": 292,
       "localName": "Silicobra",
       "speciesId": 843,
@@ -27962,6 +31157,1047 @@
           "artwork": {
             "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/843.png",
             "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/843.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 844,
+      "localName": "Sandaconda",
+      "speciesId": 844,
+      "canonicalName": "sandaconda",
+      "types": [
+        "Ground"
+      ],
+      "baseStats": {
+        "hp": 72,
+        "attack": 107,
+        "defense": 125,
+        "specialAttack": 65,
+        "specialDefense": 70,
+        "speed": 71
+      },
+      "captureRate": 120,
+      "baseExperience": 179,
+      "height": 38,
+      "weight": 655,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "sand-spit",
+          "hidden": false
+        },
+        {
+          "name": "shed-skin",
+          "hidden": false
+        },
+        {
+          "name": "sand-veil",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 443,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/844.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/844.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 844,
+          "name": "sandaconda",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ground"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/844.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/844.png"
+          }
+        },
+        {
+          "pokemonId": 10218,
+          "name": "sandaconda-gmax",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Ground"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10218.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10218.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 862,
+      "localName": "Obstagoon",
+      "speciesId": 862,
+      "canonicalName": "obstagoon",
+      "types": [
+        "Dark",
+        "Normal"
+      ],
+      "baseStats": {
+        "hp": 93,
+        "attack": 90,
+        "defense": 101,
+        "specialAttack": 60,
+        "specialDefense": 81,
+        "speed": 95
+      },
+      "captureRate": 45,
+      "baseExperience": 260,
+      "height": 16,
+      "weight": 460,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "reckless",
+          "hidden": false
+        },
+        {
+          "name": "guts",
+          "hidden": false
+        },
+        {
+          "name": "defiant",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 134,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/862.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/862.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 862,
+          "name": "obstagoon",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Dark",
+            "Normal"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/862.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/862.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 863,
+      "localName": "Perrserker",
+      "speciesId": 863,
+      "canonicalName": "perrserker",
+      "types": [
+        "Steel"
+      ],
+      "baseStats": {
+        "hp": 70,
+        "attack": 110,
+        "defense": 100,
+        "specialAttack": 50,
+        "specialDefense": 60,
+        "speed": 50
+      },
+      "captureRate": 90,
+      "baseExperience": 154,
+      "height": 8,
+      "weight": 280,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "battle-armor",
+          "hidden": false
+        },
+        {
+          "name": "tough-claws",
+          "hidden": false
+        },
+        {
+          "name": "steely-spirit",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 22,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/863.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/863.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 863,
+          "name": "perrserker",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Steel"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/863.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/863.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 864,
+      "localName": "Cursola",
+      "speciesId": 864,
+      "canonicalName": "cursola",
+      "types": [
+        "Ghost"
+      ],
+      "baseStats": {
+        "hp": 60,
+        "attack": 95,
+        "defense": 50,
+        "specialAttack": 145,
+        "specialDefense": 130,
+        "speed": 30
+      },
+      "captureRate": 30,
+      "baseExperience": 179,
+      "height": 10,
+      "weight": 4,
+      "growthRate": "fast",
+      "baseHappiness": 50,
+      "genderRate": 6,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "weak-armor",
+          "hidden": false
+        },
+        {
+          "name": "perish-body",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 113,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/864.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/864.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 864,
+          "name": "cursola",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ghost"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/864.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/864.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 865,
+      "localName": "Sirfetch’d",
+      "speciesId": 865,
+      "canonicalName": "sirfetchd",
+      "types": [
+        "Fighting"
+      ],
+      "baseStats": {
+        "hp": 62,
+        "attack": 135,
+        "defense": 95,
+        "specialAttack": 68,
+        "specialDefense": 82,
+        "speed": 65
+      },
+      "captureRate": 45,
+      "baseExperience": 177,
+      "height": 8,
+      "weight": 1170,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "steadfast",
+          "hidden": false
+        },
+        {
+          "name": "scrappy",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 35,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/865.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/865.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 865,
+          "name": "sirfetchd",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Fighting"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/865.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/865.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 866,
+      "localName": "Mr. Rime",
+      "speciesId": 866,
+      "canonicalName": "mr-rime",
+      "types": [
+        "Ice",
+        "Psychic"
+      ],
+      "baseStats": {
+        "hp": 80,
+        "attack": 85,
+        "defense": 75,
+        "specialAttack": 110,
+        "specialDefense": 100,
+        "speed": 70
+      },
+      "captureRate": 45,
+      "baseExperience": 182,
+      "height": 15,
+      "weight": 582,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "tangled-feet",
+          "hidden": false
+        },
+        {
+          "name": "screen-cleaner",
+          "hidden": false
+        },
+        {
+          "name": "ice-body",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 57,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/866.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/866.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 866,
+          "name": "mr-rime",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ice",
+            "Psychic"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/866.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/866.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 867,
+      "localName": "Runerigus",
+      "speciesId": 867,
+      "canonicalName": "runerigus",
+      "types": [
+        "Ground",
+        "Ghost"
+      ],
+      "baseStats": {
+        "hp": 58,
+        "attack": 95,
+        "defense": 145,
+        "specialAttack": 50,
+        "specialDefense": 105,
+        "speed": 30
+      },
+      "captureRate": 90,
+      "baseExperience": 169,
+      "height": 16,
+      "weight": 666,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "wandering-spirit",
+          "hidden": false
+        }
+      ],
+      "evolutionChainId": 287,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/867.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/867.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 867,
+          "name": "runerigus",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ground",
+            "Ghost"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/867.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/867.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 899,
+      "localName": "Wyrdeer",
+      "speciesId": 899,
+      "canonicalName": "wyrdeer",
+      "types": [
+        "Normal",
+        "Psychic"
+      ],
+      "baseStats": {
+        "hp": 103,
+        "attack": 105,
+        "defense": 72,
+        "specialAttack": 105,
+        "specialDefense": 75,
+        "speed": 65
+      },
+      "captureRate": 135,
+      "baseExperience": 263,
+      "height": 18,
+      "weight": 951,
+      "growthRate": "slow",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "intimidate",
+          "hidden": false
+        },
+        {
+          "name": "frisk",
+          "hidden": false
+        },
+        {
+          "name": "sap-sipper",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 120,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/899.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/899.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 899,
+          "name": "wyrdeer",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Normal",
+            "Psychic"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/899.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/899.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 900,
+      "localName": "Kleavor",
+      "speciesId": 900,
+      "canonicalName": "kleavor",
+      "types": [
+        "Bug",
+        "Rock"
+      ],
+      "baseStats": {
+        "hp": 70,
+        "attack": 135,
+        "defense": 95,
+        "specialAttack": 45,
+        "specialDefense": 70,
+        "speed": 85
+      },
+      "captureRate": 115,
+      "baseExperience": 175,
+      "height": 18,
+      "weight": 890,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "swarm",
+          "hidden": false
+        },
+        {
+          "name": "sheer-force",
+          "hidden": false
+        },
+        {
+          "name": "sharpness",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 58,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/900.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/900.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 900,
+          "name": "kleavor",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Bug",
+            "Rock"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/900.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/900.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 901,
+      "localName": "Ursaluna",
+      "speciesId": 901,
+      "canonicalName": "ursaluna",
+      "types": [
+        "Ground",
+        "Normal"
+      ],
+      "baseStats": {
+        "hp": 130,
+        "attack": 140,
+        "defense": 105,
+        "specialAttack": 45,
+        "specialDefense": 80,
+        "speed": 50
+      },
+      "captureRate": 75,
+      "baseExperience": 275,
+      "height": 24,
+      "weight": 2900,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "guts",
+          "hidden": false
+        },
+        {
+          "name": "bulletproof",
+          "hidden": false
+        },
+        {
+          "name": "unnerve",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 110,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/901.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/901.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 901,
+          "name": "ursaluna",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Ground",
+            "Normal"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/901.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/901.png"
+          }
+        },
+        {
+          "pokemonId": 10272,
+          "name": "ursaluna-bloodmoon",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Ground",
+            "Normal"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10272.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/10272.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 903,
+      "localName": "Sneasler",
+      "speciesId": 903,
+      "canonicalName": "sneasler",
+      "types": [
+        "Fighting",
+        "Poison"
+      ],
+      "baseStats": {
+        "hp": 80,
+        "attack": 130,
+        "defense": 60,
+        "specialAttack": 40,
+        "specialDefense": 80,
+        "speed": 120
+      },
+      "captureRate": 135,
+      "baseExperience": 102,
+      "height": 13,
+      "weight": 430,
+      "growthRate": "medium-slow",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "pressure",
+          "hidden": false
+        },
+        {
+          "name": "unburden",
+          "hidden": false
+        },
+        {
+          "name": "poison-touch",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 109,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/903.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/903.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 903,
+          "name": "sneasler",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Fighting",
+            "Poison"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/903.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/903.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 904,
+      "localName": "Overqwil",
+      "speciesId": 904,
+      "canonicalName": "overqwil",
+      "types": [
+        "Dark",
+        "Poison"
+      ],
+      "baseStats": {
+        "hp": 85,
+        "attack": 115,
+        "defense": 95,
+        "specialAttack": 65,
+        "specialDefense": 65,
+        "speed": 85
+      },
+      "captureRate": 135,
+      "baseExperience": 179,
+      "height": 25,
+      "weight": 605,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-viii",
+      "abilities": [
+        {
+          "name": "poison-point",
+          "hidden": false
+        },
+        {
+          "name": "swift-swim",
+          "hidden": false
+        },
+        {
+          "name": "intimidate",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 106,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/904.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/904.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 904,
+          "name": "overqwil",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Dark",
+            "Poison"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/904.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/904.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 979,
+      "localName": "Annihilape",
+      "speciesId": 979,
+      "canonicalName": "annihilape",
+      "types": [
+        "Fighting",
+        "Ghost"
+      ],
+      "baseStats": {
+        "hp": 110,
+        "attack": 115,
+        "defense": 80,
+        "specialAttack": 50,
+        "specialDefense": 90,
+        "speed": 90
+      },
+      "captureRate": 45,
+      "baseExperience": 268,
+      "height": 12,
+      "weight": 560,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-ix",
+      "abilities": [
+        {
+          "name": "vital-spirit",
+          "hidden": false
+        },
+        {
+          "name": "inner-focus",
+          "hidden": false
+        },
+        {
+          "name": "defiant",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 24,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/979.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/979.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 979,
+          "name": "annihilape",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Fighting",
+            "Ghost"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/979.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/979.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 980,
+      "localName": "Clodsire",
+      "speciesId": 980,
+      "canonicalName": "clodsire",
+      "types": [
+        "Poison",
+        "Ground"
+      ],
+      "baseStats": {
+        "hp": 130,
+        "attack": 75,
+        "defense": 60,
+        "specialAttack": 45,
+        "specialDefense": 100,
+        "speed": 20
+      },
+      "captureRate": 90,
+      "baseExperience": 151,
+      "height": 18,
+      "weight": 2230,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-ix",
+      "abilities": [
+        {
+          "name": "poison-point",
+          "hidden": false
+        },
+        {
+          "name": "water-absorb",
+          "hidden": false
+        },
+        {
+          "name": "unaware",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 96,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/980.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/980.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 980,
+          "name": "clodsire",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Poison",
+            "Ground"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/980.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/980.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 981,
+      "localName": "Farigiraf",
+      "speciesId": 981,
+      "canonicalName": "farigiraf",
+      "types": [
+        "Normal",
+        "Psychic"
+      ],
+      "baseStats": {
+        "hp": 120,
+        "attack": 90,
+        "defense": 70,
+        "specialAttack": 110,
+        "specialDefense": 70,
+        "speed": 60
+      },
+      "captureRate": 45,
+      "baseExperience": 260,
+      "height": 32,
+      "weight": 1600,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-ix",
+      "abilities": [
+        {
+          "name": "cud-chew",
+          "hidden": false
+        },
+        {
+          "name": "armor-tail",
+          "hidden": false
+        },
+        {
+          "name": "sap-sipper",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 101,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/981.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/981.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 981,
+          "name": "farigiraf",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Normal",
+            "Psychic"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/981.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/981.png"
+          }
+        }
+      ]
+    },
+    {
+      "localId": 982,
+      "localName": "Dudunsparce",
+      "speciesId": 982,
+      "canonicalName": "dudunsparce",
+      "types": [
+        "Normal"
+      ],
+      "baseStats": {
+        "hp": 125,
+        "attack": 100,
+        "defense": 80,
+        "specialAttack": 85,
+        "specialDefense": 75,
+        "speed": 55
+      },
+      "captureRate": 45,
+      "baseExperience": 182,
+      "height": 36,
+      "weight": 392,
+      "growthRate": "medium",
+      "baseHappiness": 50,
+      "genderRate": 4,
+      "isLegendary": false,
+      "isMythical": false,
+      "generation": "generation-ix",
+      "abilities": [
+        {
+          "name": "serene-grace",
+          "hidden": false
+        },
+        {
+          "name": "run-away",
+          "hidden": false
+        },
+        {
+          "name": "rattled",
+          "hidden": true
+        }
+      ],
+      "evolutionChainId": 103,
+      "artwork": {
+        "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/982.png",
+        "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/982.png"
+      },
+      "forms": [
+        {
+          "pokemonId": 982,
+          "name": "dudunsparce-two-segment",
+          "isDefault": true,
+          "category": "default",
+          "region": null,
+          "types": [
+            "Normal"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/982.png",
+            "shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/982.png"
+          }
+        },
+        {
+          "pokemonId": 10255,
+          "name": "dudunsparce-three-segment",
+          "isDefault": false,
+          "category": "other",
+          "region": null,
+          "types": [
+            "Normal"
+          ],
+          "artwork": {
+            "normal": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10255.png",
+            "shiny": null
           }
         }
       ]

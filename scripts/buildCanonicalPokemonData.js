@@ -74,6 +74,19 @@ function createExpansionTargets(existingSpeciesMap) {
   return [...speciesIds].sort((left, right) => left - right);
 }
 
+function collectEvolutionFamilySpeciesIds(chains) {
+  const speciesIds = new Set();
+  chains.forEach((chain) => {
+    if (!chain?.chain) return;
+    flattenEvolutionChainGraph(chain.chain).species.forEach((species) => {
+      if (Number.isInteger(species.speciesId) && species.speciesId > 0) {
+        speciesIds.add(species.speciesId);
+      }
+    });
+  });
+  return speciesIds;
+}
+
 function createProvisionalSpeciesMap(existingSpeciesMap, targetSpeciesIds) {
   const existingBySpeciesId = new Map(
     (existingSpeciesMap.species || []).map((mapping) => [
@@ -127,12 +140,16 @@ function buildExpandedSpeciesMap(
       const speciesId = record.mapping.canonicalSpeciesId;
       const existing = existingBySpeciesId.get(speciesId);
       if (existing) {
+        const existingMetadata = { ...existing };
+        if (existingMetadata.addedByEvolutionClosure !== true) {
+          delete existingMetadata.addedByEvolutionClosure;
+        }
         usedLocalIds.add(existing.localId);
         if (existing.existingBeforeExpansion === false) {
           const canonicalName = record.speciesData?.name;
           const localName = getEnglishSpeciesName(record.speciesData);
           return {
-            ...existing,
+            ...existingMetadata,
             localName,
             canonicalName,
             idMatches: existing.localId === speciesId,
@@ -145,7 +162,7 @@ function buildExpandedSpeciesMap(
           };
         }
         return {
-          ...existing,
+          ...existingMetadata,
           existingBeforeExpansion: existing.existingBeforeExpansion ?? true,
         };
       }
@@ -165,10 +182,11 @@ function buildExpandedSpeciesMap(
         nameMatches:
           normalizePokemonName(localName) ===
           normalizePokemonName(canonicalName),
-        resolutionMethod: "national-dex-expansion",
+        resolutionMethod: "evolution-family-closure",
         lookupName: canonicalName,
         status: localId === speciesId ? "MATCH" : "ID_MISMATCH",
         existingBeforeExpansion: false,
+        addedByEvolutionClosure: true,
       };
     });
 
@@ -198,7 +216,12 @@ function buildExpandedSpeciesMap(
         (mapping) => mapping.existingBeforeExpansion,
       ).length,
       addedByExpansion: species.filter(
-        (mapping) => !mapping.existingBeforeExpansion,
+        (mapping) =>
+          !mapping.existingBeforeExpansion &&
+          !mapping.addedByEvolutionClosure,
+      ).length,
+      addedByEvolutionClosure: species.filter(
+        (mapping) => mapping.addedByEvolutionClosure,
       ).length,
     },
     species,
@@ -427,22 +450,6 @@ function buildCanonicalPokemon(records, varietyData, generatedAt) {
   };
 }
 
-function getExistingConfiguration(pokemon) {
-  return {
-    id: pokemon.id,
-    name: pokemon.name,
-    habitats: pokemon.habitats,
-    times: pokemon.times,
-    rarity: pokemon.rarity,
-    baseCatchRate: pokemon.baseCatchRate,
-    forms: pokemon.forms,
-    moves: pokemon.moves,
-    evolvesTo: pokemon.evolvesTo,
-    evolveLevel: pokemon.evolveLevel,
-    evolveType: pokemon.evolveType,
-  };
-}
-
 function buildCatalogOnlyTemplate(record) {
   const { mapping, pokemonData, speciesData } = record;
   const baseStats = getBaseStats(pokemonData);
@@ -478,18 +485,11 @@ function buildCatalogOnlyTemplate(record) {
 }
 
 function buildExpandedPokemonCatalog(currentPokemon, records) {
-  const currentBySpeciesId = new Map(
-    records
-      .filter((record) => record.mapping.existingBeforeExpansion)
-      .map((record) => {
-        const existing = currentPokemon.find(
-          (pokemon) =>
-            pokemon.id === record.mapping.localId &&
-            normalizePokemonName(pokemon.name) ===
-              normalizePokemonName(record.mapping.localName),
-        );
-        return [record.mapping.canonicalSpeciesId, existing];
-      }),
+  const currentByLocalIdentity = new Map(
+    currentPokemon.map((pokemon) => [
+      `${pokemon.id}:${normalizePokemonName(pokemon.name)}`,
+      pokemon,
+    ]),
   );
 
   return records
@@ -499,17 +499,10 @@ function buildExpandedPokemonCatalog(currentPokemon, records) {
         left.mapping.canonicalSpeciesId - right.mapping.canonicalSpeciesId,
     )
     .map((record) => {
-      const existing = currentBySpeciesId.get(
-        record.mapping.canonicalSpeciesId,
+      const existing = currentByLocalIdentity.get(
+        `${record.mapping.localId}:${normalizePokemonName(record.mapping.localName)}`,
       );
-      if (record.mapping.existingBeforeExpansion) {
-        if (!existing) {
-          throw new Error(
-            `Existing Pokemon was removed before expansion: ${record.mapping.localName}`,
-          );
-        }
-        return existing;
-      }
+      if (existing) return existing;
       return buildCatalogOnlyTemplate(record);
     });
 }
@@ -518,6 +511,7 @@ function validateCatalogExpansion(
   beforePokemon,
   afterPokemon,
   speciesMap,
+  canonicalData,
   evolutionData,
 ) {
   const errors = [];
@@ -527,11 +521,6 @@ function validateCatalogExpansion(
   const speciesIdSet = new Set(speciesIds);
   const afterByName = new Map(
     afterPokemon.map((pokemon) => [normalizePokemonName(pokemon.name), pokemon]),
-  );
-  const originalNames = new Set(
-    mappings
-      .filter((mapping) => mapping.existingBeforeExpansion)
-      .map((mapping) => normalizePokemonName(mapping.localName)),
   );
 
   if (afterPokemon.length !== mappings.length) {
@@ -549,21 +538,16 @@ function validateCatalogExpansion(
     }
   }
 
-  beforePokemon
-    .filter((before) => originalNames.has(normalizePokemonName(before.name)))
-    .forEach((before) => {
-      const after = afterByName.get(normalizePokemonName(before.name));
-      if (!after) {
-        errors.push(`existing Pokemon removed: ${before.name}`);
-        return;
-      }
-      if (
-        JSON.stringify(getExistingConfiguration(before)) !==
-        JSON.stringify(getExistingConfiguration(after))
-      ) {
-        errors.push(`existing game configuration changed: ${before.name}`);
-      }
-    });
+  beforePokemon.forEach((before) => {
+    const after = afterByName.get(normalizePokemonName(before.name));
+    if (!after) {
+      errors.push(`existing Pokemon removed: ${before.name}`);
+      return;
+    }
+    if (JSON.stringify(before) !== JSON.stringify(after)) {
+      errors.push(`existing game configuration changed: ${before.name}`);
+    }
+  });
 
   afterPokemon
     .filter((pokemon) => pokemon.catalogOnly)
@@ -579,11 +563,44 @@ function validateCatalogExpansion(
   const evolutionSpeciesIds = new Set(
     (evolutionData.species || []).map((species) => species.speciesId),
   );
+  const canonicalSpeciesIds = new Set(
+    (canonicalData.pokemon || []).map((species) => species.speciesId),
+  );
+  const runtimeLocalIds = new Set(afterPokemon.map((pokemon) => pokemon.id));
+  const mappingBySpeciesId = new Map(
+    mappings.map((mapping) => [mapping.canonicalSpeciesId, mapping]),
+  );
   for (let speciesId = 1; speciesId <= dexMax; speciesId += 1) {
     if (!evolutionSpeciesIds.has(speciesId)) {
       errors.push(`evolution catalog is missing National Dex #${speciesId}`);
     }
   }
+  (evolutionData.species || []).forEach((species) => {
+    const mapping = mappingBySpeciesId.get(species.speciesId);
+    if (!species.presentInGame || !Number.isInteger(species.localId)) {
+      errors.push(
+        `evolution-family species is not in the runtime catalog: ${species.name}`,
+      );
+    }
+    if (!speciesIdSet.has(species.speciesId)) {
+      errors.push(
+        `species map is missing evolution-family species: ${species.name}`,
+      );
+    }
+    if (!mapping || !runtimeLocalIds.has(mapping.localId)) {
+      errors.push(
+        `pokemon.json is missing evolution-family species: ${species.name}`,
+      );
+    }
+    if (!canonicalSpeciesIds.has(species.speciesId)) {
+      errors.push(
+        `canonical Pokemon data is missing evolution-family species: ${species.name}`,
+      );
+    }
+    if (mapping && species.localId !== mapping.localId) {
+      errors.push(`evolution localId mismatch for ${species.name}`);
+    }
+  });
 
   if (errors.length) {
     throw new Error(`Catalog expansion validation failed:\n- ${errors.join("\n- ")}`);
@@ -618,6 +635,53 @@ async function loadEvolutionChains(records) {
     ],
   );
   return new Map(loaded);
+}
+
+async function loadEvolutionClosure(existingSpeciesMap, initialSpeciesIds) {
+  const targetSpeciesIds = new Set(initialSpeciesIds);
+  const recordsBySpeciesId = new Map();
+  let chains = new Map();
+
+  while (true) {
+    const missingRecordIds = [...targetSpeciesIds]
+      .filter((speciesId) => !recordsBySpeciesId.has(speciesId))
+      .sort((left, right) => left - right);
+    if (missingRecordIds.length) {
+      const provisionalSpeciesMap = createProvisionalSpeciesMap(
+        existingSpeciesMap,
+        missingRecordIds,
+      );
+      const loadedRecords = await loadMappedRecords(provisionalSpeciesMap);
+      if (
+        loadedRecords.some(
+          (record) => !record.pokemonData || !record.speciesData,
+        )
+      ) {
+        throw new Error(
+          "Could not load every species required for evolution-family closure",
+        );
+      }
+      loadedRecords.forEach((record) => {
+        recordsBySpeciesId.set(record.mapping.canonicalSpeciesId, record);
+      });
+    }
+
+    chains = await loadEvolutionChains([...recordsBySpeciesId.values()]);
+    const familySpeciesIds = collectEvolutionFamilySpeciesIds(chains);
+    const newlyRequired = [...familySpeciesIds].filter(
+      (speciesId) => !targetSpeciesIds.has(speciesId),
+    );
+    if (!newlyRequired.length) break;
+    newlyRequired.forEach((speciesId) => targetSpeciesIds.add(speciesId));
+  }
+
+  return {
+    records: [...recordsBySpeciesId.values()].sort(
+      (left, right) =>
+        left.mapping.canonicalSpeciesId - right.mapping.canonicalSpeciesId,
+    ),
+    chains,
+  };
 }
 
 async function loadEvolutionSpecies(chains, records) {
@@ -916,6 +980,9 @@ function printSummary(canonicalData, evolutionData, speciesMap) {
   );
   console.log(`New catalog species: ${speciesMap.summary.addedByExpansion}`);
   console.log(
+    `Evolution-closure species: ${speciesMap.summary.addedByEvolutionClosure}`,
+  );
+  console.log(
     `Local ID mismatches preserved: ${speciesMap.summary.localIdMismatches}`,
   );
   console.log(`Evolution chains: ${summary.evolutionChains}`);
@@ -946,15 +1013,12 @@ async function main() {
   const existingSpeciesMap = readRequiredJson(speciesMapPath, "species map");
   validateSpeciesMap(existingSpeciesMap, localPokemon);
 
-  const targetSpeciesIds = createExpansionTargets(existingSpeciesMap);
-  const provisionalSpeciesMap = createProvisionalSpeciesMap(
+  const startingSpeciesIds = createExpansionTargets(existingSpeciesMap);
+  const closure = await loadEvolutionClosure(
     existingSpeciesMap,
-    targetSpeciesIds,
+    startingSpeciesIds,
   );
-  let records = await loadMappedRecords(provisionalSpeciesMap);
-  if (records.some((record) => !record.pokemonData || !record.speciesData)) {
-    throw new Error("Could not load every species required for catalog expansion");
-  }
+  let records = closure.records;
   const generatedAt = new Date().toISOString();
   const speciesMap = buildExpandedSpeciesMap(
     existingSpeciesMap,
@@ -970,7 +1034,7 @@ async function main() {
     mapping: expandedMappingBySpeciesId.get(record.mapping.canonicalSpeciesId),
   }));
   const varietyData = await loadVarietyData(records);
-  const chains = await loadEvolutionChains(records);
+  const chains = closure.chains;
   const evolutionSpecies = await loadEvolutionSpecies(chains, records);
   const canonicalData = buildCanonicalPokemon(records, varietyData, generatedAt);
   const evolutionData = buildEvolutionData(
@@ -985,6 +1049,7 @@ async function main() {
     localPokemon,
     expandedPokemon,
     speciesMap,
+    canonicalData,
     evolutionData,
   );
   validateSpeciesMap(speciesMap, expandedPokemon);

@@ -13,7 +13,7 @@ const rootDir = path.join(__dirname, "..");
 const teamLimit = 6;
 const expectedNationalDexMax = 400;
 const expectedExistingLaterSpecies = 26;
-const expectedCatalogSize = 426;
+const expectedPreClosureCatalogSize = 426;
 const memoryFiles = new Map();
 const legacyBadgeMap = {
   "Spark Badge": "Volt Badge",
@@ -130,13 +130,17 @@ function main() {
   assert(playerState.trainerName, "player state did not load");
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
-  assert(
-    pokemon.length === expectedCatalogSize,
-    `Pokemon catalog has ${pokemon.length}, expected ${expectedCatalogSize}`,
-  );
   assert(Array.isArray(gameData.quests), "quests did not load");
 
   const mappings = speciesMap.species || [];
+  assert(pokemon.length === mappings.length, "catalog and species map counts differ");
+  const closureMappings = mappings.filter(
+    (mapping) => mapping.addedByEvolutionClosure === true,
+  );
+  assert(
+    mappings.length - closureMappings.length === expectedPreClosureCatalogSize,
+    "the pre-closure 426-species catalog was not preserved",
+  );
   const nationalSpeciesIds = new Set(
     mappings
       .map((mapping) => mapping.canonicalSpeciesId)
@@ -167,7 +171,10 @@ function main() {
     "expanded species map has duplicate canonical species IDs",
   );
   const catalogOnlyPokemon = pokemon.filter((entry) => entry.catalogOnly);
-  assert(catalogOnlyPokemon.length === 292, "catalog-only Pokemon count is wrong");
+  assert(
+    catalogOnlyPokemon.length === 292 + closureMappings.length,
+    "catalog-only Pokemon count is wrong",
+  );
   assert(
     catalogOnlyPokemon.every(
       (entry) =>
@@ -216,6 +223,25 @@ function main() {
       evolutionSpeciesIds.has(speciesId),
     ),
     "an evolution-family species inside National Dex #1-400 is unresolved",
+  );
+  assert(
+    (evolutionData.species || []).every(
+      (entry) => entry.presentInGame && Number.isInteger(entry.localId),
+    ),
+    "an evolution-family species is missing from the runtime catalog",
+  );
+  const templatesById = new Map(pokemon.map((entry) => [entry.id, entry]));
+  assert(
+    closureMappings.every((mapping) => {
+      const template = templatesById.get(mapping.localId);
+      return (
+        template?.speciesId === mapping.canonicalSpeciesId &&
+        template.catalogOnly === true &&
+        template.habitats.length === 0 &&
+        template.times.length === 0
+      );
+    }),
+    "an evolution-closure Pokemon is missing or can spawn",
   );
 
   const canonicalSpeciesIds = pokemon.map((entry) => entry.speciesId);

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06T17:12:00.076Z",
+  "generatedAt": "2026-09-06T17:23:47.883Z",
   "source": "https://pokeapi.co",
   "chains": [
     {
@@ -1712,8 +1712,8 @@
         {
           "speciesId": 863,
           "name": "perrserker",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 863
         }
       ],
       "edges": [
@@ -1893,8 +1893,8 @@
         {
           "speciesId": 979,
           "name": "annihilape",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 979
         }
       ],
       "edges": [
@@ -2783,8 +2783,8 @@
         {
           "speciesId": 462,
           "name": "magnezone",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 462
         }
       ],
       "edges": [
@@ -3003,8 +3003,8 @@
         {
           "speciesId": 865,
           "name": "sirfetchd",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 865
         }
       ],
       "edges": [
@@ -3851,8 +3851,8 @@
         {
           "speciesId": 463,
           "name": "lickilicky",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 463
         }
       ],
       "edges": [
@@ -3962,8 +3962,8 @@
         {
           "speciesId": 464,
           "name": "rhyperior",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 464
         }
       ],
       "edges": [
@@ -4050,8 +4050,8 @@
         {
           "speciesId": 440,
           "name": "happiny",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 440
         }
       ],
       "edges": [
@@ -4132,8 +4132,8 @@
         {
           "speciesId": 465,
           "name": "tangrowth",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 465
         }
       ],
       "edges": [
@@ -4386,14 +4386,14 @@
         {
           "speciesId": 439,
           "name": "mime-jr",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 439
         },
         {
           "speciesId": 866,
           "name": "mr-rime",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 866
         }
       ],
       "edges": [
@@ -4486,8 +4486,8 @@
         {
           "speciesId": 900,
           "name": "kleavor",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 900
         }
       ],
       "edges": [
@@ -4632,8 +4632,8 @@
         {
           "speciesId": 466,
           "name": "electivire",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 466
         }
       ],
       "edges": [
@@ -4720,8 +4720,8 @@
         {
           "speciesId": 467,
           "name": "magmortar",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 467
         }
       ],
       "edges": [
@@ -4935,20 +4935,20 @@
         {
           "speciesId": 470,
           "name": "leafeon",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 470
         },
         {
           "speciesId": 471,
           "name": "glaceon",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 471
         },
         {
           "speciesId": 700,
           "name": "sylveon",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 700
         }
       ],
       "edges": [
@@ -5481,8 +5481,8 @@
         {
           "speciesId": 474,
           "name": "porygon-z",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 474
         }
       ],
       "edges": [
@@ -5678,8 +5678,8 @@
         {
           "speciesId": 446,
           "name": "munchlax",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 446
         }
       ],
       "edges": [
@@ -6433,8 +6433,8 @@
         {
           "speciesId": 468,
           "name": "togekiss",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 468
         }
       ],
       "edges": [
@@ -6742,8 +6742,8 @@
         {
           "speciesId": 438,
           "name": "bonsly",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 438
         }
       ],
       "edges": [
@@ -6881,8 +6881,8 @@
         {
           "speciesId": 424,
           "name": "ambipom",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 424
         }
       ],
       "edges": [
@@ -6983,8 +6983,8 @@
         {
           "speciesId": 469,
           "name": "yanmega",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 469
         }
       ],
       "edges": [
@@ -7040,8 +7040,8 @@
         {
           "speciesId": 980,
           "name": "clodsire",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 980
         }
       ],
       "edges": [
@@ -7135,8 +7135,8 @@
         {
           "speciesId": 430,
           "name": "honchkrow",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 430
         }
       ],
       "edges": [
@@ -7186,8 +7186,8 @@
         {
           "speciesId": 429,
           "name": "mismagius",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 429
         }
       ],
       "edges": [
@@ -7301,8 +7301,8 @@
         {
           "speciesId": 981,
           "name": "farigiraf",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 981
         }
       ],
       "edges": [
@@ -7403,8 +7403,8 @@
         {
           "speciesId": 982,
           "name": "dudunsparce",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 982
         }
       ],
       "edges": [
@@ -7454,8 +7454,8 @@
         {
           "speciesId": 472,
           "name": "gliscor",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 472
         }
       ],
       "edges": [
@@ -7556,8 +7556,8 @@
         {
           "speciesId": 904,
           "name": "overqwil",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 904
         }
       ],
       "edges": [
@@ -7688,14 +7688,14 @@
         {
           "speciesId": 461,
           "name": "weavile",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 461
         },
         {
           "speciesId": 903,
           "name": "sneasler",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 903
         }
       ],
       "edges": [
@@ -7795,8 +7795,8 @@
         {
           "speciesId": 901,
           "name": "ursaluna",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 901
         }
       ],
       "edges": [
@@ -7934,8 +7934,8 @@
         {
           "speciesId": 473,
           "name": "mamoswine",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 473
         }
       ],
       "edges": [
@@ -8016,8 +8016,8 @@
         {
           "speciesId": 864,
           "name": "cursola",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 864
         }
       ],
       "edges": [
@@ -8134,8 +8134,8 @@
         {
           "speciesId": 458,
           "name": "mantyke",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 458
         }
       ],
       "edges": [
@@ -8300,8 +8300,8 @@
         {
           "speciesId": 899,
           "name": "wyrdeer",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 899
         }
       ],
       "edges": [
@@ -8864,8 +8864,8 @@
         {
           "speciesId": 862,
           "name": "obstagoon",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 862
         }
       ],
       "edges": [
@@ -9411,8 +9411,8 @@
         {
           "speciesId": 475,
           "name": "gallade",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 475
         }
       ],
       "edges": [
@@ -9955,8 +9955,8 @@
         {
           "speciesId": 476,
           "name": "probopass",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 476
         }
       ],
       "edges": [
@@ -10463,14 +10463,14 @@
         {
           "speciesId": 406,
           "name": "budew",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 406
         },
         {
           "speciesId": 407,
           "name": "roserade",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 407
         }
       ],
       "edges": [
@@ -11486,8 +11486,8 @@
         {
           "speciesId": 477,
           "name": "dusknoir",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 477
         }
       ],
       "edges": [
@@ -11581,8 +11581,8 @@
         {
           "speciesId": 433,
           "name": "chingling",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 433
         }
       ],
       "edges": [
@@ -11651,8 +11651,8 @@
         {
           "speciesId": 478,
           "name": "froslass",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 478
         }
       ],
       "edges": [
@@ -12658,8 +12658,8 @@
         {
           "speciesId": 419,
           "name": "floatzel",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 419
         }
       ],
       "edges": [
@@ -12722,8 +12722,8 @@
         {
           "speciesId": 448,
           "name": "lucario",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 448
         }
       ],
       "edges": [
@@ -12773,8 +12773,8 @@
         {
           "speciesId": 450,
           "name": "hippowdon",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 450
         }
       ],
       "edges": [
@@ -12902,14 +12902,14 @@
         {
           "speciesId": 525,
           "name": "boldore",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 525
         },
         {
           "speciesId": 526,
           "name": "gigalith",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 526
         }
       ],
       "edges": [
@@ -12990,8 +12990,8 @@
         {
           "speciesId": 530,
           "name": "excadrill",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 530
         }
       ],
       "edges": [
@@ -13041,14 +13041,14 @@
         {
           "speciesId": 552,
           "name": "krokorok",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 552
         },
         {
           "speciesId": 553,
           "name": "krookodile",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 553
         }
       ],
       "edges": [
@@ -13129,8 +13129,8 @@
         {
           "speciesId": 555,
           "name": "darmanitan",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 555
         }
       ],
       "edges": [
@@ -13209,8 +13209,8 @@
         {
           "speciesId": 560,
           "name": "scrafty",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 560
         }
       ],
       "edges": [
@@ -13260,14 +13260,14 @@
         {
           "speciesId": 563,
           "name": "cofagrigus",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 563
         },
         {
           "speciesId": 867,
           "name": "runerigus",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 867
         }
       ],
       "edges": [
@@ -13361,14 +13361,14 @@
         {
           "speciesId": 608,
           "name": "lampent",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 608
         },
         {
           "speciesId": 609,
           "name": "chandelure",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 609
         }
       ],
       "edges": [
@@ -13449,14 +13449,14 @@
         {
           "speciesId": 611,
           "name": "fraxure",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 611
         },
         {
           "speciesId": 612,
           "name": "haxorus",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 612
         }
       ],
       "edges": [
@@ -13563,8 +13563,8 @@
         {
           "speciesId": 709,
           "name": "trevenant",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 709
         }
       ],
       "edges": [
@@ -13640,8 +13640,8 @@
         {
           "speciesId": 758,
           "name": "salazzle",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 758
         }
       ],
       "edges": [
@@ -13691,14 +13691,14 @@
         {
           "speciesId": 822,
           "name": "corvisquire",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 822
         },
         {
           "speciesId": 823,
           "name": "corviknight",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 823
         }
       ],
       "edges": [
@@ -13779,8 +13779,8 @@
         {
           "speciesId": 844,
           "name": "sandaconda",
-          "presentInGame": false,
-          "localId": null
+          "presentInGame": true,
+          "localId": 844
         }
       ],
       "edges": [
@@ -16223,14 +16223,14 @@
     {
       "speciesId": 406,
       "name": "budew",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 406
     },
     {
       "speciesId": 407,
       "name": "roserade",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 407
     },
     {
       "speciesId": 418,
@@ -16241,50 +16241,50 @@
     {
       "speciesId": 419,
       "name": "floatzel",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 419
     },
     {
       "speciesId": 424,
       "name": "ambipom",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 424
     },
     {
       "speciesId": 429,
       "name": "mismagius",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 429
     },
     {
       "speciesId": 430,
       "name": "honchkrow",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 430
     },
     {
       "speciesId": 433,
       "name": "chingling",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 433
     },
     {
       "speciesId": 438,
       "name": "bonsly",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 438
     },
     {
       "speciesId": 439,
       "name": "mime-jr",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 439
     },
     {
       "speciesId": 440,
       "name": "happiny",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 440
     },
     {
       "speciesId": 442,
@@ -16295,8 +16295,8 @@
     {
       "speciesId": 446,
       "name": "munchlax",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 446
     },
     {
       "speciesId": 447,
@@ -16307,8 +16307,8 @@
     {
       "speciesId": 448,
       "name": "lucario",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 448
     },
     {
       "speciesId": 449,
@@ -16319,122 +16319,122 @@
     {
       "speciesId": 450,
       "name": "hippowdon",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 450
     },
     {
       "speciesId": 458,
       "name": "mantyke",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 458
     },
     {
       "speciesId": 461,
       "name": "weavile",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 461
     },
     {
       "speciesId": 462,
       "name": "magnezone",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 462
     },
     {
       "speciesId": 463,
       "name": "lickilicky",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 463
     },
     {
       "speciesId": 464,
       "name": "rhyperior",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 464
     },
     {
       "speciesId": 465,
       "name": "tangrowth",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 465
     },
     {
       "speciesId": 466,
       "name": "electivire",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 466
     },
     {
       "speciesId": 467,
       "name": "magmortar",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 467
     },
     {
       "speciesId": 468,
       "name": "togekiss",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 468
     },
     {
       "speciesId": 469,
       "name": "yanmega",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 469
     },
     {
       "speciesId": 470,
       "name": "leafeon",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 470
     },
     {
       "speciesId": 471,
       "name": "glaceon",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 471
     },
     {
       "speciesId": 472,
       "name": "gliscor",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 472
     },
     {
       "speciesId": 473,
       "name": "mamoswine",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 473
     },
     {
       "speciesId": 474,
       "name": "porygon-z",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 474
     },
     {
       "speciesId": 475,
       "name": "gallade",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 475
     },
     {
       "speciesId": 476,
       "name": "probopass",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 476
     },
     {
       "speciesId": 477,
       "name": "dusknoir",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 477
     },
     {
       "speciesId": 478,
       "name": "froslass",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 478
     },
     {
       "speciesId": 483,
@@ -16481,14 +16481,14 @@
     {
       "speciesId": 525,
       "name": "boldore",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 525
     },
     {
       "speciesId": 526,
       "name": "gigalith",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 526
     },
     {
       "speciesId": 529,
@@ -16499,8 +16499,8 @@
     {
       "speciesId": 530,
       "name": "excadrill",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 530
     },
     {
       "speciesId": 551,
@@ -16511,14 +16511,14 @@
     {
       "speciesId": 552,
       "name": "krokorok",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 552
     },
     {
       "speciesId": 553,
       "name": "krookodile",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 553
     },
     {
       "speciesId": 554,
@@ -16529,8 +16529,8 @@
     {
       "speciesId": 555,
       "name": "darmanitan",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 555
     },
     {
       "speciesId": 559,
@@ -16541,8 +16541,8 @@
     {
       "speciesId": 560,
       "name": "scrafty",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 560
     },
     {
       "speciesId": 562,
@@ -16553,8 +16553,8 @@
     {
       "speciesId": 563,
       "name": "cofagrigus",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 563
     },
     {
       "speciesId": 607,
@@ -16565,14 +16565,14 @@
     {
       "speciesId": 608,
       "name": "lampent",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 608
     },
     {
       "speciesId": 609,
       "name": "chandelure",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 609
     },
     {
       "speciesId": 610,
@@ -16583,14 +16583,14 @@
     {
       "speciesId": 611,
       "name": "fraxure",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 611
     },
     {
       "speciesId": 612,
       "name": "haxorus",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 612
     },
     {
       "speciesId": 643,
@@ -16607,8 +16607,8 @@
     {
       "speciesId": 700,
       "name": "sylveon",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 700
     },
     {
       "speciesId": 708,
@@ -16619,8 +16619,8 @@
     {
       "speciesId": 709,
       "name": "trevenant",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 709
     },
     {
       "speciesId": 716,
@@ -16643,8 +16643,8 @@
     {
       "speciesId": 758,
       "name": "salazzle",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 758
     },
     {
       "speciesId": 821,
@@ -16655,14 +16655,14 @@
     {
       "speciesId": 822,
       "name": "corvisquire",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 822
     },
     {
       "speciesId": 823,
       "name": "corviknight",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 823
     },
     {
       "speciesId": 843,
@@ -16673,98 +16673,98 @@
     {
       "speciesId": 844,
       "name": "sandaconda",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 844
     },
     {
       "speciesId": 862,
       "name": "obstagoon",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 862
     },
     {
       "speciesId": 863,
       "name": "perrserker",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 863
     },
     {
       "speciesId": 864,
       "name": "cursola",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 864
     },
     {
       "speciesId": 865,
       "name": "sirfetchd",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 865
     },
     {
       "speciesId": 866,
       "name": "mr-rime",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 866
     },
     {
       "speciesId": 867,
       "name": "runerigus",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 867
     },
     {
       "speciesId": 899,
       "name": "wyrdeer",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 899
     },
     {
       "speciesId": 900,
       "name": "kleavor",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 900
     },
     {
       "speciesId": 901,
       "name": "ursaluna",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 901
     },
     {
       "speciesId": 903,
       "name": "sneasler",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 903
     },
     {
       "speciesId": 904,
       "name": "overqwil",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 904
     },
     {
       "speciesId": 979,
       "name": "annihilape",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 979
     },
     {
       "speciesId": 980,
       "name": "clodsire",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 980
     },
     {
       "speciesId": 981,
       "name": "farigiraf",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 981
     },
     {
       "speciesId": 982,
       "name": "dudunsparce",
-      "presentInGame": false,
-      "localId": null
+      "presentInGame": true,
+      "localId": 982
     }
   ]
 }
