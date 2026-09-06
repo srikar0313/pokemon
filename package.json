@@ -6,7 +6,8 @@
     "start": "node backend/server.js",
     "validate": "node scripts/validateData.js",
     "smoke": "node scripts/smokeTest.js",
-    "pokeapi:audit": "node scripts/auditPokeApi.js"
+    "pokeapi:audit": "node scripts/auditPokeApi.js",
+    "pokeapi:build": "node scripts/buildCanonicalPokemonData.js"
   },
   "dependencies": {
     "express": "^4.18.2"

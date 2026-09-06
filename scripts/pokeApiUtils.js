@@ -177,6 +177,24 @@ function normalizeEvolutionDetail(detail = {}) {
   return normalized;
 }
 
+function normalizeEvolutionDetailComplete(detail = {}) {
+  return Object.fromEntries(
+    EVOLUTION_DETAIL_FIELDS.map(([sourceKey, targetKey]) => {
+      const value = detail[sourceKey];
+      const normalizedValue =
+        value && typeof value === "object" ? getResourceName(value) : value;
+      return [
+        targetKey,
+        normalizedValue === undefined || normalizedValue === ""
+          ? ["needsOverworldRain", "turnUpsideDown"].includes(targetKey)
+            ? false
+            : null
+          : normalizedValue,
+      ];
+    }),
+  );
+}
+
 function flattenEvolutionChain(chainRoot) {
   const nodes = [];
   const edges = [];
@@ -199,6 +217,42 @@ function flattenEvolutionChain(chainRoot) {
   return { nodes: [...new Set(nodes)], edges };
 }
 
+function flattenEvolutionChainGraph(chainRoot) {
+  const species = [];
+  const edges = [];
+
+  function visit(node) {
+    if (!node?.species?.name) return;
+    const fromSpeciesId = getResourceId(node.species.url);
+    species.push({
+      speciesId: fromSpeciesId,
+      name: node.species.name,
+    });
+    (node.evolves_to || []).forEach((child) => {
+      edges.push({
+        fromSpeciesId,
+        from: node.species.name,
+        toSpeciesId: getResourceId(child.species?.url),
+        to: child.species?.name || null,
+        conditions: (child.evolution_details || []).map(
+          normalizeEvolutionDetailComplete,
+        ),
+      });
+      visit(child);
+    });
+  }
+
+  visit(chainRoot);
+  return {
+    species: [
+      ...new Map(
+        species.map((entry) => [entry.speciesId || entry.name, entry]),
+      ).values(),
+    ],
+    edges,
+  };
+}
+
 function getConfiguredFormSlug(speciesName, formId) {
   const suffixes = {
     alolan: "alola",
@@ -213,6 +267,7 @@ module.exports = {
   POKEAPI_BASE_URL,
   fetchJson,
   flattenEvolutionChain,
+  flattenEvolutionChainGraph,
   getConfiguredFormSlug,
   getResourceId,
   getResourceName,
