@@ -66,6 +66,7 @@ function main() {
     pokemonPath: path.join(rootDir, "pokemon.json"),
     readJsonFile: loadJson,
     moveCatalog: gameData.moves,
+    canonicalPokemon: gameData.canonicalPokemon,
   });
   const gameState = createGameState({
     inventoryPath: path.join(rootDir, "inventory.json"),
@@ -117,6 +118,78 @@ function main() {
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
   assert(pokemon.length >= 1, "pokemon.json has no Pokemon");
   assert(Array.isArray(gameData.quests), "quests did not load");
+
+  const canonicalSpeciesIds = pokemon.map((entry) => entry.speciesId);
+  assert(
+    canonicalSpeciesIds.every((speciesId) => Number.isInteger(speciesId)),
+    "not every runtime template has a canonical speciesId",
+  );
+  assert(
+    new Set(canonicalSpeciesIds).size === pokemon.length,
+    "different runtime Pokemon were merged into one canonical species",
+  );
+  const pikachu = pokemonUtils.getPokemonTemplateByName("Pikachu");
+  const pidgeot = pokemonUtils.getPokemonTemplateByName("Pidgeot");
+  const pidgey = pokemonUtils.getPokemonTemplateByName("Pidgey");
+  assert(pikachu.id === 25 && pikachu.speciesId === 25, "Pikachu identity is wrong");
+  assert(pidgeot.id === 16 && pidgeot.speciesId === 18, "Pidgeot identity is wrong");
+  assert(pidgey.id === 237 && pidgey.speciesId === 16, "Pidgey identity is wrong");
+  assert(
+    pokemonUtils.getPokemonTemplateByName("Bulbasaur").types.join(",") ===
+      "Grass,Poison",
+    "Bulbasaur canonical types were not applied",
+  );
+  assert(
+    pokemonUtils.getPokemonTemplateByName("Geodude").types.join(",") ===
+      "Rock,Ground",
+    "Geodude canonical types were not applied",
+  );
+
+  const oldPidgeot = pokemonUtils.normalizePokemon({
+    id: 16,
+    name: "Pidgeot",
+    level: 9,
+    shiny: true,
+  });
+  assert(
+    oldPidgeot.speciesId === 18 && oldPidgeot.shiny,
+    "old saved Pokemon was not canonically enriched",
+  );
+  const hisuianGrowlithe = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Growlithe"),
+    form: { id: "hisuian" },
+  });
+  assert(
+    hisuianGrowlithe.speciesId === 58 &&
+      hisuianGrowlithe.types.join(",") === "Fire,Rock",
+    "Hisuian Growlithe lost its form type override",
+  );
+  assert(
+    variantUtils.resolvePokemonArtwork(hisuianGrowlithe)?.includes("/10229.png"),
+    "Hisuian Growlithe did not resolve canonical form artwork",
+  );
+  assert(
+    variantUtils.resolvePokemonArtwork(oldPidgeot)?.includes("/shiny/18.png"),
+    "shiny canonical artwork was not preferred",
+  );
+
+  memoryFiles.clear();
+  const canonicalSaveState = createMemoryGameState(pokemonUtils);
+  canonicalSaveState.saveTeamAndStorage([oldPidgeot], [{ id: 237, name: "Pidgey" }]);
+  const canonicalSaveLoad = canonicalSaveState.loadTeamAndStorage();
+  assert(
+    canonicalSaveLoad.team.some(
+      (owned) => owned.name === "Pidgeot" && owned.speciesId === 18,
+    ),
+    "caught Pokemon path did not preserve speciesId",
+  );
+  assert(
+    canonicalSaveLoad.storage.some(
+      (owned) => owned.name === "Pidgey" && owned.speciesId === 16,
+    ),
+    "storage normalization did not enrich speciesId",
+  );
+
   [
     ["Bulbasaur", "Ivysaur", "Venusaur"],
     ["Charmander", "Charmeleon", "Charizard"],

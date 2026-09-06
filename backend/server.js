@@ -47,6 +47,7 @@ const pokemonUtils = createPokemonUtils({
   pokemonPath,
   readJsonFile: loadJson,
   moveCatalog: gameData.moves,
+  canonicalPokemon: gameData.canonicalPokemon,
 });
 const {
   getStarterPokemon,
@@ -269,6 +270,7 @@ function getPokedexEntries(state) {
           category: form?.category || "normal",
           types: form?.types || getPokemonTypes(pokemon),
           imageId: form?.imageId || pokemon.imageId || pokemon.id,
+          artwork: form?.artwork || (!form ? pokemon.artwork : null),
           habitats: form?.habitats || pokemon.habitats || [],
           seen:
             formsSeen.has(normalKey) ||
@@ -282,8 +284,13 @@ function getPokedexEntries(state) {
       };
       return {
         id: pokemon.id,
+        speciesId: pokemon.speciesId,
         imageId: pokemon.imageId || pokemon.id,
         name: pokemon.name,
+        canonicalName: pokemon.canonicalName,
+        artwork: pokemon.artwork,
+        isLegendary: Boolean(pokemon.isLegendary),
+        isMythical: Boolean(pokemon.isMythical),
         type: pokemon.type,
         types: getPokemonTypes(pokemon),
         rarity: pokemon.rarity || "common",
@@ -295,8 +302,10 @@ function getPokedexEntries(state) {
         previousStage: previousStage
           ? {
               id: previousStage.id,
+              speciesId: previousStage.speciesId,
               imageId: previousStage.imageId || previousStage.id,
               name: previousStage.name,
+              artwork: previousStage.artwork,
             }
           : null,
         evolutionChain: getEvolutionChain(pokemon).map((stage) => ({

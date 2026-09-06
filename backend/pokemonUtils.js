@@ -1,3 +1,5 @@
+const { createCanonicalPokemonLookup } = require("./canonicalPokemon");
+
 const defaultMoves = [
   {
     name: "Tackle",
@@ -105,12 +107,36 @@ const evolutionTriggers = {
   Eevee: { level: 16, name: "Vaporeon", type: "Water" },
 };
 
-function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
+function createPokemonUtils({
+  pokemonPath,
+  readJsonFile,
+  moveCatalog = {},
+  canonicalPokemon = {},
+}) {
   let pokemonTemplateCache = null;
+  const canonicalLookup = createCanonicalPokemonLookup(canonicalPokemon);
+
+  function enrichPokemonTemplate(pokemon = {}) {
+    const canonical = canonicalLookup.getCanonicalPokemon(pokemon);
+    if (!canonical) return { ...pokemon };
+    const types = Array.isArray(canonical.types) ? [...canonical.types] : [];
+    return {
+      ...pokemon,
+      speciesId: canonical.speciesId,
+      canonicalName: canonical.canonicalName,
+      types: types.length ? types : pokemon.types,
+      type: types[0] || pokemon.type,
+      artwork: { ...(canonical.artwork || {}) },
+      isLegendary: Boolean(canonical.isLegendary),
+      isMythical: Boolean(canonical.isMythical),
+    };
+  }
 
   function getPokemonTemplates() {
     if (!pokemonTemplateCache) {
-      pokemonTemplateCache = readJsonFile(pokemonPath, []);
+      pokemonTemplateCache = readJsonFile(pokemonPath, []).map(
+        enrichPokemonTemplate,
+      );
     }
     return pokemonTemplateCache;
   }
@@ -121,6 +147,19 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
 
   function getPokemonTemplateByName(name) {
     return getPokemonTemplates().find((pokemon) => pokemon.name === name) || null;
+  }
+
+  function getCanonicalPokemon(pokemon = {}) {
+    return canonicalLookup.getCanonicalPokemon(pokemon);
+  }
+
+  function getCanonicalForm(canonical, form) {
+    if (!canonical || !form) return null;
+    return (
+      (canonical.forms || []).find(
+        (candidate) => Number(candidate.pokemonId) === Number(form.imageId),
+      ) || null
+    );
   }
 
   function getPokemonTemplateForOwnedPokemon(pokemon = {}) {
@@ -196,10 +235,25 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
 
   function normalizePokemon(pokemon) {
     const template = getPokemonTemplateForOwnedPokemon(pokemon);
+    const canonical = getCanonicalPokemon(template?.name ? template : pokemon);
     const merged = {
       ...template,
       ...pokemon,
     };
+    if (canonical) {
+      const canonicalTypes = Array.isArray(canonical.types)
+        ? [...canonical.types]
+        : [];
+      merged.speciesId = canonical.speciesId;
+      merged.canonicalName = canonical.canonicalName;
+      merged.isLegendary = Boolean(canonical.isLegendary);
+      merged.isMythical = Boolean(canonical.isMythical);
+      merged.artwork = { ...(canonical.artwork || {}) };
+      if (canonicalTypes.length) {
+        merged.types = canonicalTypes;
+        merged.type = canonicalTypes[0];
+      }
+    }
     if (template?.name && merged.name === template.name) {
       merged.id = template.id;
       merged.imageId = template.imageId || template.id;
@@ -269,6 +323,7 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
       typeof merged.form === "string" ? merged.form : merged.form?.id;
     const configuredForm = getPokemonFormDefinition(template, formId);
     const form = configuredForm || (merged.form?.id ? merged.form : null);
+    const canonicalForm = getCanonicalForm(canonical, form);
     normalized.shiny = Boolean(merged.shiny);
     normalized.form = form
       ? {
@@ -277,7 +332,7 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
           category: form.category || "special",
           imageId: form.imageId,
           shinyImageId: form.shinyImageId,
-          artwork: form.artwork,
+          artwork: form.artwork || canonicalForm?.artwork,
         }
       : null;
     if (form) {
@@ -420,8 +475,11 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
       visited.add(current.name);
       chain.push({
         id: current.id,
+        speciesId: current.speciesId,
         imageId: current.imageId || current.id,
         name: current.name,
+        canonicalName: current.canonicalName,
+        artwork: current.artwork,
         type: current.type,
         types: getPokemonTypes(current),
         evolvesTo: current.evolvesTo || null,
@@ -490,6 +548,12 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     getPokemonTemplates,
     getPokemonTemplate,
     getPokemonTemplateByName,
+    getCanonicalPokemon,
+    getCanonicalPokemonByLocalId:
+      canonicalLookup.getCanonicalPokemonByLocalId,
+    getCanonicalPokemonBySpeciesId:
+      canonicalLookup.getCanonicalPokemonBySpeciesId,
+    getCanonicalPokemonByName: canonicalLookup.getCanonicalPokemonByName,
     getPokemonTypes,
     getPokemonFormDefinition,
     getPokemonVariantKey,

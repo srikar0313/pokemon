@@ -1,6 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 const { typeChart } = require("./battleEngine");
+const {
+  createCanonicalPokemonLookup,
+  normalizeCanonicalName,
+} = require("./canonicalPokemon");
 
 const rootDir = path.join(__dirname, "..");
 const dataDir = path.join(rootDir, "data");
@@ -460,6 +464,49 @@ function validateGameData(gameData) {
   addDuplicateWarnings(pokemonIds, "Pokemon id", groups, "pokemonWarnings");
   addDuplicateWarnings(pokemonNameList, "Pokemon name", groups, "pokemonWarnings");
 
+  const canonicalLookup = createCanonicalPokemonLookup(gameData.canonicalPokemon);
+  const canonicalSpeciesOwners = new Map();
+  pokemonList.forEach((pokemon) => {
+    const canonical = canonicalLookup.getCanonicalPokemon(pokemon);
+    const label = pokemon?.name || pokemon?.id || "Unknown Pokemon";
+    if (!canonical) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `${label} does not resolve to canonical Pokemon data`,
+      );
+      return;
+    }
+    if (!Number.isInteger(canonical.speciesId) || canonical.speciesId <= 0) {
+      addWarning(groups, "pokemonWarnings", `${label} has invalid canonical speciesId`);
+    }
+    if (!Array.isArray(canonical.types) || canonical.types.length === 0) {
+      addWarning(groups, "pokemonWarnings", `${label} has no canonical types`);
+    }
+    if (Number(canonical.localId) !== Number(pokemon.id)) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `${label} canonical localId ${canonical.localId} does not match game id ${pokemon.id}`,
+      );
+    }
+    if (!canonical.artwork?.normal && !pokemon.imageId) {
+      addWarning(groups, "pokemonWarnings", `${label} has no safe artwork fallback`);
+    }
+
+    const existingOwner = canonicalSpeciesOwners.get(canonical.speciesId);
+    const currentOwner = normalizeCanonicalName(pokemon.name);
+    if (existingOwner && existingOwner !== currentOwner) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `${label} and another game Pokemon resolve to speciesId ${canonical.speciesId}`,
+      );
+    } else {
+      canonicalSpeciesOwners.set(canonical.speciesId, currentOwner);
+    }
+  });
+
   pokemonList.forEach((pokemon) =>
     validatePokemonEntry(pokemon, {
       groups,
@@ -571,6 +618,10 @@ function loadGameData(options = {}) {
   const areaData = loadJson(path.join(dataDir, "areas.json"), {});
   const gameData = {
     pokemon: loadJson(path.join(rootDir, "pokemon.json"), []),
+    canonicalPokemon: loadJson(
+      path.join(dataDir, "pokeapi", "canonical-pokemon.json"),
+      { pokemon: [] },
+    ),
     moves: loadJson(path.join(dataDir, "moves.json"), {}),
     items: loadJson(path.join(dataDir, "items.json"), {}),
     gyms: loadJson(path.join(dataDir, "gyms.json"), []),

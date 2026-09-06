@@ -36,12 +36,22 @@
       .join(" ");
   }
 
+  function resolvePokemonArtwork(pokemon) {
+    if (!pokemon || typeof pokemon !== "object") return null;
+    const formArtwork = pokemon.form?.artwork;
+    if (pokemon.form) {
+      if (pokemon.shiny && formArtwork?.shiny) return formArtwork.shiny;
+      if (formArtwork?.normal) return formArtwork.normal;
+    }
+    if (pokemon.shiny && pokemon.artwork?.shiny) return pokemon.artwork.shiny;
+    return pokemon.artwork?.normal || null;
+  }
+
   function getArtworkUrl(pokemon, fallbackImageId) {
     if (!pokemon || typeof pokemon !== "object") {
       return `${artworkRoot}/${pokemon || fallbackImageId}.png`;
     }
-    const artwork = pokemon.form?.artwork || pokemon.artwork;
-    const explicitArtwork = pokemon.shiny ? artwork?.shiny : artwork?.normal;
+    const explicitArtwork = resolvePokemonArtwork(pokemon);
     if (explicitArtwork) return explicitArtwork;
 
     const imageId = pokemon.shiny
@@ -63,6 +73,7 @@
     getVariantKey,
     isSameVariant,
     getDisplayName,
+    resolvePokemonArtwork,
     getArtworkUrl,
     getNormalArtworkFallback,
   };
