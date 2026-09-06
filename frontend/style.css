@@ -1586,6 +1586,12 @@ h3 {
   align-items: start;
 }
 
+.route-map-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
 .route-grid {
   display: grid;
   gap: 4px;
@@ -3532,6 +3538,10 @@ button:disabled {
 
   .quick-active-card {
     display: flex;
+  }
+
+  .route-map-actions .quick-find-btn {
+    width: 100%;
   }
 
   .quick-party-grid {

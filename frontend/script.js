@@ -1376,6 +1376,11 @@ function renderRouteWorld() {
             </div>
           </div>
         </div>
+        <div class="route-map-actions">
+          <button class="quick-find-btn" onclick="findPokemonQuickly()">
+            Find Pokemon
+          </button>
+        </div>
       </div>
       <div class="route-side-panel">
         ${
