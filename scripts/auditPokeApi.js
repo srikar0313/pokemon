@@ -8,8 +8,10 @@ const {
   loadCachedJson,
   mapLimit,
   normalizePokemonName,
+  readValidJson,
   saveJsonAtomic,
   toDisplayName,
+  toPokeApiSpeciesSlug,
 } = require("./pokeApiUtils");
 
 const rootDir = path.join(__dirname, "..");
@@ -18,6 +20,7 @@ const outputDir = path.join(rootDir, "data", "pokeapi");
 const cacheRoot = path.join(outputDir, "raw");
 const jsonReportPath = path.join(outputDir, "pokemon-audit.json");
 const markdownReportPath = path.join(outputDir, "AUDIT_REPORT.md");
+const speciesMapPath = path.join(outputDir, "species-map.json");
 const refresh = process.argv.includes("--refresh");
 const concurrency = 4;
 const cacheStats = { hits: 0, fetched: 0, failures: 0 };
@@ -83,29 +86,196 @@ function recordFailure(kind, identity, result) {
   networkFailures.push({ kind, identity, error: result.error || "unknown error" });
 }
 
-async function fetchBaseRecords(localPokemon) {
-  return mapLimit(localPokemon, concurrency, async (local) => {
-    const pokemonResult = await loadCachedJson({
+function getMappingKey(localId, localName) {
+  return `${localId}:${normalizePokemonName(localName)}`;
+}
+
+function isResolvedMapping(mapping) {
+  return (
+    ["MATCH", "ID_MISMATCH"].includes(mapping?.status) &&
+    mapping.nameMatches === true &&
+    normalizePokemonName(mapping.localName) ===
+      normalizePokemonName(mapping.canonicalName) &&
+    mapping.idMatches === (mapping.status === "MATCH") &&
+    Number.isInteger(mapping.canonicalSpeciesId) &&
+    mapping.canonicalSpeciesId > 0
+  );
+}
+
+async function resolveSpeciesMap(localPokemon) {
+  const existing = refresh ? null : readValidJson(speciesMapPath);
+  const existingByLocal = new Map(
+    (existing?.species || []).map((mapping) => [
+      getMappingKey(mapping.localId, mapping.localName),
+      mapping,
+    ]),
+  );
+
+  const species = await mapLimit(localPokemon, concurrency, async (local) => {
+    const existingMapping = existingByLocal.get(
+      getMappingKey(local.id, local.name),
+    );
+    if (isResolvedMapping(existingMapping)) return existingMapping;
+
+    const lookupName = toPokeApiSpeciesSlug(local.name);
+    const result = await loadCachedJson({
       cacheRoot,
-      category: "pokemon",
-      key: local.id,
-      url: `${POKEAPI_BASE_URL}/pokemon/${local.id}`,
+      category: "species-by-name",
+      key: lookupName,
+      url: `${POKEAPI_BASE_URL}/pokemon-species/${lookupName}`,
       refresh,
       cacheStats,
     });
-    recordFailure("pokemon", `${local.name} #${local.id}`, pokemonResult);
+    if (!result.data) {
+      recordFailure("species-resolution", `${local.name} (${lookupName})`, result);
+      return {
+        localId: local.id,
+        localName: local.name,
+        canonicalSpeciesId: null,
+        canonicalName: null,
+        idMatches: false,
+        nameMatches: false,
+        resolutionMethod: "name",
+        lookupName,
+        status: "UNRESOLVED",
+        error: result.error || "species lookup failed",
+      };
+    }
+
+    const canonicalSpeciesId = Number(result.data.id);
+    const canonicalName = result.data.name;
+    const nameMatches =
+      normalizePokemonName(local.name) === normalizePokemonName(canonicalName);
+    const idMatches = Number(local.id) === canonicalSpeciesId;
+    if (nameMatches && Number.isInteger(canonicalSpeciesId)) {
+      saveJsonAtomic(
+        path.join(cacheRoot, "species", `${canonicalSpeciesId}.json`),
+        result.data,
+      );
+    }
+    return {
+      localId: local.id,
+      localName: local.name,
+      canonicalSpeciesId: Number.isInteger(canonicalSpeciesId)
+        ? canonicalSpeciesId
+        : null,
+      canonicalName: canonicalName || null,
+      idMatches,
+      nameMatches,
+      resolutionMethod: "name",
+      lookupName,
+      status: nameMatches
+        ? idMatches
+          ? "MATCH"
+          : "ID_MISMATCH"
+        : "NAME_MISMATCH",
+    };
+  });
+
+  const mapDocument = {
+    generatedAt: new Date().toISOString(),
+    source: "https://pokeapi.co",
+    resolutionKey: "localName",
+    summary: {
+      currentPokemon: localPokemon.length,
+      resolved: species.filter(isResolvedMapping).length,
+      localIdsCorrect: species.filter((mapping) => mapping.status === "MATCH")
+        .length,
+      localIdMismatches: species.filter(
+        (mapping) => mapping.status === "ID_MISMATCH",
+      ).length,
+      unresolved: species.filter((mapping) => !isResolvedMapping(mapping)).length,
+    },
+    species,
+  };
+  saveJsonAtomic(speciesMapPath, mapDocument);
+  return mapDocument;
+}
+
+function verifyRequiredMappings(speciesMap) {
+  const byName = new Map(
+    speciesMap.species.map((mapping) => [
+      normalizePokemonName(mapping.localName),
+      mapping,
+    ]),
+  );
+  const verify = (name, expectedStatus) => {
+    const mapping = byName.get(normalizePokemonName(name));
+    if (
+      !mapping ||
+      mapping.status !== expectedStatus ||
+      !mapping.nameMatches ||
+      !mapping.canonicalSpeciesId
+    ) {
+      throw new Error(
+        `identity verification failed for ${name}: expected ${expectedStatus}, received ${mapping?.status || "missing"}`,
+      );
+    }
+  };
+  [
+    "Pidgeot",
+    "Girafarig",
+    "Sneasel",
+    "Magmar",
+    "Articuno",
+    "Rayquaza",
+    "Kyogre",
+    "Groudon",
+  ].forEach((name) => verify(name, "ID_MISMATCH"));
+  ["Pikachu", "Bulbasaur", "Charmander", "Squirtle", "Eevee"].forEach(
+    (name) => verify(name, "MATCH"),
+  );
+}
+
+async function fetchBaseRecords(localPokemon, speciesMap) {
+  const mappings = new Map(
+    speciesMap.species.map((mapping) => [
+      getMappingKey(mapping.localId, mapping.localName),
+      mapping,
+    ]),
+  );
+  return mapLimit(localPokemon, concurrency, async (local) => {
+    const identity = mappings.get(getMappingKey(local.id, local.name));
+    if (!isResolvedMapping(identity)) {
+      return {
+        local,
+        identity,
+        pokemon: null,
+        species: null,
+        failures: [identity?.error || identity?.status || "unresolved identity"],
+      };
+    }
+    const canonicalSpeciesId = identity.canonicalSpeciesId;
+    const pokemonResult = await loadCachedJson({
+      cacheRoot,
+      category: "pokemon",
+      key: canonicalSpeciesId,
+      url: `${POKEAPI_BASE_URL}/pokemon/${canonicalSpeciesId}`,
+      refresh,
+      cacheStats,
+    });
+    recordFailure(
+      "pokemon",
+      `${local.name} canonical #${canonicalSpeciesId}`,
+      pokemonResult,
+    );
 
     const speciesResult = await loadCachedJson({
       cacheRoot,
       category: "species",
-      key: local.id,
-      url: `${POKEAPI_BASE_URL}/pokemon-species/${local.id}`,
+      key: canonicalSpeciesId,
+      url: `${POKEAPI_BASE_URL}/pokemon-species/${canonicalSpeciesId}`,
       refresh,
       cacheStats,
     });
-    recordFailure("species", `${local.name} #${local.id}`, speciesResult);
+    recordFailure(
+      "species",
+      `${local.name} canonical #${canonicalSpeciesId}`,
+      speciesResult,
+    );
     return {
       local,
+      identity,
       pokemon: pokemonResult.data,
       species: speciesResult.data,
       failures: [pokemonResult, speciesResult]
@@ -298,7 +468,7 @@ function auditForms(entry, local, speciesData, varietyData) {
       const data = varietyData.get(variety.pokemon.name);
       return {
         name: variety.pokemon.name,
-        pokemonId: data?.id || getResourceId(variety.pokemon.url),
+        formPokemonId: data?.id || getResourceId(variety.pokemon.url),
         types: canonicalTypes(data),
         artwork: getArtworkAvailability(data),
         available: Boolean(data),
@@ -344,7 +514,7 @@ function auditForms(entry, local, speciesData, varietyData) {
         `${local.name}'s ${form.name} types differ from PokéAPI.`,
       );
     }
-    if (Number(form.imageId) !== Number(canonical.pokemonId)) {
+    if (Number(form.imageId) !== Number(canonical.formPokemonId)) {
       result.status = "IMAGE_ID_SUSPICIOUS";
       addFinding(
         entry,
@@ -352,7 +522,7 @@ function auditForms(entry, local, speciesData, varietyData) {
         "FORM_IMAGE_ID_SUSPICIOUS",
         `forms.${form.id}.imageId`,
         form.imageId || null,
-        canonical.pokemonId,
+        canonical.formPokemonId,
         `${local.name}'s ${form.name} imageId does not match the canonical variety ID.`,
       );
     }
@@ -380,17 +550,20 @@ function auditForms(entry, local, speciesData, varietyData) {
 }
 
 function auditRecord(record, chainDataByUrl, varietyData, localNameSet, duplicates) {
-  const { local, pokemon, species } = record;
+  const { local, identity, pokemon, species } = record;
   const entry = {
-    id: local.id,
-    name: local.name,
+    localId: local.id,
+    localName: local.name,
+    canonicalSpeciesId: identity?.canonicalSpeciesId || null,
+    canonicalName: identity?.canonicalName || null,
+    identityStatus: identity?.status || "UNRESOLVED",
     status: "MATCH",
     matchedFields: [],
     mismatchFields: [],
     findings: [],
     current: {
-      id: local.id,
-      name: local.name,
+      localId: local.id,
+      localName: local.name,
       type: local.type || null,
       types: local.types || (local.type ? [local.type] : []),
       stats: {
@@ -414,22 +587,46 @@ function auditRecord(record, chainDataByUrl, varietyData, localNameSet, duplicat
   };
 
   if (duplicates.ids.has(local.id)) {
-    addFinding(entry, "CRITICAL", "DUPLICATE_ID", "id", local.id, null, `National Pokédex ID ${local.id} is assigned more than once.`);
+    addFinding(entry, "CRITICAL", "DUPLICATE_LOCAL_ID", "localId", local.id, null, `Local game ID ${local.id} is assigned more than once.`);
   }
   if (duplicates.names.has(normalizePokemonName(local.name))) {
-    addFinding(entry, "CRITICAL", "DUPLICATE_NAME", "name", local.name, null, `${local.name} is defined more than once.`);
+    addFinding(entry, "CRITICAL", "DUPLICATE_LOCAL_NAME", "localName", local.name, null, `${local.name} is defined more than once.`);
+  }
+  if (identity?.status === "ID_MISMATCH") {
+    addFinding(
+      entry,
+      "CRITICAL",
+      "LOCAL_ID_MISMATCH",
+      "localId",
+      local.id,
+      identity.canonicalSpeciesId,
+      `${local.name}'s local game ID differs from its National Pokédex species ID.`,
+    );
+  } else if (identity?.status === "MATCH") {
+    addMatch(entry, "canonicalIdentity");
+  } else {
+    addFinding(
+      entry,
+      "CRITICAL",
+      "SPECIES_UNRESOLVED",
+      "canonicalIdentity",
+      { localId: local.id, localName: local.name },
+      identity || null,
+      `${local.name} could not be mapped safely to a canonical species.`,
+    );
   }
   if (!pokemon || !species) {
     entry.status = "FAILED";
     entry.failures = record.failures;
-    addFinding(entry, "CRITICAL", "CANONICAL_DATA_UNAVAILABLE", "identity", { id: local.id, name: local.name }, null, "PokéAPI Pokémon or species data could not be loaded.");
+    addFinding(entry, "CRITICAL", "CANONICAL_DATA_UNAVAILABLE", "canonicalData", { localId: local.id, localName: local.name }, null, "PokéAPI Pokémon or species data could not be loaded.");
     return entry;
   }
 
   const types = canonicalTypes(pokemon);
   const stats = canonicalStats(pokemon);
   entry.canonical = {
-    id: pokemon.id,
+    canonicalSpeciesId: species.id,
+    pokemonId: pokemon.id,
     pokemonName: pokemon.name,
     speciesName: species.name,
     types,
@@ -452,14 +649,16 @@ function auditRecord(record, chainDataByUrl, varietyData, localNameSet, duplicat
   };
 
   if (
-    Number(local.id) !== Number(pokemon.id) ||
-    normalizePokemonName(local.name) !== normalizePokemonName(pokemon.name) ||
-    normalizePokemonName(local.name) !== normalizePokemonName(species.name)
+    Number(identity.canonicalSpeciesId) !== Number(species.id) ||
+    Number(identity.canonicalSpeciesId) !== Number(pokemon.id) ||
+    normalizePokemonName(identity.canonicalName) !==
+      normalizePokemonName(pokemon.species?.name) ||
+    normalizePokemonName(identity.canonicalName) !== normalizePokemonName(species.name)
   ) {
-    addFinding(entry, "CRITICAL", "ID_NAME_MISMATCH", "identity", { id: local.id, name: local.name }, { id: pokemon.id, pokemonName: pokemon.name, speciesName: species.name }, "Local ID and name do not resolve to the same canonical species.");
+    addFinding(entry, "CRITICAL", "CANONICAL_MAPPING_INCONSISTENT", "canonicalIdentity", identity, { canonicalSpeciesId: species.id, pokemonId: pokemon.id, pokemonName: pokemon.name, speciesName: species.name }, "The mapped canonical identity disagrees with fetched PokéAPI resources.");
   }
   else {
-    addMatch(entry, "identity");
+    addMatch(entry, "canonicalResources");
   }
 
   if (normalizePokemonName(local.type) !== normalizePokemonName(types[0])) {
@@ -560,7 +759,7 @@ function uniqueChains(chainDataByUrl) {
   return [...chainDataByUrl.values()].filter(Boolean);
 }
 
-function buildSummary(entries, chainDataByUrl) {
+function buildSummary(entries, chainDataByUrl, speciesMap) {
   const allFindings = entries.flatMap((entry) => entry.findings);
   const countCode = (code) => allFindings.filter((finding) => finding.code === code).length;
   const evolutionCodes = new Set(["TARGET_MISSING", "TARGET_MISMATCH", "TARGET_EXTRA", "LEVEL_MISMATCH", "METHOD_MISMATCH", "BRANCHING_MISMATCH"]);
@@ -579,11 +778,15 @@ function buildSummary(entries, chainDataByUrl) {
   const methods = collectEvolutionMethods(chains);
   return {
     speciesChecked: entries.length,
+    canonicalMappingsResolved: speciesMap.summary.resolved,
+    localIdsCorrect: speciesMap.summary.localIdsCorrect,
+    localIdMismatches: speciesMap.summary.localIdMismatches,
+    unresolvedSpecies: speciesMap.summary.unresolved,
     speciesMatched: entries.filter((entry) => entry.status === "MATCH").length,
     speciesWithMismatches: entries.filter((entry) => entry.status === "MISMATCH").length,
     speciesFailed: entries.filter((entry) => entry.status === "FAILED").length,
     networkFailures: networkFailures.length,
-    identityProblems: countCode("ID_NAME_MISMATCH") + countCode("DUPLICATE_ID") + countCode("DUPLICATE_NAME") + countCode("CANONICAL_DATA_UNAVAILABLE"),
+    identityProblems: countCode("LOCAL_ID_MISMATCH") + countCode("SPECIES_UNRESOLVED") + countCode("CANONICAL_MAPPING_INCONSISTENT") + countCode("DUPLICATE_LOCAL_ID") + countCode("DUPLICATE_LOCAL_NAME") + countCode("CANONICAL_DATA_UNAVAILABLE"),
     statMismatches: countCode("BASE_STAT_MISMATCH"),
     typeMismatches: countCode("PRIMARY_TYPE_MISMATCH") + countCode("TYPES_ARRAY_MISMATCH") + countCode("FORM_TYPE_MISMATCH"),
     captureRateMismatches: countCode("CAPTURE_RATE_MISMATCH"),
@@ -615,7 +818,7 @@ function findingsSection(title, entries, codes) {
   if (!rows.length) return [...lines, "None.", ""].join("\n");
   rows.forEach(({ entry, finding }) => {
     lines.push(
-      `- **${entry.name} #${entry.id}** [${finding.severity}] ${finding.message} Current: \`${formatValue(finding.current)}\`; canonical: \`${formatValue(finding.canonical)}\`.`,
+      `- **${entry.localName}** (local ${entry.localId}, National Dex ${entry.canonicalSpeciesId || "unresolved"}) [${finding.severity}] ${finding.message} Current: \`${formatValue(finding.current)}\`; canonical: \`${formatValue(finding.canonical)}\`.`,
     );
   });
   lines.push("");
@@ -630,6 +833,10 @@ function buildMarkdown(report) {
     `Generated: ${report.generatedAt}`,
     "",
     `- Pokémon audited: **${summary.speciesChecked}**`,
+    `- Canonical mappings resolved: **${summary.canonicalMappingsResolved}**`,
+    `- Correct local IDs: **${summary.localIdsCorrect}**`,
+    `- Incorrect local IDs: **${summary.localIdMismatches}**`,
+    `- Unresolved species: **${summary.unresolvedSpecies}**`,
     `- Fully matched: **${summary.speciesMatched}**`,
     `- With mismatches: **${summary.speciesWithMismatches}**`,
     `- Failed species audits: **${summary.speciesFailed}**`,
@@ -645,8 +852,16 @@ function buildMarkdown(report) {
     "",
   ];
 
+  lines.push("## Canonical Identity Mapping", "");
+  entries.forEach((entry) => {
+    lines.push(
+      `- **${entry.localName}** — Local ID: ${entry.localId}; National Dex ID: ${entry.canonicalSpeciesId || "unresolved"}; Canonical name: ${entry.canonicalName || "unresolved"}; Status: **${entry.identityStatus}**.`,
+    );
+  });
+  lines.push("");
+
   const sections = [
-    ["Critical Identity Problems", new Set(["ID_NAME_MISMATCH", "DUPLICATE_ID", "DUPLICATE_NAME", "CANONICAL_DATA_UNAVAILABLE"])],
+    ["Critical Identity Problems", new Set(["LOCAL_ID_MISMATCH", "SPECIES_UNRESOLVED", "CANONICAL_MAPPING_INCONSISTENT", "DUPLICATE_LOCAL_ID", "DUPLICATE_LOCAL_NAME", "CANONICAL_DATA_UNAVAILABLE"])],
     ["Type Mismatches", new Set(["PRIMARY_TYPE_MISMATCH", "TYPES_ARRAY_MISMATCH", "FORM_TYPE_MISMATCH"])],
     ["Base Stat Mismatches", new Set(["BASE_STAT_MISMATCH"])],
     ["Capture Rate Mismatches", new Set(["CAPTURE_RATE_MISMATCH"])],
@@ -677,7 +892,7 @@ function buildMarkdown(report) {
   if (!formEntries.length) lines.push("None.");
   formEntries.forEach((entry) => {
     lines.push(
-      `- **${entry.name}**: canonical ${entry.forms.canonicalForms.map((form) => form.name).join(", ") || "none"}; configured ${entry.forms.configuredForms.map((form) => form.name).join(", ") || "none"}; missing ${entry.forms.missingForms.map((form) => form.name).join(", ") || "none"}.`,
+      `- **${entry.localName}**: canonical ${entry.forms.canonicalForms.map((form) => form.name).join(", ") || "none"}; configured ${entry.forms.configuredForms.map((form) => form.name).join(", ") || "none"}; missing ${entry.forms.missingForms.map((form) => form.name).join(", ") || "none"}.`,
     );
   });
   lines.push("");
@@ -715,10 +930,16 @@ async function main() {
     ids: new Set([...idCounts].filter(([, count]) => count > 1).map(([id]) => id)),
     names: new Set([...nameCounts].filter(([, count]) => count > 1).map(([name]) => name)),
   };
-  const uniqueById = [...new Map(localPokemon.map((pokemon) => [pokemon.id, pokemon])).values()];
+  const uniqueByName = [
+    ...new Map(
+      localPokemon.map((pokemon) => [normalizePokemonName(pokemon.name), pokemon]),
+    ).values(),
+  ];
   const localNameSet = new Set(localPokemon.map((pokemon) => normalizePokemonName(pokemon.name)));
 
-  const baseRecords = await fetchBaseRecords(uniqueById);
+  const speciesMap = await resolveSpeciesMap(uniqueByName);
+  verifyRequiredMappings(speciesMap);
+  const baseRecords = await fetchBaseRecords(uniqueByName, speciesMap);
   const chainDataByUrl = await fetchEvolutionChains(baseRecords);
   const varietyData = await fetchVarieties(baseRecords);
   const entries = baseRecords.map((record) =>
@@ -730,7 +951,8 @@ async function main() {
     source: "https://pokeapi.co",
     mode: refresh ? "refresh" : "cache-first",
     cache: { ...cacheStats },
-    summary: buildSummary(entries, chainDataByUrl),
+    summary: buildSummary(entries, chainDataByUrl, speciesMap),
+    speciesMapSummary: speciesMap.summary,
     duplicateLocalIds: [...duplicates.ids],
     duplicateLocalNames: [...duplicates.names],
     evolutionMethods,

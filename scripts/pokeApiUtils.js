@@ -30,6 +30,19 @@ function normalizePokemonName(value) {
     .replace(/[^a-z0-9]/g, "");
 }
 
+function toPokeApiSpeciesSlug(value) {
+  return String(value || "")
+    .replace(/♀/g, "-f")
+    .replace(/♂/g, "-m")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[.'’]/g, "")
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 function toDisplayName(value) {
   return String(value || "")
     .split("-")
@@ -206,6 +219,8 @@ module.exports = {
   loadCachedJson,
   mapLimit,
   normalizePokemonName,
+  readValidJson,
   saveJsonAtomic,
   toDisplayName,
+  toPokeApiSpeciesSlug,
 };
