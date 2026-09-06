@@ -4142,10 +4142,23 @@ async function attack(moveName) {
       `You defeated wild ${wild.name} and returned to the route.`,
     );
   } else if (data.winner === "wild") {
-    appendBattleLog(["You lost the battle. Heal up and try again."]);
-    await returnToRouteAfterWildBattle(
-      "Your Pokemon fainted. You returned to the route.",
+    const hasHealthyReplacement = teamCache.some(
+      (pokemon, index) =>
+        index !== activeInventoryIndex && (pokemon.currentHp || 0) > 0,
     );
+    if (hasHealthyReplacement) {
+      appendBattleLog([
+        `${activePokemon.name} fainted. Choose another Pokemon to continue.`,
+      ]);
+      setBattleActionBusy(false);
+      isSwitching = true;
+      showWildSwitchPanel();
+    } else {
+      appendBattleLog(["Your full party has fainted. Heal up and try again."]);
+      await returnToRouteAfterWildBattle(
+        "Your full party fainted. You returned to the route.",
+      );
+    }
   } else {
     setBattleActionBusy(false);
   }
