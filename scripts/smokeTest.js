@@ -93,6 +93,19 @@ function main() {
     getPokemonTemplateByName: pokemonUtils.getPokemonTemplateByName,
     updateAchievements: () => {},
   });
+  const levelPokemonTo = (startingPokemon, targetLevel) => {
+    let current = startingPokemon;
+    let result = null;
+    while ((current.level || 1) < targetLevel) {
+      result = rewardEngine.applyXpToPokemon(
+        [current],
+        0,
+        rewardEngine.getXpNeededForLevel(current.level || 1),
+      );
+      current = result.pokemon;
+    }
+    return { pokemon: current, result };
+  };
 
   assert(playerState.trainerName, "player state did not load");
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
@@ -147,6 +160,13 @@ function main() {
     firstEvolution.pokemon.moves[0].currentPp === 3,
     "evolution reset move PP",
   );
+  assert(
+    Math.abs(
+      firstEvolution.pokemon.currentHp / firstEvolution.pokemon.maxHp -
+        evolutionBulbasaur.currentHp / evolutionBulbasaur.maxHp,
+    ) <= 0.02,
+    "direct evolution did not preserve HP ratio",
+  );
   const ivysaur = { ...firstEvolution.pokemon, level: 32 };
   const secondEvolution = rewardEngine.evolvePokemonFromTemplate(
     ivysaur,
@@ -194,6 +214,117 @@ function main() {
     { name: "Missingno", level: 16 },
   );
   assert(!missingEvolution.evolved, "missing evolution target did not fail safely");
+
+  const bulbasaurAt15 = levelPokemonTo(
+    pokemonUtils.normalizePokemon(
+      pokemonUtils.getPokemonTemplateByName("Bulbasaur"),
+    ),
+    15,
+  ).pokemon;
+  bulbasaurAt15.currentHp = Math.round(bulbasaurAt15.maxHp * 0.5);
+  bulbasaurAt15.moves[0].currentPp = 2;
+  const bulbasaurHpBeforeLevel = bulbasaurAt15.currentHp;
+  const bulbasaurMaxHpBeforeLevel = bulbasaurAt15.maxHp;
+  const integratedIvysaur = rewardEngine.applyXpToPokemon(
+    [bulbasaurAt15],
+    0,
+    rewardEngine.getXpNeededForLevel(15),
+  );
+  const ivysaurAfterXp = integratedIvysaur.pokemon;
+  assert(integratedIvysaur.evolved, "real XP path did not evolve Bulbasaur");
+  assert(ivysaurAfterXp.name === "Ivysaur", "real XP path skipped Ivysaur");
+  assert(ivysaurAfterXp.level === 16, "real XP evolution has wrong level");
+  ["maxHp", "attack", "defense", "specialAttack", "specialDefense"].forEach(
+    (stat) => {
+      assert(
+        ivysaurAfterXp[stat] >= bulbasaurAt15[stat],
+        `Bulbasaur -> Ivysaur regressed ${stat}`,
+      );
+    },
+  );
+  const expectedIvysaurRatio =
+    (bulbasaurHpBeforeLevel + 5) / (bulbasaurMaxHpBeforeLevel + 5);
+  assert(
+    Math.abs(
+      ivysaurAfterXp.currentHp / ivysaurAfterXp.maxHp - expectedIvysaurRatio,
+    ) <= 0.02,
+    "integrated Bulbasaur evolution did not preserve HP ratio",
+  );
+  assert(
+    ivysaurAfterXp.moves[0].currentPp === 2,
+    "integrated Bulbasaur evolution reset move PP",
+  );
+  assert(
+    ivysaurAfterXp.speed ===
+      pokemonUtils.getPokemonTemplateByName("Ivysaur").speed,
+    "Ivysaur did not use target species Speed",
+  );
+
+  const ivysaurAt31 = levelPokemonTo(ivysaurAfterXp, 31).pokemon;
+  ivysaurAt31.currentHp = Math.round(ivysaurAt31.maxHp * 0.4);
+  ivysaurAt31.moves[0].currentPp = 1;
+  const ivysaurHpBeforeLevel = ivysaurAt31.currentHp;
+  const ivysaurMaxHpBeforeLevel = ivysaurAt31.maxHp;
+  const integratedVenusaur = rewardEngine.applyXpToPokemon(
+    [ivysaurAt31],
+    0,
+    rewardEngine.getXpNeededForLevel(31),
+  );
+  assert(integratedVenusaur.evolved, "real XP path did not evolve Ivysaur");
+  assert(
+    integratedVenusaur.pokemon.name === "Venusaur",
+    "real XP path did not reach Venusaur",
+  );
+  ["maxHp", "attack", "defense", "specialAttack", "specialDefense"].forEach(
+    (stat) => {
+      assert(
+        integratedVenusaur.pokemon[stat] >= ivysaurAt31[stat],
+        `Ivysaur -> Venusaur regressed ${stat}`,
+      );
+    },
+  );
+  assert(
+    integratedVenusaur.pokemon.moves[0].currentPp === 1,
+    "Ivysaur -> Venusaur reset move PP",
+  );
+  const expectedVenusaurRatio =
+    (ivysaurHpBeforeLevel + 6) / (ivysaurMaxHpBeforeLevel + 6);
+  assert(
+    Math.abs(
+      integratedVenusaur.pokemon.currentHp / integratedVenusaur.pokemon.maxHp -
+        expectedVenusaurRatio,
+    ) <= 0.02,
+    "integrated Ivysaur evolution did not preserve HP ratio",
+  );
+
+  [
+    ["Charmander", "Charmeleon"],
+    ["Squirtle", "Wartortle"],
+  ].forEach(([sourceName, targetName]) => {
+    const sourceTemplate = pokemonUtils.getPokemonTemplateByName(sourceName);
+    const beforeEvolution = levelPokemonTo(
+      pokemonUtils.normalizePokemon(sourceTemplate),
+      sourceTemplate.evolveLevel - 1,
+    ).pokemon;
+    const result = rewardEngine.applyXpToPokemon(
+      [beforeEvolution],
+      0,
+      rewardEngine.getXpNeededForLevel(beforeEvolution.level),
+    );
+    assert(result.evolved, `real XP path did not evolve ${sourceName}`);
+    assert(
+      result.pokemon.name === targetName,
+      `${sourceName} evolved incorrectly`,
+    );
+    ["maxHp", "attack", "defense", "specialAttack", "specialDefense"].forEach(
+      (stat) => {
+        assert(
+          result.pokemon[stat] >= beforeEvolution[stat],
+          `${sourceName} -> ${targetName} regressed ${stat}`,
+        );
+      },
+    );
+  });
   assert(starter.name === "Pikachu", "starter Pokemon is not Pikachu");
   assert(starter.id === starterTemplate.id, "starter Pikachu did not use template id");
   assert(

@@ -42,7 +42,7 @@ let routeEncounterPending = false;
 let routeEncounterCooldownSteps = 0;
 const evolutionPresentationQueue = [];
 let evolutionPresentationActive = false;
-let activeEvolutionPresentationKey = null;
+const processedEvolutionLineBatches = new WeakSet();
 const PARTY_LIMIT = 6;
 const STORAGE_PAGE_SIZE = 24;
 const ROUTE_ENCOUNTER_CHANCES = {
@@ -4458,17 +4458,13 @@ function showRewardPopup(lines = []) {
 }
 
 function queueEvolutionPresentations(lines = []) {
+  if (!Array.isArray(lines) || processedEvolutionLineBatches.has(lines)) return;
+  processedEvolutionLineBatches.add(lines);
   lines.forEach((line) => {
     const match = String(line || "").match(/^(.+?) evolved into (.+?)!$/i);
     if (!match) return;
     const event = { from: match[1].trim(), to: match[2].trim() };
-    const eventKey = `${event.from}->${event.to}`;
-    const duplicate = evolutionPresentationQueue.some(
-      (queued) => queued.from === event.from && queued.to === event.to,
-    );
-    if (!duplicate && activeEvolutionPresentationKey !== eventKey) {
-      evolutionPresentationQueue.push(event);
-    }
+    evolutionPresentationQueue.push(event);
   });
   showNextEvolutionPresentation();
 }
@@ -4477,7 +4473,6 @@ function showNextEvolutionPresentation() {
   if (evolutionPresentationActive || !evolutionPresentationQueue.length) return;
   evolutionPresentationActive = true;
   const event = evolutionPresentationQueue.shift();
-  activeEvolutionPresentationKey = `${event.from}->${event.to}`;
   const overlay = document.createElement("div");
   overlay.className = "evolution-overlay";
   overlay.innerHTML = `
@@ -4506,7 +4501,6 @@ function showNextEvolutionPresentation() {
 function closeEvolutionPresentation() {
   document.querySelector(".evolution-overlay")?.remove();
   evolutionPresentationActive = false;
-  activeEvolutionPresentationKey = null;
   showNextEvolutionPresentation();
 }
 

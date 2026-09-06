@@ -66,6 +66,7 @@ function createRewardEngine({
   }
 
   function evolvePokemonFromTemplate(pokemon, evolution) {
+    const sourceTemplate = getPokemonTemplateByName?.(pokemon.name);
     const targetTemplate = getPokemonTemplateByName?.(evolution.name);
     if (!targetTemplate?.name) {
       return {
@@ -91,6 +92,29 @@ function createRewardEngine({
       shiny: pokemon.shiny ?? false,
       status: pokemon.status || "none",
       pendingMove: pokemon.pendingMove || undefined,
+    });
+    [
+      "maxHp",
+      "attack",
+      "defense",
+      "specialAttack",
+      "specialDefense",
+    ].forEach((stat) => {
+      const sourceBase =
+        sourceTemplate?.[stat] ??
+        (stat === "maxHp" ? sourceTemplate?.hp : undefined) ??
+        pokemon[stat] ??
+        1;
+      const targetBase =
+        targetTemplate[stat] ??
+        (stat === "maxHp" ? targetTemplate.hp : undefined) ??
+        evolvedPokemon[stat] ??
+        1;
+      const accumulatedGrowth = Math.max(
+        0,
+        (pokemon[stat] ?? sourceBase) - sourceBase,
+      );
+      evolvedPokemon[stat] = Math.max(1, targetBase + accumulatedGrowth);
     });
     if (knownMoves.length) evolvedPokemon.moves = knownMoves;
 
@@ -303,6 +327,7 @@ function createRewardEngine({
     applyXpToParticipants,
     appendXpLog,
     evolvePokemonFromTemplate,
+    getXpNeededForLevel,
   };
 }
 
