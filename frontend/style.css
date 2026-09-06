@@ -2215,7 +2215,7 @@ h3 {
 
 .storage-controls {
   display: grid;
-  grid-template-columns: minmax(180px, 1.5fr) repeat(4, minmax(120px, 1fr));
+  grid-template-columns: minmax(180px, 1.5fr) repeat(3, minmax(120px, 1fr));
   gap: 10px;
   margin: 14px 0;
 }

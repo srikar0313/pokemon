@@ -52,7 +52,6 @@ const storageUiState = {
   search: "",
   type: "all",
   rarity: "all",
-  shiny: "all",
   sort: "id",
   page: 1,
   detailIndex: null,
@@ -3103,7 +3102,6 @@ function getFilteredStorage(storage = storageCache) {
         pokemon.rarity !== storageUiState.rarity
       )
         return false;
-      if (storageUiState.shiny === "shiny" && !pokemon.shiny) return false;
       return true;
     });
 
@@ -3227,12 +3225,6 @@ function renderStorageBrowser(storage = storageCache) {
           <option value="rare" ${storageUiState.rarity === "rare" ? "selected" : ""}>Rare</option>
           <option value="legendary" ${storageUiState.rarity === "legendary" ? "selected" : ""}>Legendary</option>
           <option value="mythical" ${storageUiState.rarity === "mythical" ? "selected" : ""}>Mythical</option>
-        </select>
-      </label>
-      <label>Shiny
-        <select onchange="updateStorageFilter('shiny', this.value)">
-          <option value="all" ${storageUiState.shiny === "all" ? "selected" : ""}>All</option>
-          <option value="shiny" ${storageUiState.shiny === "shiny" ? "selected" : ""}>Shiny only</option>
         </select>
       </label>
       <label>Sort
