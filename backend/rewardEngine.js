@@ -81,14 +81,18 @@ function createRewardEngine({
     const previousMaxHp = pokemon.maxHp || pokemon.hp || 1;
     const previousHpRatio =
       previousMaxHp > 0 ? Math.max(0, pokemon.currentHp || 0) / previousMaxHp : 1;
+    const knownMoves = (pokemon.moves || [])
+      .slice(0, 4)
+      .map(normalizeLearnedMove);
     const evolvedPokemon = normalizePokemon({
       ...targetTemplate,
       level: pokemon.level || 1,
-      xp: pokemon.xp || 0,
-      shiny: pokemon.shiny || false,
+      xp: pokemon.xp ?? 0,
+      shiny: pokemon.shiny ?? false,
       status: pokemon.status || "none",
       pendingMove: pokemon.pendingMove || undefined,
     });
+    if (knownMoves.length) evolvedPokemon.moves = knownMoves;
 
     evolvedPokemon.currentHp =
       (pokemon.currentHp || 0) <= 0
@@ -298,6 +302,7 @@ function createRewardEngine({
     applyXpToPokemon,
     applyXpToParticipants,
     appendXpLog,
+    evolvePokemonFromTemplate,
   };
 }
 

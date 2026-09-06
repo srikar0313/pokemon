@@ -2,6 +2,7 @@ const path = require("path");
 const { loadGameData, loadJson, saveJson } = require("../backend/dataLoader");
 const { createPokemonUtils } = require("../backend/pokemonUtils");
 const { createGameState } = require("../backend/gameState");
+const { createRewardEngine } = require("../backend/rewardEngine");
 
 const rootDir = path.join(__dirname, "..");
 const teamLimit = 6;
@@ -86,12 +87,113 @@ function main() {
   const pokemon = pokemonUtils.getPokemonTemplates();
   const starterTemplate = pokemonUtils.getPokemonTemplateByName("Pikachu");
   const starter = pokemonUtils.getStarterPokemon();
+  const rewardEngine = createRewardEngine({
+    normalizePokemon: pokemonUtils.normalizePokemon,
+    getEvolution: pokemonUtils.getEvolution,
+    getPokemonTemplateByName: pokemonUtils.getPokemonTemplateByName,
+    updateAchievements: () => {},
+  });
 
   assert(playerState.trainerName, "player state did not load");
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
   assert(pokemon.length >= 1, "pokemon.json has no Pokemon");
   assert(Array.isArray(gameData.quests), "quests did not load");
+  [
+    ["Bulbasaur", "Ivysaur", "Venusaur"],
+    ["Charmander", "Charmeleon", "Charizard"],
+    ["Squirtle", "Wartortle", "Blastoise"],
+    ["Pichu", "Pikachu", "Raichu"],
+  ].forEach((expectedChain) => {
+    const actualChain = pokemonUtils
+      .getEvolutionChain(expectedChain[expectedChain.length - 1])
+      .map((stage) => stage.name);
+    assert(
+      actualChain.join(",") === expectedChain.join(","),
+      `invalid evolution chain: expected ${expectedChain.join(" -> ")}, got ${actualChain.join(" -> ")}`,
+    );
+  });
+
+  const evolutionBulbasaur = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Bulbasaur"),
+    level: 16,
+    xp: 17,
+    shiny: true,
+    status: "burned",
+    currentHp: 20,
+  });
+  evolutionBulbasaur.moves[0].currentPp = 3;
+  const firstEvolution = rewardEngine.evolvePokemonFromTemplate(
+    evolutionBulbasaur,
+    pokemonUtils.getEvolution(evolutionBulbasaur),
+  );
+  assert(firstEvolution.evolved, "Bulbasaur did not evolve");
+  assert(
+    firstEvolution.pokemon.name === "Ivysaur",
+    "Bulbasaur skipped Ivysaur",
+  );
+  assert(firstEvolution.pokemon.level === 16, "evolution did not preserve level");
+  assert(firstEvolution.pokemon.xp === 17, "evolution did not preserve XP");
+  assert(firstEvolution.pokemon.shiny, "evolution did not preserve shiny state");
+  assert(
+    firstEvolution.pokemon.status === "burned",
+    "evolution did not preserve status",
+  );
+  assert(
+    firstEvolution.pokemon.moves[0].name === evolutionBulbasaur.moves[0].name,
+    "evolution replaced known moves",
+  );
+  assert(
+    firstEvolution.pokemon.moves[0].currentPp === 3,
+    "evolution reset move PP",
+  );
+  const ivysaur = { ...firstEvolution.pokemon, level: 32 };
+  const secondEvolution = rewardEngine.evolvePokemonFromTemplate(
+    ivysaur,
+    pokemonUtils.getEvolution(ivysaur),
+  );
+  assert(
+    secondEvolution.pokemon.name === "Venusaur",
+    "Ivysaur did not evolve into Venusaur",
+  );
+  assert(
+    pokemonUtils.getEvolution(secondEvolution.pokemon) === null,
+    "final evolution retained a stale evolution target",
+  );
+  [
+    ["Charmander", "Charmeleon"],
+    ["Squirtle", "Wartortle"],
+    ["Pikachu", "Raichu"],
+  ].forEach(([sourceName, targetName]) => {
+    const sourceTemplate = pokemonUtils.getPokemonTemplateByName(sourceName);
+    const targetTemplate = pokemonUtils.getPokemonTemplateByName(targetName);
+    const source = pokemonUtils.normalizePokemon({
+      ...sourceTemplate,
+      level: sourceTemplate.evolveLevel,
+      xp: 9,
+      shiny: true,
+    });
+    const result = rewardEngine.evolvePokemonFromTemplate(
+      source,
+      pokemonUtils.getEvolution(source),
+    );
+    assert(result.evolved, `${sourceName} did not evolve`);
+    assert(result.pokemon.name === targetName, `${sourceName} evolved incorrectly`);
+    assert(result.pokemon.id === targetTemplate.id, `${targetName} has wrong id`);
+    assert(
+      result.pokemon.imageId === targetTemplate.imageId,
+      `${targetName} has wrong imageId`,
+    );
+    assert(
+      result.pokemon.types.join(",") === targetTemplate.types.join(","),
+      `${targetName} has wrong types`,
+    );
+  });
+  const missingEvolution = rewardEngine.evolvePokemonFromTemplate(
+    evolutionBulbasaur,
+    { name: "Missingno", level: 16 },
+  );
+  assert(!missingEvolution.evolved, "missing evolution target did not fail safely");
   assert(starter.name === "Pikachu", "starter Pokemon is not Pikachu");
   assert(starter.id === starterTemplate.id, "starter Pikachu did not use template id");
   assert(

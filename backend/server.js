@@ -55,6 +55,7 @@ const {
   normalizePokemon,
   restorePokemon,
   getEvolution,
+  getEvolutionChain,
   isPokemonOrEvolutionOf,
   getEvolutionFamilyKey,
   createLeveledPokemon,
@@ -226,26 +227,6 @@ function applyBattleEffortXp(
 
 function getPokedexEntries(state) {
   const templates = getPokemonTemplates();
-  const byName = new Map(templates.map((pokemon) => [pokemon.name, pokemon]));
-
-  function getEvolutionChain(pokemon) {
-    const chain = [];
-    const visited = new Set();
-    let current = pokemon;
-    while (current) {
-      const key = current.name;
-      if (visited.has(key)) break;
-      visited.add(key);
-      chain.push({
-        id: current.id,
-        imageId: current.imageId || current.id,
-        name: current.name,
-        evolveLevel: current.evolveLevel || null,
-      });
-      current = current.evolvesTo ? byName.get(current.evolvesTo) : null;
-    }
-    return chain;
-  }
 
   return templates
     .map((pokemon) => {
@@ -273,9 +254,11 @@ function getPokedexEntries(state) {
               name: previousStage.name,
             }
           : null,
-        evolutionChain: previousStage
-          ? getEvolutionChain(previousStage)
-          : getEvolutionChain(pokemon),
+        evolutionChain: getEvolutionChain(pokemon).map((stage) => ({
+          ...stage,
+          seen: state.pokedex.seen.includes(stage.id),
+          caught: state.pokedex.caught.includes(stage.id),
+        })),
         seen,
         caught,
       };

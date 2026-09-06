@@ -40,6 +40,9 @@ let routeDialogue = null;
 let battleActionBusy = false;
 let routeEncounterPending = false;
 let routeEncounterCooldownSteps = 0;
+const evolutionPresentationQueue = [];
+let evolutionPresentationActive = false;
+let activeEvolutionPresentationKey = null;
 const PARTY_LIMIT = 6;
 const STORAGE_PAGE_SIZE = 24;
 const ROUTE_ENCOUNTER_CHANCES = {
@@ -760,14 +763,27 @@ function renderEvolutionPanel(pokemon) {
     pokemon.evolvesTo && pokemon.evolveLevel
       ? Math.max(0, pokemon.evolveLevel - (pokemon.level || 1))
       : null;
+  const progress =
+    pokemon.evolvesTo && pokemon.evolveLevel
+      ? Math.min(100, ((pokemon.level || 1) / pokemon.evolveLevel) * 100)
+      : 100;
   return `
     <div class="evolution-panel">
       <h4>Evolution</h4>
       ${
         pokemon.evolvesTo && pokemon.evolveLevel
-          ? `<p>${pokemon.name} evolves into <strong>${pokemon.evolvesTo}</strong> at level ${pokemon.evolveLevel}.</p>
-             <span>${remainingLevels === 0 ? "Ready to evolve after XP check" : `${remainingLevels} level${remainingLevels === 1 ? "" : "s"} to go`}</span>`
-          : "<p>No further evolution data.</p><span>Final or unknown stage</span>"
+          ? `<div class="detail-evolution-stage">
+               <img src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
+               <div><strong>${pokemon.name}</strong><small>Lv${pokemon.level || 1}</small></div>
+             </div>
+             <p>Next: <strong>${pokemon.evolvesTo}</strong> at Lv${pokemon.evolveLevel}</p>
+             <div class="evolution-progress"><div style="width: ${progress}%"></div></div>
+             <span>${remainingLevels === 0 ? "Ready to evolve after XP check" : `${remainingLevels} level${remainingLevels === 1 ? "" : "s"} remaining`}</span>`
+          : `<div class="detail-evolution-stage">
+               <img src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
+               <div><strong>${pokemon.name}</strong><small>Lv${pokemon.level || 1}</small></div>
+             </div>
+             <p>Final evolution</p>`
       }
     </div>
   `;
@@ -2812,23 +2828,35 @@ function renderPokedexSelect(key, label, values, formatter = (value) => value) {
 }
 
 function renderEvolutionChain(entry, canShowDetails) {
-  if (!canShowDetails) return "<p>Evolution: unknown</p>";
   const chain = entry.evolutionChain || [];
-  const chainText = chain.length
-    ? chain.map((stage) => stage.name).join(" -> ")
-    : entry.name;
-  const forward =
-    entry.evolvesTo && entry.evolveLevel
-      ? `<p>Evolves to ${entry.evolvesTo} at level ${entry.evolveLevel}</p>`
-      : "<p>Final stage or no evolution data</p>";
-  const previous = entry.previousStage
-    ? `<p>Previous stage: ${entry.previousStage.name}</p>`
-    : "";
+  if (chain.length <= 1) {
+    return `<div class="pokedex-evolution"><p>${canShowDetails ? "No further evolution" : "Evolution: unknown"}</p></div>`;
+  }
   return `
     <div class="pokedex-evolution">
-      <p>${chainText}</p>
-      ${previous}
-      ${forward}
+      <strong class="evolution-chain-title">Evolution chain</strong>
+      <div class="evolution-chain-list">
+        ${chain
+          .map((stage, index) => {
+            const visible = stage.seen || stage.caught;
+            const connector =
+              index < chain.length - 1
+                ? `<div class="evolution-chain-arrow"><span>${visible && stage.evolveLevel ? `Lv${stage.evolveLevel}` : "???"}</span><b>↓</b></div>`
+                : "";
+            return `
+              <div class="evolution-chain-stage ${visible ? "known" : "hidden-stage"}">
+                <img src="${getPokemonImage(stage)}" alt="${visible ? stage.name : "Unknown evolution"}" onerror="handleExternalImageError(event)">
+                <div>
+                  <strong>${visible ? stage.name : "???"}</strong>
+                  <small>${visible ? `#${String(stage.id).padStart(3, "0")}` : "#???"}</small>
+                  ${visible ? renderTypeBadges(stage.types || [stage.type]) : ""}
+                </div>
+              </div>
+              ${connector}
+            `;
+          })
+          .join("")}
+      </div>
     </div>
   `;
 }
@@ -4399,6 +4427,7 @@ function renderBattleResultGroups(lines) {
 }
 
 function showRewardPopup(lines = []) {
+  queueEvolutionPresentations(lines);
   const rewardLines = lines.filter((line) =>
     /(earned|gained|grew to level|stats increased|learned|wants to learn|evolved|caught)/i.test(
       line,
@@ -4426,6 +4455,59 @@ function showRewardPopup(lines = []) {
   `;
   holder.appendChild(popup);
   setTimeout(() => popup.remove(), hasXpGrowth ? 9000 : 5200);
+}
+
+function queueEvolutionPresentations(lines = []) {
+  lines.forEach((line) => {
+    const match = String(line || "").match(/^(.+?) evolved into (.+?)!$/i);
+    if (!match) return;
+    const event = { from: match[1].trim(), to: match[2].trim() };
+    const eventKey = `${event.from}->${event.to}`;
+    const duplicate = evolutionPresentationQueue.some(
+      (queued) => queued.from === event.from && queued.to === event.to,
+    );
+    if (!duplicate && activeEvolutionPresentationKey !== eventKey) {
+      evolutionPresentationQueue.push(event);
+    }
+  });
+  showNextEvolutionPresentation();
+}
+
+function showNextEvolutionPresentation() {
+  if (evolutionPresentationActive || !evolutionPresentationQueue.length) return;
+  evolutionPresentationActive = true;
+  const event = evolutionPresentationQueue.shift();
+  activeEvolutionPresentationKey = `${event.from}->${event.to}`;
+  const overlay = document.createElement("div");
+  overlay.className = "evolution-overlay";
+  overlay.innerHTML = `
+    <div class="evolution-presentation" role="dialog" aria-modal="true" aria-label="Pokemon evolution">
+      <p class="evolution-kicker">${event.from} is evolving...</p>
+      <div class="evolution-sprite-stage">
+        <img class="evolution-old-sprite" src="${getPokemonImage({ name: event.from })}" alt="${event.from}" onerror="handleExternalImageError(event)">
+        <span>↓</span>
+        <img class="evolution-new-sprite" src="${getPokemonImage({ name: event.to })}" alt="${event.to}" onerror="handleExternalImageError(event)">
+      </div>
+      <div class="evolution-congratulations">
+        <h2>Congratulations!</h2>
+        <p>Your ${event.from} evolved into <strong>${event.to}</strong>!</p>
+        <button class="primary-action" onclick="closeEvolutionPresentation()">Continue</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add("active"));
+  setTimeout(
+    () => overlay.classList.add("complete"),
+    prefersReducedMotion() ? 0 : 1700,
+  );
+}
+
+function closeEvolutionPresentation() {
+  document.querySelector(".evolution-overlay")?.remove();
+  evolutionPresentationActive = false;
+  activeEvolutionPresentationKey = null;
+  showNextEvolutionPresentation();
 }
 
 function renderTypeBadges(types) {

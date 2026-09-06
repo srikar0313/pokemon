@@ -296,11 +296,14 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
   }
 
   function getEvolution(pokemon) {
-    if (pokemon.evolvesTo && pokemon.evolveLevel) {
+    const template = getPokemonTemplateForOwnedPokemon(pokemon);
+    if (template?.name && !template.evolvesTo) return null;
+    const evolutionSource = template?.name ? template : pokemon;
+    if (evolutionSource?.evolvesTo && evolutionSource.evolveLevel) {
       return {
-        level: pokemon.evolveLevel,
-        name: pokemon.evolvesTo,
-        type: pokemon.evolveType || pokemon.type,
+        level: evolutionSource.evolveLevel,
+        name: evolutionSource.evolvesTo,
+        type: evolutionSource.evolveType || evolutionSource.type,
       };
     }
     return evolutionTriggers[pokemon.name];
@@ -343,8 +346,43 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
   }
 
   function getEvolutionFamilyNames(name) {
-    const rootName = getEvolutionRootName(name);
-    return [...new Set([rootName, ...getNextEvolutionNames(rootName)])];
+    return getEvolutionChain(name).map((stage) => stage.name);
+  }
+
+  function getEvolutionChain(pokemonOrName) {
+    const name =
+      typeof pokemonOrName === "string" ? pokemonOrName : pokemonOrName?.name;
+    let current = getPokemonTemplateByName(name);
+    if (!current) return [];
+
+    const rootVisited = new Set();
+    while (current && !rootVisited.has(current.name)) {
+      rootVisited.add(current.name);
+      const previous = getPokemonTemplates().find(
+        (candidate) => candidate.evolvesTo === current.name,
+      );
+      if (!previous) break;
+      current = previous;
+    }
+
+    const chain = [];
+    const visited = new Set();
+    while (current && !visited.has(current.name)) {
+      visited.add(current.name);
+      chain.push({
+        id: current.id,
+        imageId: current.imageId || current.id,
+        name: current.name,
+        type: current.type,
+        types: getPokemonTypes(current),
+        evolvesTo: current.evolvesTo || null,
+        evolveLevel: current.evolveLevel || null,
+      });
+      current = current.evolvesTo
+        ? getPokemonTemplateByName(current.evolvesTo)
+        : null;
+    }
+    return chain;
   }
 
   function getEvolutionFamilyKey(pokemonOrName) {
@@ -403,6 +441,7 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     normalizePokemon,
     restorePokemon,
     getEvolution,
+    getEvolutionChain,
     getEvolutionRootName,
     getEvolutionFamilyNames,
     getEvolutionFamilyKey,

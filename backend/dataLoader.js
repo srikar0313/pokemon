@@ -273,6 +273,90 @@ function validateTeam(label, team, pokemonNames, groups) {
   });
 }
 
+function validateEvolutionRelationships(pokemonList, groups) {
+  const byName = new Map(
+    pokemonList
+      .filter((pokemon) => pokemon?.name)
+      .map((pokemon) => [pokemon.name, pokemon]),
+  );
+  const sourcesByTarget = new Map();
+
+  pokemonList.forEach((pokemon) => {
+    const label = pokemon?.name || pokemon?.id || "Unknown Pokemon";
+    if (pokemon?.evolveLevel !== undefined && !pokemon.evolvesTo) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `${label} has evolveLevel without evolvesTo`,
+      );
+    }
+    if (pokemon?.evolveType && !pokemon.evolvesTo) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `${label} has evolveType without evolvesTo`,
+      );
+    }
+    if (!pokemon?.evolvesTo) return;
+    if (typeof pokemon.evolvesTo !== "string") {
+      addWarning(groups, "pokemonWarnings", `${label} has malformed evolvesTo`);
+      return;
+    }
+    if (pokemon.evolvesTo === pokemon.name) {
+      addWarning(groups, "pokemonWarnings", `${label} evolves into itself`);
+    }
+    const target = byName.get(pokemon.evolvesTo);
+    if (
+      target &&
+      (!isPositiveNumber(target.id) || !isPositiveNumber(target.imageId))
+    ) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `${label} evolution target ${target.name} has invalid id/imageId`,
+      );
+    }
+    const sources = sourcesByTarget.get(pokemon.evolvesTo) || [];
+    sources.push(pokemon.name);
+    sourcesByTarget.set(pokemon.evolvesTo, sources);
+  });
+
+  sourcesByTarget.forEach((sources, target) => {
+    if (sources.length > 1) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `Multiple evolution sources target ${target}: ${sources.join(", ")}`,
+      );
+    }
+  });
+
+  const reportedCycles = new Set();
+  pokemonList.forEach((pokemon) => {
+    const path = [];
+    const pathIndexes = new Map();
+    let current = pokemon;
+    while (current?.name && current.evolvesTo) {
+      if (pathIndexes.has(current.name)) {
+        const cycle = [...path.slice(pathIndexes.get(current.name)), current.name];
+        const key = [...new Set(cycle)].sort().join("|");
+        if (!reportedCycles.has(key)) {
+          reportedCycles.add(key);
+          addWarning(
+            groups,
+            "pokemonWarnings",
+            `Cyclic evolution chain: ${cycle.join(" -> ")}`,
+          );
+        }
+        break;
+      }
+      pathIndexes.set(current.name, path.length);
+      path.push(current.name);
+      current = byName.get(current.evolvesTo);
+    }
+  });
+}
+
 function validateGameData(gameData) {
   const groups = createWarningGroups();
   const pokemonList = gameData.pokemon || [];
@@ -299,6 +383,7 @@ function validateGameData(gameData) {
       knownTypes,
     }),
   );
+  validateEvolutionRelationships(pokemonList, groups);
 
   Object.entries(gameData.moves || {}).forEach(([name, move]) =>
     validateMoveDefinition(`Move ${name}`, move, groups, knownTypes),

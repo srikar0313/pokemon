@@ -297,6 +297,43 @@ h3 {
   font-weight: 900;
 }
 
+.detail-evolution-stage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-evolution-stage img {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+}
+
+.detail-evolution-stage strong,
+.detail-evolution-stage small {
+  display: block;
+}
+
+.detail-evolution-stage small {
+  margin-top: 3px;
+  color: #61758e;
+  font-weight: 800;
+}
+
+.evolution-progress {
+  height: 10px;
+  margin: 9px 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #dce6f2;
+}
+
+.evolution-progress div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4d9de0, #f2b84b);
+}
+
 .battle-item-panel {
   margin: 12px 0;
   padding: 12px;
@@ -1175,6 +1212,199 @@ h3 {
   margin-top: 6px;
   padding-top: 6px;
   border-top: 1px solid #d8e3ef;
+}
+
+.evolution-chain-title {
+  display: block;
+  margin-bottom: 8px;
+  color: #233a58;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.evolution-chain-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+}
+
+.evolution-chain-stage {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 7px;
+  border: 1px solid #d8e3ef;
+  border-radius: 8px;
+  background: #f8fbff;
+}
+
+.evolution-chain-stage img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.evolution-chain-stage strong,
+.evolution-chain-stage small {
+  display: block;
+}
+
+.evolution-chain-stage small {
+  margin: 2px 0 4px;
+  color: #60758d;
+}
+
+.evolution-chain-stage.hidden-stage img {
+  filter: brightness(0);
+  opacity: 0.6;
+}
+
+.evolution-chain-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #476582;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.evolution-chain-arrow b {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.evolution-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(13, 25, 40, 0.78);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.evolution-overlay.active {
+  opacity: 1;
+}
+
+.evolution-presentation {
+  width: min(520px, 100%);
+  padding: 24px;
+  border: 3px solid #263a58;
+  border-radius: 12px;
+  background: #f8fbff;
+  box-shadow: 0 24px 70px rgba(4, 12, 24, 0.4);
+  text-align: center;
+}
+
+.evolution-kicker {
+  color: #294968;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.evolution-sprite-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: 190px;
+  gap: 12px;
+}
+
+.evolution-sprite-stage::after {
+  content: "";
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  background: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.evolution-sprite-stage img {
+  width: min(170px, 100%);
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+.evolution-old-sprite {
+  animation: evolution-old 1.7s ease-in-out forwards;
+}
+
+.evolution-new-sprite {
+  opacity: 0;
+  animation: evolution-new 1.7s ease-in-out forwards;
+}
+
+.evolution-sprite-stage::after {
+  animation: evolution-flash 1.7s ease-in-out forwards;
+}
+
+.evolution-congratulations {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.evolution-overlay.complete .evolution-congratulations {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.evolution-congratulations h2,
+.evolution-congratulations p {
+  margin: 5px 0 12px;
+}
+
+@keyframes evolution-old {
+  0%, 45% { opacity: 1; transform: scale(1); filter: brightness(1); }
+  25% { transform: scale(1.1); filter: brightness(1.8); }
+  60%, 100% { opacity: 0; transform: scale(0.82); filter: brightness(3); }
+}
+
+@keyframes evolution-new {
+  0%, 55% { opacity: 0; transform: scale(0.82); filter: brightness(3); }
+  75% { opacity: 1; transform: scale(1.08); filter: brightness(1.4); }
+  100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+}
+
+@keyframes evolution-flash {
+  0%, 42%, 66%, 100% { opacity: 0; transform: scale(0.7); }
+  52% { opacity: 0.92; transform: scale(1.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .evolution-sprite-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .evolution-sprite-stage > span {
+    display: none;
+  }
+
+  .evolution-old-sprite {
+    display: none;
+    animation: none;
+  }
+
+  .evolution-new-sprite,
+  .evolution-sprite-stage::after {
+    animation: none;
+  }
+
+  .evolution-new-sprite,
+  .evolution-congratulations {
+    justify-self: center;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .legendary-hint {

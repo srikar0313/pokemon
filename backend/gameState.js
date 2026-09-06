@@ -43,12 +43,20 @@ const defaultPlayerState = {
   achievements: [],
 };
 
+const legacyPokemonIdMap = new Map([[246, 94]]);
+
 function uniqueNumbers(values) {
   return [...new Set(values.map(Number).filter(Boolean))];
 }
 
 function uniqueStrings(values) {
   return [...new Set(values.filter(Boolean).map(String))];
+}
+
+function normalizePokedexIds(values) {
+  return uniqueNumbers(
+    uniqueNumbers(values).map((id) => legacyPokemonIdMap.get(id) || id),
+  );
 }
 
 function createGameState({
@@ -170,8 +178,8 @@ function createGameState({
         ...(state.items || {}),
       },
       pokedex: {
-        seen: uniqueNumbers(state.pokedex?.seen || []),
-        caught: uniqueNumbers(state.pokedex?.caught || []),
+        seen: normalizePokedexIds(state.pokedex?.seen || []),
+        caught: normalizePokedexIds(state.pokedex?.caught || []),
       },
       questStats: {
         ...defaultPlayerState.questStats,
