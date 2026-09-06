@@ -40,6 +40,7 @@ const areas = gameData.areas;
 const areaUnlocks = gameData.areaUnlocks;
 const rarityWeights = gameData.rarityWeights;
 const legendaryRollChance = gameData.legendaryRollChance;
+const formEncounterChance = gameData.formEncounterChance;
 const weatherBoosts = gameData.weatherBoosts;
 const quests = gameData.quests || [];
 const pokemonUtils = createPokemonUtils({
@@ -52,6 +53,8 @@ const {
   getPokemonTemplates,
   getPokemonTemplateByName,
   getPokemonTypes,
+  getPokemonVariantKey,
+  applyPokemonForm,
   normalizePokemon,
   restorePokemon,
   getEvolution,
@@ -142,6 +145,7 @@ const gameState = createGameState({
   getStarterPokemon,
   isPokemonOrEvolutionOf,
   getEvolutionFamilyKey,
+  getPokemonVariantKey,
 });
 const {
   readJsonFile,
@@ -172,8 +176,10 @@ const encounterEngine = createEncounterEngine({
   legendaryRollChance,
   weatherBoosts,
   getPokemonTypes,
+  formEncounterChance,
 });
 const { selectEncounter } = encounterEngine;
+const SHINY_RATE = 1 / 4096;
 
 function applyBattleEndOfTurnStatus(playerPokemon, opponentPokemon, log) {
   if (playerPokemon?.currentHp > 0) {
@@ -188,6 +194,7 @@ const rewardEngine = createRewardEngine({
   normalizePokemon,
   getEvolution,
   getPokemonTemplateByName,
+  getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
   updateAchievements,
 });
 const {
@@ -227,6 +234,8 @@ function applyBattleEffortXp(
 
 function getPokedexEntries(state) {
   const templates = getPokemonTemplates();
+  const formsSeen = new Set(state.pokedex.formsSeen || []);
+  const formsCaught = new Set(state.pokedex.formsCaught || []);
 
   return templates
     .map((pokemon) => {
@@ -235,6 +244,42 @@ function getPokedexEntries(state) {
         null;
       const seen = state.pokedex.seen.includes(pokemon.id);
       const caught = state.pokedex.caught.includes(pokemon.id);
+      const variantPrefix = `${pokemon.id || pokemon.name}:`;
+      const hasSeenVariant = [...formsSeen].some((key) =>
+        key.startsWith(variantPrefix),
+      );
+      const hasCaughtVariant = [...formsCaught].some((key) =>
+        key.startsWith(variantPrefix),
+      );
+      const getFormStatus = (form = null) => {
+        const normalKey = getPokemonVariantKey({
+          ...pokemon,
+          form,
+          shiny: false,
+        });
+        const shinyKey = getPokemonVariantKey({
+          ...pokemon,
+          form,
+          shiny: true,
+        });
+        const isNormalForm = !form;
+        return {
+          id: form?.id || "normal",
+          name: form?.name || "Normal Form",
+          category: form?.category || "normal",
+          types: form?.types || getPokemonTypes(pokemon),
+          imageId: form?.imageId || pokemon.imageId || pokemon.id,
+          habitats: form?.habitats || pokemon.habitats || [],
+          seen:
+            formsSeen.has(normalKey) ||
+            (isNormalForm && seen && !hasSeenVariant),
+          caught:
+            formsCaught.has(normalKey) ||
+            (isNormalForm && caught && !hasCaughtVariant),
+          shinySeen: formsSeen.has(shinyKey),
+          shinyCaught: formsCaught.has(shinyKey),
+        };
+      };
       return {
         id: pokemon.id,
         imageId: pokemon.imageId || pokemon.id,
@@ -259,6 +304,7 @@ function getPokedexEntries(state) {
           seen: state.pokedex.seen.includes(stage.id),
           caught: state.pokedex.caught.includes(stage.id),
         })),
+        forms: [getFormStatus(), ...(pokemon.forms || []).map(getFormStatus)],
         seen,
         caught,
       };
@@ -1865,7 +1911,7 @@ app.post("/api/encounter", (req, res) => {
 
   try {
     const allPokemon = getPokemonTemplates();
-    const { pokemon, weather, metadata } = selectEncounter(
+    const { pokemon, form, weather, metadata } = selectEncounter(
       allPokemon,
       selectedArea,
     );
@@ -1873,8 +1919,11 @@ app.post("/api/encounter", (req, res) => {
       return res.status(404).json({ error: "No Pokemon available for this area" });
     }
     const encounterLevel = getWildEncounterLevel(pokemon);
-    const encountered = createLeveledPokemon(pokemon.name, encounterLevel);
-    const shiny = Math.random() < 1 / 4096;
+    const baseEncounter = createLeveledPokemon(pokemon.name, encounterLevel);
+    const encountered = form
+      ? applyPokemonForm(baseEncounter, form.id)
+      : baseEncounter;
+    const shiny = Math.random() < SHINY_RATE;
     const encounterData = {
       ...encountered,
       currentHp: encountered.maxHp || encountered.hp,
@@ -1892,7 +1941,7 @@ app.post("/api/encounter", (req, res) => {
         currentPp: m.maxPp ?? m.pp,
       })),
     };
-    markPokedexSeen(encounterData.id);
+    markPokedexSeen(encounterData.id, encounterData);
     res.json(encounterData);
   } catch (error) {
     res.status(500).json({ error: "Failed to create encounter" });
@@ -2112,7 +2161,7 @@ app.post("/api/catch", (req, res) => {
         currentHp: currentHP,
         level: target.level || 1,
         xp: target.xp || 0,
-        shiny: !!req.body.shiny,
+        shiny: Boolean(req.body.shiny ?? target.shiny),
         status: "none",
         moves: target.moves.map((m) => ({
           ...m,
@@ -2130,6 +2179,15 @@ app.post("/api/catch", (req, res) => {
       state.pokedex.caught = uniqueNumbers([
         ...state.pokedex.caught,
         target.id,
+      ]);
+      const variantKey = getPokemonVariantKey(caughtPokemon);
+      state.pokedex.formsSeen = uniqueStrings([
+        ...(state.pokedex.formsSeen || []),
+        variantKey,
+      ]);
+      state.pokedex.formsCaught = uniqueStrings([
+        ...(state.pokedex.formsCaught || []),
+        variantKey,
       ]);
       awardCoins(state, coinRewards.catch);
       incrementQuestStat(state, "pokemonCaught");

@@ -141,6 +141,20 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     return pokemon.type ? [pokemon.type] : [];
   }
 
+  function getPokemonFormDefinition(pokemonOrName, formId) {
+    if (!formId) return null;
+    const template =
+      typeof pokemonOrName === "string"
+        ? getPokemonTemplateByName(pokemonOrName)
+        : getPokemonTemplateForOwnedPokemon(pokemonOrName || {});
+    return (template?.forms || []).find((form) => form.id === formId) || null;
+  }
+
+  function getPokemonVariantKey(pokemon = {}) {
+    const formId = pokemon.form?.id || "normal";
+    return `${pokemon.id || pokemon.name}:${formId}:${pokemon.shiny ? "shiny" : "normal"}`;
+  }
+
   function getMoveName(move) {
     return typeof move === "string" ? move : move?.name;
   }
@@ -248,6 +262,41 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
         delete normalized.evolvesTo;
         delete normalized.evolveLevel;
         delete normalized.evolveType;
+      }
+    }
+
+    const formId =
+      typeof merged.form === "string" ? merged.form : merged.form?.id;
+    const configuredForm = getPokemonFormDefinition(template, formId);
+    const form = configuredForm || (merged.form?.id ? merged.form : null);
+    normalized.shiny = Boolean(merged.shiny);
+    normalized.form = form
+      ? {
+          id: form.id,
+          name: form.name || `${form.id} Form`,
+          category: form.category || "special",
+          imageId: form.imageId,
+          shinyImageId: form.shinyImageId,
+          artwork: form.artwork,
+        }
+      : null;
+    if (form) {
+      if (form.types?.length) {
+        normalized.types = [...form.types];
+        normalized.type = form.type || form.types[0];
+      }
+      normalized.imageId = form.imageId || normalized.imageId;
+      normalized.habitats = form.habitats || normalized.habitats;
+      normalized.rarity = form.rarity || normalized.rarity;
+      normalized.baseCatchRate = form.baseCatchRate ?? normalized.baseCatchRate;
+      if (form.moves?.length) {
+        normalized.moves = form.moves.slice(0, 4).map((move) => {
+          const moveName = getMoveName(move);
+          const savedMove = savedMoves.find(
+            (saved) => getMoveName(saved) === moveName,
+          );
+          return normalizeMove(move, savedMove);
+        });
       }
     }
 
@@ -429,6 +478,11 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     };
   }
 
+  function applyPokemonForm(pokemon, formId) {
+    if (!getPokemonFormDefinition(pokemon, formId)) return normalizePokemon(pokemon);
+    return normalizePokemon({ ...pokemon, form: { id: formId } });
+  }
+
   return {
     defaultMoves,
     starterPikachu,
@@ -437,6 +491,9 @@ function createPokemonUtils({ pokemonPath, readJsonFile, moveCatalog = {} }) {
     getPokemonTemplate,
     getPokemonTemplateByName,
     getPokemonTypes,
+    getPokemonFormDefinition,
+    getPokemonVariantKey,
+    applyPokemonForm,
     normalizeMove,
     normalizePokemon,
     restorePokemon,

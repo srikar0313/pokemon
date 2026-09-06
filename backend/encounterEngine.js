@@ -3,6 +3,7 @@ function createEncounterEngine({
   legendaryRollChance = 0.02,
   weatherBoosts,
   getPokemonTypes,
+  formEncounterChance = 0.02,
 }) {
   function getTimeOfDay() {
     const hour = new Date().getHours();
@@ -90,9 +91,17 @@ function createEncounterEngine({
       weather,
     );
     const selectedPokemon = weightedSelection(weightedPokemon);
+    const eligibleForms = (selectedPokemon?.forms || []).filter((form) =>
+      (form.habitats || []).includes(selectedArea),
+    );
+    const formRoll = eligibleForms.length > 0 && Math.random() < formEncounterChance;
+    const selectedForm = formRoll
+      ? eligibleForms[Math.floor(Math.random() * eligibleForms.length)]
+      : null;
 
     return {
       pokemon: selectedPokemon,
+      form: selectedForm,
       weather,
       metadata: {
         area: selectedArea,
@@ -101,6 +110,8 @@ function createEncounterEngine({
         rarity: selectedPokemon?.rarity || null,
         legendaryRoll,
         poolSize: spawnPool.length,
+        formRoll,
+        formId: selectedForm?.id || null,
       },
     };
   }

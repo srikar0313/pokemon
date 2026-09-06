@@ -27,6 +27,8 @@ const defaultPlayerState = {
   pokedex: {
     seen: [],
     caught: [],
+    formsSeen: [],
+    formsCaught: [],
   },
   questStats: {
     pokemonCaught: 0,
@@ -76,6 +78,7 @@ function createGameState({
   getStarterPokemon,
   isPokemonOrEvolutionOf,
   getEvolutionFamilyKey,
+  getPokemonVariantKey,
 }) {
   function getOwnedPokemonSignature(pokemon) {
     const moveSignature = (pokemon.moves || [])
@@ -93,6 +96,8 @@ function createGameState({
       pokemon.maxHp || pokemon.hp || 1,
       pokemon.currentHp ?? pokemon.maxHp ?? pokemon.hp ?? 1,
       pokemon.evolvedFrom || "",
+      pokemon.form?.id || "normal",
+      pokemon.shiny ? "shiny" : "normal",
       moveSignature,
     ].join("::");
   }
@@ -180,6 +185,8 @@ function createGameState({
       pokedex: {
         seen: normalizePokedexIds(state.pokedex?.seen || []),
         caught: normalizePokedexIds(state.pokedex?.caught || []),
+        formsSeen: uniqueStrings(state.pokedex?.formsSeen || []),
+        formsCaught: uniqueStrings(state.pokedex?.formsCaught || []),
       },
       questStats: {
         ...defaultPlayerState.questStats,
@@ -218,7 +225,8 @@ function createGameState({
     const state = normalizePlayerState(
       readJsonFile(playerStatePath, defaultPlayerState),
     );
-    const inventoryIds = getAllOwnedPokemon().map((pokemon) => pokemon.id);
+    const ownedPokemon = getAllOwnedPokemon();
+    const inventoryIds = ownedPokemon.map((pokemon) => pokemon.id);
     if (inventoryIds.length > 0) {
       state.pokedex.seen = uniqueNumbers([
         ...state.pokedex.seen,
@@ -228,6 +236,17 @@ function createGameState({
         ...state.pokedex.caught,
         ...inventoryIds,
       ]);
+      if (getPokemonVariantKey) {
+        const ownedVariants = ownedPokemon.map(getPokemonVariantKey);
+        state.pokedex.formsSeen = uniqueStrings([
+          ...state.pokedex.formsSeen,
+          ...ownedVariants,
+        ]);
+        state.pokedex.formsCaught = uniqueStrings([
+          ...state.pokedex.formsCaught,
+          ...ownedVariants,
+        ]);
+      }
       updateAchievements(state);
     }
     writeJsonFile(playerStatePath, state);
@@ -240,17 +259,34 @@ function createGameState({
     return normalized;
   }
 
-  function markPokedexSeen(id) {
+  function markPokedexSeen(id, pokemon = null) {
     const state = loadPlayerState();
     state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, id]);
+    if (pokemon && getPokemonVariantKey) {
+      state.pokedex.formsSeen = uniqueStrings([
+        ...state.pokedex.formsSeen,
+        getPokemonVariantKey(pokemon),
+      ]);
+    }
     updateAchievements(state);
     return savePlayerState(state);
   }
 
-  function markPokedexCaught(id) {
+  function markPokedexCaught(id, pokemon = null) {
     const state = loadPlayerState();
     state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, id]);
     state.pokedex.caught = uniqueNumbers([...state.pokedex.caught, id]);
+    if (pokemon && getPokemonVariantKey) {
+      const variantKey = getPokemonVariantKey(pokemon);
+      state.pokedex.formsSeen = uniqueStrings([
+        ...state.pokedex.formsSeen,
+        variantKey,
+      ]);
+      state.pokedex.formsCaught = uniqueStrings([
+        ...state.pokedex.formsCaught,
+        variantKey,
+      ]);
+    }
     updateAchievements(state);
     return savePlayerState(state);
   }

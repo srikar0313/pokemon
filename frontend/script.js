@@ -57,6 +57,8 @@ const storageUiState = {
   search: "",
   type: "all",
   rarity: "all",
+  form: "all",
+  shiny: "all",
   sort: "id",
   page: 1,
   detailIndex: null,
@@ -358,8 +360,29 @@ function normalizePokemon(pokemon) {
     specialAttack: pokemon.specialAttack ?? pokemon.attack ?? 1,
     specialDefense: pokemon.specialDefense ?? pokemon.defense ?? 1,
     status: pokemon.status || "none",
+    shiny: Boolean(pokemon.shiny),
+    form: pokemon.form?.id ? pokemon.form : null,
     moves: moves.map(normalizeMove),
   };
+}
+
+function getPokemonDisplayName(pokemon) {
+  if (window.PokemonVariantUtils) {
+    return window.PokemonVariantUtils.getDisplayName(pokemon);
+  }
+  const formName = pokemon?.form?.name
+    ? pokemon.form.name.replace(/\s+Form$/i, "")
+    : "";
+  return [pokemon?.shiny ? "Shiny" : "", formName, pokemon?.name || "Pokemon"]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function renderVariantBadges(pokemon) {
+  return `
+    ${pokemon?.shiny ? '<span class="variant-badge shiny-variant">SHINY</span>' : ""}
+    ${pokemon?.form ? `<span class="variant-badge form-variant">${escapeHtml(pokemon.form.name || `${pokemon.form.id} Form`)}</span>` : ""}
+  `;
 }
 
 function getXpNeeded(pokemon) {
@@ -830,7 +853,8 @@ function renderPokemonDetailCard(
       <div class="player-info">
         <div class="panel-header compact-header">
           <div>
-            <h2>${pokemon.name}${pokemon.shiny ? " *" : ""}</h2>
+            <h2>${escapeHtml(getPokemonDisplayName(pokemon))}</h2>
+            <div class="variant-badges">${renderVariantBadges(pokemon)}</div>
             <p>Level ${pokemon.level} | ${renderTypeBadges(pokemon.types)}</p>
           </div>
           <div class="badge-token player-badge-token">
@@ -2914,8 +2938,52 @@ function renderPokedexCard(entry) {
             `
         }
         ${renderLegendaryHint(entry, canShowDetails)}
+        ${renderPokedexForms(entry, canShowDetails)}
       </div>
     </article>
+  `;
+}
+
+function renderPokedexForms(entry, canShowSpecies) {
+  if (!Array.isArray(entry.forms) || !entry.forms.length) return "";
+  return `
+    <div class="pokedex-forms">
+      <strong>Discovered forms</strong>
+      ${entry.forms
+        .map((form) => {
+          const discovered = Boolean(
+            canShowSpecies &&
+              (form.seen || form.caught || form.shinySeen || form.shinyCaught),
+          );
+          if (!discovered) {
+            return `
+              <div class="pokedex-form-row undiscovered">
+                <span class="pokedex-form-silhouette">?</span>
+                <span><b>Undiscovered form</b><small>Encounter this form to reveal it.</small></span>
+              </div>
+            `;
+          }
+          const formPokemon = {
+            id: entry.id,
+            name: entry.name,
+            imageId: form.imageId,
+            form: form.id === "normal" ? null : form,
+          };
+          return `
+            <div class="pokedex-form-row">
+              <span class="pokedex-form-art">
+                <img src="${getPokemonImage(formPokemon)}" alt="${escapeHtml(form.name)}">
+                ${form.shinySeen ? `<img src="${getPokemonImage({ ...formPokemon, shiny: true })}" alt="Shiny ${escapeHtml(form.name)}">` : ""}
+              </span>
+              <span>
+                <b>${escapeHtml(form.name)}</b>
+                <small>${form.caught ? "Caught" : "Seen"} · Shiny ${form.shinyCaught ? "caught" : form.shinySeen ? "seen" : "not found"}</small>
+              </span>
+            </div>
+          `;
+        })
+        .join("")}
+    </div>
   `;
 }
 
@@ -3106,7 +3174,8 @@ function displayParty(data) {
         <img src="${getPokemonImage(p)}" alt="${p.name}">
         <div class="item-info">
           <div class="inventory-top">
-            <strong>${p.name}${p.shiny ? " *" : ""}</strong> Lv${p.level}
+            <strong>${getPokemonDisplayName(p)}</strong> Lv${p.level}
+            ${renderVariantBadges(p)}
             ${renderTypeBadges(p.types)}
             ${isActive ? '<span class="active-label">ACTIVE</span>' : ""}
           </div>
@@ -3230,7 +3299,8 @@ function renderQuickPokemon() {
         <button class="quick-party-slot${isActive ? " active" : ""}${isSelected ? " selected" : ""}" onclick="selectQuickPokemon(${index})">
           <img src="${getPokemonImage(pokemon)}" alt="${escapeHtml(pokemon.name)}">
           <span>
-            <strong>${escapeHtml(pokemon.name)}${isActive ? " · Active" : ""}</strong>
+            <strong>${escapeHtml(getPokemonDisplayName(pokemon))}${isActive ? " · Active" : ""}</strong>
+            <span class="variant-badges">${renderVariantBadges(pokemon)}</span>
             <small>Lv${pokemon.level || 1} · ${hp}/${pokemon.maxHp} HP</small>
           </span>
         </button>
@@ -3250,7 +3320,8 @@ function renderQuickPokemon() {
       <div class="quick-active-label">Active Pokemon</div>
       <img src="${getPokemonImage(active)}" alt="${escapeHtml(active.name)}">
       <div class="quick-active-info">
-        <h3>${escapeHtml(active.name)} <span>Lv${active.level || 1}</span></h3>
+        <h3>${escapeHtml(getPokemonDisplayName(active))} <span>Lv${active.level || 1}</span></h3>
+        <div class="variant-badges">${renderVariantBadges(active)}</div>
         <div>${renderTypeBadges(active.types || [active.type])}</div>
         <div class="hp-bar-small"><div class="hp-fill" style="width: ${getHpPercent(active.currentHp ?? active.hp, active.maxHp)}%"></div></div>
         <p>${active.currentHp ?? active.hp}/${active.maxHp} HP · ${
@@ -3273,7 +3344,7 @@ function renderQuickPokemon() {
     <div class="quick-selection-bar">
       <div>
         <span>Selected</span>
-        <strong>${escapeHtml(selected.name)} · Lv${selected.level || 1}</strong>
+        <strong>${escapeHtml(getPokemonDisplayName(selected))} · Lv${selected.level || 1}</strong>
       </div>
       <div class="quick-selection-actions">
         <button onclick="makeQuickPokemonActive(${quickPokemonSelectedIndex})" ${
@@ -3306,6 +3377,11 @@ function getFilteredStorage(storage = storageCache) {
         pokemon.rarity !== storageUiState.rarity
       )
         return false;
+      const formCategory = pokemon.form?.category || "normal";
+      if (storageUiState.form !== "all" && formCategory !== storageUiState.form)
+        return false;
+      if (storageUiState.shiny === "shiny" && !pokemon.shiny) return false;
+      if (storageUiState.shiny === "non-shiny" && pokemon.shiny) return false;
       return true;
     });
 
@@ -3431,6 +3507,21 @@ function renderStorageBrowser(storage = storageCache) {
           <option value="mythical" ${storageUiState.rarity === "mythical" ? "selected" : ""}>Mythical</option>
         </select>
       </label>
+      <label>Form
+        <select onchange="updateStorageFilter('form', this.value)">
+          <option value="all" ${storageUiState.form === "all" ? "selected" : ""}>All</option>
+          <option value="normal" ${storageUiState.form === "normal" ? "selected" : ""}>Normal</option>
+          <option value="regional" ${storageUiState.form === "regional" ? "selected" : ""}>Regional</option>
+          <option value="special" ${storageUiState.form === "special" ? "selected" : ""}>Special</option>
+        </select>
+      </label>
+      <label>Shiny
+        <select onchange="updateStorageFilter('shiny', this.value)">
+          <option value="all" ${storageUiState.shiny === "all" ? "selected" : ""}>All</option>
+          <option value="shiny" ${storageUiState.shiny === "shiny" ? "selected" : ""}>Shiny</option>
+          <option value="non-shiny" ${storageUiState.shiny === "non-shiny" ? "selected" : ""}>Non-Shiny</option>
+        </select>
+      </label>
       <label>Sort
         <select onchange="updateStorageFilter('sort', this.value)">
           <option value="id" ${storageUiState.sort === "id" ? "selected" : ""}>Pokedex / ID</option>
@@ -3452,7 +3543,8 @@ function renderStorageBrowser(storage = storageCache) {
                   <article class="storage-compact-card${fainted ? " fainted" : ""}" onclick="showStoragePokemonDetail(${originalIndex})" tabindex="0" onkeydown="if(event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')){ event.preventDefault(); showStoragePokemonDetail(${originalIndex}); }">
                     <img src="${getPokemonImage(pokemon)}" alt="${escapeHtml(pokemon.name)}" loading="lazy">
                     <div class="storage-card-copy">
-                      <strong>${escapeHtml(pokemon.name)}${pokemon.shiny ? ' <span class="shiny-marker">Shiny</span>' : ""}</strong>
+                      <strong>${escapeHtml(getPokemonDisplayName(pokemon))}</strong>
+                      <span class="variant-badges">${renderVariantBadges(pokemon)}</span>
                       <span>Lv${pokemon.level || 1} ${renderTypeBadges(pokemon.types || [pokemon.type])}</span>
                       <div class="hp-bar-small"><div class="hp-fill" style="width: ${getHpPercent(hp, pokemon.maxHp)}%"></div></div>
                       <small>${hp}/${pokemon.maxHp} HP · ${fainted ? "Fainted" : formatStatus(pokemon.status)}</small>
@@ -3867,14 +3959,22 @@ function getWildOwnership(pokemon) {
   const speciesName = String(pokemon?.name || "").trim().toLowerCase();
   if (!speciesName) return { owned: false, count: 0, locations: [] };
 
-  const partyCount = teamCache.filter(
-    (ownedPokemon) =>
-      String(ownedPokemon?.name || "").trim().toLowerCase() === speciesName,
-  ).length;
-  const storageCount = storageCache.filter(
-    (ownedPokemon) =>
-      String(ownedPokemon?.name || "").trim().toLowerCase() === speciesName,
-  ).length;
+  const formId = pokemon?.form?.id || "normal";
+  const allOwned = [...teamCache, ...storageCache];
+  const matchesForm = (ownedPokemon) =>
+    window.PokemonVariantUtils
+      ? window.PokemonVariantUtils.isSameVariant(ownedPokemon, pokemon, false)
+      : String(ownedPokemon?.name || "").trim().toLowerCase() === speciesName &&
+        (ownedPokemon?.form?.id || "normal") === formId;
+  const matchesVariant = (ownedPokemon) =>
+    window.PokemonVariantUtils
+      ? window.PokemonVariantUtils.isSameVariant(ownedPokemon, pokemon)
+      : String(ownedPokemon?.name || "").trim().toLowerCase() === speciesName &&
+        (ownedPokemon?.form?.id || "normal") === formId &&
+        Boolean(ownedPokemon?.shiny) === Boolean(pokemon?.shiny);
+
+  const partyCount = teamCache.filter(matchesVariant).length;
+  const storageCount = storageCache.filter(matchesVariant).length;
   const locations = [];
   if (partyCount) locations.push("Party");
   if (storageCount) locations.push("Storage");
@@ -3883,20 +3983,26 @@ function getWildOwnership(pokemon) {
     owned: partyCount + storageCount > 0,
     count: partyCount + storageCount,
     locations,
+    normalOwned: allOwned.some(
+      (ownedPokemon) => matchesForm(ownedPokemon) && !ownedPokemon.shiny,
+    ),
+    shinyOwned: allOwned.some(
+      (ownedPokemon) => matchesForm(ownedPokemon) && ownedPokemon.shiny,
+    ),
   };
 }
 
 function showBattle() {
   const ownership = getWildOwnership(wild);
-  const ownershipText = ownership.owned
-    ? `Owned - ${ownership.locations.join(" + ")} - ${ownership.count} total`
-    : "Not currently owned";
+  const formLabel = wild.form?.name || "Normal form";
+  const ownershipText = `${formLabel}: ${ownership.normalOwned ? "Owned" : "Not owned"} | Shiny: ${ownership.shinyOwned ? "Owned" : "Not owned"}`;
   openWildEncounterLayer();
   document.getElementById("encounter").innerHTML = `
     <div class="wild-encounter-head">
       <div>
         <span>Wild Encounter</span>
-        <h2>${wild.name}${wild.shiny ? " *" : ""} appeared!</h2>
+        <h2>${escapeHtml(getPokemonDisplayName(wild))} appeared!</h2>
+        <div class="variant-badges">${renderVariantBadges(wild)}</div>
         <p class="wild-ownership ${ownership.owned ? "owned" : "not-owned"}">${ownershipText}</p>
       </div>
       <p class="weather-info">${formatAreaName(wild.area)} | Weather: ${wild.weather}${wild.shiny ? " | Shiny encounter!" : ""}</p>
@@ -3913,10 +4019,11 @@ function showBattle() {
         </div>
       </div>
       <div class="vs">VS</div>
-      <div class="battle-pokemon opponent-side status-${wildStatus || "none"}">
+      <div class="battle-pokemon opponent-side status-${wildStatus || "none"}${wild.shiny ? " shiny-encounter" : ""}">
         <img class="battle-sprite" src="${getPokemonImage(wild)}" alt="${wild.name}">
         <div class="battle-info">
-          <h3>${wild.name}${wild.shiny ? " *" : ""} Lv${wild.level}</h3>
+          <h3>${escapeHtml(getPokemonDisplayName(wild))} Lv${wild.level}</h3>
+          <div class="variant-badges">${renderVariantBadges(wild)}</div>
           ${renderTypeBadges(wild.types)}
           <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(currentWildHP, wild.maxHp)}%"></div></div>
           <p class="hp-line">${renderIcon("heart", "HP")} ${currentWildHP}/${wild.maxHp} HP</p>
@@ -4683,6 +4790,16 @@ function getCombinedTypeEffectiveness(attackerType, defenderTypes) {
 }
 
 function getPokemonImage(pokemonOrId) {
+  if (window.PokemonVariantUtils) {
+    const fallbackImageId =
+      typeof pokemonOrId === "object"
+        ? pokemonImageIdByName.get(pokemonOrId.name) || pokemonOrId.id
+        : pokemonOrId;
+    return window.PokemonVariantUtils.getArtworkUrl(
+      pokemonOrId,
+      fallbackImageId,
+    );
+  }
   const imageId =
     typeof pokemonOrId === "object"
       ? pokemonOrId.imageId ||
@@ -4698,6 +4815,13 @@ function handleExternalImageError(event) {
     return;
 
   const source = image.currentSrc || image.src || "";
+  const normalArtworkFallback =
+    window.PokemonVariantUtils?.getNormalArtworkFallback(source);
+  if (normalArtworkFallback && !image.dataset.normalArtworkFallback) {
+    image.dataset.normalArtworkFallback = "true";
+    image.src = normalArtworkFallback;
+    return;
+  }
   let fallback = null;
   if (
     source.includes("/PokeAPI/sprites/") ||

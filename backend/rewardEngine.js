@@ -2,6 +2,7 @@ function createRewardEngine({
   normalizePokemon,
   getEvolution,
   getPokemonTemplateByName,
+  getPokemonFormDefinition,
   updateAchievements,
 }) {
   const statGrowthByRarity = {
@@ -78,6 +79,34 @@ function createRewardEngine({
       };
     }
 
+    const sourceForm = pokemon.form?.id
+      ? getPokemonFormDefinition?.(sourceTemplate, pokemon.form.id)
+      : null;
+    let targetForm = null;
+    if (pokemon.form?.id && !sourceForm) {
+      return {
+        pokemon,
+        evolved: false,
+        evolvedFrom: null,
+        evolvedTo: null,
+        message: `${pokemon.name}'s form cannot evolve because its form data is missing.`,
+      };
+    }
+    if (sourceForm) {
+      targetForm = sourceForm.evolvesToForm
+        ? getPokemonFormDefinition?.(targetTemplate, sourceForm.evolvesToForm)
+        : null;
+      if (!targetForm) {
+        return {
+          pokemon,
+          evolved: false,
+          evolvedFrom: null,
+          evolvedTo: null,
+          message: `${pokemon.name}'s ${sourceForm.name || "regional form"} cannot evolve because its next form is not available.`,
+        };
+      }
+    }
+
     const evolvedFrom = pokemon.name;
     const previousMaxHp = pokemon.maxHp || pokemon.hp || 1;
     const previousHpRatio =
@@ -90,6 +119,7 @@ function createRewardEngine({
       level: pokemon.level || 1,
       xp: pokemon.xp ?? 0,
       shiny: pokemon.shiny ?? false,
+      form: targetForm ? { id: targetForm.id } : null,
       status: pokemon.status || "none",
       pendingMove: pokemon.pendingMove || undefined,
     });
@@ -101,11 +131,13 @@ function createRewardEngine({
       "specialDefense",
     ].forEach((stat) => {
       const sourceBase =
+        sourceForm?.[stat] ??
         sourceTemplate?.[stat] ??
         (stat === "maxHp" ? sourceTemplate?.hp : undefined) ??
         pokemon[stat] ??
         1;
       const targetBase =
+        targetForm?.[stat] ??
         targetTemplate[stat] ??
         (stat === "maxHp" ? targetTemplate.hp : undefined) ??
         evolvedPokemon[stat] ??

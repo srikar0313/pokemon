@@ -13,6 +13,7 @@ const validRarities = new Set([
 ]);
 const validTimes = new Set(["day", "night"]);
 const validMoveCategories = new Set(["Physical", "Special", "Status"]);
+const validFormCategories = new Set(["regional", "special"]);
 const supportedEffectTypes = new Set([
   "status",
   "statChange",
@@ -252,6 +253,67 @@ function validatePokemonEntry(pokemon, context) {
       );
     }
   });
+  const formIds = new Set();
+  (pokemon?.forms || []).forEach((form) => {
+    const formLabel = `${label} form ${form?.id || "unknown"}`;
+    if (!form?.id) {
+      addWarning(groups, "pokemonWarnings", `${label} has form without id`);
+    } else if (formIds.has(form.id)) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `${label} has duplicate form id: ${form.id}`,
+      );
+    } else {
+      formIds.add(form.id);
+    }
+    if (!validFormCategories.has(form?.category)) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `${formLabel} has invalid category: ${form?.category || "missing"}`,
+      );
+    }
+    if (!Array.isArray(form?.types) || !form.types.length) {
+      addWarning(groups, "pokemonWarnings", `${formLabel} has no type overrides`);
+    } else {
+      form.types.forEach((type) => {
+        if (!knownTypes.has(type)) {
+          addWarning(
+            groups,
+            "pokemonWarnings",
+            `${formLabel} has invalid type: ${type}`,
+          );
+        }
+      });
+    }
+    if (!isPositiveNumber(form?.imageId) && !form?.artwork?.normal) {
+      addWarning(
+        groups,
+        "pokemonWarnings",
+        `${formLabel} has invalid artwork metadata`,
+      );
+    }
+    (form?.habitats || []).forEach((habitat) => {
+      if (!validAreaIds.has(habitat)) {
+        addWarning(
+          groups,
+          "pokemonWarnings",
+          `${formLabel} has invalid habitat: ${habitat}`,
+        );
+      }
+    });
+    (form?.moves || []).forEach((move) => {
+      const moveName = getMoveName(move);
+      if (!moveName || !moveNames.has(moveName)) {
+        addWarning(
+          groups,
+          "moveWarnings",
+          `${formLabel} references missing move: ${moveName || "unknown"}`,
+        );
+      }
+    });
+  });
 }
 
 function validateTeam(label, team, pokemonNames, groups) {
@@ -319,6 +381,30 @@ function validateEvolutionRelationships(pokemonList, groups) {
     const sources = sourcesByTarget.get(pokemon.evolvesTo) || [];
     sources.push(pokemon.name);
     sourcesByTarget.set(pokemon.evolvesTo, sources);
+  });
+
+  pokemonList.forEach((pokemon) => {
+    (pokemon.forms || []).forEach((form) => {
+      if (form.species && !byName.has(form.species)) {
+        addWarning(
+          groups,
+          "pokemonWarnings",
+          `${pokemon.name} form ${form.id} references missing species: ${form.species}`,
+        );
+      }
+      if (!form.evolvesToForm) return;
+      const targetSpecies = byName.get(pokemon.evolvesTo);
+      const targetForm = targetSpecies?.forms?.find(
+        (candidate) => candidate.id === form.evolvesToForm,
+      );
+      if (!targetForm) {
+        addWarning(
+          groups,
+          "pokemonWarnings",
+          `${pokemon.name} form ${form.id} evolves to missing form: ${form.evolvesToForm}`,
+        );
+      }
+    });
   });
 
   sourcesByTarget.forEach((sources, target) => {
@@ -414,6 +500,17 @@ function validateGameData(gameData) {
       );
     }
   });
+  if (
+    typeof gameData.formEncounterChance !== "number" ||
+    gameData.formEncounterChance < 0 ||
+    gameData.formEncounterChance > 1
+  ) {
+    addWarning(
+      groups,
+      "encounterWarnings",
+      `formEncounterChance must be a number from 0 to 1; received ${gameData.formEncounterChance}`,
+    );
+  }
   pokemonList.forEach((pokemon) => {
     (pokemon.habitats || []).forEach((habitat) => {
       if (!validAreaIds.has(habitat)) {
@@ -485,6 +582,7 @@ function loadGameData(options = {}) {
     areaUnlocks: areaData.areaUnlocks || {},
     rarityWeights: encounterData.rarityWeights || {},
     legendaryRollChance: encounterData.legendaryRollChance ?? 0.02,
+    formEncounterChance: encounterData.formEncounterChance ?? 0.02,
     weatherBoosts: encounterData.weatherBoosts || {},
     quests: loadJson(path.join(dataDir, "quests.json"), []),
   };

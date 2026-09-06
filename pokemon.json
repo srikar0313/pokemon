@@ -280,7 +280,17 @@
 			"Flamethrower"
 		],
 		"imageId": 58,
-		"speed": 70
+		"speed": 70,
+		"forms": [
+			{
+				"id": "hisuian",
+				"name": "Hisuian Form",
+				"category": "regional",
+				"types": ["Fire", "Rock"],
+				"imageId": 10229,
+				"habitats": ["mountain"]
+			}
+		]
 	},
 	{
 		"id": 69,
@@ -694,7 +704,17 @@
 			"Screech"
 		],
 		"imageId": 100,
-		"speed": 30
+		"speed": 30,
+		"forms": [
+			{
+				"id": "hisuian",
+				"name": "Hisuian Form",
+				"category": "regional",
+				"types": ["Electric", "Grass"],
+				"imageId": 10231,
+				"habitats": ["forest", "mountain"]
+			}
+		]
 	},
 	{
 		"id": 123,
@@ -1642,7 +1662,17 @@
 		"xp": 0,
 		"maxHp": 38,
 		"imageId": 37,
-		"speed": 46
+		"speed": 46,
+		"forms": [
+			{
+				"id": "alolan",
+				"name": "Alolan Form",
+				"category": "regional",
+				"types": ["Ice"],
+				"imageId": 10103,
+				"habitats": ["mountain"]
+			}
+		]
 	},
 	{
 		"name": "Ponyta",
@@ -1675,7 +1705,17 @@
 		"xp": 0,
 		"maxHp": 50,
 		"imageId": 77,
-		"speed": 75
+		"speed": 75,
+		"forms": [
+			{
+				"id": "galarian",
+				"name": "Galarian Form",
+				"category": "regional",
+				"types": ["Psychic"],
+				"imageId": 10162,
+				"habitats": ["forest"]
+			}
+		]
 	},
 	{
 		"name": "Magmar",
@@ -2864,7 +2904,17 @@
 			"Thunder Wave",
 			"Thunderbolt"
 		],
-		"imageId": 26
+		"imageId": 26,
+		"forms": [
+			{
+				"id": "alolan",
+				"name": "Alolan Form",
+				"category": "regional",
+				"types": ["Electric", "Psychic"],
+				"imageId": 10100,
+				"habitats": ["lake"]
+			}
+		]
 	},
 	{
 		"id": 93,

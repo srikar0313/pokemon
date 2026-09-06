@@ -3,6 +3,8 @@ const { loadGameData, loadJson, saveJson } = require("../backend/dataLoader");
 const { createPokemonUtils } = require("../backend/pokemonUtils");
 const { createGameState } = require("../backend/gameState");
 const { createRewardEngine } = require("../backend/rewardEngine");
+const { createEncounterEngine } = require("../backend/encounterEngine");
+const variantUtils = require("../frontend/variantUtils");
 
 const rootDir = path.join(__dirname, "..");
 const teamLimit = 6;
@@ -54,6 +56,7 @@ function createMemoryGameState(pokemonUtils) {
     getStarterPokemon: pokemonUtils.getStarterPokemon,
     isPokemonOrEvolutionOf: pokemonUtils.isPokemonOrEvolutionOf,
     getEvolutionFamilyKey: pokemonUtils.getEvolutionFamilyKey,
+    getPokemonVariantKey: pokemonUtils.getPokemonVariantKey,
   });
 }
 
@@ -80,6 +83,7 @@ function main() {
     getStarterPokemon: pokemonUtils.getStarterPokemon,
     isPokemonOrEvolutionOf: pokemonUtils.isPokemonOrEvolutionOf,
     getEvolutionFamilyKey: pokemonUtils.getEvolutionFamilyKey,
+    getPokemonVariantKey: pokemonUtils.getPokemonVariantKey,
   });
 
   const playerState = gameState.loadPlayerState();
@@ -91,6 +95,7 @@ function main() {
     normalizePokemon: pokemonUtils.normalizePokemon,
     getEvolution: pokemonUtils.getEvolution,
     getPokemonTemplateByName: pokemonUtils.getPokemonTemplateByName,
+    getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
     updateAchievements: () => {},
   });
   const levelPokemonTo = (startingPokemon, targetLevel) => {
@@ -438,6 +443,118 @@ function main() {
   assert(
     noPikachuOwned.some((owned) => owned.name === "Bulbasaur"),
     "existing inventory without Pikachu lost existing Pokemon",
+  );
+
+  const normalVulpix = pokemonUtils.normalizePokemon(
+    pokemonUtils.getPokemonTemplateByName("Vulpix"),
+  );
+  const alolanVulpix = pokemonUtils.normalizePokemon({
+    ...normalVulpix,
+    form: { id: "alolan" },
+  });
+  const shinyAlolanVulpix = pokemonUtils.normalizePokemon({
+    ...alolanVulpix,
+    shiny: true,
+  });
+  const shinyNormalVulpix = pokemonUtils.normalizePokemon({
+    ...normalVulpix,
+    shiny: true,
+  });
+  assert(
+    alolanVulpix.form?.id === "alolan" &&
+      alolanVulpix.types.join(",") === "Ice" &&
+      alolanVulpix.imageId === 10103,
+    "regional form overrides were not normalized",
+  );
+  assert(
+    new Set([
+      pokemonUtils.getPokemonVariantKey(normalVulpix),
+      pokemonUtils.getPokemonVariantKey(shinyNormalVulpix),
+      pokemonUtils.getPokemonVariantKey(alolanVulpix),
+      pokemonUtils.getPokemonVariantKey(shinyAlolanVulpix),
+    ]).size === 4,
+    "normal, regional, and shiny variants do not have distinct identities",
+  );
+
+  memoryFiles.clear();
+  const variantState = createMemoryGameState(pokemonUtils);
+  variantState.saveTeamAndStorage(
+    [normalVulpix, shinyNormalVulpix, alolanVulpix, shinyAlolanVulpix],
+    [],
+  );
+  const loadedVariants = variantState.loadTeamAndStorage().team.filter(
+    (owned) => owned.name === "Vulpix",
+  );
+  assert(loadedVariants.length === 4, "variant save/load collapsed valid Pokemon");
+  assert(
+    loadedVariants.some((owned) => !owned.form && owned.shiny),
+    "caught shiny state was not preserved by save/load",
+  );
+  assert(
+    loadedVariants.some((owned) => owned.form?.id === "alolan" && owned.shiny),
+    "shiny regional form metadata was not preserved by save/load",
+  );
+
+  const encounterEngine = createEncounterEngine({
+    rarityWeights: gameData.rarityWeights,
+    legendaryRollChance: 0,
+    weatherBoosts: gameData.weatherBoosts,
+    getPokemonTypes: pokemonUtils.getPokemonTypes,
+    formEncounterChance: 1,
+  });
+  const regionalEncounter = encounterEngine.selectEncounter(
+    [pokemonUtils.getPokemonTemplateByName("Vulpix")],
+    "mountain",
+  );
+  assert(
+    regionalEncounter.form?.id === "alolan",
+    "eligible regional form was not selected when the form roll succeeded",
+  );
+  const ordinaryEncounter = encounterEngine.selectEncounter(
+    [pokemonUtils.getPokemonTemplateByName("Vulpix")],
+    "volcano",
+  );
+  assert(!ordinaryEncounter.form, "regional form appeared outside its habitat");
+
+  assert(
+    variantUtils.getArtworkUrl(normalVulpix, normalVulpix.id).endsWith("/37.png"),
+    "normal artwork URL is incorrect",
+  );
+  assert(
+    variantUtils
+      .getArtworkUrl(shinyAlolanVulpix, shinyAlolanVulpix.id)
+      .endsWith("/shiny/10103.png"),
+    "shiny regional artwork URL is incorrect",
+  );
+  assert(
+    variantUtils.isSameVariant(alolanVulpix, shinyAlolanVulpix) === false &&
+      variantUtils.isSameVariant(normalVulpix, alolanVulpix) === false,
+    "ownership matching does not distinguish forms and shiny variants",
+  );
+  assert(
+    variantUtils
+      .getNormalArtworkFallback(
+        variantUtils.getArtworkUrl(shinyAlolanVulpix, shinyAlolanVulpix.id),
+      )
+      .endsWith("/10103.png"),
+    "shiny artwork fallback is incorrect",
+  );
+
+  const unsupportedRegionalEvolution = rewardEngine.evolvePokemonFromTemplate(
+    pokemonUtils.normalizePokemon({
+      ...pokemonUtils.getPokemonTemplateByName("Pikachu"),
+      level: 12,
+      form: {
+        id: "legacy-regional",
+        name: "Legacy Regional Form",
+        category: "regional",
+      },
+    }),
+    { name: "Raichu", level: 12 },
+  );
+  assert(
+    !unsupportedRegionalEvolution.evolved,
+    "unsupported regional evolution silently became a normal form",
   );
 
   const missingPp = pokemon.flatMap((entry) =>
