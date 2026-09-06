@@ -741,8 +741,7 @@
 		"defense": 95,
 		"xpYield": 219,
 		"habitats": [
-			"lake",
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"night"
@@ -1491,7 +1490,7 @@
 		"specialDefense": 100,
 		"xpYield": 60,
 		"habitats": [
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"day",
@@ -1525,7 +1524,7 @@
 		"specialDefense": 70,
 		"xpYield": 59,
 		"habitats": [
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"day"
@@ -1558,7 +1557,7 @@
 		"specialDefense": 45,
 		"xpYield": 72,
 		"habitats": [
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"day"
@@ -1592,7 +1591,7 @@
 		"specialDefense": 70,
 		"xpYield": 84,
 		"habitats": [
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"day",
@@ -2163,7 +2162,7 @@
 		"specialDefense": 154,
 		"xpYield": 340,
 		"habitats": [
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"night"
@@ -2264,7 +2263,7 @@
 		"specialDefense": 140,
 		"xpYield": 340,
 		"habitats": [
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"night"
@@ -2366,7 +2365,7 @@
 		"specialDefense": 120,
 		"xpYield": 360,
 		"habitats": [
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"night"
@@ -3225,7 +3224,7 @@
 		"speed": 85,
 		"xpYield": 54,
 		"habitats": [
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"day"
@@ -3257,8 +3256,7 @@
 		"specialDefense": 55,
 		"xpYield": 40,
 		"habitats": [
-			"lake",
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"day",
@@ -3293,8 +3291,7 @@
 		"speed": 85,
 		"xpYield": 66,
 		"habitats": [
-			"lake",
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"day"
@@ -4166,7 +4163,6 @@
 		"speed": 110,
 		"xpYield": 300,
 		"habitats": [
-			"ocean",
 			"mountain"
 		],
 		"times": [
@@ -4335,8 +4331,7 @@
 		"speed": 65,
 		"xpYield": 184,
 		"habitats": [
-			"lake",
-			"ocean"
+			"lake"
 		],
 		"times": [
 			"day",

@@ -33,6 +33,8 @@ let isSwitching = false;
 let activeScreen = "explore";
 let activeOverlay = null;
 let pendingSwapStorageIndex = null;
+let quickPokemonSelectedIndex = 0;
+let quickPokemonDetailIndex = null;
 let focusedNpcId = null;
 let routeDialogue = null;
 let battleActionBusy = false;
@@ -226,6 +228,13 @@ function clearWildEncounterState() {
 }
 
 function openOverlay(type) {
+  if (
+    type === "quickPokemon" &&
+    (isInBattle || npcBattle || gymBattle || eliteBattle || battleActionBusy)
+  ) {
+    alert("Quick Pokemon is unavailable during battle.");
+    return;
+  }
   activeOverlay = type;
   document.getElementById("overlay-backdrop")?.classList.remove("hidden");
   document
@@ -243,6 +252,9 @@ function openOverlay(type) {
   document
     .getElementById("storage-panel")
     ?.classList.toggle("hidden", type !== "storage");
+  document
+    .getElementById("quick-pokemon-panel")
+    ?.classList.toggle("hidden", type !== "quickPokemon");
   const title = document.getElementById("overlay-title");
   if (title) {
     title.textContent =
@@ -252,7 +264,9 @@ function openOverlay(type) {
           ? "Swap Pokemon"
           : type === "storage"
             ? "PC Storage"
-            : "Pokemon Center";
+            : type === "quickPokemon"
+              ? "Quick Pokemon"
+              : "Pokemon Center";
   }
   if (type === "shop") displayShop();
   if (type === "swap") renderSwapPicker();
@@ -260,12 +274,18 @@ function openOverlay(type) {
     storageUiState.detailIndex = null;
     renderStorageBrowser();
   }
+  if (type === "quickPokemon") {
+    quickPokemonSelectedIndex = activeInventoryIndex;
+    quickPokemonDetailIndex = null;
+    renderQuickPokemon();
+  }
 }
 
 function closeOverlay(event) {
   if (event && event.target !== event.currentTarget) return;
   activeOverlay = null;
   pendingSwapStorageIndex = null;
+  quickPokemonDetailIndex = null;
   document.getElementById("overlay-backdrop")?.classList.add("hidden");
   document.querySelector(".overlay-card")?.classList.remove("storage-overlay");
 }
@@ -909,8 +929,6 @@ function getAreaHelperText(area) {
       return `Lake: Water Pokemon. ${legendaryNote}`;
     case "cave":
       return `Cave: Rock/Ground/Poison Pokemon. ${legendaryNote}`;
-    case "ocean":
-      return `Ocean: Water/Ice Pokemon. ${legendaryNote}`;
     case "volcano":
       return `Volcano: Fire Pokemon. ${legendaryNote}`;
     case "mountain":
@@ -1128,7 +1146,6 @@ function getGuideAreaHint() {
     forest: "Grass and Bug Pokemon are common here. Some rare creatures hide deeper in the trees.",
     lake: "Water Pokemon gather around the lake. Patient trainers sometimes spot rare ripples.",
     cave: "Rock, Ground, and Poison Pokemon are common in caves. Bring healing items.",
-    ocean: "Water and Ice Pokemon favor the ocean. Legends are said to surface at night.",
     volcano: "Fire Pokemon thrive near volcanic heat. Water moves help a lot here.",
     mountain: "Flying, Rock, and Dragon Pokemon appear in the mountains. Rare energy gathers at night.",
     desert: "Ground and Dark Pokemon handle the desert well. Sand can make battles tricky.",
@@ -1137,7 +1154,6 @@ function getGuideAreaHint() {
   const progression = {
     cave: "The cave opens after earning the Volt Badge.",
     volcano: "The volcano opens after earning the Blaze Badge.",
-    ocean: "The ocean opens after earning the Aqua Badge.",
     mountain: "The mountain opens after earning the Rock Badge.",
     desert: "The desert opens after earning the Rock Badge.",
     graveyard: "The graveyard opens after earning the Psychic Badge.",
@@ -3084,6 +3100,151 @@ function displayParty(data) {
   document.getElementById("party-panel").innerHTML = html;
 }
 
+function selectQuickPokemon(index) {
+  if (!teamCache[index]) return;
+  quickPokemonSelectedIndex = index;
+  quickPokemonDetailIndex = null;
+  renderQuickPokemon();
+}
+
+function makeQuickPokemonActive(index) {
+  const pokemon = teamCache[index];
+  if (!pokemon || (pokemon.currentHp ?? pokemon.hp ?? 0) <= 0) return;
+  if (isInBattle || npcBattle || gymBattle || eliteBattle || battleActionBusy)
+    return;
+  setActivePokemonByIndex(null, index);
+  quickPokemonSelectedIndex = index;
+  renderQuickPokemon();
+}
+
+function showQuickPokemonDetails(index) {
+  if (!teamCache[index]) return;
+  quickPokemonDetailIndex = index;
+  renderQuickPokemon();
+}
+
+function closeQuickPokemonDetails() {
+  quickPokemonDetailIndex = null;
+  renderQuickPokemon();
+}
+
+function useItemsFromQuickPokemon(index) {
+  if (!teamCache[index]) return;
+  setActivePokemonByIndex(null, index);
+  closeOverlay();
+  setActiveScreen("inventory");
+}
+
+async function healTeamFromQuickPokemon() {
+  await healTeam();
+  if (activeOverlay === "quickPokemon") renderQuickPokemon();
+}
+
+function renderQuickPokemon() {
+  const panel = document.getElementById("quick-pokemon");
+  if (!panel) return;
+
+  if (Number.isInteger(quickPokemonDetailIndex)) {
+    const pokemon = teamCache[quickPokemonDetailIndex];
+    if (pokemon) {
+      panel.innerHTML = `
+        <div class="quick-detail-head">
+          <button class="secondary-btn" onclick="closeQuickPokemonDetails()">Back</button>
+          <strong>Party slot ${quickPokemonDetailIndex + 1}</strong>
+        </div>
+        ${renderPokemonDetailCard(
+          pokemon,
+          "Party Details",
+          "team",
+          quickPokemonDetailIndex,
+        )}
+      `;
+      return;
+    }
+    quickPokemonDetailIndex = null;
+  }
+
+  if (!teamCache.length) {
+    panel.innerHTML = "<p>Your party is empty.</p>";
+    return;
+  }
+
+  if (!teamCache[quickPokemonSelectedIndex]) {
+    quickPokemonSelectedIndex = activeInventoryIndex < teamCache.length
+      ? activeInventoryIndex
+      : 0;
+  }
+  const active = teamCache[activeInventoryIndex] || teamCache[0];
+  const selected = teamCache[quickPokemonSelectedIndex];
+  const selectedHp = selected.currentHp ?? selected.hp ?? 0;
+
+  let slots = teamCache
+    .map((pokemon, index) => {
+      const hp = pokemon.currentHp ?? pokemon.hp ?? 0;
+      const isActive = index === activeInventoryIndex;
+      const isSelected = index === quickPokemonSelectedIndex;
+      return `
+        <button class="quick-party-slot${isActive ? " active" : ""}${isSelected ? " selected" : ""}" onclick="selectQuickPokemon(${index})">
+          <img src="${getPokemonImage(pokemon)}" alt="${escapeHtml(pokemon.name)}">
+          <span>
+            <strong>${escapeHtml(pokemon.name)}${isActive ? " · Active" : ""}</strong>
+            <small>Lv${pokemon.level || 1} · ${hp}/${pokemon.maxHp} HP</small>
+          </span>
+        </button>
+      `;
+    })
+    .join("");
+  for (let index = teamCache.length; index < PARTY_LIMIT; index += 1) {
+    slots += `
+      <div class="quick-party-slot empty" aria-label="Empty party slot ${index + 1}">
+        <span><strong>Empty</strong><small>Party slot ${index + 1}</small></span>
+      </div>
+    `;
+  }
+
+  panel.innerHTML = `
+    <div class="quick-active-card">
+      <div class="quick-active-label">Active Pokemon</div>
+      <img src="${getPokemonImage(active)}" alt="${escapeHtml(active.name)}">
+      <div class="quick-active-info">
+        <h3>${escapeHtml(active.name)} <span>Lv${active.level || 1}</span></h3>
+        <div>${renderTypeBadges(active.types || [active.type])}</div>
+        <div class="hp-bar-small"><div class="hp-fill" style="width: ${getHpPercent(active.currentHp ?? active.hp, active.maxHp)}%"></div></div>
+        <p>${active.currentHp ?? active.hp}/${active.maxHp} HP · ${
+          (active.currentHp ?? active.hp ?? 0) <= 0
+            ? "Fainted"
+            : formatStatus(active.status)
+        }</p>
+        ${renderXpBar(active)}
+      </div>
+      <button class="secondary-btn icon-button" onclick="healTeamFromQuickPokemon()">${renderIcon("potion", "Potion")} Heal All</button>
+    </div>
+    <div class="quick-party-head">
+      <div>
+        <h3>Party</h3>
+        <p>Select a Pokemon for quick actions.</p>
+      </div>
+      <strong>${teamCache.length}/${PARTY_LIMIT}</strong>
+    </div>
+    <div class="quick-party-grid">${slots}</div>
+    <div class="quick-selection-bar">
+      <div>
+        <span>Selected</span>
+        <strong>${escapeHtml(selected.name)} · Lv${selected.level || 1}</strong>
+      </div>
+      <div class="quick-selection-actions">
+        <button onclick="makeQuickPokemonActive(${quickPokemonSelectedIndex})" ${
+          quickPokemonSelectedIndex === activeInventoryIndex || selectedHp <= 0
+            ? "disabled"
+            : ""
+        }>Make Active</button>
+        <button class="secondary-btn" onclick="showQuickPokemonDetails(${quickPokemonSelectedIndex})">Details</button>
+        <button class="secondary-btn" onclick="useItemsFromQuickPokemon(${quickPokemonSelectedIndex})">Use Items</button>
+      </div>
+    </div>
+  `;
+}
+
 function displayStorage(storage) {
   if (activeOverlay === "storage") renderStorageBrowser(storage);
 }
@@ -3494,6 +3655,11 @@ async function resolvePendingMove(section, pokemonIndex, payload) {
   const updated =
     section === "storage" ? storageCache[pokemonIndex] : teamCache[pokemonIndex];
   if (updated) {
+    if (activeOverlay === "quickPokemon" && section === "team") {
+      quickPokemonDetailIndex = pokemonIndex;
+      renderQuickPokemon();
+      return;
+    }
     const panel = document.getElementById("current-player");
     if (panel) {
       panel.innerHTML = renderPokemonDetailCard(
@@ -4058,7 +4224,7 @@ async function throwBall(type) {
     await loadInventory();
     setTimeout(() => {
       clearWildEncounterState();
-      renderBattlePlaceholder("Great catch! Choose an area and explore again.");
+      renderBattlePlaceholder("Great catch! You returned to the route.");
       setActiveScreen("explore");
       renderRouteWorld();
     }, 1200);
@@ -4086,9 +4252,7 @@ async function gainXP(amount) {
 function endEncounter() {
   if (battleActionBusy) return;
   clearWildEncounterState();
-  renderBattlePlaceholder(
-    "You returned safely. Pick an area to explore again.",
-  );
+  renderBattlePlaceholder("You returned to the route.");
   setActiveScreen("explore");
   renderRouteWorld();
 }
@@ -4413,7 +4577,6 @@ function getTypeColor(type) {
 function getAreaEmoji(area) {
   const emojis = {
     forest: "🌲",
-    ocean: "💧",
     lake: "💧",
     cave: "⛰️",
     volcano: "🌋",

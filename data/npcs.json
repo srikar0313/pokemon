@@ -10,11 +10,6 @@
       "height": 6,
       "theme": "cave"
     },
-    "ocean": {
-      "width": 8,
-      "height": 6,
-      "theme": "ocean"
-    },
     "lake": {
       "width": 8,
       "height": 6,
@@ -156,7 +151,7 @@
     },
     {
       "id": 7,
-      "area": "ocean",
+      "area": "lake",
       "name": "Captain Finn",
       "type": "guide",
       "sprite": "guide-sailor",
@@ -164,7 +159,7 @@
         "x": 3,
         "y": 4
       },
-      "dialogue": "Gym victories open sea lanes. Water specialists like to stack status moves."
+      "dialogue": "Gym victories open new water routes. Water specialists like to stack status moves."
     },
     {
       "id": 8,
@@ -180,7 +175,7 @@
     },
     {
       "id": 9,
-      "area": "ocean",
+      "area": "lake",
       "name": "Fisher Kai",
       "type": "trainer",
       "sprite": "guide-sailor",
@@ -189,7 +184,7 @@
         "y": 2
       },
       "dialogue": "Nice fight. The tide is on your side today.",
-      "introDialogue": "Let's see if your team can handle ocean currents!",
+      "introDialogue": "Let's see if your team can handle lake currents!",
       "team": [
         {
           "name": "Tentacool",

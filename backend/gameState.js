@@ -146,12 +146,13 @@ function createGameState({
     );
     const championDefeated =
       Boolean(state.championDefeated) || badges.includes(championBadge);
+    const validAreas = new Set(Object.keys(areaUnlocks));
     const unlockedAreas = uniqueStrings([
       ...(state.unlockedAreas || defaultPlayerState.unlockedAreas),
       ...Object.entries(areaUnlocks)
         .filter(([, badge]) => !badge || badges.includes(badge))
         .map(([area]) => area),
-    ]);
+    ]).filter((area) => validAreas.has(area));
     const unlockedGyms = gyms
       .map((gym) => gym.id)
       .filter(

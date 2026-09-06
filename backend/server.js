@@ -1864,6 +1864,10 @@ app.post("/api/encounter", (req, res) => {
   if (!area) {
     return res.status(400).json({ error: "Area is required" });
   }
+  const selectedArea = String(area).toLowerCase();
+  if (!areas.some((entry) => entry.id === selectedArea)) {
+    return res.status(400).json({ error: "Valid area is required" });
+  }
   if (activeNpcSessions.get("player")?.status === "active") {
     return res.status(400).json({ error: "Finish your trainer battle first" });
   }
@@ -1878,7 +1882,10 @@ app.post("/api/encounter", (req, res) => {
 
   try {
     const allPokemon = getPokemonTemplates();
-    const { pokemon, weather, metadata } = selectEncounter(allPokemon, area);
+    const { pokemon, weather, metadata } = selectEncounter(
+      allPokemon,
+      selectedArea,
+    );
     if (!pokemon) {
       return res.status(404).json({ error: "No Pokemon available for this area" });
     }
@@ -1888,7 +1895,7 @@ app.post("/api/encounter", (req, res) => {
     const encounterData = {
       ...encountered,
       currentHp: encountered.maxHp || encountered.hp,
-      area,
+      area: selectedArea,
       level: encounterLevel,
       weather,
       timeOfDay: metadata.timeOfDay,

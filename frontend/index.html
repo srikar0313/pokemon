@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokemon Adventure</title>
-    <link rel="stylesheet" href="style.css?v=20260906-refine" />
+    <link rel="stylesheet" href="style.css?v=20260906-quick-party" />
   </head>
   <body>
     <div class="app-shell">
@@ -63,6 +63,12 @@
                 <p>Choose where to travel next.</p>
               </div>
               <div class="screen-actions">
+                <button
+                  class="secondary-btn"
+                  onclick="openOverlay('quickPokemon')"
+                >
+                  Quick Pokemon
+                </button>
                 <button class="secondary-btn" onclick="openOverlay('center')">
                   Pokemon Center
                 </button>
@@ -167,9 +173,12 @@
           <div id="storage-panel" class="overlay-panel hidden">
             <div id="storage-browser"></div>
           </div>
+          <div id="quick-pokemon-panel" class="overlay-panel hidden">
+            <div id="quick-pokemon"></div>
+          </div>
         </div>
       </div>
     </div>
-    <script src="script.js?v=20260906-refine"></script>
+    <script src="script.js?v=20260906-quick-party"></script>
   </body>
 </html>
