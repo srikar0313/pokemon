@@ -227,6 +227,16 @@ function clearWildEncounterState() {
   closeWildEncounterLayer();
 }
 
+async function returnToRouteAfterWildBattle(message, delay = 1000) {
+  setBattleActionBusy(true);
+  if (delay > 0) await wait(delay);
+  clearWildEncounterState();
+  setBattleActionBusy(false);
+  renderBattlePlaceholder(message);
+  setActiveScreen("explore");
+  renderRouteWorld();
+}
+
 function openOverlay(type) {
   if (
     type === "quickPokemon" &&
@@ -4115,7 +4125,6 @@ async function attack(moveName) {
   appendBattleLog(data.log);
   updateBattleDisplay();
   displayCurrentPlayer();
-  setBattleActionBusy(false);
   showMoveButtons(!!data.winner);
   showBattleItemPanel(!!data.winner);
   showCatchOptions(!!data.winner);
@@ -4129,8 +4138,16 @@ async function attack(moveName) {
     appendBattleLog([
       `Wild ${wild.name} fainted. You cannot catch a fainted Pokemon.`,
     ]);
+    await returnToRouteAfterWildBattle(
+      `You defeated wild ${wild.name} and returned to the route.`,
+    );
   } else if (data.winner === "wild") {
     appendBattleLog(["You lost the battle. Heal up and try again."]);
+    await returnToRouteAfterWildBattle(
+      "Your Pokemon fainted. You returned to the route.",
+    );
+  } else {
+    setBattleActionBusy(false);
   }
 }
 
@@ -4268,8 +4285,6 @@ async function throwBall(type) {
   if (data.state) playerState = data.state;
   appendBattleLog([`${data.message} (${data.catchRate}% chance)`]);
   displayStats();
-  setBattleActionBusy(false);
-  showCatchOptions();
   if (pokedexCache) await loadPokedex();
   if (questCache) await loadQuests();
 
@@ -4277,13 +4292,15 @@ async function throwBall(type) {
     showMoveButtons(true);
     showCatchOptions(true);
     await loadInventory();
-    setTimeout(() => {
-      clearWildEncounterState();
-      renderBattlePlaceholder("Great catch! You returned to the route.");
-      setActiveScreen("explore");
-      renderRouteWorld();
-    }, 1200);
+    await returnToRouteAfterWildBattle(
+      "Great catch! You returned to the route.",
+      1200,
+    );
+    return;
   }
+
+  setBattleActionBusy(false);
+  showCatchOptions();
 }
 
 async function gainXP(amount) {
