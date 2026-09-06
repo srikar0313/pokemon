@@ -122,10 +122,17 @@ function createPokemonUtils({
   readJsonFile,
   moveCatalog = {},
   canonicalPokemon = {},
+  evolutionData = {},
 }) {
   let legacyPokemonTemplateCache = null;
   let pokemonTemplateCache = null;
   const canonicalLookup = createCanonicalPokemonLookup(canonicalPokemon);
+  const evolutionChainBySpeciesId = new Map();
+  (evolutionData.chains || []).forEach((chain) => {
+    (chain.species || []).forEach((species) => {
+      evolutionChainBySpeciesId.set(species.speciesId, chain);
+    });
+  });
 
   function getLegacyPokemonTemplates() {
     if (!legacyPokemonTemplateCache) {
@@ -285,6 +292,28 @@ function createPokemonUtils({
     return getPokemonTemplates().find((pokemon) => pokemon.name === name) || null;
   }
 
+  function getPokemonSpeciesId(pokemonOrIdentity) {
+    if (
+      pokemonOrIdentity &&
+      typeof pokemonOrIdentity === "object" &&
+      Number.isInteger(Number(pokemonOrIdentity.speciesId))
+    ) {
+      return Number(pokemonOrIdentity.speciesId);
+    }
+    const numericIdentity = Number(pokemonOrIdentity);
+    if (Number.isInteger(numericIdentity) && numericIdentity > 0) {
+      return (
+        canonicalLookup.getCanonicalPokemonByLocalId(numericIdentity)
+          ?.speciesId || null
+      );
+    }
+    const identityPokemon =
+      pokemonOrIdentity && typeof pokemonOrIdentity === "object"
+        ? pokemonOrIdentity
+        : { name: pokemonOrIdentity };
+    return canonicalLookup.getCanonicalPokemon(identityPokemon)?.speciesId || null;
+  }
+
   function getCanonicalPokemon(pokemon = {}) {
     return canonicalLookup.getCanonicalPokemon(pokemon);
   }
@@ -320,7 +349,81 @@ function createPokemonUtils({
 
   function getPokemonVariantKey(pokemon = {}) {
     const formId = pokemon.form?.id || "normal";
-    return `${pokemon.id || pokemon.name}:${formId}:${pokemon.shiny ? "shiny" : "normal"}`;
+    const identity = getPokemonSpeciesId(pokemon) || pokemon.id || pokemon.name;
+    return `${identity}:${formId}:${pokemon.shiny ? "shiny" : "normal"}`;
+  }
+
+  function formatEvolutionValue(value) {
+    return String(value || "")
+      .split("-")
+      .filter(Boolean)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
+  }
+
+  function getEvolutionConditionLabels(conditions = []) {
+    return [
+      ...new Set(
+        conditions.map((condition) => {
+          if (condition.minLevel) return `Lv${condition.minLevel}`;
+          if (condition.item) return formatEvolutionValue(condition.item);
+          if (condition.method === "friendship") return "Friendship";
+          if (condition.method?.startsWith("trade")) return "Trade";
+          if (condition.knownMove) {
+            return `Know ${formatEvolutionValue(condition.knownMove)}`;
+          }
+          return formatEvolutionValue(condition.method) || "Evolve";
+        }),
+      ),
+    ];
+  }
+
+  function getPokedexEvolutionGraph(pokemonOrIdentity) {
+    const speciesId = getPokemonSpeciesId(pokemonOrIdentity);
+    const chain = evolutionChainBySpeciesId.get(speciesId);
+    if (!chain) return { chainId: null, stages: [], edges: [] };
+
+    const outgoingBySpeciesId = new Map();
+    (chain.edges || []).forEach((edge) => {
+      const outgoing = outgoingBySpeciesId.get(edge.fromSpeciesId) || [];
+      outgoing.push(edge);
+      outgoingBySpeciesId.set(edge.fromSpeciesId, outgoing);
+    });
+    const stages = (chain.species || []).map((species) => {
+      const template = getPokemonTemplates().find(
+        (candidate) => candidate.speciesId === species.speciesId,
+      );
+      const outgoing = outgoingBySpeciesId.get(species.speciesId) || [];
+      const onlyEvolution = outgoing.length === 1 ? outgoing[0] : null;
+      const levelCondition = onlyEvolution?.conditions?.find(
+        (condition) => Number.isFinite(condition.minLevel),
+      );
+      return {
+        id: template?.id ?? species.localId,
+        speciesId: species.speciesId,
+        imageId: template?.imageId || species.speciesId,
+        name: template?.name || species.name,
+        canonicalName: template?.canonicalName || species.name,
+        artwork: template?.artwork,
+        type: template?.type,
+        types: template ? getPokemonTypes(template) : [],
+        evolvesTo:
+          onlyEvolution &&
+          getPokemonTemplates().find(
+            (candidate) => candidate.speciesId === onlyEvolution.toSpeciesId,
+          )?.name,
+        evolveLevel: levelCondition?.minLevel || null,
+      };
+    });
+    return {
+      chainId: chain.chainId,
+      stages,
+      edges: (chain.edges || []).map((edge) => ({
+        fromSpeciesId: edge.fromSpeciesId,
+        toSpeciesId: edge.toSpeciesId,
+        conditionLabels: getEvolutionConditionLabels(edge.conditions),
+      })),
+    };
   }
 
   function getMoveName(move) {
@@ -679,6 +782,7 @@ function createPokemonUtils({
     getLegacyPokemonTemplates,
     getPokemonTemplate,
     getPokemonTemplateByName,
+    getPokemonSpeciesId,
     getLegacyBaseStats,
     getCanonicalBaseStats,
     migrateOwnedPokemonStats,
@@ -691,6 +795,7 @@ function createPokemonUtils({
     getPokemonTypes,
     getPokemonFormDefinition,
     getPokemonVariantKey,
+    getPokedexEvolutionGraph,
     applyPokemonForm,
     normalizeMove,
     normalizePokemon,

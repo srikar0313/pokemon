@@ -2852,33 +2852,90 @@ function renderPokedexSelect(key, label, values, formatter = (value) => value) {
 }
 
 function renderEvolutionChain(entry, canShowDetails) {
-  const chain = entry.evolutionChain || [];
-  if (chain.length <= 1) {
+  const graph = entry.evolutionGraph || {
+    stages: entry.evolutionChain || [],
+    edges: [],
+  };
+  const stages = graph.stages || [];
+  const edges = graph.edges || [];
+  if (stages.length <= 1) {
     return `<div class="pokedex-evolution"><p>${canShowDetails ? "No further evolution" : "Evolution: unknown"}</p></div>`;
   }
+  const targetSpeciesIds = new Set(edges.map((edge) => edge.toSpeciesId));
+  const roots = stages.filter(
+    (stage) => !targetSpeciesIds.has(stage.speciesId),
+  );
+  const depthBySpeciesId = new Map(
+    (roots.length ? roots : stages.slice(0, 1)).map((stage) => [
+      stage.speciesId,
+      0,
+    ]),
+  );
+  let changed = true;
+  while (changed) {
+    changed = false;
+    edges.forEach((edge) => {
+      const parentDepth = depthBySpeciesId.get(edge.fromSpeciesId);
+      if (parentDepth === undefined) return;
+      const nextDepth = parentDepth + 1;
+      if ((depthBySpeciesId.get(edge.toSpeciesId) ?? -1) < nextDepth) {
+        depthBySpeciesId.set(edge.toSpeciesId, nextDepth);
+        changed = true;
+      }
+    });
+  }
+  const layers = [...new Set(stages.map((stage) => depthBySpeciesId.get(stage.speciesId) || 0))]
+    .sort((left, right) => left - right)
+    .map((depth) =>
+      stages.filter(
+        (stage) => (depthBySpeciesId.get(stage.speciesId) || 0) === depth,
+      ),
+    );
+  const edgeLabel = (edge) => {
+    return (edge?.conditionLabels || []).join(" / ") || "Evolve";
+  };
+  const renderStage = (stage, depth) => {
+    const visible = stage.seen || stage.caught;
+    const incoming = edges.filter(
+      (edge) => edge.toSpeciesId === stage.speciesId,
+    );
+    const knownParent = incoming.some((edge) =>
+      stages.some(
+        (candidate) =>
+          candidate.speciesId === edge.fromSpeciesId &&
+          (candidate.seen || candidate.caught),
+      ),
+    );
+    return `
+      <div class="evolution-branch-node">
+        ${
+          depth > 0
+            ? `<div class="evolution-chain-arrow"><span>${visible && knownParent ? incoming.map(edgeLabel).join(" / ") : "???"}</span><b>↓</b></div>`
+            : ""
+        }
+        <div class="evolution-chain-stage ${visible ? "known" : "hidden-stage"}">
+          <img src="${getPokemonImage(stage)}" alt="${visible ? stage.name : "Unknown evolution"}" onerror="handleExternalImageError(event)">
+          <div>
+            <strong>${visible ? stage.name : "???"}</strong>
+            <small>${visible ? `#${String(stage.speciesId ?? stage.id).padStart(3, "0")}` : "#???"}</small>
+            ${visible ? renderTypeBadges(stage.types || [stage.type]) : ""}
+          </div>
+        </div>
+      </div>
+    `;
+  };
   return `
     <div class="pokedex-evolution">
-      <strong class="evolution-chain-title">Evolution chain</strong>
+      <strong class="evolution-chain-title">Evolution family</strong>
       <div class="evolution-chain-list">
-        ${chain
-          .map((stage, index) => {
-            const visible = stage.seen || stage.caught;
-            const connector =
-              index < chain.length - 1
-                ? `<div class="evolution-chain-arrow"><span>${visible && stage.evolveLevel ? `Lv${stage.evolveLevel}` : "???"}</span><b>↓</b></div>`
-                : "";
-            return `
-              <div class="evolution-chain-stage ${visible ? "known" : "hidden-stage"}">
-                <img src="${getPokemonImage(stage)}" alt="${visible ? stage.name : "Unknown evolution"}" onerror="handleExternalImageError(event)">
-                <div>
-                  <strong>${visible ? stage.name : "???"}</strong>
-                  <small>${visible ? `#${String(stage.speciesId ?? stage.id).padStart(3, "0")}` : "#???"}</small>
-                  ${visible ? renderTypeBadges(stage.types || [stage.type]) : ""}
-                </div>
+        ${layers
+          .map(
+            (layer, depth) => `
+              <div class="evolution-chain-level ${layer.length > 1 ? "branching" : ""}">
+                ${layer.map((stage) => renderStage(stage, depth)).join("")}
               </div>
-              ${connector}
-            `;
-          })
+            `,
+          )
           .join("")}
       </div>
     </div>

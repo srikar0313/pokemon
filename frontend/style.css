@@ -1329,6 +1329,20 @@ h3 {
   gap: 5px;
 }
 
+.evolution-chain-level {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 5px;
+}
+
+.evolution-chain-level.branching {
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+}
+
+.evolution-branch-node {
+  min-width: 0;
+}
+
 .evolution-chain-stage {
   display: grid;
   grid-template-columns: 52px minmax(0, 1fr);

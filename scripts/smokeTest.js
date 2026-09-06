@@ -63,6 +63,7 @@ function createMemoryGameState(pokemonUtils) {
     isPokemonOrEvolutionOf: pokemonUtils.isPokemonOrEvolutionOf,
     getEvolutionFamilyKey: pokemonUtils.getEvolutionFamilyKey,
     getPokemonVariantKey: pokemonUtils.getPokemonVariantKey,
+    resolvePokemonSpeciesId: pokemonUtils.getPokemonSpeciesId,
   });
 }
 
@@ -73,6 +74,7 @@ function main() {
     readJsonFile: loadJson,
     moveCatalog: gameData.moves,
     canonicalPokemon: gameData.canonicalPokemon,
+    evolutionData: gameData.evolutions,
   });
   const gameState = createGameState({
     inventoryPath: path.join(rootDir, "inventory.json"),
@@ -91,6 +93,7 @@ function main() {
     isPokemonOrEvolutionOf: pokemonUtils.isPokemonOrEvolutionOf,
     getEvolutionFamilyKey: pokemonUtils.getEvolutionFamilyKey,
     getPokemonVariantKey: pokemonUtils.getPokemonVariantKey,
+    resolvePokemonSpeciesId: pokemonUtils.getPokemonSpeciesId,
   });
 
   const playerState = gameState.loadPlayerState();
@@ -784,6 +787,111 @@ function main() {
       pokemonUtils.getPokemonVariantKey(shinyAlolanVulpix),
     ]).size === 4,
     "normal, regional, and shiny variants do not have distinct identities",
+  );
+  assert(
+    pokemonUtils.getPokemonSpeciesId(16) === 18,
+    "Pidgeot local id 16 did not resolve to speciesId 18",
+  );
+  assert(
+    pokemonUtils.getPokemonSpeciesId(237) === 16,
+    "Pidgey local id 237 did not resolve to speciesId 16",
+  );
+  assert(
+    pokemonUtils.getPokemonVariantKey({
+      ...pokemonUtils.getPokemonTemplateByName("Pidgeot"),
+      shiny: true,
+    }) === "18:normal:shiny",
+    "variant identity did not prefer canonical speciesId",
+  );
+
+  memoryFiles.clear();
+  const legacyPidgeot = pokemonUtils.normalizePokemon(
+    pokemonUtils.getPokemonTemplateByName("Pidgeot"),
+  );
+  memoryFiles.set("memory-inventory.json", [legacyPidgeot]);
+  memoryFiles.set("memory-storage.json", []);
+  memoryFiles.set("memory-player-state.json", {
+    trainerName: "Legacy Collector",
+    pokedex: {
+      seen: [16, 237, 246, 58],
+      caught: [16, 246, 58],
+      formsSeen: ["16:normal:shiny", "246:normal:normal"],
+      formsCaught: ["16:normal:shiny", "246:normal:normal"],
+    },
+  });
+  const migratedGameState = createMemoryGameState(pokemonUtils);
+  const migratedState = migratedGameState.loadPlayerState();
+  assert(
+    migratedGameState.resolvePokedexSpeciesId(246) === 94,
+    "legacy Gengar id 246 did not resolve to speciesId 94",
+  );
+  assert(
+    migratedState.pokedex.identityVersion === "species-v1",
+    "Pokedex identity migration marker was not saved",
+  );
+  assert(
+    [18, 16, 94, 58].every((speciesId) =>
+      migratedState.pokedex.seen.includes(speciesId),
+    ),
+    "legacy seen IDs did not migrate to canonical species IDs",
+  );
+  assert(
+    [18, 94, 58].every((speciesId) =>
+      migratedState.pokedex.caught.includes(speciesId),
+    ),
+    "legacy caught IDs did not migrate to canonical species IDs",
+  );
+  assert(
+    migratedState.pokedex.formsCaught.includes("18:normal:shiny") &&
+      migratedState.pokedex.formsCaught.includes("94:normal:normal"),
+    "legacy form or shiny progress did not migrate to species identity",
+  );
+  assert(
+    migratedState.pokedex.caught.includes(58),
+    "caught Pokemon no longer owned was lost during migration",
+  );
+  const migratedOwned = migratedGameState.getAllOwnedPokemon();
+  assert(
+    migratedOwned.every((owned) =>
+      migratedState.pokedex.caught.includes(
+        pokemonUtils.getPokemonSpeciesId(owned),
+      ),
+    ),
+    "an owned Pokemon would appear in the uncaught Pokedex filter",
+  );
+  const secondNormalization = migratedGameState.normalizePlayerState({
+    ...migratedState,
+    pokedex: {
+      ...migratedState.pokedex,
+      seen: [16],
+      caught: [16],
+    },
+  });
+  assert(
+    secondNormalization.pokedex.caught.includes(16) &&
+      !secondNormalization.pokedex.caught.includes(18),
+    "species identity was incorrectly remigrated as a local ID",
+  );
+
+  const eeveeGraph = pokemonUtils.getPokedexEvolutionGraph("Eevee");
+  const eeveeTargets = new Set(
+    eeveeGraph.edges
+      .filter((edge) => edge.fromSpeciesId === 133)
+      .map((edge) => edge.toSpeciesId),
+  );
+  assert(
+    eeveeTargets.size === 8 &&
+      [134, 135, 136, 196, 197, 470, 471, 700].every((speciesId) =>
+        eeveeTargets.has(speciesId),
+      ),
+    "Eevee's branching evolution family is incomplete",
+  );
+  assert(
+    pokemonUtils
+      .getPokedexEvolutionGraph("Bulbasaur")
+      .stages.map((stage) => stage.name)
+      .join(" -> ") === "Bulbasaur -> Ivysaur -> Venusaur",
+    "Bulbasaur's canonical display chain is incorrect",
   );
 
   memoryFiles.clear();

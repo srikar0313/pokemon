@@ -48,18 +48,20 @@ const pokemonUtils = createPokemonUtils({
   readJsonFile: loadJson,
   moveCatalog: gameData.moves,
   canonicalPokemon: gameData.canonicalPokemon,
+  evolutionData: gameData.evolutions,
 });
 const {
   getStarterPokemon,
   getPokemonTemplates,
   getPokemonTemplateByName,
   getPokemonTypes,
+  getPokemonSpeciesId,
   getPokemonVariantKey,
+  getPokedexEvolutionGraph,
   applyPokemonForm,
   normalizePokemon,
   restorePokemon,
   getEvolution,
-  getEvolutionChain,
   isPokemonOrEvolutionOf,
   getEvolutionFamilyKey,
   createLeveledPokemon,
@@ -147,6 +149,7 @@ const gameState = createGameState({
   isPokemonOrEvolutionOf,
   getEvolutionFamilyKey,
   getPokemonVariantKey,
+  resolvePokemonSpeciesId: getPokemonSpeciesId,
 });
 const {
   readJsonFile,
@@ -237,15 +240,32 @@ function getPokedexEntries(state) {
   const templates = getPokemonTemplates();
   const formsSeen = new Set(state.pokedex.formsSeen || []);
   const formsCaught = new Set(state.pokedex.formsCaught || []);
+  const seenSpecies = new Set(state.pokedex.seen || []);
+  const caughtSpecies = new Set(state.pokedex.caught || []);
 
   return templates
     .map((pokemon) => {
-      const previousStage =
-        templates.find((candidate) => candidate.evolvesTo === pokemon.name) ||
-        null;
-      const seen = state.pokedex.seen.includes(pokemon.id);
-      const caught = state.pokedex.caught.includes(pokemon.id);
-      const variantPrefix = `${pokemon.id || pokemon.name}:`;
+      const speciesId = getPokemonSpeciesId(pokemon);
+      const graph = getPokedexEvolutionGraph(pokemon);
+      const evolutionStages = graph.stages.map((stage) => ({
+        ...stage,
+        seen: seenSpecies.has(stage.speciesId),
+        caught: caughtSpecies.has(stage.speciesId),
+      }));
+      const currentEvolutionStage = evolutionStages.find(
+        (stage) => stage.speciesId === speciesId,
+      );
+      const previousEdge = graph.edges.find(
+        (edge) => edge.toSpeciesId === speciesId,
+      );
+      const previousStage = previousEdge
+        ? evolutionStages.find(
+            (stage) => stage.speciesId === previousEdge.fromSpeciesId,
+          )
+        : null;
+      const seen = seenSpecies.has(speciesId);
+      const caught = caughtSpecies.has(speciesId);
+      const variantPrefix = `${speciesId}:`;
       const hasSeenVariant = [...formsSeen].some((key) =>
         key.startsWith(variantPrefix),
       );
@@ -284,7 +304,7 @@ function getPokedexEntries(state) {
       };
       return {
         id: pokemon.id,
-        speciesId: pokemon.speciesId,
+        speciesId,
         imageId: pokemon.imageId || pokemon.id,
         name: pokemon.name,
         canonicalName: pokemon.canonicalName,
@@ -297,8 +317,8 @@ function getPokedexEntries(state) {
         habitats: pokemon.habitats || [],
         times: pokemon.times || ["day"],
         baseCatchRate: pokemon.baseCatchRate ?? null,
-        evolvesTo: pokemon.evolvesTo || null,
-        evolveLevel: pokemon.evolveLevel || null,
+        evolvesTo: currentEvolutionStage?.evolvesTo || null,
+        evolveLevel: currentEvolutionStage?.evolveLevel || null,
         previousStage: previousStage
           ? {
               id: previousStage.id,
@@ -308,11 +328,12 @@ function getPokedexEntries(state) {
               artwork: previousStage.artwork,
             }
           : null,
-        evolutionChain: getEvolutionChain(pokemon).map((stage) => ({
-          ...stage,
-          seen: state.pokedex.seen.includes(stage.id),
-          caught: state.pokedex.caught.includes(stage.id),
-        })),
+        evolutionChain: evolutionStages,
+        evolutionGraph: {
+          chainId: graph.chainId,
+          stages: evolutionStages,
+          edges: graph.edges,
+        },
         forms: [getFormStatus(), ...(pokemon.forms || []).map(getFormStatus)],
         seen,
         caught,
@@ -1950,7 +1971,7 @@ app.post("/api/encounter", (req, res) => {
         currentPp: m.maxPp ?? m.pp,
       })),
     };
-    markPokedexSeen(encounterData.id, encounterData);
+    markPokedexSeen(encounterData.speciesId, encounterData);
     res.json(encounterData);
   } catch (error) {
     res.status(500).json({ error: "Failed to create encounter" });
@@ -2184,10 +2205,14 @@ app.post("/api/catch", (req, res) => {
       } else {
         storage.push(caughtPokemon);
       }
-      state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, target.id]);
+      const caughtSpeciesId = getPokemonSpeciesId(caughtPokemon);
+      state.pokedex.seen = uniqueNumbers([
+        ...state.pokedex.seen,
+        caughtSpeciesId,
+      ]);
       state.pokedex.caught = uniqueNumbers([
         ...state.pokedex.caught,
-        target.id,
+        caughtSpeciesId,
       ]);
       const variantKey = getPokemonVariantKey(caughtPokemon);
       state.pokedex.formsSeen = uniqueStrings([

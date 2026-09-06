@@ -1,3 +1,5 @@
+const POKEDEX_IDENTITY_VERSION = "species-v1";
+
 const defaultPlayerState = {
   trainerName: "Player",
   coins: 100,
@@ -25,6 +27,7 @@ const defaultPlayerState = {
     fullHeal: 1,
   },
   pokedex: {
+    identityVersion: POKEDEX_IDENTITY_VERSION,
     seen: [],
     caught: [],
     formsSeen: [],
@@ -55,12 +58,6 @@ function uniqueStrings(values) {
   return [...new Set(values.filter(Boolean).map(String))];
 }
 
-function normalizePokedexIds(values) {
-  return uniqueNumbers(
-    uniqueNumbers(values).map((id) => legacyPokemonIdMap.get(id) || id),
-  );
-}
-
 function createGameState({
   inventoryPath,
   storagePath,
@@ -79,7 +76,46 @@ function createGameState({
   isPokemonOrEvolutionOf,
   getEvolutionFamilyKey,
   getPokemonVariantKey,
+  resolvePokemonSpeciesId,
 }) {
+  function resolvePokedexSpeciesId(identity, pokemon = null) {
+    const explicitSpeciesId = Number(pokemon?.speciesId);
+    if (Number.isInteger(explicitSpeciesId) && explicitSpeciesId > 0) {
+      return explicitSpeciesId;
+    }
+    const numericIdentity = Number(identity);
+    const currentLocalIdentity = Number.isInteger(numericIdentity)
+      ? legacyPokemonIdMap.get(numericIdentity) || numericIdentity
+      : identity;
+    const resolved = Number(
+      resolvePokemonSpeciesId?.(pokemon || currentLocalIdentity),
+    );
+    if (Number.isInteger(resolved) && resolved > 0) return resolved;
+    return Number.isInteger(numericIdentity) && numericIdentity > 0
+      ? numericIdentity
+      : null;
+  }
+
+  function migratePokedexIds(values) {
+    return uniqueNumbers(
+      (values || []).map((identity) =>
+        resolvePokedexSpeciesId(identity),
+      ),
+    );
+  }
+
+  function migratePokedexVariantKeys(values) {
+    return uniqueStrings(
+      (values || []).map((key) => {
+        const [identity, ...variantParts] = String(key).split(":");
+        const speciesId = resolvePokedexSpeciesId(identity);
+        return speciesId && variantParts.length
+          ? `${speciesId}:${variantParts.join(":")}`
+          : key;
+      }),
+    );
+  }
+
   function getOwnedPokemonSignature(pokemon) {
     const moveSignature = (pokemon.moves || [])
       .map(
@@ -171,6 +207,8 @@ function createGameState({
       .filter(
         (gymId) => !gymUnlocks[gymId] || badges.includes(gymUnlocks[gymId]),
       );
+    const pokedexUsesSpeciesIdentity =
+      state.pokedex?.identityVersion === POKEDEX_IDENTITY_VERSION;
     return {
       ...defaultPlayerState,
       ...state,
@@ -183,10 +221,19 @@ function createGameState({
         ...(state.items || {}),
       },
       pokedex: {
-        seen: normalizePokedexIds(state.pokedex?.seen || []),
-        caught: normalizePokedexIds(state.pokedex?.caught || []),
-        formsSeen: uniqueStrings(state.pokedex?.formsSeen || []),
-        formsCaught: uniqueStrings(state.pokedex?.formsCaught || []),
+        identityVersion: POKEDEX_IDENTITY_VERSION,
+        seen: pokedexUsesSpeciesIdentity
+          ? uniqueNumbers(state.pokedex?.seen || [])
+          : migratePokedexIds(state.pokedex?.seen || []),
+        caught: pokedexUsesSpeciesIdentity
+          ? uniqueNumbers(state.pokedex?.caught || [])
+          : migratePokedexIds(state.pokedex?.caught || []),
+        formsSeen: pokedexUsesSpeciesIdentity
+          ? uniqueStrings(state.pokedex?.formsSeen || [])
+          : migratePokedexVariantKeys(state.pokedex?.formsSeen || []),
+        formsCaught: pokedexUsesSpeciesIdentity
+          ? uniqueStrings(state.pokedex?.formsCaught || [])
+          : migratePokedexVariantKeys(state.pokedex?.formsCaught || []),
       },
       questStats: {
         ...defaultPlayerState.questStats,
@@ -226,15 +273,17 @@ function createGameState({
       readJsonFile(playerStatePath, defaultPlayerState),
     );
     const ownedPokemon = getAllOwnedPokemon();
-    const inventoryIds = ownedPokemon.map((pokemon) => pokemon.id);
-    if (inventoryIds.length > 0) {
+    const ownedSpeciesIds = ownedPokemon
+      .map((pokemon) => resolvePokedexSpeciesId(pokemon.id, pokemon))
+      .filter(Boolean);
+    if (ownedSpeciesIds.length > 0) {
       state.pokedex.seen = uniqueNumbers([
         ...state.pokedex.seen,
-        ...inventoryIds,
+        ...ownedSpeciesIds,
       ]);
       state.pokedex.caught = uniqueNumbers([
         ...state.pokedex.caught,
-        ...inventoryIds,
+        ...ownedSpeciesIds,
       ]);
       if (getPokemonVariantKey) {
         const ownedVariants = ownedPokemon.map(getPokemonVariantKey);
@@ -261,7 +310,8 @@ function createGameState({
 
   function markPokedexSeen(id, pokemon = null) {
     const state = loadPlayerState();
-    state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, id]);
+    const speciesId = resolvePokedexSpeciesId(id, pokemon);
+    state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, speciesId]);
     if (pokemon && getPokemonVariantKey) {
       state.pokedex.formsSeen = uniqueStrings([
         ...state.pokedex.formsSeen,
@@ -274,8 +324,9 @@ function createGameState({
 
   function markPokedexCaught(id, pokemon = null) {
     const state = loadPlayerState();
-    state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, id]);
-    state.pokedex.caught = uniqueNumbers([...state.pokedex.caught, id]);
+    const speciesId = resolvePokedexSpeciesId(id, pokemon);
+    state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, speciesId]);
+    state.pokedex.caught = uniqueNumbers([...state.pokedex.caught, speciesId]);
     if (pokemon && getPokemonVariantKey) {
       const variantKey = getPokemonVariantKey(pokemon);
       state.pokedex.formsSeen = uniqueStrings([
@@ -305,11 +356,13 @@ function createGameState({
     savePlayerState,
     markPokedexSeen,
     markPokedexCaught,
+    resolvePokedexSpeciesId,
     updateAchievements,
   };
 }
 
 module.exports = {
+  POKEDEX_IDENTITY_VERSION,
   createGameState,
   defaultPlayerState,
   uniqueNumbers,
