@@ -4,6 +4,7 @@ function createRewardEngine({
   getAvailableEvolutions,
   getPokemonTemplateByName,
   getPokemonFormDefinition,
+  getTimeOfDay,
   updateAchievements,
 }) {
   const statGrowthByRarity = {
@@ -123,6 +124,8 @@ function createRewardEngine({
       shiny: pokemon.shiny ?? false,
       form: targetForm ? { id: targetForm.id } : null,
       status: pokemon.status || "none",
+      friendship: pokemon.friendship ?? targetTemplate.baseHappiness ?? 70,
+      gender: pokemon.gender,
       pendingMove: pokemon.pendingMove || undefined,
     });
     [
@@ -182,7 +185,9 @@ function createRewardEngine({
       targetSpeciesId: option.targetSpeciesId,
       targetName: option.targetName,
       supported: option.supported,
+      satisfied: option.satisfied,
       requirements: option.requirements,
+      requirementOptions: option.requirementOptions,
       unsupportedRequirements: option.unsupportedRequirements,
     }));
   }
@@ -208,6 +213,7 @@ function createRewardEngine({
       const pendingEvolution = {
         trigger: context.trigger,
         item: context.item || null,
+        timeOfDay: context.timeOfDay || null,
         options: serializeEvolutionOptions(available),
       };
       return {
@@ -263,9 +269,11 @@ function createRewardEngine({
     const startingName = pokemon.name;
     const startingLevel = pokemon.level || 1;
     const startingXp = pokemon.xp || 0;
+    const startingFriendship = pokemon.friendship || 0;
     const startingXpNeeded = getXpNeededForLevel(startingLevel);
     const wasFainted = (pokemon.currentHp || 0) <= 0;
     pokemon.xp = startingXp + xpAmount;
+    pokemon.friendship = Math.min(255, startingFriendship + 1);
     let leveledUp = false;
     let evolved = false;
     let evolvedFrom = null;
@@ -290,6 +298,7 @@ function createRewardEngine({
         ? 0
         : Math.min(pokemon.maxHp, (pokemon.currentHp || 0) + growth.maxHp);
       leveledUp = true;
+      pokemon.friendship = Math.min(255, pokemon.friendship + 3);
       statGains.push({ level: pokemon.level, ...growth });
       messages.push(`${pokemon.name} grew to level ${pokemon.level}! Stats increased.`);
     }
@@ -328,6 +337,7 @@ function createRewardEngine({
       while (true) {
         const evolutionResult = performEvolution(pokemon, {
           trigger: "level-up",
+          timeOfDay: getTimeOfDay?.() || "day",
         });
         if (evolutionResult.requiresChoice) {
           pokemon = evolutionResult.pokemon;
@@ -370,6 +380,8 @@ function createRewardEngine({
       learnedMoves,
       pendingMove: pokemon.pendingMove || null,
       pendingEvolution: pokemon.pendingEvolution || null,
+      friendshipGained: pokemon.friendship - startingFriendship,
+      friendship: pokemon.friendship,
       messages,
     };
   }
@@ -407,6 +419,8 @@ function createRewardEngine({
         learnedMoves: result.learnedMoves,
         pendingMove: result.pendingMove,
         pendingEvolution: result.pendingEvolution,
+        friendshipGained: result.friendshipGained,
+        friendship: result.friendship,
         messages: result.messages,
       };
     });

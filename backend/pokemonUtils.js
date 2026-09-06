@@ -271,6 +271,8 @@ function createPokemonUtils({
       types: types.length ? types : pokemon.types,
       type: types[0] || pokemon.type,
       artwork: { ...(canonical.artwork || {}) },
+      baseHappiness: canonical.baseHappiness ?? pokemon.baseHappiness ?? 70,
+      genderRate: canonical.genderRate ?? pokemon.genderRate ?? -1,
       isLegendary: Boolean(canonical.isLegendary),
       isMythical: Boolean(canonical.isMythical),
     };
@@ -344,6 +346,31 @@ function createPokemonUtils({
       return pokemon.types;
     }
     return pokemon.type ? [pokemon.type] : [];
+  }
+
+  function rollPokemonGender(genderRate) {
+    const rate = Number(genderRate);
+    if (!Number.isFinite(rate) || rate < 0) return "genderless";
+    if (rate === 0) return "male";
+    if (rate >= 8) return "female";
+    return Math.random() < rate / 8 ? "female" : "male";
+  }
+
+  function getNormalizedGender(gender, genderRate, pokemon = {}) {
+    const normalizedGender = String(gender || "").toLowerCase();
+    if (["male", "female", "genderless"].includes(normalizedGender)) {
+      return normalizedGender;
+    }
+    const rate = Number(genderRate);
+    if (!Number.isFinite(rate) || rate < 0) return "genderless";
+    if (rate === 0) return "male";
+    if (rate >= 8) return "female";
+    const identity = `${pokemon.speciesId || pokemon.id || ""}:${pokemon.name || ""}`;
+    const stableRoll = [...identity].reduce(
+      (value, character) => (value * 31 + character.charCodeAt(0)) % 8,
+      0,
+    );
+    return stableRoll < rate ? "female" : "male";
   }
 
   function getPokemonFormDefinition(pokemonOrName, formId) {
@@ -518,9 +545,15 @@ function createPokemonUtils({
         ? template.moves
         : null;
     const savedMoves = Array.isArray(pokemon.moves) ? pokemon.moves : [];
-    const moves = (
-      templateMoves || savedMoves.length ? templateMoves || savedMoves : defaultMoves
-    ).map((move) => {
+    const hasOwnedMoveState = savedMoves.some(
+      (move) => move && typeof move === "object",
+    );
+    const moveSource = hasOwnedMoveState
+      ? savedMoves
+      : templateMoves || savedMoves.length
+        ? templateMoves || savedMoves
+        : defaultMoves;
+    const moves = moveSource.map((move) => {
       const moveName = getMoveName(move);
       const savedMove = savedMoves.find((saved) => getMoveName(saved) === moveName);
       return normalizeMove(move, savedMove);
@@ -537,6 +570,14 @@ function createPokemonUtils({
       specialAttack: merged.specialAttack ?? merged.attack ?? 1,
       specialDefense: merged.specialDefense ?? merged.defense ?? 1,
       status: merged.status || "none",
+      friendship: Math.max(
+        0,
+        Math.min(
+          255,
+          Number(merged.friendship ?? merged.baseHappiness ?? 70) || 0,
+        ),
+      ),
+      gender: getNormalizedGender(merged.gender, merged.genderRate, merged),
       moves,
       learnset: normalizeLearnset(merged.learnset || []),
     };
@@ -598,7 +639,17 @@ function createPokemonUtils({
 
     if (normalized.evolvedFrom) {
       const previousTemplate = getPokemonTemplateByName(normalized.evolvedFrom);
+      const previousSpeciesId = getPokemonSpeciesId(previousTemplate);
+      const currentSpeciesId = getPokemonSpeciesId(normalized);
+      const canonicalEvolution = (
+        evolutionChainBySpeciesId.get(previousSpeciesId)?.edges || []
+      ).some(
+        (edge) =>
+          edge.fromSpeciesId === previousSpeciesId &&
+          edge.toSpeciesId === currentSpeciesId,
+      );
       const validPreviousEvolution =
+        canonicalEvolution ||
         previousTemplate?.evolvesTo === normalized.name ||
         evolutionTriggers[normalized.evolvedFrom]?.name === normalized.name;
       if (!validPreviousEvolution) {
@@ -770,6 +821,8 @@ function createPokemonUtils({
       specialAttack: Math.floor(template.specialAttack * multiplier),
       specialDefense: Math.floor(template.specialDefense * multiplier),
       status: "none",
+      friendship: template.baseHappiness ?? template.friendship ?? 70,
+      gender: rollPokemonGender(template.genderRate),
       moves: template.moves.map((move) => ({
         ...move,
         currentPp: move.maxPp ?? move.pp,

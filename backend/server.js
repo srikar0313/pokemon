@@ -182,7 +182,7 @@ const encounterEngine = createEncounterEngine({
   getPokemonTypes,
   formEncounterChance,
 });
-const { selectEncounter } = encounterEngine;
+const { selectEncounter, getTimeOfDay } = encounterEngine;
 const SHINY_RATE = 1 / 4096;
 
 const evolutionEngine = createEvolutionEngine({
@@ -212,6 +212,7 @@ const rewardEngine = createRewardEngine({
   getAvailableEvolutions,
   getPokemonTemplateByName,
   getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
+  getTimeOfDay,
   updateAchievements,
 });
 const {
@@ -361,13 +362,15 @@ function getEvolutionOptionView(option) {
     targetSpeciesId: option.targetSpeciesId,
     targetName: option.targetName,
     supported: option.supported,
+    satisfied: option.satisfied,
     requirements: option.requirements || [],
+    requirementOptions: option.requirementOptions || [],
     unsupportedRequirements: option.unsupportedRequirements || [],
     items: [
       ...new Set(
-        (option.conditions || [])
-          .filter((condition) => condition.method === "item" && condition.item)
-          .map((condition) => condition.item),
+        (option.requirementOptions || [])
+          .map((requirement) => requirement.item)
+          .filter(Boolean),
       ),
     ],
   };
@@ -376,7 +379,9 @@ function getEvolutionOptionView(option) {
 function addEvolutionOptions(pokemon) {
   return {
     ...pokemon,
-    evolutionOptions: getEvolutionOptions(pokemon).map(getEvolutionOptionView),
+    evolutionOptions: getEvolutionOptions(pokemon, {
+      timeOfDay: getTimeOfDay(),
+    }).map(getEvolutionOptionView),
   };
 }
 
@@ -1658,26 +1663,44 @@ app.post("/api/use-item", (req, res) => {
     const context = {
       trigger: "use-item",
       item: item.evolutionItem,
+      timeOfDay: getTimeOfDay(),
       targetSpeciesId,
     };
     const assessment = canEvolve(pokemon, context);
     const matchingItemOptions = assessment.options.filter((option) =>
-      (option.conditions || []).some(
-        (condition) =>
-          condition.method === "item" && condition.item === item.evolutionItem,
+      (option.requirementOptions || []).some(
+        (requirement) => requirement.item === item.evolutionItem,
       ),
     );
     if (!assessment.canEvolve) {
-      if (matchingItemOptions.some((option) => !option.supported)) {
-        const requirements = [
+      if (matchingItemOptions.length) {
+        const unavailable = [
           ...new Set(
             matchingItemOptions.flatMap(
               (option) => option.unsupportedRequirements || [],
             ),
           ),
         ];
+        const unmet = [
+          ...new Set(
+            matchingItemOptions.flatMap((option) =>
+              (option.requirementOptions || [])
+                .filter(
+                  (requirement) =>
+                    requirement.item === item.evolutionItem &&
+                    requirement.supported,
+                )
+                .flatMap((requirement) =>
+                  (requirement.checks || [])
+                    .filter((check) => !check.satisfied)
+                    .map((check) => check.label),
+                ),
+            ),
+          ),
+        ];
+        const requirements = [...unavailable, ...unmet];
         return res.status(400).json({
-          error: `${pokemon.name} cannot use ${item.name} yet: ${requirements.join(", ")}.`,
+          error: `${pokemon.name} cannot use ${item.name} yet${requirements.length ? `: ${requirements.join(", ")}` : ""}.`,
         });
       }
       return res.status(400).json({
@@ -2499,6 +2522,7 @@ app.post("/api/evolve", (req, res) => {
 
     const result = performEvolution(pokemon, {
       trigger: "level-up",
+      timeOfDay: pokemon.pendingEvolution.timeOfDay || getTimeOfDay(),
       targetSpeciesId: requestedTarget,
     });
     if (!result.evolved) {

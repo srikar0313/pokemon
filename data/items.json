@@ -205,5 +205,109 @@
     "icon": "evolution",
     "evolutionItem": "ice-stone",
     "description": "A frozen stone used by certain Pokemon."
+  },
+  "linkingCord": {
+    "name": "Linking Cord",
+    "category": "evolution",
+    "price": 1200,
+    "icon": "evolution",
+    "evolutionItem": "linking-cord",
+    "description": "Triggers an evolution that normally requires a trade."
+  },
+  "metalCoat": {
+    "name": "Metal Coat",
+    "category": "evolution",
+    "price": 1400,
+    "icon": "evolution",
+    "evolutionItem": "metal-coat",
+    "description": "A metallic evolution item used by certain Pokemon."
+  },
+  "dragonScale": {
+    "name": "Dragon Scale",
+    "category": "evolution",
+    "price": 1400,
+    "icon": "evolution",
+    "evolutionItem": "dragon-scale",
+    "description": "A rare scale used by certain Pokemon to evolve."
+  },
+  "upgrade": {
+    "name": "Upgrade",
+    "category": "evolution",
+    "price": 1400,
+    "icon": "evolution",
+    "evolutionItem": "up-grade",
+    "description": "A transparent device used by Porygon to evolve."
+  },
+  "dubiousDisc": {
+    "name": "Dubious Disc",
+    "category": "evolution",
+    "price": 1600,
+    "icon": "evolution",
+    "evolutionItem": "dubious-disc",
+    "description": "A questionable device used by Porygon2 to evolve."
+  },
+  "protector": {
+    "name": "Protector",
+    "category": "evolution",
+    "price": 1600,
+    "icon": "evolution",
+    "evolutionItem": "protector",
+    "description": "A heavy protective item used by certain Pokemon."
+  },
+  "electirizer": {
+    "name": "Electirizer",
+    "category": "evolution",
+    "price": 1600,
+    "icon": "evolution",
+    "evolutionItem": "electirizer",
+    "description": "A box packed with electrical energy."
+  },
+  "magmarizer": {
+    "name": "Magmarizer",
+    "category": "evolution",
+    "price": 1600,
+    "icon": "evolution",
+    "evolutionItem": "magmarizer",
+    "description": "A box packed with tremendous magma energy."
+  },
+  "kingsRock": {
+    "name": "King's Rock",
+    "category": "evolution",
+    "price": 1400,
+    "icon": "evolution",
+    "evolutionItem": "kings-rock",
+    "description": "A royal-looking rock used by certain Pokemon."
+  },
+  "prismScale": {
+    "name": "Prism Scale",
+    "category": "evolution",
+    "price": 1600,
+    "icon": "evolution",
+    "evolutionItem": "prism-scale",
+    "description": "A mysterious scale that shines in rainbow colors."
+  },
+  "reaperCloth": {
+    "name": "Reaper Cloth",
+    "category": "evolution",
+    "price": 1600,
+    "icon": "evolution",
+    "evolutionItem": "reaper-cloth",
+    "description": "An eerie cloth imbued with powerful spiritual energy."
+  },
+  "deepSeaTooth": {
+    "name": "Deep Sea Tooth",
+    "category": "evolution",
+    "price": 1400,
+    "icon": "evolution",
+    "evolutionItem": "deep-sea-tooth",
+    "description": "A sharp deep-sea item used by Clamperl."
+  },
+  "deepSeaScale": {
+    "name": "Deep Sea Scale",
+    "category": "evolution",
+    "price": 1400,
+    "icon": "evolution",
+    "evolutionItem": "deep-sea-scale",
+    "description": "A durable deep-sea item used by Clamperl."
   }
 }

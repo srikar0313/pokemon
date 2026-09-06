@@ -116,12 +116,14 @@ function main() {
     getPokemonTemplateBySpeciesId: pokemonUtils.getPokemonTemplateBySpeciesId,
     getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
   });
+  let evolutionTimeOfDay = "day";
   const rewardEngine = createRewardEngine({
     normalizePokemon: pokemonUtils.normalizePokemon,
     getEvolutionOptions: evolutionEngine.getEvolutionOptions,
     getAvailableEvolutions: evolutionEngine.getAvailableEvolutions,
     getPokemonTemplateByName: pokemonUtils.getPokemonTemplateByName,
     getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
+    getTimeOfDay: () => evolutionTimeOfDay,
     updateAchievements: () => {},
   });
   const levelPokemonTo = (startingPokemon, targetLevel) => {
@@ -153,6 +155,19 @@ function main() {
     "duskStone",
     "dawnStone",
     "iceStone",
+    "linkingCord",
+    "metalCoat",
+    "dragonScale",
+    "upgrade",
+    "dubiousDisc",
+    "protector",
+    "electirizer",
+    "magmarizer",
+    "kingsRock",
+    "prismScale",
+    "reaperCloth",
+    "deepSeaTooth",
+    "deepSeaScale",
   ].forEach((itemId) => {
     assert(
       gameData.items[itemId]?.category === "evolution" &&
@@ -713,6 +728,184 @@ function main() {
   assert(
     noLevelEvolution.pokemon.name === "Bulbasaur",
     "level evolution triggered without gaining a level",
+  );
+
+  const oldSavePichu = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Pichu"),
+    level: 5,
+  });
+  assert(
+    oldSavePichu.friendship === oldSavePichu.baseHappiness,
+    "old save friendship did not initialize from canonical base happiness",
+  );
+  assert(
+    ["male", "female", "genderless"].includes(oldSavePichu.gender),
+    "old save gender was not initialized",
+  );
+
+  const friendlyPichu = pokemonUtils.normalizePokemon({
+    ...oldSavePichu,
+    friendship: 219,
+  });
+  const pichuFriendshipEvolution = rewardEngine.applyXpToPokemon(
+    [friendlyPichu],
+    0,
+    rewardEngine.getXpNeededForLevel(friendlyPichu.level),
+  );
+  assert(
+    pichuFriendshipEvolution.pokemon.name === "Pikachu",
+    "Pichu did not evolve through friendship",
+  );
+  assert(
+    pichuFriendshipEvolution.pokemon.friendship === 223 &&
+      pichuFriendshipEvolution.friendshipGained === 4,
+    "friendship gains were not preserved through evolution",
+  );
+
+  const friendlyGolbat = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Golbat"),
+    level: 24,
+    friendship: 156,
+  });
+  const crobatEvolution = rewardEngine.applyXpToPokemon(
+    [friendlyGolbat],
+    0,
+    rewardEngine.getXpNeededForLevel(friendlyGolbat.level),
+  );
+  assert(
+    crobatEvolution.pokemon.name === "Crobat",
+    "Golbat did not evolve through friendship",
+  );
+
+  const createFriendlyEevee = () =>
+    pokemonUtils.normalizePokemon({
+      ...pokemonUtils.getPokemonTemplateByName("Eevee"),
+      level: 20,
+      friendship: 156,
+    });
+  evolutionTimeOfDay = "day";
+  const espeonEvolution = rewardEngine.applyXpToPokemon(
+    [createFriendlyEevee()],
+    0,
+    rewardEngine.getXpNeededForLevel(20),
+  );
+  assert(
+    espeonEvolution.pokemon.name === "Espeon",
+    "Eevee did not evolve into Espeon during the day",
+  );
+  evolutionTimeOfDay = "night";
+  const umbreonEvolution = rewardEngine.applyXpToPokemon(
+    [createFriendlyEevee()],
+    0,
+    rewardEngine.getXpNeededForLevel(20),
+  );
+  assert(
+    umbreonEvolution.pokemon.name === "Umbreon",
+    "Eevee did not evolve into Umbreon at night",
+  );
+  evolutionTimeOfDay = "day";
+
+  const sylveonCandidate = createFriendlyEevee();
+  sylveonCandidate.moves[0] = {
+    ...gameData.moves["Disarming Voice"],
+    currentPp: gameData.moves["Disarming Voice"].maxPp,
+  };
+  const branchedEeveeEvolution = rewardEngine.applyXpToPokemon(
+    [sylveonCandidate],
+    0,
+    rewardEngine.getXpNeededForLevel(sylveonCandidate.level),
+  );
+  assert(
+    branchedEeveeEvolution.pokemon.name === "Eevee" &&
+      branchedEeveeEvolution.pendingEvolution?.options.some(
+        (option) => option.targetName === "Sylveon",
+      ) &&
+      branchedEeveeEvolution.pendingEvolution?.options.some(
+        (option) => option.targetName === "Espeon",
+      ),
+    "known move type evolution did not expose the valid Eevee branches",
+  );
+
+  [
+    ["Kadabra", "linking-cord", "Alakazam"],
+    ["Onix", "metal-coat", "Steelix"],
+    ["Porygon2", "dubious-disc", "Porygon-Z"],
+  ].forEach(([sourceName, item, targetName]) => {
+    const source = pokemonUtils.normalizePokemon(
+      pokemonUtils.getPokemonTemplateByName(sourceName),
+    );
+    const result = rewardEngine.performEvolution(source, {
+      trigger: "use-item",
+      item,
+    });
+    assert(result.evolved, `${item} did not evolve ${sourceName}`);
+    assert(
+      result.pokemon.name === targetName,
+      `${sourceName} evolved into ${result.pokemon.name} instead of ${targetName}`,
+    );
+  });
+
+  const maleKirlia = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Kirlia"),
+    level: 25,
+    gender: "male",
+  });
+  const galladeEvolution = rewardEngine.performEvolution(maleKirlia, {
+    trigger: "use-item",
+    item: "dawn-stone",
+  });
+  assert(
+    galladeEvolution.pokemon.name === "Gallade",
+    "male Kirlia did not evolve into Gallade",
+  );
+  let wrongRequirementItemCount = 1;
+  const femaleKirlia = pokemonUtils.normalizePokemon({
+    ...maleKirlia,
+    gender: "female",
+  });
+  const invalidGalladeEvolution = rewardEngine.performEvolution(femaleKirlia, {
+    trigger: "use-item",
+    item: "dawn-stone",
+  });
+  if (invalidGalladeEvolution.evolved) wrongRequirementItemCount -= 1;
+  assert(!invalidGalladeEvolution.evolved, "female Kirlia evolved into Gallade");
+  assert(
+    wrongRequirementItemCount === 1,
+    "item was consumed when a gender requirement failed",
+  );
+
+  const tangela = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Tangela"),
+    level: 20,
+  });
+  tangela.moves[0] = {
+    ...gameData.moves["Ancient Power"],
+    currentPp: gameData.moves["Ancient Power"].maxPp,
+  };
+  const tangrowthEvolution = rewardEngine.applyXpToPokemon(
+    [tangela],
+    0,
+    rewardEngine.getXpNeededForLevel(tangela.level),
+  );
+  assert(
+    tangrowthEvolution.pokemon.name === "Tangrowth",
+    "known-move evolution did not recognize Ancient Power",
+  );
+
+  const tyrogue = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Tyrogue"),
+    level: 19,
+    attack: 40,
+    defense: 30,
+  });
+  const hitmonleeEvolution = rewardEngine.applyXpToPokemon(
+    [tyrogue],
+    0,
+    rewardEngine.getXpNeededForLevel(19),
+  );
+  assert(
+    hitmonleeEvolution.pokemon.name === "Hitmonlee",
+    "relative Attack/Defense evolution chose the wrong target",
   );
 
   const stonePikachu = pokemonUtils.normalizePokemon({

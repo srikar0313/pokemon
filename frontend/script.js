@@ -786,6 +786,32 @@ function getEvolutionItemBySlug(itemSlug) {
   return shopCatalog.find((item) => item.evolutionItem === itemSlug) || null;
 }
 
+function renderEvolutionRequirementOption(requirement) {
+  const unsupported = requirement.unsupported || [];
+  const state = unsupported.length
+    ? "unsupported"
+    : requirement.satisfied
+      ? "satisfied"
+      : "unsatisfied";
+  const stateLabel =
+    state === "satisfied"
+      ? "Satisfied"
+      : state === "unsupported"
+        ? "Unsupported"
+        : "Not met";
+  return `
+    <div class="evolution-requirement ${state}">
+      <strong>${stateLabel}</strong>
+      ${(requirement.checks || [])
+        .map(
+          (check) => `<span class="${check.satisfied ? "met" : "unmet"}">${check.satisfied ? "OK" : "Need"}: ${escapeHtml(check.label)}</span>`,
+        )
+        .join("")}
+      ${unsupported.map((entry) => `<span>Unavailable: ${escapeHtml(entry)}</span>`).join("")}
+    </div>
+  `;
+}
+
 function renderEvolutionPanel(
   pokemon,
   section = "team",
@@ -827,12 +853,9 @@ function renderEvolutionPanel(
                     .join("");
                   return `<div class="evolution-option${option.supported ? "" : " unsupported"}">
                     <strong>${escapeHtml(option.targetName)}</strong>
-                    <small>${(option.requirements || []).map(escapeHtml).join(" or ") || "Special requirement"}</small>
-                    ${
-                      option.unsupportedRequirements?.length
-                        ? `<em>Not supported yet: ${option.unsupportedRequirements.map(escapeHtml).join(", ")}</em>`
-                        : ""
-                    }
+                    ${(option.requirementOptions || [])
+                      .map(renderEvolutionRequirementOption)
+                      .join('<span class="evolution-or">or</span>')}
                     ${itemActions}
                   </div>`;
                 })
@@ -899,6 +922,7 @@ function renderPokemonDetailCard(
           <div class="partner-stats">
             <p>${renderIcon("heart", "HP")} HP: ${pokemon.currentHp}/${pokemon.maxHp}</p>
             <p>Status: ${fainted ? renderStatus("fainted") : renderStatus(pokemon.status)}</p>
+            <p>Friendship: ${pokemon.friendship ?? 70}/255 | ${escapeHtml(formatPokemonGender(pokemon.gender))}</p>
             ${renderXpBar(pokemon)}
           </div>
         </div>
@@ -4796,6 +4820,12 @@ function getHpPercent(current, max) {
 function formatStatus(status) {
   if (!status || status === "none") return "Ready";
   return status.charAt(0).toUpperCase() + status.slice(1);
+}
+
+function formatPokemonGender(gender) {
+  if (gender === "male") return "Male";
+  if (gender === "female") return "Female";
+  return "Genderless";
 }
 
 function getTypeEffectiveness(attackerType, defenderType) {

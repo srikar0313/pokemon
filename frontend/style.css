@@ -359,6 +359,52 @@ h3 {
   font-weight: 700;
 }
 
+.evolution-requirement {
+  display: grid;
+  gap: 3px;
+  padding: 7px;
+  border-left: 3px solid #8799ad;
+  background: #f3f6fa;
+}
+
+.evolution-requirement.satisfied {
+  border-left-color: #35966f;
+  background: #eaf7f1;
+}
+
+.evolution-requirement.unsatisfied {
+  border-left-color: #d2942f;
+  background: #fff6e5;
+}
+
+.evolution-requirement.unsupported {
+  border-left-color: #b45b67;
+  background: #fff0f2;
+}
+
+.evolution-requirement strong,
+.evolution-requirement span {
+  font-size: 11px;
+}
+
+.evolution-requirement .met {
+  color: #237455;
+}
+
+.evolution-requirement .unmet {
+  color: #8c5b18;
+}
+
+.evolution-or {
+  justify-self: center;
+  padding: 2px 7px;
+  background: #e9f1fb;
+  color: #526b86;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .evolution-option.unsupported {
   opacity: 0.72;
 }
