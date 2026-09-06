@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+  <title id="title">Trainer placeholder</title>
+  <rect width="160" height="160" rx="12" fill="#e8eff8"/>
+  <circle cx="80" cy="55" r="27" fill="#7693b5"/>
+  <path d="M36 142c3-34 20-53 44-53s41 19 44 53" fill="#476789"/>
+  <path d="M49 45c8-25 54-33 67 0H49z" fill="#d84a4a"/>
+  <rect x="49" y="43" width="67" height="9" rx="4" fill="#f8fbff"/>
+  <circle cx="80" cy="47" r="8" fill="#263a58" stroke="#f8fbff" stroke-width="4"/>
+</svg>

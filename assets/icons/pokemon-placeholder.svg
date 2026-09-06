@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title">
+  <title id="title">Pokemon placeholder</title>
+  <rect width="160" height="160" rx="12" fill="#edf3f8"/>
+  <circle cx="80" cy="80" r="49" fill="#f8fbff" stroke="#496785" stroke-width="8"/>
+  <path d="M31 80h98" stroke="#496785" stroke-width="8"/>
+  <path d="M34 75a49 49 0 0 1 92 0H34z" fill="#d95050"/>
+  <circle cx="80" cy="80" r="15" fill="#f8fbff" stroke="#496785" stroke-width="7"/>
+  <circle cx="80" cy="80" r="6" fill="#496785"/>
+</svg>

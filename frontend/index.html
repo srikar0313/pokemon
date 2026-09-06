@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokemon Adventure</title>
-    <link rel="stylesheet" href="style.css?v=20260503-reroll" />
+    <link rel="stylesheet" href="style.css?v=20260906-refine" />
   </head>
   <body>
     <div class="app-shell">
@@ -16,13 +16,6 @@
           onclick="setActiveScreen('explore')"
         >
           Explore
-        </button>
-        <button
-          class="nav-tab"
-          data-screen="battle"
-          onclick="setActiveScreen('battle')"
-        >
-          Battle
         </button>
         <button
           class="nav-tab"
@@ -82,13 +75,6 @@
             <div id="area-helper" class="area-helper-text"></div>
             <div id="route-world"></div>
             <div id="npc-dialogue"></div>
-            <button
-              id="explore-btn"
-              class="primary-action"
-              style="display: none"
-            >
-              Explore
-            </button>
           </div>
         </section>
 
@@ -178,9 +164,12 @@
           <div id="swap-panel" class="overlay-panel hidden">
             <div id="swap-picker"></div>
           </div>
+          <div id="storage-panel" class="overlay-panel hidden">
+            <div id="storage-browser"></div>
+          </div>
         </div>
       </div>
     </div>
-    <script src="script.js?v=20260503-reroll"></script>
+    <script src="script.js?v=20260906-refine"></script>
   </body>
 </html>
