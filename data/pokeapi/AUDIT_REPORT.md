@@ -1,0 +1,1268 @@
+# PokéAPI Data Audit
+
+Generated: 2026-09-06T13:37:26.297Z
+
+- Pokémon audited: **134**
+- Fully matched: **7**
+- With mismatches: **127**
+- Failed species audits: **0**
+- Type mismatches: **166**
+- Base-stat mismatches: **667**
+- Capture-rate mismatches: **83**
+- Evolution mismatches: **69**
+- Branching families: **7**
+- Missing family members: **120**
+- Request failures: **0**
+
+> Game-specific habitats, rarity balance, times, movesets, encounter weights, teams, rewards, and quests are intentionally not audited as canonical errors.
+
+## Critical Identity Problems
+
+- **Pidgeot #16** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":16,"name":"Pidgeot"}`; canonical: `{"id":16,"pokemonName":"pidgey","speciesName":"pidgey"}`.
+- **Girafarig #207** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":207,"name":"Girafarig"}`; canonical: `{"id":207,"pokemonName":"gligar","speciesName":"gligar"}`.
+- **Sneasel #218** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":218,"name":"Sneasel"}`; canonical: `{"id":218,"pokemonName":"slugma","speciesName":"slugma"}`.
+- **Caterpie #219** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":219,"name":"Caterpie"}`; canonical: `{"id":219,"pokemonName":"magcargo","speciesName":"magcargo"}`.
+- **Weedle #220** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":220,"name":"Weedle"}`; canonical: `{"id":220,"pokemonName":"swinub","speciesName":"swinub"}`.
+- **Oddish #221** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":221,"name":"Oddish"}`; canonical: `{"id":221,"pokemonName":"piloswine","speciesName":"piloswine"}`.
+- **Butterfree #222** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":222,"name":"Butterfree"}`; canonical: `{"id":222,"pokemonName":"corsola","speciesName":"corsola"}`.
+- **Poliwag #223** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":223,"name":"Poliwag"}`; canonical: `{"id":223,"pokemonName":"remoraid","speciesName":"remoraid"}`.
+- **Magikarp #224** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":224,"name":"Magikarp"}`; canonical: `{"id":224,"pokemonName":"octillery","speciesName":"octillery"}`.
+- **Goldeen #225** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":225,"name":"Goldeen"}`; canonical: `{"id":225,"pokemonName":"delibird","speciesName":"delibird"}`.
+- **Staryu #226** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":226,"name":"Staryu"}`; canonical: `{"id":226,"pokemonName":"mantine","speciesName":"mantine"}`.
+- **Zubat #227** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":227,"name":"Zubat"}`; canonical: `{"id":227,"pokemonName":"skarmory","speciesName":"skarmory"}`.
+- **Diglett #228** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":228,"name":"Diglett"}`; canonical: `{"id":228,"pokemonName":"houndour","speciesName":"houndour"}`.
+- **Machop #229** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":229,"name":"Machop"}`; canonical: `{"id":229,"pokemonName":"houndoom","speciesName":"houndoom"}`.
+- **Tentacool #230** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":230,"name":"Tentacool"}`; canonical: `{"id":230,"pokemonName":"kingdra","speciesName":"kingdra"}`.
+- **Horsea #231** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":231,"name":"Horsea"}`; canonical: `{"id":231,"pokemonName":"phanpy","speciesName":"phanpy"}`.
+- **Shellder #232** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":232,"name":"Shellder"}`; canonical: `{"id":232,"pokemonName":"donphan","speciesName":"donphan"}`.
+- **Seel #233** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":233,"name":"Seel"}`; canonical: `{"id":233,"pokemonName":"porygon2","speciesName":"porygon2"}`.
+- **Vulpix #234** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":234,"name":"Vulpix"}`; canonical: `{"id":234,"pokemonName":"stantler","speciesName":"stantler"}`.
+- **Ponyta #235** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":235,"name":"Ponyta"}`; canonical: `{"id":235,"pokemonName":"smeargle","speciesName":"smeargle"}`.
+- **Magmar #236** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":236,"name":"Magmar"}`; canonical: `{"id":236,"pokemonName":"tyrogue","speciesName":"tyrogue"}`.
+- **Pidgey #237** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":237,"name":"Pidgey"}`; canonical: `{"id":237,"pokemonName":"hitmontop","speciesName":"hitmontop"}`.
+- **Larvitar #238** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":238,"name":"Larvitar"}`; canonical: `{"id":238,"pokemonName":"smoochum","speciesName":"smoochum"}`.
+- **Sandshrew #239** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":239,"name":"Sandshrew"}`; canonical: `{"id":239,"pokemonName":"elekid","speciesName":"elekid"}`.
+- **Trapinch #240** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":240,"name":"Trapinch"}`; canonical: `{"id":240,"pokemonName":"magby","speciesName":"magby"}`.
+- **Cacnea #241** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":241,"name":"Cacnea"}`; canonical: `{"id":241,"pokemonName":"miltank","speciesName":"miltank"}`.
+- **Sandile #242** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":242,"name":"Sandile"}`; canonical: `{"id":242,"pokemonName":"blissey","speciesName":"blissey"}`.
+- **Misdreavus #243** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":243,"name":"Misdreavus"}`; canonical: `{"id":243,"pokemonName":"raikou","speciesName":"raikou"}`.
+- **Duskull #244** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":244,"name":"Duskull"}`; canonical: `{"id":244,"pokemonName":"entei","speciesName":"entei"}`.
+- **Sableye #245** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":245,"name":"Sableye"}`; canonical: `{"id":245,"pokemonName":"suicune","speciesName":"suicune"}`.
+- **Articuno #247** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":247,"name":"Articuno"}`; canonical: `{"id":247,"pokemonName":"pupitar","speciesName":"pupitar"}`.
+- **Zapdos #248** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":248,"name":"Zapdos"}`; canonical: `{"id":248,"pokemonName":"tyranitar","speciesName":"tyranitar"}`.
+- **Moltres #249** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":249,"name":"Moltres"}`; canonical: `{"id":249,"pokemonName":"lugia","speciesName":"lugia"}`.
+- **Lugia #250** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":250,"name":"Lugia"}`; canonical: `{"id":250,"pokemonName":"ho-oh","speciesName":"ho-oh"}`.
+- **Ho-Oh #251** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":251,"name":"Ho-Oh"}`; canonical: `{"id":251,"pokemonName":"celebi","speciesName":"celebi"}`.
+- **Rayquaza #252** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":252,"name":"Rayquaza"}`; canonical: `{"id":252,"pokemonName":"treecko","speciesName":"treecko"}`.
+- **Kyogre #253** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":253,"name":"Kyogre"}`; canonical: `{"id":253,"pokemonName":"grovyle","speciesName":"grovyle"}`.
+- **Groudon #254** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":254,"name":"Groudon"}`; canonical: `{"id":254,"pokemonName":"sceptile","speciesName":"sceptile"}`.
+- **Dialga #255** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":255,"name":"Dialga"}`; canonical: `{"id":255,"pokemonName":"torchic","speciesName":"torchic"}`.
+- **Palkia #256** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":256,"name":"Palkia"}`; canonical: `{"id":256,"pokemonName":"combusken","speciesName":"combusken"}`.
+- **Giratina #257** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":257,"name":"Giratina"}`; canonical: `{"id":257,"pokemonName":"blaziken","speciesName":"blaziken"}`.
+- **Zekrom #258** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":258,"name":"Zekrom"}`; canonical: `{"id":258,"pokemonName":"mudkip","speciesName":"mudkip"}`.
+- **Reshiram #259** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":259,"name":"Reshiram"}`; canonical: `{"id":259,"pokemonName":"marshtomp","speciesName":"marshtomp"}`.
+- **Xerneas #260** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":260,"name":"Xerneas"}`; canonical: `{"id":260,"pokemonName":"swampert","speciesName":"swampert"}`.
+- **Yveltal #261** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":261,"name":"Yveltal"}`; canonical: `{"id":261,"pokemonName":"poochyena","speciesName":"poochyena"}`.
+- **Arceus #262** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":262,"name":"Arceus"}`; canonical: `{"id":262,"pokemonName":"mightyena","speciesName":"mightyena"}`.
+- **Hoothoot #263** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":263,"name":"Hoothoot"}`; canonical: `{"id":263,"pokemonName":"zigzagoon","speciesName":"zigzagoon"}`.
+- **Seedot #264** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":264,"name":"Seedot"}`; canonical: `{"id":264,"pokemonName":"linoone","speciesName":"linoone"}`.
+- **Shroomish #265** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":265,"name":"Shroomish"}`; canonical: `{"id":265,"pokemonName":"wurmple","speciesName":"wurmple"}`.
+- **Treecko #266** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":266,"name":"Treecko"}`; canonical: `{"id":266,"pokemonName":"silcoon","speciesName":"silcoon"}`.
+- **Turtwig #267** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":267,"name":"Turtwig"}`; canonical: `{"id":267,"pokemonName":"beautifly","speciesName":"beautifly"}`.
+- **Mudkip #268** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":268,"name":"Mudkip"}`; canonical: `{"id":268,"pokemonName":"cascoon","speciesName":"cascoon"}`.
+- **Lotad #269** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":269,"name":"Lotad"}`; canonical: `{"id":269,"pokemonName":"dustox","speciesName":"dustox"}`.
+- **Wingull #270** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":270,"name":"Wingull"}`; canonical: `{"id":270,"pokemonName":"lotad","speciesName":"lotad"}`.
+- **Feebas #271** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":271,"name":"Feebas"}`; canonical: `{"id":271,"pokemonName":"lombre","speciesName":"lombre"}`.
+- **Buizel #272** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":272,"name":"Buizel"}`; canonical: `{"id":272,"pokemonName":"ludicolo","speciesName":"ludicolo"}`.
+- **Aron #273** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":273,"name":"Aron"}`; canonical: `{"id":273,"pokemonName":"seedot","speciesName":"seedot"}`.
+- **Nosepass #274** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":274,"name":"Nosepass"}`; canonical: `{"id":274,"pokemonName":"nuzleaf","speciesName":"nuzleaf"}`.
+- **Roggenrola #275** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":275,"name":"Roggenrola"}`; canonical: `{"id":275,"pokemonName":"shiftry","speciesName":"shiftry"}`.
+- **Drilbur #276** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":276,"name":"Drilbur"}`; canonical: `{"id":276,"pokemonName":"taillow","speciesName":"taillow"}`.
+- **Mawile #277** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":277,"name":"Mawile"}`; canonical: `{"id":277,"pokemonName":"swellow","speciesName":"swellow"}`.
+- **Torchic #278** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":278,"name":"Torchic"}`; canonical: `{"id":278,"pokemonName":"wingull","speciesName":"wingull"}`.
+- **Numel #279** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":279,"name":"Numel"}`; canonical: `{"id":279,"pokemonName":"pelipper","speciesName":"pelipper"}`.
+- **Slugma #280** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":280,"name":"Slugma"}`; canonical: `{"id":280,"pokemonName":"ralts","speciesName":"ralts"}`.
+- **Houndour #281** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":281,"name":"Houndour"}`; canonical: `{"id":281,"pokemonName":"kirlia","speciesName":"kirlia"}`.
+- **Salandit #282** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":282,"name":"Salandit"}`; canonical: `{"id":282,"pokemonName":"gardevoir","speciesName":"gardevoir"}`.
+- **Rookidee #283** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":283,"name":"Rookidee"}`; canonical: `{"id":283,"pokemonName":"surskit","speciesName":"surskit"}`.
+- **Riolu #284** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":284,"name":"Riolu"}`; canonical: `{"id":284,"pokemonName":"masquerain","speciesName":"masquerain"}`.
+- **Absol #285** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":285,"name":"Absol"}`; canonical: `{"id":285,"pokemonName":"shroomish","speciesName":"shroomish"}`.
+- **Bagon #286** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":286,"name":"Bagon"}`; canonical: `{"id":286,"pokemonName":"breloom","speciesName":"breloom"}`.
+- **Axew #287** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":287,"name":"Axew"}`; canonical: `{"id":287,"pokemonName":"slakoth","speciesName":"slakoth"}`.
+- **Baltoy #288** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":288,"name":"Baltoy"}`; canonical: `{"id":288,"pokemonName":"vigoroth","speciesName":"vigoroth"}`.
+- **Hippopotas #289** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":289,"name":"Hippopotas"}`; canonical: `{"id":289,"pokemonName":"slaking","speciesName":"slaking"}`.
+- **Darumaka #290** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":290,"name":"Darumaka"}`; canonical: `{"id":290,"pokemonName":"nincada","speciesName":"nincada"}`.
+- **Scraggy #291** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":291,"name":"Scraggy"}`; canonical: `{"id":291,"pokemonName":"ninjask","speciesName":"ninjask"}`.
+- **Silicobra #292** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":292,"name":"Silicobra"}`; canonical: `{"id":292,"pokemonName":"shedinja","speciesName":"shedinja"}`.
+- **Shuppet #293** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":293,"name":"Shuppet"}`; canonical: `{"id":293,"pokemonName":"whismur","speciesName":"whismur"}`.
+- **Litwick #294** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":294,"name":"Litwick"}`; canonical: `{"id":294,"pokemonName":"loudred","speciesName":"loudred"}`.
+- **Phantump #295** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":295,"name":"Phantump"}`; canonical: `{"id":295,"pokemonName":"exploud","speciesName":"exploud"}`.
+- **Yamask #296** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":296,"name":"Yamask"}`; canonical: `{"id":296,"pokemonName":"makuhita","speciesName":"makuhita"}`.
+- **Spiritomb #297** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":297,"name":"Spiritomb"}`; canonical: `{"id":297,"pokemonName":"hariyama","speciesName":"hariyama"}`.
+- **Latios #298** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":298,"name":"Latios"}`; canonical: `{"id":298,"pokemonName":"azurill","speciesName":"azurill"}`.
+- **Latias #299** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":299,"name":"Latias"}`; canonical: `{"id":299,"pokemonName":"nosepass","speciesName":"nosepass"}`.
+- **Jirachi #300** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":300,"name":"Jirachi"}`; canonical: `{"id":300,"pokemonName":"skitty","speciesName":"skitty"}`.
+- **Darkrai #301** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":301,"name":"Darkrai"}`; canonical: `{"id":301,"pokemonName":"delcatty","speciesName":"delcatty"}`.
+- **Cresselia #302** [CRITICAL] Local ID and name do not resolve to the same canonical species. Current: `{"id":302,"name":"Cresselia"}`; canonical: `{"id":302,"pokemonName":"sableye","speciesName":"sableye"}`.
+
+## Type Mismatches
+
+- **Bulbasaur #1** [MEDIUM] Bulbasaur's types array differs from PokéAPI. Current: `Grass`; canonical: `Grass, Poison`.
+- **Bellsprout #69** [MEDIUM] Bellsprout's types array differs from PokéAPI. Current: `Grass`; canonical: `Grass, Poison`.
+- **Geodude #74** [MEDIUM] Geodude's types array differs from PokéAPI. Current: `Rock`; canonical: `Rock, Ground`.
+- **Pidgeot #16** [MEDIUM] Pidgeot's primary type differs from PokéAPI. Current: `Flying`; canonical: `Normal`.
+- **Pidgeot #16** [MEDIUM] Pidgeot's types array differs from PokéAPI. Current: `Flying`; canonical: `Normal, Flying`.
+- **Marill #183** [MEDIUM] Marill's types array differs from PokéAPI. Current: `Water`; canonical: `Water, Fairy`.
+- **Wooper #194** [MEDIUM] Wooper's types array differs from PokéAPI. Current: `Water`; canonical: `Water, Ground`.
+- **Girafarig #207** [MEDIUM] Girafarig's primary type differs from PokéAPI. Current: `Psychic`; canonical: `Ground`.
+- **Girafarig #207** [MEDIUM] Girafarig's types array differs from PokéAPI. Current: `Normal, Psychic`; canonical: `Ground, Flying`.
+- **Sneasel #218** [MEDIUM] Sneasel's primary type differs from PokéAPI. Current: `Dark`; canonical: `Fire`.
+- **Sneasel #218** [MEDIUM] Sneasel's types array differs from PokéAPI. Current: `Dark`; canonical: `Fire`.
+- **Caterpie #219** [MEDIUM] Caterpie's primary type differs from PokéAPI. Current: `Bug`; canonical: `Fire`.
+- **Caterpie #219** [MEDIUM] Caterpie's types array differs from PokéAPI. Current: `Bug`; canonical: `Fire, Rock`.
+- **Weedle #220** [MEDIUM] Weedle's primary type differs from PokéAPI. Current: `Bug`; canonical: `Ice`.
+- **Weedle #220** [MEDIUM] Weedle's types array differs from PokéAPI. Current: `Bug, Poison`; canonical: `Ice, Ground`.
+- **Oddish #221** [MEDIUM] Oddish's primary type differs from PokéAPI. Current: `Grass`; canonical: `Ice`.
+- **Oddish #221** [MEDIUM] Oddish's types array differs from PokéAPI. Current: `Grass, Poison`; canonical: `Ice, Ground`.
+- **Butterfree #222** [MEDIUM] Butterfree's primary type differs from PokéAPI. Current: `Bug`; canonical: `Water`.
+- **Butterfree #222** [MEDIUM] Butterfree's types array differs from PokéAPI. Current: `Bug, Flying`; canonical: `Water, Rock`.
+- **Goldeen #225** [MEDIUM] Goldeen's primary type differs from PokéAPI. Current: `Water`; canonical: `Ice`.
+- **Goldeen #225** [MEDIUM] Goldeen's types array differs from PokéAPI. Current: `Water`; canonical: `Ice, Flying`.
+- **Staryu #226** [MEDIUM] Staryu's types array differs from PokéAPI. Current: `Water`; canonical: `Water, Flying`.
+- **Zubat #227** [MEDIUM] Zubat's primary type differs from PokéAPI. Current: `Poison`; canonical: `Steel`.
+- **Zubat #227** [MEDIUM] Zubat's types array differs from PokéAPI. Current: `Poison, Flying`; canonical: `Steel, Flying`.
+- **Diglett #228** [MEDIUM] Diglett's primary type differs from PokéAPI. Current: `Ground`; canonical: `Dark`.
+- **Diglett #228** [MEDIUM] Diglett's types array differs from PokéAPI. Current: `Ground`; canonical: `Dark, Fire`.
+- **Machop #229** [MEDIUM] Machop's primary type differs from PokéAPI. Current: `Fighting`; canonical: `Dark`.
+- **Machop #229** [MEDIUM] Machop's types array differs from PokéAPI. Current: `Fighting`; canonical: `Dark, Fire`.
+- **Tentacool #230** [MEDIUM] Tentacool's types array differs from PokéAPI. Current: `Water, Poison`; canonical: `Water, Dragon`.
+- **Horsea #231** [MEDIUM] Horsea's primary type differs from PokéAPI. Current: `Water`; canonical: `Ground`.
+- **Horsea #231** [MEDIUM] Horsea's types array differs from PokéAPI. Current: `Water`; canonical: `Ground`.
+- **Shellder #232** [MEDIUM] Shellder's primary type differs from PokéAPI. Current: `Water`; canonical: `Ground`.
+- **Shellder #232** [MEDIUM] Shellder's types array differs from PokéAPI. Current: `Water`; canonical: `Ground`.
+- **Seel #233** [MEDIUM] Seel's primary type differs from PokéAPI. Current: `Water`; canonical: `Normal`.
+- **Seel #233** [MEDIUM] Seel's types array differs from PokéAPI. Current: `Water, Ice`; canonical: `Normal`.
+- **Vulpix #234** [MEDIUM] Vulpix's primary type differs from PokéAPI. Current: `Fire`; canonical: `Normal`.
+- **Vulpix #234** [MEDIUM] Vulpix's types array differs from PokéAPI. Current: `Fire`; canonical: `Normal`.
+- **Ponyta #235** [MEDIUM] Ponyta's primary type differs from PokéAPI. Current: `Fire`; canonical: `Normal`.
+- **Ponyta #235** [MEDIUM] Ponyta's types array differs from PokéAPI. Current: `Fire`; canonical: `Normal`.
+- **Magmar #236** [MEDIUM] Magmar's primary type differs from PokéAPI. Current: `Fire`; canonical: `Fighting`.
+- **Magmar #236** [MEDIUM] Magmar's types array differs from PokéAPI. Current: `Fire`; canonical: `Fighting`.
+- **Pidgey #237** [MEDIUM] Pidgey's primary type differs from PokéAPI. Current: `Normal`; canonical: `Fighting`.
+- **Pidgey #237** [MEDIUM] Pidgey's types array differs from PokéAPI. Current: `Normal, Flying`; canonical: `Fighting`.
+- **Larvitar #238** [MEDIUM] Larvitar's primary type differs from PokéAPI. Current: `Rock`; canonical: `Ice`.
+- **Larvitar #238** [MEDIUM] Larvitar's types array differs from PokéAPI. Current: `Rock, Ground`; canonical: `Ice, Psychic`.
+- **Sandshrew #239** [MEDIUM] Sandshrew's primary type differs from PokéAPI. Current: `Ground`; canonical: `Electric`.
+- **Sandshrew #239** [MEDIUM] Sandshrew's types array differs from PokéAPI. Current: `Ground`; canonical: `Electric`.
+- **Trapinch #240** [MEDIUM] Trapinch's primary type differs from PokéAPI. Current: `Ground`; canonical: `Fire`.
+- **Trapinch #240** [MEDIUM] Trapinch's types array differs from PokéAPI. Current: `Ground`; canonical: `Fire`.
+- **Cacnea #241** [MEDIUM] Cacnea's primary type differs from PokéAPI. Current: `Grass`; canonical: `Normal`.
+- **Cacnea #241** [MEDIUM] Cacnea's types array differs from PokéAPI. Current: `Grass`; canonical: `Normal`.
+- **Sandile #242** [MEDIUM] Sandile's primary type differs from PokéAPI. Current: `Ground`; canonical: `Normal`.
+- **Sandile #242** [MEDIUM] Sandile's types array differs from PokéAPI. Current: `Ground, Dark`; canonical: `Normal`.
+- **Misdreavus #243** [MEDIUM] Misdreavus's primary type differs from PokéAPI. Current: `Ghost`; canonical: `Electric`.
+- **Misdreavus #243** [MEDIUM] Misdreavus's types array differs from PokéAPI. Current: `Ghost`; canonical: `Electric`.
+- **Duskull #244** [MEDIUM] Duskull's primary type differs from PokéAPI. Current: `Ghost`; canonical: `Fire`.
+- **Duskull #244** [MEDIUM] Duskull's types array differs from PokéAPI. Current: `Ghost`; canonical: `Fire`.
+- **Sableye #245** [MEDIUM] Sableye's primary type differs from PokéAPI. Current: `Dark`; canonical: `Water`.
+- **Sableye #245** [MEDIUM] Sableye's types array differs from PokéAPI. Current: `Dark, Ghost`; canonical: `Water`.
+- **Articuno #247** [MEDIUM] Articuno's primary type differs from PokéAPI. Current: `Ice`; canonical: `Rock`.
+- **Articuno #247** [MEDIUM] Articuno's types array differs from PokéAPI. Current: `Ice, Flying`; canonical: `Rock, Ground`.
+- **Zapdos #248** [MEDIUM] Zapdos's primary type differs from PokéAPI. Current: `Electric`; canonical: `Rock`.
+- **Zapdos #248** [MEDIUM] Zapdos's types array differs from PokéAPI. Current: `Electric, Flying`; canonical: `Rock, Dark`.
+- **Moltres #249** [MEDIUM] Moltres's primary type differs from PokéAPI. Current: `Fire`; canonical: `Psychic`.
+- **Moltres #249** [MEDIUM] Moltres's types array differs from PokéAPI. Current: `Fire, Flying`; canonical: `Psychic, Flying`.
+- **Lugia #250** [MEDIUM] Lugia's primary type differs from PokéAPI. Current: `Psychic`; canonical: `Fire`.
+- **Lugia #250** [MEDIUM] Lugia's types array differs from PokéAPI. Current: `Psychic, Flying`; canonical: `Fire, Flying`.
+- **Ho-Oh #251** [MEDIUM] Ho-Oh's primary type differs from PokéAPI. Current: `Fire`; canonical: `Psychic`.
+- **Ho-Oh #251** [MEDIUM] Ho-Oh's types array differs from PokéAPI. Current: `Fire, Flying`; canonical: `Psychic, Grass`.
+- **Rayquaza #252** [MEDIUM] Rayquaza's primary type differs from PokéAPI. Current: `Dragon`; canonical: `Grass`.
+- **Rayquaza #252** [MEDIUM] Rayquaza's types array differs from PokéAPI. Current: `Dragon, Flying`; canonical: `Grass`.
+- **Kyogre #253** [MEDIUM] Kyogre's primary type differs from PokéAPI. Current: `Water`; canonical: `Grass`.
+- **Kyogre #253** [MEDIUM] Kyogre's types array differs from PokéAPI. Current: `Water`; canonical: `Grass`.
+- **Groudon #254** [MEDIUM] Groudon's primary type differs from PokéAPI. Current: `Ground`; canonical: `Grass`.
+- **Groudon #254** [MEDIUM] Groudon's types array differs from PokéAPI. Current: `Ground`; canonical: `Grass`.
+- **Dialga #255** [MEDIUM] Dialga's primary type differs from PokéAPI. Current: `Steel`; canonical: `Fire`.
+- **Dialga #255** [MEDIUM] Dialga's types array differs from PokéAPI. Current: `Steel, Dragon`; canonical: `Fire`.
+- **Palkia #256** [MEDIUM] Palkia's primary type differs from PokéAPI. Current: `Water`; canonical: `Fire`.
+- **Palkia #256** [MEDIUM] Palkia's types array differs from PokéAPI. Current: `Water, Dragon`; canonical: `Fire, Fighting`.
+- **Giratina #257** [MEDIUM] Giratina's primary type differs from PokéAPI. Current: `Ghost`; canonical: `Fire`.
+- **Giratina #257** [MEDIUM] Giratina's types array differs from PokéAPI. Current: `Ghost, Dragon`; canonical: `Fire, Fighting`.
+- **Zekrom #258** [MEDIUM] Zekrom's primary type differs from PokéAPI. Current: `Electric`; canonical: `Water`.
+- **Zekrom #258** [MEDIUM] Zekrom's types array differs from PokéAPI. Current: `Electric, Dragon`; canonical: `Water`.
+- **Reshiram #259** [MEDIUM] Reshiram's primary type differs from PokéAPI. Current: `Fire`; canonical: `Water`.
+- **Reshiram #259** [MEDIUM] Reshiram's types array differs from PokéAPI. Current: `Fire, Dragon`; canonical: `Water, Ground`.
+- **Xerneas #260** [MEDIUM] Xerneas's primary type differs from PokéAPI. Current: `Fairy`; canonical: `Water`.
+- **Xerneas #260** [MEDIUM] Xerneas's types array differs from PokéAPI. Current: `Fairy`; canonical: `Water, Ground`.
+- **Yveltal #261** [MEDIUM] Yveltal's types array differs from PokéAPI. Current: `Dark, Flying`; canonical: `Dark`.
+- **Arceus #262** [MEDIUM] Arceus's primary type differs from PokéAPI. Current: `Normal`; canonical: `Dark`.
+- **Arceus #262** [MEDIUM] Arceus's types array differs from PokéAPI. Current: `Normal`; canonical: `Dark`.
+- **Hoothoot #263** [MEDIUM] Hoothoot's types array differs from PokéAPI. Current: `Normal, Flying`; canonical: `Normal`.
+- **Seedot #264** [MEDIUM] Seedot's primary type differs from PokéAPI. Current: `Grass`; canonical: `Normal`.
+- **Seedot #264** [MEDIUM] Seedot's types array differs from PokéAPI. Current: `Grass`; canonical: `Normal`.
+- **Shroomish #265** [MEDIUM] Shroomish's primary type differs from PokéAPI. Current: `Grass`; canonical: `Bug`.
+- **Shroomish #265** [MEDIUM] Shroomish's types array differs from PokéAPI. Current: `Grass`; canonical: `Bug`.
+- **Treecko #266** [MEDIUM] Treecko's primary type differs from PokéAPI. Current: `Grass`; canonical: `Bug`.
+- **Treecko #266** [MEDIUM] Treecko's types array differs from PokéAPI. Current: `Grass`; canonical: `Bug`.
+- **Turtwig #267** [MEDIUM] Turtwig's primary type differs from PokéAPI. Current: `Grass`; canonical: `Bug`.
+- **Turtwig #267** [MEDIUM] Turtwig's types array differs from PokéAPI. Current: `Grass`; canonical: `Bug, Flying`.
+- **Mudkip #268** [MEDIUM] Mudkip's primary type differs from PokéAPI. Current: `Water`; canonical: `Bug`.
+- **Mudkip #268** [MEDIUM] Mudkip's types array differs from PokéAPI. Current: `Water`; canonical: `Bug`.
+- **Lotad #269** [MEDIUM] Lotad's primary type differs from PokéAPI. Current: `Water`; canonical: `Bug`.
+- **Lotad #269** [MEDIUM] Lotad's types array differs from PokéAPI. Current: `Water, Grass`; canonical: `Bug, Poison`.
+- **Wingull #270** [MEDIUM] Wingull's types array differs from PokéAPI. Current: `Water, Flying`; canonical: `Water, Grass`.
+- **Feebas #271** [MEDIUM] Feebas's types array differs from PokéAPI. Current: `Water`; canonical: `Water, Grass`.
+- **Buizel #272** [MEDIUM] Buizel's types array differs from PokéAPI. Current: `Water`; canonical: `Water, Grass`.
+- **Aron #273** [MEDIUM] Aron's primary type differs from PokéAPI. Current: `Steel`; canonical: `Grass`.
+- **Aron #273** [MEDIUM] Aron's types array differs from PokéAPI. Current: `Steel, Rock`; canonical: `Grass`.
+- **Nosepass #274** [MEDIUM] Nosepass's primary type differs from PokéAPI. Current: `Rock`; canonical: `Grass`.
+- **Nosepass #274** [MEDIUM] Nosepass's types array differs from PokéAPI. Current: `Rock`; canonical: `Grass, Dark`.
+- **Roggenrola #275** [MEDIUM] Roggenrola's primary type differs from PokéAPI. Current: `Rock`; canonical: `Grass`.
+- **Roggenrola #275** [MEDIUM] Roggenrola's types array differs from PokéAPI. Current: `Rock`; canonical: `Grass, Dark`.
+- **Drilbur #276** [MEDIUM] Drilbur's primary type differs from PokéAPI. Current: `Ground`; canonical: `Normal`.
+- **Drilbur #276** [MEDIUM] Drilbur's types array differs from PokéAPI. Current: `Ground`; canonical: `Normal, Flying`.
+- **Mawile #277** [MEDIUM] Mawile's primary type differs from PokéAPI. Current: `Steel`; canonical: `Normal`.
+- **Mawile #277** [MEDIUM] Mawile's types array differs from PokéAPI. Current: `Steel, Fairy`; canonical: `Normal, Flying`.
+- **Torchic #278** [MEDIUM] Torchic's primary type differs from PokéAPI. Current: `Fire`; canonical: `Water`.
+- **Torchic #278** [MEDIUM] Torchic's types array differs from PokéAPI. Current: `Fire`; canonical: `Water, Flying`.
+- **Numel #279** [MEDIUM] Numel's primary type differs from PokéAPI. Current: `Fire`; canonical: `Water`.
+- **Numel #279** [MEDIUM] Numel's types array differs from PokéAPI. Current: `Fire, Ground`; canonical: `Water, Flying`.
+- **Slugma #280** [MEDIUM] Slugma's primary type differs from PokéAPI. Current: `Fire`; canonical: `Psychic`.
+- **Slugma #280** [MEDIUM] Slugma's types array differs from PokéAPI. Current: `Fire`; canonical: `Psychic, Fairy`.
+- **Houndour #281** [MEDIUM] Houndour's primary type differs from PokéAPI. Current: `Dark`; canonical: `Psychic`.
+- **Houndour #281** [MEDIUM] Houndour's types array differs from PokéAPI. Current: `Dark, Fire`; canonical: `Psychic, Fairy`.
+- **Salandit #282** [MEDIUM] Salandit's primary type differs from PokéAPI. Current: `Poison`; canonical: `Psychic`.
+- **Salandit #282** [MEDIUM] Salandit's types array differs from PokéAPI. Current: `Poison, Fire`; canonical: `Psychic, Fairy`.
+- **Rookidee #283** [MEDIUM] Rookidee's primary type differs from PokéAPI. Current: `Flying`; canonical: `Bug`.
+- **Rookidee #283** [MEDIUM] Rookidee's types array differs from PokéAPI. Current: `Flying`; canonical: `Bug, Water`.
+- **Riolu #284** [MEDIUM] Riolu's primary type differs from PokéAPI. Current: `Fighting`; canonical: `Bug`.
+- **Riolu #284** [MEDIUM] Riolu's types array differs from PokéAPI. Current: `Fighting`; canonical: `Bug, Flying`.
+- **Absol #285** [MEDIUM] Absol's primary type differs from PokéAPI. Current: `Dark`; canonical: `Grass`.
+- **Absol #285** [MEDIUM] Absol's types array differs from PokéAPI. Current: `Dark`; canonical: `Grass`.
+- **Bagon #286** [MEDIUM] Bagon's primary type differs from PokéAPI. Current: `Dragon`; canonical: `Grass`.
+- **Bagon #286** [MEDIUM] Bagon's types array differs from PokéAPI. Current: `Dragon`; canonical: `Grass, Fighting`.
+- **Axew #287** [MEDIUM] Axew's primary type differs from PokéAPI. Current: `Dragon`; canonical: `Normal`.
+- **Axew #287** [MEDIUM] Axew's types array differs from PokéAPI. Current: `Dragon`; canonical: `Normal`.
+- **Baltoy #288** [MEDIUM] Baltoy's primary type differs from PokéAPI. Current: `Ground`; canonical: `Normal`.
+- **Baltoy #288** [MEDIUM] Baltoy's types array differs from PokéAPI. Current: `Ground, Psychic`; canonical: `Normal`.
+- **Hippopotas #289** [MEDIUM] Hippopotas's primary type differs from PokéAPI. Current: `Ground`; canonical: `Normal`.
+- **Hippopotas #289** [MEDIUM] Hippopotas's types array differs from PokéAPI. Current: `Ground`; canonical: `Normal`.
+- **Darumaka #290** [MEDIUM] Darumaka's primary type differs from PokéAPI. Current: `Fire`; canonical: `Bug`.
+- **Darumaka #290** [MEDIUM] Darumaka's types array differs from PokéAPI. Current: `Fire`; canonical: `Bug, Ground`.
+- **Scraggy #291** [MEDIUM] Scraggy's primary type differs from PokéAPI. Current: `Dark`; canonical: `Bug`.
+- **Scraggy #291** [MEDIUM] Scraggy's types array differs from PokéAPI. Current: `Dark, Fighting`; canonical: `Bug, Flying`.
+- **Silicobra #292** [MEDIUM] Silicobra's primary type differs from PokéAPI. Current: `Ground`; canonical: `Bug`.
+- **Silicobra #292** [MEDIUM] Silicobra's types array differs from PokéAPI. Current: `Ground`; canonical: `Bug, Ghost`.
+- **Shuppet #293** [MEDIUM] Shuppet's primary type differs from PokéAPI. Current: `Ghost`; canonical: `Normal`.
+- **Shuppet #293** [MEDIUM] Shuppet's types array differs from PokéAPI. Current: `Ghost`; canonical: `Normal`.
+- **Litwick #294** [MEDIUM] Litwick's primary type differs from PokéAPI. Current: `Ghost`; canonical: `Normal`.
+- **Litwick #294** [MEDIUM] Litwick's types array differs from PokéAPI. Current: `Ghost, Fire`; canonical: `Normal`.
+- **Phantump #295** [MEDIUM] Phantump's primary type differs from PokéAPI. Current: `Ghost`; canonical: `Normal`.
+- **Phantump #295** [MEDIUM] Phantump's types array differs from PokéAPI. Current: `Ghost, Grass`; canonical: `Normal`.
+- **Yamask #296** [MEDIUM] Yamask's primary type differs from PokéAPI. Current: `Ghost`; canonical: `Fighting`.
+- **Yamask #296** [MEDIUM] Yamask's types array differs from PokéAPI. Current: `Ghost`; canonical: `Fighting`.
+- **Spiritomb #297** [MEDIUM] Spiritomb's primary type differs from PokéAPI. Current: `Ghost`; canonical: `Fighting`.
+- **Spiritomb #297** [MEDIUM] Spiritomb's types array differs from PokéAPI. Current: `Ghost, Dark`; canonical: `Fighting`.
+- **Latios #298** [MEDIUM] Latios's primary type differs from PokéAPI. Current: `Dragon`; canonical: `Normal`.
+- **Latios #298** [MEDIUM] Latios's types array differs from PokéAPI. Current: `Dragon, Psychic`; canonical: `Normal, Fairy`.
+- **Latias #299** [MEDIUM] Latias's primary type differs from PokéAPI. Current: `Dragon`; canonical: `Rock`.
+- **Latias #299** [MEDIUM] Latias's types array differs from PokéAPI. Current: `Dragon, Psychic`; canonical: `Rock`.
+- **Jirachi #300** [MEDIUM] Jirachi's primary type differs from PokéAPI. Current: `Steel`; canonical: `Normal`.
+- **Jirachi #300** [MEDIUM] Jirachi's types array differs from PokéAPI. Current: `Steel, Psychic`; canonical: `Normal`.
+- **Darkrai #301** [MEDIUM] Darkrai's primary type differs from PokéAPI. Current: `Dark`; canonical: `Normal`.
+- **Darkrai #301** [MEDIUM] Darkrai's types array differs from PokéAPI. Current: `Dark`; canonical: `Normal`.
+- **Cresselia #302** [MEDIUM] Cresselia's primary type differs from PokéAPI. Current: `Psychic`; canonical: `Dark`.
+- **Cresselia #302** [MEDIUM] Cresselia's types array differs from PokéAPI. Current: `Psychic`; canonical: `Dark, Ghost`.
+
+## Base Stat Mismatches
+
+- **Bulbasaur #1** [MEDIUM] Bulbasaur's specialAttack base stat differs from PokéAPI. Current: `49`; canonical: `65`.
+- **Bulbasaur #1** [MEDIUM] Bulbasaur's specialDefense base stat differs from PokéAPI. Current: `49`; canonical: `65`.
+- **Bulbasaur #1** [MEDIUM] Bulbasaur's speed base stat differs from PokéAPI. Current: `49`; canonical: `45`.
+- **Charmander #4** [MEDIUM] Charmander's specialAttack base stat differs from PokéAPI. Current: `52`; canonical: `60`.
+- **Charmander #4** [MEDIUM] Charmander's specialDefense base stat differs from PokéAPI. Current: `43`; canonical: `50`.
+- **Charmander #4** [MEDIUM] Charmander's speed base stat differs from PokéAPI. Current: `52`; canonical: `65`.
+- **Squirtle #7** [MEDIUM] Squirtle's specialAttack base stat differs from PokéAPI. Current: `48`; canonical: `50`.
+- **Squirtle #7** [MEDIUM] Squirtle's specialDefense base stat differs from PokéAPI. Current: `65`; canonical: `64`.
+- **Squirtle #7** [MEDIUM] Squirtle's speed base stat differs from PokéAPI. Current: `48`; canonical: `43`.
+- **Pikachu #25** [MEDIUM] Pikachu's specialAttack base stat differs from PokéAPI. Current: `55`; canonical: `50`.
+- **Pikachu #25** [MEDIUM] Pikachu's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `50`.
+- **Pikachu #25** [MEDIUM] Pikachu's speed base stat differs from PokéAPI. Current: `55`; canonical: `90`.
+- **Clefairy #35** [MEDIUM] Clefairy's hp base stat differs from PokéAPI. Current: `35`; canonical: `70`.
+- **Clefairy #35** [MEDIUM] Clefairy's attack base stat differs from PokéAPI. Current: `20`; canonical: `45`.
+- **Clefairy #35** [MEDIUM] Clefairy's defense base stat differs from PokéAPI. Current: `24`; canonical: `48`.
+- **Clefairy #35** [MEDIUM] Clefairy's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `60`.
+- **Clefairy #35** [MEDIUM] Clefairy's specialDefense base stat differs from PokéAPI. Current: `24`; canonical: `65`.
+- **Clefairy #35** [MEDIUM] Clefairy's speed base stat differs from PokéAPI. Current: `20`; canonical: `35`.
+- **Clefairy #35** [MEDIUM] Clefairy's maxHp template value differs from canonical base HP. Current: `35`; canonical: `70`.
+- **Jigglypuff #39** [MEDIUM] Jigglypuff's hp base stat differs from PokéAPI. Current: `45`; canonical: `115`.
+- **Jigglypuff #39** [MEDIUM] Jigglypuff's attack base stat differs from PokéAPI. Current: `20`; canonical: `45`.
+- **Jigglypuff #39** [MEDIUM] Jigglypuff's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `45`.
+- **Jigglypuff #39** [MEDIUM] Jigglypuff's specialDefense base stat differs from PokéAPI. Current: `20`; canonical: `25`.
+- **Jigglypuff #39** [MEDIUM] Jigglypuff's maxHp template value differs from canonical base HP. Current: `45`; canonical: `115`.
+- **Psyduck #54** [MEDIUM] Psyduck's hp base stat differs from PokéAPI. Current: `35`; canonical: `50`.
+- **Psyduck #54** [MEDIUM] Psyduck's specialAttack base stat differs from PokéAPI. Current: `52`; canonical: `65`.
+- **Psyduck #54** [MEDIUM] Psyduck's specialDefense base stat differs from PokéAPI. Current: `48`; canonical: `50`.
+- **Psyduck #54** [MEDIUM] Psyduck's speed base stat differs from PokéAPI. Current: `52`; canonical: `55`.
+- **Psyduck #54** [MEDIUM] Psyduck's maxHp template value differs from canonical base HP. Current: `35`; canonical: `50`.
+- **Growlithe #58** [MEDIUM] Growlithe's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `50`.
+- **Growlithe #58** [MEDIUM] Growlithe's speed base stat differs from PokéAPI. Current: `70`; canonical: `60`.
+- **Bellsprout #69** [MEDIUM] Bellsprout's hp base stat differs from PokéAPI. Current: `30`; canonical: `50`.
+- **Bellsprout #69** [MEDIUM] Bellsprout's specialAttack base stat differs from PokéAPI. Current: `75`; canonical: `70`.
+- **Bellsprout #69** [MEDIUM] Bellsprout's specialDefense base stat differs from PokéAPI. Current: `35`; canonical: `30`.
+- **Bellsprout #69** [MEDIUM] Bellsprout's speed base stat differs from PokéAPI. Current: `75`; canonical: `40`.
+- **Bellsprout #69** [MEDIUM] Bellsprout's maxHp template value differs from canonical base HP. Current: `30`; canonical: `50`.
+- **Geodude #74** [MEDIUM] Geodude's specialAttack base stat differs from PokéAPI. Current: `80`; canonical: `30`.
+- **Geodude #74** [MEDIUM] Geodude's specialDefense base stat differs from PokéAPI. Current: `100`; canonical: `30`.
+- **Geodude #74** [MEDIUM] Geodude's speed base stat differs from PokéAPI. Current: `80`; canonical: `20`.
+- **Gastly #92** [MEDIUM] Gastly's specialAttack base stat differs from PokéAPI. Current: `35`; canonical: `100`.
+- **Gastly #92** [MEDIUM] Gastly's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `35`.
+- **Gastly #92** [MEDIUM] Gastly's speed base stat differs from PokéAPI. Current: `35`; canonical: `80`.
+- **Cubone #104** [MEDIUM] Cubone's attack base stat differs from PokéAPI. Current: `75`; canonical: `50`.
+- **Cubone #104** [MEDIUM] Cubone's defense base stat differs from PokéAPI. Current: `40`; canonical: `95`.
+- **Cubone #104** [MEDIUM] Cubone's specialAttack base stat differs from PokéAPI. Current: `75`; canonical: `40`.
+- **Cubone #104** [MEDIUM] Cubone's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `50`.
+- **Cubone #104** [MEDIUM] Cubone's speed base stat differs from PokéAPI. Current: `75`; canonical: `35`.
+- **Eevee #133** [MEDIUM] Eevee's specialAttack base stat differs from PokéAPI. Current: `55`; canonical: `45`.
+- **Eevee #133** [MEDIUM] Eevee's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `65`.
+- **Dratini #147** [MEDIUM] Dratini's specialAttack base stat differs from PokéAPI. Current: `64`; canonical: `50`.
+- **Dratini #147** [MEDIUM] Dratini's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `50`.
+- **Dratini #147** [MEDIUM] Dratini's speed base stat differs from PokéAPI. Current: `64`; canonical: `50`.
+- **Mewtwo #150** [MEDIUM] Mewtwo's speed base stat differs from PokéAPI. Current: `132`; canonical: `130`.
+- **Pidgeot #16** [MEDIUM] Pidgeot's hp base stat differs from PokéAPI. Current: `83`; canonical: `40`.
+- **Pidgeot #16** [MEDIUM] Pidgeot's attack base stat differs from PokéAPI. Current: `100`; canonical: `45`.
+- **Pidgeot #16** [MEDIUM] Pidgeot's defense base stat differs from PokéAPI. Current: `95`; canonical: `40`.
+- **Pidgeot #16** [MEDIUM] Pidgeot's specialAttack base stat differs from PokéAPI. Current: `100`; canonical: `35`.
+- **Pidgeot #16** [MEDIUM] Pidgeot's specialDefense base stat differs from PokéAPI. Current: `95`; canonical: `35`.
+- **Pidgeot #16** [MEDIUM] Pidgeot's speed base stat differs from PokéAPI. Current: `100`; canonical: `56`.
+- **Pidgeot #16** [MEDIUM] Pidgeot's maxHp template value differs from canonical base HP. Current: `83`; canonical: `40`.
+- **Spearow #21** [MEDIUM] Spearow's specialAttack base stat differs from PokéAPI. Current: `60`; canonical: `31`.
+- **Spearow #21** [MEDIUM] Spearow's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `31`.
+- **Spearow #21** [MEDIUM] Spearow's speed base stat differs from PokéAPI. Current: `60`; canonical: `70`.
+- **Onix #95** [MEDIUM] Onix's specialAttack base stat differs from PokéAPI. Current: `45`; canonical: `30`.
+- **Onix #95** [MEDIUM] Onix's specialDefense base stat differs from PokéAPI. Current: `160`; canonical: `45`.
+- **Onix #95** [MEDIUM] Onix's speed base stat differs from PokéAPI. Current: `45`; canonical: `70`.
+- **Voltorb #100** [MEDIUM] Voltorb's specialAttack base stat differs from PokéAPI. Current: `30`; canonical: `55`.
+- **Voltorb #100** [MEDIUM] Voltorb's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `55`.
+- **Voltorb #100** [MEDIUM] Voltorb's speed base stat differs from PokéAPI. Current: `30`; canonical: `100`.
+- **Scyther #123** [MEDIUM] Scyther's specialAttack base stat differs from PokéAPI. Current: `110`; canonical: `55`.
+- **Scyther #123** [MEDIUM] Scyther's speed base stat differs from PokéAPI. Current: `110`; canonical: `105`.
+- **Lapras #131** [MEDIUM] Lapras's defense base stat differs from PokéAPI. Current: `95`; canonical: `80`.
+- **Lapras #131** [MEDIUM] Lapras's speed base stat differs from PokéAPI. Current: `85`; canonical: `60`.
+- **Snorlax #143** [MEDIUM] Snorlax's hp base stat differs from PokéAPI. Current: `150`; canonical: `160`.
+- **Snorlax #143** [MEDIUM] Snorlax's specialAttack base stat differs from PokéAPI. Current: `110`; canonical: `65`.
+- **Snorlax #143** [MEDIUM] Snorlax's specialDefense base stat differs from PokéAPI. Current: `65`; canonical: `110`.
+- **Snorlax #143** [MEDIUM] Snorlax's speed base stat differs from PokéAPI. Current: `110`; canonical: `30`.
+- **Snorlax #143** [MEDIUM] Snorlax's maxHp template value differs from canonical base HP. Current: `150`; canonical: `160`.
+- **Chikorita #152** [MEDIUM] Chikorita's speed base stat differs from PokéAPI. Current: `49`; canonical: `45`.
+- **Cyndaquil #155** [MEDIUM] Cyndaquil's specialAttack base stat differs from PokéAPI. Current: `52`; canonical: `60`.
+- **Cyndaquil #155** [MEDIUM] Cyndaquil's specialDefense base stat differs from PokéAPI. Current: `43`; canonical: `50`.
+- **Cyndaquil #155** [MEDIUM] Cyndaquil's speed base stat differs from PokéAPI. Current: `52`; canonical: `65`.
+- **Totodile #158** [MEDIUM] Totodile's specialAttack base stat differs from PokéAPI. Current: `65`; canonical: `44`.
+- **Totodile #158** [MEDIUM] Totodile's specialDefense base stat differs from PokéAPI. Current: `64`; canonical: `48`.
+- **Totodile #158** [MEDIUM] Totodile's speed base stat differs from PokéAPI. Current: `65`; canonical: `43`.
+- **Pichu #172** [MEDIUM] Pichu's specialAttack base stat differs from PokéAPI. Current: `40`; canonical: `35`.
+- **Pichu #172** [MEDIUM] Pichu's specialDefense base stat differs from PokéAPI. Current: `15`; canonical: `35`.
+- **Pichu #172** [MEDIUM] Pichu's speed base stat differs from PokéAPI. Current: `40`; canonical: `60`.
+- **Togepi #175** [MEDIUM] Togepi's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `40`.
+- **Marill #183** [MEDIUM] Marill's speed base stat differs from PokéAPI. Current: `20`; canonical: `40`.
+- **Wooper #194** [MEDIUM] Wooper's hp base stat differs from PokéAPI. Current: `75`; canonical: `55`.
+- **Wooper #194** [MEDIUM] Wooper's attack base stat differs from PokéAPI. Current: `75`; canonical: `45`.
+- **Wooper #194** [MEDIUM] Wooper's defense base stat differs from PokéAPI. Current: `75`; canonical: `45`.
+- **Wooper #194** [MEDIUM] Wooper's specialAttack base stat differs from PokéAPI. Current: `75`; canonical: `25`.
+- **Wooper #194** [MEDIUM] Wooper's specialDefense base stat differs from PokéAPI. Current: `75`; canonical: `25`.
+- **Wooper #194** [MEDIUM] Wooper's speed base stat differs from PokéAPI. Current: `75`; canonical: `15`.
+- **Wooper #194** [MEDIUM] Wooper's maxHp template value differs from canonical base HP. Current: `75`; canonical: `55`.
+- **Girafarig #207** [MEDIUM] Girafarig's hp base stat differs from PokéAPI. Current: `70`; canonical: `65`.
+- **Girafarig #207** [MEDIUM] Girafarig's attack base stat differs from PokéAPI. Current: `70`; canonical: `75`.
+- **Girafarig #207** [MEDIUM] Girafarig's defense base stat differs from PokéAPI. Current: `65`; canonical: `105`.
+- **Girafarig #207** [MEDIUM] Girafarig's specialAttack base stat differs from PokéAPI. Current: `70`; canonical: `35`.
+- **Girafarig #207** [MEDIUM] Girafarig's speed base stat differs from PokéAPI. Current: `70`; canonical: `85`.
+- **Girafarig #207** [MEDIUM] Girafarig's maxHp template value differs from canonical base HP. Current: `70`; canonical: `65`.
+- **Sneasel #218** [MEDIUM] Sneasel's hp base stat differs from PokéAPI. Current: `55`; canonical: `40`.
+- **Sneasel #218** [MEDIUM] Sneasel's attack base stat differs from PokéAPI. Current: `95`; canonical: `40`.
+- **Sneasel #218** [MEDIUM] Sneasel's defense base stat differs from PokéAPI. Current: `55`; canonical: `40`.
+- **Sneasel #218** [MEDIUM] Sneasel's specialAttack base stat differs from PokéAPI. Current: `95`; canonical: `70`.
+- **Sneasel #218** [MEDIUM] Sneasel's specialDefense base stat differs from PokéAPI. Current: `55`; canonical: `40`.
+- **Sneasel #218** [MEDIUM] Sneasel's speed base stat differs from PokéAPI. Current: `95`; canonical: `20`.
+- **Sneasel #218** [MEDIUM] Sneasel's maxHp template value differs from canonical base HP. Current: `55`; canonical: `40`.
+- **Caterpie #219** [MEDIUM] Caterpie's hp base stat differs from PokéAPI. Current: `45`; canonical: `60`.
+- **Caterpie #219** [MEDIUM] Caterpie's attack base stat differs from PokéAPI. Current: `30`; canonical: `50`.
+- **Caterpie #219** [MEDIUM] Caterpie's defense base stat differs from PokéAPI. Current: `35`; canonical: `120`.
+- **Caterpie #219** [MEDIUM] Caterpie's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `90`.
+- **Caterpie #219** [MEDIUM] Caterpie's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `80`.
+- **Caterpie #219** [MEDIUM] Caterpie's speed base stat differs from PokéAPI. Current: `25`; canonical: `30`.
+- **Caterpie #219** [MEDIUM] Caterpie's maxHp template value differs from canonical base HP. Current: `45`; canonical: `60`.
+- **Weedle #220** [MEDIUM] Weedle's hp base stat differs from PokéAPI. Current: `40`; canonical: `50`.
+- **Weedle #220** [MEDIUM] Weedle's attack base stat differs from PokéAPI. Current: `35`; canonical: `50`.
+- **Weedle #220** [MEDIUM] Weedle's defense base stat differs from PokéAPI. Current: `30`; canonical: `40`.
+- **Weedle #220** [MEDIUM] Weedle's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `30`.
+- **Weedle #220** [MEDIUM] Weedle's specialDefense base stat differs from PokéAPI. Current: `20`; canonical: `30`.
+- **Weedle #220** [MEDIUM] Weedle's speed base stat differs from PokéAPI. Current: `28`; canonical: `50`.
+- **Weedle #220** [MEDIUM] Weedle's maxHp template value differs from canonical base HP. Current: `40`; canonical: `50`.
+- **Oddish #221** [MEDIUM] Oddish's hp base stat differs from PokéAPI. Current: `45`; canonical: `100`.
+- **Oddish #221** [MEDIUM] Oddish's attack base stat differs from PokéAPI. Current: `50`; canonical: `100`.
+- **Oddish #221** [MEDIUM] Oddish's defense base stat differs from PokéAPI. Current: `55`; canonical: `80`.
+- **Oddish #221** [MEDIUM] Oddish's specialAttack base stat differs from PokéAPI. Current: `75`; canonical: `60`.
+- **Oddish #221** [MEDIUM] Oddish's specialDefense base stat differs from PokéAPI. Current: `65`; canonical: `60`.
+- **Oddish #221** [MEDIUM] Oddish's speed base stat differs from PokéAPI. Current: `63`; canonical: `50`.
+- **Oddish #221** [MEDIUM] Oddish's maxHp template value differs from canonical base HP. Current: `45`; canonical: `100`.
+- **Butterfree #222** [MEDIUM] Butterfree's hp base stat differs from PokéAPI. Current: `60`; canonical: `65`.
+- **Butterfree #222** [MEDIUM] Butterfree's attack base stat differs from PokéAPI. Current: `45`; canonical: `55`.
+- **Butterfree #222** [MEDIUM] Butterfree's defense base stat differs from PokéAPI. Current: `50`; canonical: `95`.
+- **Butterfree #222** [MEDIUM] Butterfree's specialAttack base stat differs from PokéAPI. Current: `90`; canonical: `65`.
+- **Butterfree #222** [MEDIUM] Butterfree's specialDefense base stat differs from PokéAPI. Current: `80`; canonical: `95`.
+- **Butterfree #222** [MEDIUM] Butterfree's speed base stat differs from PokéAPI. Current: `68`; canonical: `35`.
+- **Butterfree #222** [MEDIUM] Butterfree's maxHp template value differs from canonical base HP. Current: `60`; canonical: `65`.
+- **Poliwag #223** [MEDIUM] Poliwag's hp base stat differs from PokéAPI. Current: `40`; canonical: `35`.
+- **Poliwag #223** [MEDIUM] Poliwag's attack base stat differs from PokéAPI. Current: `50`; canonical: `65`.
+- **Poliwag #223** [MEDIUM] Poliwag's defense base stat differs from PokéAPI. Current: `40`; canonical: `35`.
+- **Poliwag #223** [MEDIUM] Poliwag's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `65`.
+- **Poliwag #223** [MEDIUM] Poliwag's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `35`.
+- **Poliwag #223** [MEDIUM] Poliwag's speed base stat differs from PokéAPI. Current: `50`; canonical: `65`.
+- **Poliwag #223** [MEDIUM] Poliwag's maxHp template value differs from canonical base HP. Current: `40`; canonical: `35`.
+- **Magikarp #224** [MEDIUM] Magikarp's hp base stat differs from PokéAPI. Current: `30`; canonical: `75`.
+- **Magikarp #224** [MEDIUM] Magikarp's attack base stat differs from PokéAPI. Current: `20`; canonical: `105`.
+- **Magikarp #224** [MEDIUM] Magikarp's defense base stat differs from PokéAPI. Current: `55`; canonical: `75`.
+- **Magikarp #224** [MEDIUM] Magikarp's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `105`.
+- **Magikarp #224** [MEDIUM] Magikarp's specialDefense base stat differs from PokéAPI. Current: `55`; canonical: `75`.
+- **Magikarp #224** [MEDIUM] Magikarp's speed base stat differs from PokéAPI. Current: `20`; canonical: `45`.
+- **Magikarp #224** [MEDIUM] Magikarp's maxHp template value differs from canonical base HP. Current: `30`; canonical: `75`.
+- **Goldeen #225** [MEDIUM] Goldeen's attack base stat differs from PokéAPI. Current: `67`; canonical: `55`.
+- **Goldeen #225** [MEDIUM] Goldeen's defense base stat differs from PokéAPI. Current: `60`; canonical: `45`.
+- **Goldeen #225** [MEDIUM] Goldeen's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `65`.
+- **Goldeen #225** [MEDIUM] Goldeen's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `45`.
+- **Goldeen #225** [MEDIUM] Goldeen's speed base stat differs from PokéAPI. Current: `59`; canonical: `75`.
+- **Staryu #226** [MEDIUM] Staryu's hp base stat differs from PokéAPI. Current: `30`; canonical: `85`.
+- **Staryu #226** [MEDIUM] Staryu's attack base stat differs from PokéAPI. Current: `45`; canonical: `40`.
+- **Staryu #226** [MEDIUM] Staryu's defense base stat differs from PokéAPI. Current: `55`; canonical: `70`.
+- **Staryu #226** [MEDIUM] Staryu's specialAttack base stat differs from PokéAPI. Current: `65`; canonical: `80`.
+- **Staryu #226** [MEDIUM] Staryu's specialDefense base stat differs from PokéAPI. Current: `70`; canonical: `140`.
+- **Staryu #226** [MEDIUM] Staryu's speed base stat differs from PokéAPI. Current: `55`; canonical: `70`.
+- **Staryu #226** [MEDIUM] Staryu's maxHp template value differs from canonical base HP. Current: `30`; canonical: `85`.
+- **Zubat #227** [MEDIUM] Zubat's hp base stat differs from PokéAPI. Current: `40`; canonical: `65`.
+- **Zubat #227** [MEDIUM] Zubat's attack base stat differs from PokéAPI. Current: `45`; canonical: `80`.
+- **Zubat #227** [MEDIUM] Zubat's defense base stat differs from PokéAPI. Current: `35`; canonical: `140`.
+- **Zubat #227** [MEDIUM] Zubat's specialAttack base stat differs from PokéAPI. Current: `30`; canonical: `40`.
+- **Zubat #227** [MEDIUM] Zubat's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `70`.
+- **Zubat #227** [MEDIUM] Zubat's speed base stat differs from PokéAPI. Current: `38`; canonical: `70`.
+- **Zubat #227** [MEDIUM] Zubat's maxHp template value differs from canonical base HP. Current: `40`; canonical: `65`.
+- **Diglett #228** [MEDIUM] Diglett's hp base stat differs from PokéAPI. Current: `30`; canonical: `45`.
+- **Diglett #228** [MEDIUM] Diglett's attack base stat differs from PokéAPI. Current: `55`; canonical: `60`.
+- **Diglett #228** [MEDIUM] Diglett's defense base stat differs from PokéAPI. Current: `25`; canonical: `30`.
+- **Diglett #228** [MEDIUM] Diglett's specialAttack base stat differs from PokéAPI. Current: `35`; canonical: `80`.
+- **Diglett #228** [MEDIUM] Diglett's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `50`.
+- **Diglett #228** [MEDIUM] Diglett's speed base stat differs from PokéAPI. Current: `45`; canonical: `65`.
+- **Diglett #228** [MEDIUM] Diglett's maxHp template value differs from canonical base HP. Current: `30`; canonical: `45`.
+- **Machop #229** [MEDIUM] Machop's hp base stat differs from PokéAPI. Current: `70`; canonical: `75`.
+- **Machop #229** [MEDIUM] Machop's attack base stat differs from PokéAPI. Current: `80`; canonical: `90`.
+- **Machop #229** [MEDIUM] Machop's specialAttack base stat differs from PokéAPI. Current: `35`; canonical: `110`.
+- **Machop #229** [MEDIUM] Machop's specialDefense base stat differs from PokéAPI. Current: `35`; canonical: `80`.
+- **Machop #229** [MEDIUM] Machop's speed base stat differs from PokéAPI. Current: `58`; canonical: `95`.
+- **Machop #229** [MEDIUM] Machop's maxHp template value differs from canonical base HP. Current: `70`; canonical: `75`.
+- **Tentacool #230** [MEDIUM] Tentacool's hp base stat differs from PokéAPI. Current: `40`; canonical: `75`.
+- **Tentacool #230** [MEDIUM] Tentacool's attack base stat differs from PokéAPI. Current: `40`; canonical: `95`.
+- **Tentacool #230** [MEDIUM] Tentacool's defense base stat differs from PokéAPI. Current: `35`; canonical: `95`.
+- **Tentacool #230** [MEDIUM] Tentacool's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `95`.
+- **Tentacool #230** [MEDIUM] Tentacool's specialDefense base stat differs from PokéAPI. Current: `100`; canonical: `95`.
+- **Tentacool #230** [MEDIUM] Tentacool's speed base stat differs from PokéAPI. Current: `45`; canonical: `85`.
+- **Tentacool #230** [MEDIUM] Tentacool's maxHp template value differs from canonical base HP. Current: `40`; canonical: `75`.
+- **Horsea #231** [MEDIUM] Horsea's hp base stat differs from PokéAPI. Current: `30`; canonical: `90`.
+- **Horsea #231** [MEDIUM] Horsea's attack base stat differs from PokéAPI. Current: `40`; canonical: `60`.
+- **Horsea #231** [MEDIUM] Horsea's defense base stat differs from PokéAPI. Current: `70`; canonical: `60`.
+- **Horsea #231** [MEDIUM] Horsea's specialDefense base stat differs from PokéAPI. Current: `70`; canonical: `40`.
+- **Horsea #231** [MEDIUM] Horsea's maxHp template value differs from canonical base HP. Current: `30`; canonical: `90`.
+- **Shellder #232** [MEDIUM] Shellder's hp base stat differs from PokéAPI. Current: `30`; canonical: `90`.
+- **Shellder #232** [MEDIUM] Shellder's attack base stat differs from PokéAPI. Current: `65`; canonical: `120`.
+- **Shellder #232** [MEDIUM] Shellder's defense base stat differs from PokéAPI. Current: `100`; canonical: `120`.
+- **Shellder #232** [MEDIUM] Shellder's specialAttack base stat differs from PokéAPI. Current: `45`; canonical: `60`.
+- **Shellder #232** [MEDIUM] Shellder's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `60`.
+- **Shellder #232** [MEDIUM] Shellder's speed base stat differs from PokéAPI. Current: `55`; canonical: `50`.
+- **Shellder #232** [MEDIUM] Shellder's maxHp template value differs from canonical base HP. Current: `30`; canonical: `90`.
+- **Seel #233** [MEDIUM] Seel's hp base stat differs from PokéAPI. Current: `65`; canonical: `85`.
+- **Seel #233** [MEDIUM] Seel's attack base stat differs from PokéAPI. Current: `45`; canonical: `80`.
+- **Seel #233** [MEDIUM] Seel's defense base stat differs from PokéAPI. Current: `55`; canonical: `90`.
+- **Seel #233** [MEDIUM] Seel's specialAttack base stat differs from PokéAPI. Current: `45`; canonical: `105`.
+- **Seel #233** [MEDIUM] Seel's specialDefense base stat differs from PokéAPI. Current: `70`; canonical: `95`.
+- **Seel #233** [MEDIUM] Seel's speed base stat differs from PokéAPI. Current: `45`; canonical: `60`.
+- **Seel #233** [MEDIUM] Seel's maxHp template value differs from canonical base HP. Current: `65`; canonical: `85`.
+- **Vulpix #234** [MEDIUM] Vulpix's hp base stat differs from PokéAPI. Current: `38`; canonical: `73`.
+- **Vulpix #234** [MEDIUM] Vulpix's attack base stat differs from PokéAPI. Current: `41`; canonical: `95`.
+- **Vulpix #234** [MEDIUM] Vulpix's defense base stat differs from PokéAPI. Current: `40`; canonical: `62`.
+- **Vulpix #234** [MEDIUM] Vulpix's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `85`.
+- **Vulpix #234** [MEDIUM] Vulpix's speed base stat differs from PokéAPI. Current: `46`; canonical: `85`.
+- **Vulpix #234** [MEDIUM] Vulpix's maxHp template value differs from canonical base HP. Current: `38`; canonical: `73`.
+- **Ponyta #235** [MEDIUM] Ponyta's hp base stat differs from PokéAPI. Current: `50`; canonical: `55`.
+- **Ponyta #235** [MEDIUM] Ponyta's attack base stat differs from PokéAPI. Current: `85`; canonical: `20`.
+- **Ponyta #235** [MEDIUM] Ponyta's defense base stat differs from PokéAPI. Current: `55`; canonical: `35`.
+- **Ponyta #235** [MEDIUM] Ponyta's specialAttack base stat differs from PokéAPI. Current: `65`; canonical: `20`.
+- **Ponyta #235** [MEDIUM] Ponyta's specialDefense base stat differs from PokéAPI. Current: `65`; canonical: `45`.
+- **Ponyta #235** [MEDIUM] Ponyta's maxHp template value differs from canonical base HP. Current: `50`; canonical: `55`.
+- **Magmar #236** [MEDIUM] Magmar's hp base stat differs from PokéAPI. Current: `65`; canonical: `35`.
+- **Magmar #236** [MEDIUM] Magmar's attack base stat differs from PokéAPI. Current: `95`; canonical: `35`.
+- **Magmar #236** [MEDIUM] Magmar's defense base stat differs from PokéAPI. Current: `57`; canonical: `35`.
+- **Magmar #236** [MEDIUM] Magmar's specialAttack base stat differs from PokéAPI. Current: `100`; canonical: `35`.
+- **Magmar #236** [MEDIUM] Magmar's specialDefense base stat differs from PokéAPI. Current: `85`; canonical: `35`.
+- **Magmar #236** [MEDIUM] Magmar's speed base stat differs from PokéAPI. Current: `98`; canonical: `35`.
+- **Magmar #236** [MEDIUM] Magmar's maxHp template value differs from canonical base HP. Current: `65`; canonical: `35`.
+- **Pidgey #237** [MEDIUM] Pidgey's hp base stat differs from PokéAPI. Current: `40`; canonical: `50`.
+- **Pidgey #237** [MEDIUM] Pidgey's attack base stat differs from PokéAPI. Current: `45`; canonical: `95`.
+- **Pidgey #237** [MEDIUM] Pidgey's defense base stat differs from PokéAPI. Current: `40`; canonical: `95`.
+- **Pidgey #237** [MEDIUM] Pidgey's specialDefense base stat differs from PokéAPI. Current: `35`; canonical: `110`.
+- **Pidgey #237** [MEDIUM] Pidgey's speed base stat differs from PokéAPI. Current: `40`; canonical: `70`.
+- **Pidgey #237** [MEDIUM] Pidgey's maxHp template value differs from canonical base HP. Current: `40`; canonical: `50`.
+- **Larvitar #238** [MEDIUM] Larvitar's hp base stat differs from PokéAPI. Current: `60`; canonical: `45`.
+- **Larvitar #238** [MEDIUM] Larvitar's attack base stat differs from PokéAPI. Current: `84`; canonical: `30`.
+- **Larvitar #238** [MEDIUM] Larvitar's defense base stat differs from PokéAPI. Current: `70`; canonical: `15`.
+- **Larvitar #238** [MEDIUM] Larvitar's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `85`.
+- **Larvitar #238** [MEDIUM] Larvitar's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `65`.
+- **Larvitar #238** [MEDIUM] Larvitar's speed base stat differs from PokéAPI. Current: `67`; canonical: `65`.
+- **Larvitar #238** [MEDIUM] Larvitar's maxHp template value differs from canonical base HP. Current: `60`; canonical: `45`.
+- **Sandshrew #239** [MEDIUM] Sandshrew's hp base stat differs from PokéAPI. Current: `50`; canonical: `45`.
+- **Sandshrew #239** [MEDIUM] Sandshrew's attack base stat differs from PokéAPI. Current: `75`; canonical: `63`.
+- **Sandshrew #239** [MEDIUM] Sandshrew's defense base stat differs from PokéAPI. Current: `85`; canonical: `37`.
+- **Sandshrew #239** [MEDIUM] Sandshrew's specialAttack base stat differs from PokéAPI. Current: `20`; canonical: `65`.
+- **Sandshrew #239** [MEDIUM] Sandshrew's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `55`.
+- **Sandshrew #239** [MEDIUM] Sandshrew's speed base stat differs from PokéAPI. Current: `48`; canonical: `95`.
+- **Sandshrew #239** [MEDIUM] Sandshrew's maxHp template value differs from canonical base HP. Current: `50`; canonical: `45`.
+- **Trapinch #240** [MEDIUM] Trapinch's attack base stat differs from PokéAPI. Current: `100`; canonical: `75`.
+- **Trapinch #240** [MEDIUM] Trapinch's defense base stat differs from PokéAPI. Current: `45`; canonical: `37`.
+- **Trapinch #240** [MEDIUM] Trapinch's specialAttack base stat differs from PokéAPI. Current: `45`; canonical: `70`.
+- **Trapinch #240** [MEDIUM] Trapinch's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `55`.
+- **Trapinch #240** [MEDIUM] Trapinch's speed base stat differs from PokéAPI. Current: `73`; canonical: `83`.
+- **Cacnea #241** [MEDIUM] Cacnea's hp base stat differs from PokéAPI. Current: `50`; canonical: `95`.
+- **Cacnea #241** [MEDIUM] Cacnea's attack base stat differs from PokéAPI. Current: `85`; canonical: `80`.
+- **Cacnea #241** [MEDIUM] Cacnea's defense base stat differs from PokéAPI. Current: `40`; canonical: `105`.
+- **Cacnea #241** [MEDIUM] Cacnea's specialAttack base stat differs from PokéAPI. Current: `85`; canonical: `40`.
+- **Cacnea #241** [MEDIUM] Cacnea's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `70`.
+- **Cacnea #241** [MEDIUM] Cacnea's speed base stat differs from PokéAPI. Current: `85`; canonical: `100`.
+- **Cacnea #241** [MEDIUM] Cacnea's maxHp template value differs from canonical base HP. Current: `50`; canonical: `95`.
+- **Sandile #242** [MEDIUM] Sandile's hp base stat differs from PokéAPI. Current: `50`; canonical: `255`.
+- **Sandile #242** [MEDIUM] Sandile's attack base stat differs from PokéAPI. Current: `72`; canonical: `10`.
+- **Sandile #242** [MEDIUM] Sandile's defense base stat differs from PokéAPI. Current: `35`; canonical: `10`.
+- **Sandile #242** [MEDIUM] Sandile's specialAttack base stat differs from PokéAPI. Current: `35`; canonical: `75`.
+- **Sandile #242** [MEDIUM] Sandile's specialDefense base stat differs from PokéAPI. Current: `35`; canonical: `135`.
+- **Sandile #242** [MEDIUM] Sandile's speed base stat differs from PokéAPI. Current: `54`; canonical: `55`.
+- **Sandile #242** [MEDIUM] Sandile's maxHp template value differs from canonical base HP. Current: `50`; canonical: `255`.
+- **Misdreavus #243** [MEDIUM] Misdreavus's hp base stat differs from PokéAPI. Current: `60`; canonical: `90`.
+- **Misdreavus #243** [MEDIUM] Misdreavus's attack base stat differs from PokéAPI. Current: `60`; canonical: `85`.
+- **Misdreavus #243** [MEDIUM] Misdreavus's defense base stat differs from PokéAPI. Current: `60`; canonical: `75`.
+- **Misdreavus #243** [MEDIUM] Misdreavus's specialAttack base stat differs from PokéAPI. Current: `85`; canonical: `115`.
+- **Misdreavus #243** [MEDIUM] Misdreavus's specialDefense base stat differs from PokéAPI. Current: `85`; canonical: `100`.
+- **Misdreavus #243** [MEDIUM] Misdreavus's speed base stat differs from PokéAPI. Current: `73`; canonical: `115`.
+- **Misdreavus #243** [MEDIUM] Misdreavus's maxHp template value differs from canonical base HP. Current: `60`; canonical: `90`.
+- **Duskull #244** [MEDIUM] Duskull's hp base stat differs from PokéAPI. Current: `20`; canonical: `115`.
+- **Duskull #244** [MEDIUM] Duskull's attack base stat differs from PokéAPI. Current: `40`; canonical: `115`.
+- **Duskull #244** [MEDIUM] Duskull's defense base stat differs from PokéAPI. Current: `90`; canonical: `85`.
+- **Duskull #244** [MEDIUM] Duskull's specialAttack base stat differs from PokéAPI. Current: `30`; canonical: `90`.
+- **Duskull #244** [MEDIUM] Duskull's specialDefense base stat differs from PokéAPI. Current: `90`; canonical: `75`.
+- **Duskull #244** [MEDIUM] Duskull's speed base stat differs from PokéAPI. Current: `35`; canonical: `100`.
+- **Duskull #244** [MEDIUM] Duskull's maxHp template value differs from canonical base HP. Current: `20`; canonical: `115`.
+- **Sableye #245** [MEDIUM] Sableye's hp base stat differs from PokéAPI. Current: `50`; canonical: `100`.
+- **Sableye #245** [MEDIUM] Sableye's defense base stat differs from PokéAPI. Current: `75`; canonical: `115`.
+- **Sableye #245** [MEDIUM] Sableye's specialAttack base stat differs from PokéAPI. Current: `65`; canonical: `90`.
+- **Sableye #245** [MEDIUM] Sableye's specialDefense base stat differs from PokéAPI. Current: `75`; canonical: `115`.
+- **Sableye #245** [MEDIUM] Sableye's speed base stat differs from PokéAPI. Current: `70`; canonical: `85`.
+- **Sableye #245** [MEDIUM] Sableye's maxHp template value differs from canonical base HP. Current: `50`; canonical: `100`.
+- **Gengar #94** [MEDIUM] Gengar's speed base stat differs from PokéAPI. Current: `98`; canonical: `110`.
+- **Articuno #247** [MEDIUM] Articuno's hp base stat differs from PokéAPI. Current: `90`; canonical: `70`.
+- **Articuno #247** [MEDIUM] Articuno's attack base stat differs from PokéAPI. Current: `85`; canonical: `84`.
+- **Articuno #247** [MEDIUM] Articuno's defense base stat differs from PokéAPI. Current: `100`; canonical: `70`.
+- **Articuno #247** [MEDIUM] Articuno's specialAttack base stat differs from PokéAPI. Current: `125`; canonical: `65`.
+- **Articuno #247** [MEDIUM] Articuno's specialDefense base stat differs from PokéAPI. Current: `115`; canonical: `70`.
+- **Articuno #247** [MEDIUM] Articuno's speed base stat differs from PokéAPI. Current: `105`; canonical: `51`.
+- **Articuno #247** [MEDIUM] Articuno's maxHp template value differs from canonical base HP. Current: `90`; canonical: `70`.
+- **Zapdos #248** [MEDIUM] Zapdos's hp base stat differs from PokéAPI. Current: `90`; canonical: `100`.
+- **Zapdos #248** [MEDIUM] Zapdos's attack base stat differs from PokéAPI. Current: `90`; canonical: `134`.
+- **Zapdos #248** [MEDIUM] Zapdos's defense base stat differs from PokéAPI. Current: `85`; canonical: `110`.
+- **Zapdos #248** [MEDIUM] Zapdos's specialAttack base stat differs from PokéAPI. Current: `125`; canonical: `95`.
+- **Zapdos #248** [MEDIUM] Zapdos's specialDefense base stat differs from PokéAPI. Current: `90`; canonical: `100`.
+- **Zapdos #248** [MEDIUM] Zapdos's speed base stat differs from PokéAPI. Current: `108`; canonical: `61`.
+- **Zapdos #248** [MEDIUM] Zapdos's maxHp template value differs from canonical base HP. Current: `90`; canonical: `100`.
+- **Moltres #249** [MEDIUM] Moltres's hp base stat differs from PokéAPI. Current: `90`; canonical: `106`.
+- **Moltres #249** [MEDIUM] Moltres's attack base stat differs from PokéAPI. Current: `100`; canonical: `90`.
+- **Moltres #249** [MEDIUM] Moltres's defense base stat differs from PokéAPI. Current: `90`; canonical: `130`.
+- **Moltres #249** [MEDIUM] Moltres's specialAttack base stat differs from PokéAPI. Current: `125`; canonical: `90`.
+- **Moltres #249** [MEDIUM] Moltres's specialDefense base stat differs from PokéAPI. Current: `85`; canonical: `154`.
+- **Moltres #249** [MEDIUM] Moltres's speed base stat differs from PokéAPI. Current: `113`; canonical: `110`.
+- **Moltres #249** [MEDIUM] Moltres's maxHp template value differs from canonical base HP. Current: `90`; canonical: `106`.
+- **Lugia #250** [MEDIUM] Lugia's attack base stat differs from PokéAPI. Current: `90`; canonical: `130`.
+- **Lugia #250** [MEDIUM] Lugia's defense base stat differs from PokéAPI. Current: `130`; canonical: `90`.
+- **Lugia #250** [MEDIUM] Lugia's specialAttack base stat differs from PokéAPI. Current: `90`; canonical: `110`.
+- **Ho-Oh #251** [MEDIUM] Ho-Oh's hp base stat differs from PokéAPI. Current: `106`; canonical: `100`.
+- **Ho-Oh #251** [MEDIUM] Ho-Oh's attack base stat differs from PokéAPI. Current: `130`; canonical: `100`.
+- **Ho-Oh #251** [MEDIUM] Ho-Oh's defense base stat differs from PokéAPI. Current: `90`; canonical: `100`.
+- **Ho-Oh #251** [MEDIUM] Ho-Oh's specialAttack base stat differs from PokéAPI. Current: `110`; canonical: `100`.
+- **Ho-Oh #251** [MEDIUM] Ho-Oh's specialDefense base stat differs from PokéAPI. Current: `154`; canonical: `100`.
+- **Ho-Oh #251** [MEDIUM] Ho-Oh's speed base stat differs from PokéAPI. Current: `120`; canonical: `100`.
+- **Ho-Oh #251** [MEDIUM] Ho-Oh's maxHp template value differs from canonical base HP. Current: `106`; canonical: `100`.
+- **Rayquaza #252** [MEDIUM] Rayquaza's hp base stat differs from PokéAPI. Current: `105`; canonical: `40`.
+- **Rayquaza #252** [MEDIUM] Rayquaza's attack base stat differs from PokéAPI. Current: `150`; canonical: `45`.
+- **Rayquaza #252** [MEDIUM] Rayquaza's defense base stat differs from PokéAPI. Current: `90`; canonical: `35`.
+- **Rayquaza #252** [MEDIUM] Rayquaza's specialAttack base stat differs from PokéAPI. Current: `150`; canonical: `65`.
+- **Rayquaza #252** [MEDIUM] Rayquaza's specialDefense base stat differs from PokéAPI. Current: `90`; canonical: `55`.
+- **Rayquaza #252** [MEDIUM] Rayquaza's speed base stat differs from PokéAPI. Current: `150`; canonical: `70`.
+- **Rayquaza #252** [MEDIUM] Rayquaza's maxHp template value differs from canonical base HP. Current: `105`; canonical: `40`.
+- **Kyogre #253** [MEDIUM] Kyogre's hp base stat differs from PokéAPI. Current: `100`; canonical: `50`.
+- **Kyogre #253** [MEDIUM] Kyogre's attack base stat differs from PokéAPI. Current: `100`; canonical: `65`.
+- **Kyogre #253** [MEDIUM] Kyogre's defense base stat differs from PokéAPI. Current: `90`; canonical: `45`.
+- **Kyogre #253** [MEDIUM] Kyogre's specialAttack base stat differs from PokéAPI. Current: `150`; canonical: `85`.
+- **Kyogre #253** [MEDIUM] Kyogre's specialDefense base stat differs from PokéAPI. Current: `140`; canonical: `65`.
+- **Kyogre #253** [MEDIUM] Kyogre's speed base stat differs from PokéAPI. Current: `125`; canonical: `95`.
+- **Kyogre #253** [MEDIUM] Kyogre's maxHp template value differs from canonical base HP. Current: `100`; canonical: `50`.
+- **Groudon #254** [MEDIUM] Groudon's hp base stat differs from PokéAPI. Current: `100`; canonical: `70`.
+- **Groudon #254** [MEDIUM] Groudon's attack base stat differs from PokéAPI. Current: `150`; canonical: `85`.
+- **Groudon #254** [MEDIUM] Groudon's defense base stat differs from PokéAPI. Current: `140`; canonical: `65`.
+- **Groudon #254** [MEDIUM] Groudon's specialAttack base stat differs from PokéAPI. Current: `100`; canonical: `105`.
+- **Groudon #254** [MEDIUM] Groudon's specialDefense base stat differs from PokéAPI. Current: `90`; canonical: `85`.
+- **Groudon #254** [MEDIUM] Groudon's speed base stat differs from PokéAPI. Current: `125`; canonical: `120`.
+- **Groudon #254** [MEDIUM] Groudon's maxHp template value differs from canonical base HP. Current: `100`; canonical: `70`.
+- **Dialga #255** [MEDIUM] Dialga's hp base stat differs from PokéAPI. Current: `100`; canonical: `45`.
+- **Dialga #255** [MEDIUM] Dialga's attack base stat differs from PokéAPI. Current: `120`; canonical: `60`.
+- **Dialga #255** [MEDIUM] Dialga's defense base stat differs from PokéAPI. Current: `120`; canonical: `40`.
+- **Dialga #255** [MEDIUM] Dialga's specialAttack base stat differs from PokéAPI. Current: `150`; canonical: `70`.
+- **Dialga #255** [MEDIUM] Dialga's specialDefense base stat differs from PokéAPI. Current: `100`; canonical: `50`.
+- **Dialga #255** [MEDIUM] Dialga's speed base stat differs from PokéAPI. Current: `135`; canonical: `45`.
+- **Dialga #255** [MEDIUM] Dialga's maxHp template value differs from canonical base HP. Current: `100`; canonical: `45`.
+- **Palkia #256** [MEDIUM] Palkia's hp base stat differs from PokéAPI. Current: `90`; canonical: `60`.
+- **Palkia #256** [MEDIUM] Palkia's attack base stat differs from PokéAPI. Current: `120`; canonical: `85`.
+- **Palkia #256** [MEDIUM] Palkia's defense base stat differs from PokéAPI. Current: `100`; canonical: `60`.
+- **Palkia #256** [MEDIUM] Palkia's specialAttack base stat differs from PokéAPI. Current: `150`; canonical: `85`.
+- **Palkia #256** [MEDIUM] Palkia's specialDefense base stat differs from PokéAPI. Current: `120`; canonical: `60`.
+- **Palkia #256** [MEDIUM] Palkia's speed base stat differs from PokéAPI. Current: `135`; canonical: `55`.
+- **Palkia #256** [MEDIUM] Palkia's maxHp template value differs from canonical base HP. Current: `90`; canonical: `60`.
+- **Giratina #257** [MEDIUM] Giratina's hp base stat differs from PokéAPI. Current: `150`; canonical: `80`.
+- **Giratina #257** [MEDIUM] Giratina's attack base stat differs from PokéAPI. Current: `100`; canonical: `120`.
+- **Giratina #257** [MEDIUM] Giratina's defense base stat differs from PokéAPI. Current: `120`; canonical: `70`.
+- **Giratina #257** [MEDIUM] Giratina's specialAttack base stat differs from PokéAPI. Current: `100`; canonical: `110`.
+- **Giratina #257** [MEDIUM] Giratina's specialDefense base stat differs from PokéAPI. Current: `120`; canonical: `70`.
+- **Giratina #257** [MEDIUM] Giratina's speed base stat differs from PokéAPI. Current: `100`; canonical: `80`.
+- **Giratina #257** [MEDIUM] Giratina's maxHp template value differs from canonical base HP. Current: `150`; canonical: `80`.
+- **Zekrom #258** [MEDIUM] Zekrom's hp base stat differs from PokéAPI. Current: `100`; canonical: `50`.
+- **Zekrom #258** [MEDIUM] Zekrom's attack base stat differs from PokéAPI. Current: `150`; canonical: `70`.
+- **Zekrom #258** [MEDIUM] Zekrom's defense base stat differs from PokéAPI. Current: `120`; canonical: `50`.
+- **Zekrom #258** [MEDIUM] Zekrom's specialAttack base stat differs from PokéAPI. Current: `120`; canonical: `50`.
+- **Zekrom #258** [MEDIUM] Zekrom's specialDefense base stat differs from PokéAPI. Current: `90`; canonical: `50`.
+- **Zekrom #258** [MEDIUM] Zekrom's speed base stat differs from PokéAPI. Current: `135`; canonical: `40`.
+- **Zekrom #258** [MEDIUM] Zekrom's maxHp template value differs from canonical base HP. Current: `100`; canonical: `50`.
+- **Reshiram #259** [MEDIUM] Reshiram's hp base stat differs from PokéAPI. Current: `100`; canonical: `70`.
+- **Reshiram #259** [MEDIUM] Reshiram's attack base stat differs from PokéAPI. Current: `120`; canonical: `85`.
+- **Reshiram #259** [MEDIUM] Reshiram's defense base stat differs from PokéAPI. Current: `100`; canonical: `70`.
+- **Reshiram #259** [MEDIUM] Reshiram's specialAttack base stat differs from PokéAPI. Current: `150`; canonical: `60`.
+- **Reshiram #259** [MEDIUM] Reshiram's specialDefense base stat differs from PokéAPI. Current: `120`; canonical: `70`.
+- **Reshiram #259** [MEDIUM] Reshiram's speed base stat differs from PokéAPI. Current: `135`; canonical: `50`.
+- **Reshiram #259** [MEDIUM] Reshiram's maxHp template value differs from canonical base HP. Current: `100`; canonical: `70`.
+- **Xerneas #260** [MEDIUM] Xerneas's attack base stat differs from PokéAPI. Current: `115`; canonical: `110`.
+- **Xerneas #260** [MEDIUM] Xerneas's defense base stat differs from PokéAPI. Current: `115`; canonical: `90`.
+- **Xerneas #260** [MEDIUM] Xerneas's specialAttack base stat differs from PokéAPI. Current: `150`; canonical: `85`.
+- **Xerneas #260** [MEDIUM] Xerneas's specialDefense base stat differs from PokéAPI. Current: `120`; canonical: `90`.
+- **Xerneas #260** [MEDIUM] Xerneas's speed base stat differs from PokéAPI. Current: `133`; canonical: `60`.
+- **Yveltal #261** [MEDIUM] Yveltal's hp base stat differs from PokéAPI. Current: `100`; canonical: `35`.
+- **Yveltal #261** [MEDIUM] Yveltal's attack base stat differs from PokéAPI. Current: `150`; canonical: `55`.
+- **Yveltal #261** [MEDIUM] Yveltal's defense base stat differs from PokéAPI. Current: `100`; canonical: `35`.
+- **Yveltal #261** [MEDIUM] Yveltal's specialAttack base stat differs from PokéAPI. Current: `120`; canonical: `30`.
+- **Yveltal #261** [MEDIUM] Yveltal's specialDefense base stat differs from PokéAPI. Current: `100`; canonical: `30`.
+- **Yveltal #261** [MEDIUM] Yveltal's speed base stat differs from PokéAPI. Current: `135`; canonical: `35`.
+- **Yveltal #261** [MEDIUM] Yveltal's maxHp template value differs from canonical base HP. Current: `100`; canonical: `35`.
+- **Arceus #262** [MEDIUM] Arceus's hp base stat differs from PokéAPI. Current: `120`; canonical: `70`.
+- **Arceus #262** [MEDIUM] Arceus's attack base stat differs from PokéAPI. Current: `120`; canonical: `90`.
+- **Arceus #262** [MEDIUM] Arceus's defense base stat differs from PokéAPI. Current: `120`; canonical: `70`.
+- **Arceus #262** [MEDIUM] Arceus's specialAttack base stat differs from PokéAPI. Current: `120`; canonical: `60`.
+- **Arceus #262** [MEDIUM] Arceus's specialDefense base stat differs from PokéAPI. Current: `120`; canonical: `60`.
+- **Arceus #262** [MEDIUM] Arceus's speed base stat differs from PokéAPI. Current: `120`; canonical: `70`.
+- **Arceus #262** [MEDIUM] Arceus's maxHp template value differs from canonical base HP. Current: `120`; canonical: `70`.
+- **Charizard #6** [MEDIUM] Charizard's speed base stat differs from PokéAPI. Current: `97`; canonical: `100`.
+- **Blastoise #9** [MEDIUM] Blastoise's speed base stat differs from PokéAPI. Current: `84`; canonical: `78`.
+- **Dragonite #149** [MEDIUM] Dragonite's speed base stat differs from PokéAPI. Current: `117`; canonical: `80`.
+- **Ivysaur #2** [MEDIUM] Ivysaur's speed base stat differs from PokéAPI. Current: `71`; canonical: `60`.
+- **Venusaur #3** [MEDIUM] Venusaur's speed base stat differs from PokéAPI. Current: `91`; canonical: `80`.
+- **Charmeleon #5** [MEDIUM] Charmeleon's speed base stat differs from PokéAPI. Current: `72`; canonical: `80`.
+- **Wartortle #8** [MEDIUM] Wartortle's speed base stat differs from PokéAPI. Current: `64`; canonical: `58`.
+- **Graveler #75** [MEDIUM] Graveler's speed base stat differs from PokéAPI. Current: `70`; canonical: `35`.
+- **Weepinbell #70** [MEDIUM] Weepinbell's speed base stat differs from PokéAPI. Current: `88`; canonical: `55`.
+- **Hoothoot #263** [MEDIUM] Hoothoot's hp base stat differs from PokéAPI. Current: `60`; canonical: `38`.
+- **Hoothoot #263** [MEDIUM] Hoothoot's defense base stat differs from PokéAPI. Current: `30`; canonical: `41`.
+- **Hoothoot #263** [MEDIUM] Hoothoot's specialAttack base stat differs from PokéAPI. Current: `36`; canonical: `30`.
+- **Hoothoot #263** [MEDIUM] Hoothoot's specialDefense base stat differs from PokéAPI. Current: `56`; canonical: `41`.
+- **Hoothoot #263** [MEDIUM] Hoothoot's speed base stat differs from PokéAPI. Current: `50`; canonical: `60`.
+- **Hoothoot #263** [MEDIUM] Hoothoot's maxHp template value differs from canonical base HP. Current: `60`; canonical: `38`.
+- **Seedot #264** [MEDIUM] Seedot's hp base stat differs from PokéAPI. Current: `40`; canonical: `78`.
+- **Seedot #264** [MEDIUM] Seedot's attack base stat differs from PokéAPI. Current: `40`; canonical: `70`.
+- **Seedot #264** [MEDIUM] Seedot's defense base stat differs from PokéAPI. Current: `50`; canonical: `61`.
+- **Seedot #264** [MEDIUM] Seedot's specialAttack base stat differs from PokéAPI. Current: `30`; canonical: `50`.
+- **Seedot #264** [MEDIUM] Seedot's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `61`.
+- **Seedot #264** [MEDIUM] Seedot's speed base stat differs from PokéAPI. Current: `35`; canonical: `100`.
+- **Seedot #264** [MEDIUM] Seedot's maxHp template value differs from canonical base HP. Current: `40`; canonical: `78`.
+- **Shroomish #265** [MEDIUM] Shroomish's hp base stat differs from PokéAPI. Current: `60`; canonical: `45`.
+- **Shroomish #265** [MEDIUM] Shroomish's attack base stat differs from PokéAPI. Current: `40`; canonical: `45`.
+- **Shroomish #265** [MEDIUM] Shroomish's defense base stat differs from PokéAPI. Current: `60`; canonical: `35`.
+- **Shroomish #265** [MEDIUM] Shroomish's specialAttack base stat differs from PokéAPI. Current: `40`; canonical: `20`.
+- **Shroomish #265** [MEDIUM] Shroomish's specialDefense base stat differs from PokéAPI. Current: `60`; canonical: `30`.
+- **Shroomish #265** [MEDIUM] Shroomish's speed base stat differs from PokéAPI. Current: `40`; canonical: `20`.
+- **Shroomish #265** [MEDIUM] Shroomish's maxHp template value differs from canonical base HP. Current: `60`; canonical: `45`.
+- **Treecko #266** [MEDIUM] Treecko's hp base stat differs from PokéAPI. Current: `40`; canonical: `50`.
+- **Treecko #266** [MEDIUM] Treecko's attack base stat differs from PokéAPI. Current: `45`; canonical: `35`.
+- **Treecko #266** [MEDIUM] Treecko's defense base stat differs from PokéAPI. Current: `35`; canonical: `55`.
+- **Treecko #266** [MEDIUM] Treecko's specialAttack base stat differs from PokéAPI. Current: `65`; canonical: `25`.
+- **Treecko #266** [MEDIUM] Treecko's specialDefense base stat differs from PokéAPI. Current: `55`; canonical: `25`.
+- **Treecko #266** [MEDIUM] Treecko's speed base stat differs from PokéAPI. Current: `70`; canonical: `15`.
+- **Treecko #266** [MEDIUM] Treecko's maxHp template value differs from canonical base HP. Current: `40`; canonical: `50`.
+- **Turtwig #267** [MEDIUM] Turtwig's hp base stat differs from PokéAPI. Current: `55`; canonical: `60`.
+- **Turtwig #267** [MEDIUM] Turtwig's attack base stat differs from PokéAPI. Current: `68`; canonical: `70`.
+- **Turtwig #267** [MEDIUM] Turtwig's defense base stat differs from PokéAPI. Current: `64`; canonical: `50`.
+- **Turtwig #267** [MEDIUM] Turtwig's specialAttack base stat differs from PokéAPI. Current: `45`; canonical: `100`.
+- **Turtwig #267** [MEDIUM] Turtwig's specialDefense base stat differs from PokéAPI. Current: `55`; canonical: `50`.
+- **Turtwig #267** [MEDIUM] Turtwig's speed base stat differs from PokéAPI. Current: `57`; canonical: `65`.
+- **Turtwig #267** [MEDIUM] Turtwig's maxHp template value differs from canonical base HP. Current: `55`; canonical: `60`.
+- **Mudkip #268** [MEDIUM] Mudkip's attack base stat differs from PokéAPI. Current: `70`; canonical: `35`.
+- **Mudkip #268** [MEDIUM] Mudkip's defense base stat differs from PokéAPI. Current: `50`; canonical: `55`.
+- **Mudkip #268** [MEDIUM] Mudkip's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `25`.
+- **Mudkip #268** [MEDIUM] Mudkip's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `25`.
+- **Mudkip #268** [MEDIUM] Mudkip's speed base stat differs from PokéAPI. Current: `60`; canonical: `15`.
+- **Lotad #269** [MEDIUM] Lotad's hp base stat differs from PokéAPI. Current: `40`; canonical: `60`.
+- **Lotad #269** [MEDIUM] Lotad's attack base stat differs from PokéAPI. Current: `30`; canonical: `50`.
+- **Lotad #269** [MEDIUM] Lotad's defense base stat differs from PokéAPI. Current: `30`; canonical: `70`.
+- **Lotad #269** [MEDIUM] Lotad's specialAttack base stat differs from PokéAPI. Current: `40`; canonical: `50`.
+- **Lotad #269** [MEDIUM] Lotad's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `90`.
+- **Lotad #269** [MEDIUM] Lotad's speed base stat differs from PokéAPI. Current: `35`; canonical: `65`.
+- **Lotad #269** [MEDIUM] Lotad's maxHp template value differs from canonical base HP. Current: `40`; canonical: `60`.
+- **Wingull #270** [MEDIUM] Wingull's specialAttack base stat differs from PokéAPI. Current: `55`; canonical: `40`.
+- **Wingull #270** [MEDIUM] Wingull's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `50`.
+- **Wingull #270** [MEDIUM] Wingull's speed base stat differs from PokéAPI. Current: `85`; canonical: `30`.
+- **Feebas #271** [MEDIUM] Feebas's hp base stat differs from PokéAPI. Current: `20`; canonical: `60`.
+- **Feebas #271** [MEDIUM] Feebas's attack base stat differs from PokéAPI. Current: `15`; canonical: `50`.
+- **Feebas #271** [MEDIUM] Feebas's defense base stat differs from PokéAPI. Current: `20`; canonical: `50`.
+- **Feebas #271** [MEDIUM] Feebas's specialAttack base stat differs from PokéAPI. Current: `10`; canonical: `60`.
+- **Feebas #271** [MEDIUM] Feebas's specialDefense base stat differs from PokéAPI. Current: `55`; canonical: `70`.
+- **Feebas #271** [MEDIUM] Feebas's speed base stat differs from PokéAPI. Current: `20`; canonical: `50`.
+- **Feebas #271** [MEDIUM] Feebas's maxHp template value differs from canonical base HP. Current: `20`; canonical: `60`.
+- **Buizel #272** [MEDIUM] Buizel's hp base stat differs from PokéAPI. Current: `55`; canonical: `80`.
+- **Buizel #272** [MEDIUM] Buizel's attack base stat differs from PokéAPI. Current: `65`; canonical: `70`.
+- **Buizel #272** [MEDIUM] Buizel's defense base stat differs from PokéAPI. Current: `35`; canonical: `70`.
+- **Buizel #272** [MEDIUM] Buizel's specialAttack base stat differs from PokéAPI. Current: `60`; canonical: `90`.
+- **Buizel #272** [MEDIUM] Buizel's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `100`.
+- **Buizel #272** [MEDIUM] Buizel's speed base stat differs from PokéAPI. Current: `85`; canonical: `70`.
+- **Buizel #272** [MEDIUM] Buizel's maxHp template value differs from canonical base HP. Current: `55`; canonical: `80`.
+- **Aron #273** [MEDIUM] Aron's hp base stat differs from PokéAPI. Current: `50`; canonical: `40`.
+- **Aron #273** [MEDIUM] Aron's attack base stat differs from PokéAPI. Current: `70`; canonical: `40`.
+- **Aron #273** [MEDIUM] Aron's defense base stat differs from PokéAPI. Current: `100`; canonical: `50`.
+- **Aron #273** [MEDIUM] Aron's specialAttack base stat differs from PokéAPI. Current: `40`; canonical: `30`.
+- **Aron #273** [MEDIUM] Aron's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `30`.
+- **Aron #273** [MEDIUM] Aron's speed base stat differs from PokéAPI. Current: `55`; canonical: `30`.
+- **Aron #273** [MEDIUM] Aron's maxHp template value differs from canonical base HP. Current: `50`; canonical: `40`.
+- **Nosepass #274** [MEDIUM] Nosepass's hp base stat differs from PokéAPI. Current: `30`; canonical: `70`.
+- **Nosepass #274** [MEDIUM] Nosepass's attack base stat differs from PokéAPI. Current: `45`; canonical: `70`.
+- **Nosepass #274** [MEDIUM] Nosepass's defense base stat differs from PokéAPI. Current: `135`; canonical: `40`.
+- **Nosepass #274** [MEDIUM] Nosepass's specialAttack base stat differs from PokéAPI. Current: `45`; canonical: `60`.
+- **Nosepass #274** [MEDIUM] Nosepass's specialDefense base stat differs from PokéAPI. Current: `90`; canonical: `40`.
+- **Nosepass #274** [MEDIUM] Nosepass's speed base stat differs from PokéAPI. Current: `45`; canonical: `60`.
+- **Nosepass #274** [MEDIUM] Nosepass's maxHp template value differs from canonical base HP. Current: `30`; canonical: `70`.
+- **Roggenrola #275** [MEDIUM] Roggenrola's hp base stat differs from PokéAPI. Current: `55`; canonical: `90`.
+- **Roggenrola #275** [MEDIUM] Roggenrola's attack base stat differs from PokéAPI. Current: `75`; canonical: `100`.
+- **Roggenrola #275** [MEDIUM] Roggenrola's defense base stat differs from PokéAPI. Current: `85`; canonical: `60`.
+- **Roggenrola #275** [MEDIUM] Roggenrola's specialAttack base stat differs from PokéAPI. Current: `25`; canonical: `90`.
+- **Roggenrola #275** [MEDIUM] Roggenrola's specialDefense base stat differs from PokéAPI. Current: `25`; canonical: `60`.
+- **Roggenrola #275** [MEDIUM] Roggenrola's speed base stat differs from PokéAPI. Current: `50`; canonical: `80`.
+- **Roggenrola #275** [MEDIUM] Roggenrola's maxHp template value differs from canonical base HP. Current: `55`; canonical: `90`.
+- **Drilbur #276** [MEDIUM] Drilbur's hp base stat differs from PokéAPI. Current: `60`; canonical: `40`.
+- **Drilbur #276** [MEDIUM] Drilbur's attack base stat differs from PokéAPI. Current: `85`; canonical: `55`.
+- **Drilbur #276** [MEDIUM] Drilbur's defense base stat differs from PokéAPI. Current: `40`; canonical: `30`.
+- **Drilbur #276** [MEDIUM] Drilbur's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `30`.
+- **Drilbur #276** [MEDIUM] Drilbur's speed base stat differs from PokéAPI. Current: `58`; canonical: `85`.
+- **Drilbur #276** [MEDIUM] Drilbur's maxHp template value differs from canonical base HP. Current: `60`; canonical: `40`.
+- **Mawile #277** [MEDIUM] Mawile's hp base stat differs from PokéAPI. Current: `50`; canonical: `60`.
+- **Mawile #277** [MEDIUM] Mawile's defense base stat differs from PokéAPI. Current: `85`; canonical: `60`.
+- **Mawile #277** [MEDIUM] Mawile's specialAttack base stat differs from PokéAPI. Current: `55`; canonical: `75`.
+- **Mawile #277** [MEDIUM] Mawile's specialDefense base stat differs from PokéAPI. Current: `55`; canonical: `50`.
+- **Mawile #277** [MEDIUM] Mawile's speed base stat differs from PokéAPI. Current: `70`; canonical: `125`.
+- **Mawile #277** [MEDIUM] Mawile's maxHp template value differs from canonical base HP. Current: `50`; canonical: `60`.
+- **Torchic #278** [MEDIUM] Torchic's hp base stat differs from PokéAPI. Current: `45`; canonical: `40`.
+- **Torchic #278** [MEDIUM] Torchic's attack base stat differs from PokéAPI. Current: `60`; canonical: `30`.
+- **Torchic #278** [MEDIUM] Torchic's defense base stat differs from PokéAPI. Current: `40`; canonical: `30`.
+- **Torchic #278** [MEDIUM] Torchic's specialAttack base stat differs from PokéAPI. Current: `70`; canonical: `55`.
+- **Torchic #278** [MEDIUM] Torchic's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `30`.
+- **Torchic #278** [MEDIUM] Torchic's speed base stat differs from PokéAPI. Current: `65`; canonical: `85`.
+- **Torchic #278** [MEDIUM] Torchic's maxHp template value differs from canonical base HP. Current: `45`; canonical: `40`.
+- **Numel #279** [MEDIUM] Numel's attack base stat differs from PokéAPI. Current: `60`; canonical: `50`.
+- **Numel #279** [MEDIUM] Numel's defense base stat differs from PokéAPI. Current: `40`; canonical: `100`.
+- **Numel #279** [MEDIUM] Numel's specialAttack base stat differs from PokéAPI. Current: `65`; canonical: `95`.
+- **Numel #279** [MEDIUM] Numel's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `70`.
+- **Numel #279** [MEDIUM] Numel's speed base stat differs from PokéAPI. Current: `63`; canonical: `65`.
+- **Slugma #280** [MEDIUM] Slugma's hp base stat differs from PokéAPI. Current: `40`; canonical: `28`.
+- **Slugma #280** [MEDIUM] Slugma's attack base stat differs from PokéAPI. Current: `40`; canonical: `25`.
+- **Slugma #280** [MEDIUM] Slugma's defense base stat differs from PokéAPI. Current: `40`; canonical: `25`.
+- **Slugma #280** [MEDIUM] Slugma's specialAttack base stat differs from PokéAPI. Current: `70`; canonical: `45`.
+- **Slugma #280** [MEDIUM] Slugma's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `35`.
+- **Slugma #280** [MEDIUM] Slugma's speed base stat differs from PokéAPI. Current: `55`; canonical: `40`.
+- **Slugma #280** [MEDIUM] Slugma's maxHp template value differs from canonical base HP. Current: `40`; canonical: `28`.
+- **Houndour #281** [MEDIUM] Houndour's hp base stat differs from PokéAPI. Current: `45`; canonical: `38`.
+- **Houndour #281** [MEDIUM] Houndour's attack base stat differs from PokéAPI. Current: `60`; canonical: `35`.
+- **Houndour #281** [MEDIUM] Houndour's defense base stat differs from PokéAPI. Current: `30`; canonical: `35`.
+- **Houndour #281** [MEDIUM] Houndour's specialAttack base stat differs from PokéAPI. Current: `80`; canonical: `65`.
+- **Houndour #281** [MEDIUM] Houndour's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `55`.
+- **Houndour #281** [MEDIUM] Houndour's speed base stat differs from PokéAPI. Current: `70`; canonical: `50`.
+- **Houndour #281** [MEDIUM] Houndour's maxHp template value differs from canonical base HP. Current: `45`; canonical: `38`.
+- **Salandit #282** [MEDIUM] Salandit's hp base stat differs from PokéAPI. Current: `48`; canonical: `68`.
+- **Salandit #282** [MEDIUM] Salandit's attack base stat differs from PokéAPI. Current: `44`; canonical: `65`.
+- **Salandit #282** [MEDIUM] Salandit's defense base stat differs from PokéAPI. Current: `40`; canonical: `65`.
+- **Salandit #282** [MEDIUM] Salandit's specialAttack base stat differs from PokéAPI. Current: `71`; canonical: `125`.
+- **Salandit #282** [MEDIUM] Salandit's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `115`.
+- **Salandit #282** [MEDIUM] Salandit's speed base stat differs from PokéAPI. Current: `77`; canonical: `80`.
+- **Salandit #282** [MEDIUM] Salandit's maxHp template value differs from canonical base HP. Current: `48`; canonical: `68`.
+- **Rookidee #283** [MEDIUM] Rookidee's hp base stat differs from PokéAPI. Current: `38`; canonical: `40`.
+- **Rookidee #283** [MEDIUM] Rookidee's attack base stat differs from PokéAPI. Current: `47`; canonical: `30`.
+- **Rookidee #283** [MEDIUM] Rookidee's defense base stat differs from PokéAPI. Current: `35`; canonical: `32`.
+- **Rookidee #283** [MEDIUM] Rookidee's specialAttack base stat differs from PokéAPI. Current: `33`; canonical: `50`.
+- **Rookidee #283** [MEDIUM] Rookidee's specialDefense base stat differs from PokéAPI. Current: `35`; canonical: `52`.
+- **Rookidee #283** [MEDIUM] Rookidee's speed base stat differs from PokéAPI. Current: `57`; canonical: `65`.
+- **Rookidee #283** [MEDIUM] Rookidee's maxHp template value differs from canonical base HP. Current: `38`; canonical: `40`.
+- **Riolu #284** [MEDIUM] Riolu's hp base stat differs from PokéAPI. Current: `40`; canonical: `70`.
+- **Riolu #284** [MEDIUM] Riolu's attack base stat differs from PokéAPI. Current: `70`; canonical: `60`.
+- **Riolu #284** [MEDIUM] Riolu's defense base stat differs from PokéAPI. Current: `40`; canonical: `62`.
+- **Riolu #284** [MEDIUM] Riolu's specialAttack base stat differs from PokéAPI. Current: `35`; canonical: `100`.
+- **Riolu #284** [MEDIUM] Riolu's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `82`.
+- **Riolu #284** [MEDIUM] Riolu's speed base stat differs from PokéAPI. Current: `60`; canonical: `80`.
+- **Riolu #284** [MEDIUM] Riolu's maxHp template value differs from canonical base HP. Current: `40`; canonical: `70`.
+- **Absol #285** [MEDIUM] Absol's hp base stat differs from PokéAPI. Current: `65`; canonical: `60`.
+- **Absol #285** [MEDIUM] Absol's attack base stat differs from PokéAPI. Current: `130`; canonical: `40`.
+- **Absol #285** [MEDIUM] Absol's specialAttack base stat differs from PokéAPI. Current: `75`; canonical: `40`.
+- **Absol #285** [MEDIUM] Absol's speed base stat differs from PokéAPI. Current: `75`; canonical: `35`.
+- **Absol #285** [MEDIUM] Absol's maxHp template value differs from canonical base HP. Current: `65`; canonical: `60`.
+- **Bagon #286** [MEDIUM] Bagon's hp base stat differs from PokéAPI. Current: `45`; canonical: `60`.
+- **Bagon #286** [MEDIUM] Bagon's attack base stat differs from PokéAPI. Current: `75`; canonical: `130`.
+- **Bagon #286** [MEDIUM] Bagon's defense base stat differs from PokéAPI. Current: `60`; canonical: `80`.
+- **Bagon #286** [MEDIUM] Bagon's specialAttack base stat differs from PokéAPI. Current: `40`; canonical: `60`.
+- **Bagon #286** [MEDIUM] Bagon's specialDefense base stat differs from PokéAPI. Current: `30`; canonical: `60`.
+- **Bagon #286** [MEDIUM] Bagon's speed base stat differs from PokéAPI. Current: `58`; canonical: `70`.
+- **Bagon #286** [MEDIUM] Bagon's maxHp template value differs from canonical base HP. Current: `45`; canonical: `60`.
+- **Axew #287** [MEDIUM] Axew's hp base stat differs from PokéAPI. Current: `46`; canonical: `60`.
+- **Axew #287** [MEDIUM] Axew's attack base stat differs from PokéAPI. Current: `87`; canonical: `60`.
+- **Axew #287** [MEDIUM] Axew's specialAttack base stat differs from PokéAPI. Current: `30`; canonical: `35`.
+- **Axew #287** [MEDIUM] Axew's specialDefense base stat differs from PokéAPI. Current: `40`; canonical: `35`.
+- **Axew #287** [MEDIUM] Axew's speed base stat differs from PokéAPI. Current: `59`; canonical: `30`.
+- **Axew #287** [MEDIUM] Axew's maxHp template value differs from canonical base HP. Current: `46`; canonical: `60`.
+- **Baltoy #288** [MEDIUM] Baltoy's hp base stat differs from PokéAPI. Current: `40`; canonical: `80`.
+- **Baltoy #288** [MEDIUM] Baltoy's attack base stat differs from PokéAPI. Current: `40`; canonical: `80`.
+- **Baltoy #288** [MEDIUM] Baltoy's defense base stat differs from PokéAPI. Current: `55`; canonical: `80`.
+- **Baltoy #288** [MEDIUM] Baltoy's specialAttack base stat differs from PokéAPI. Current: `40`; canonical: `55`.
+- **Baltoy #288** [MEDIUM] Baltoy's specialDefense base stat differs from PokéAPI. Current: `70`; canonical: `55`.
+- **Baltoy #288** [MEDIUM] Baltoy's speed base stat differs from PokéAPI. Current: `40`; canonical: `90`.
+- **Baltoy #288** [MEDIUM] Baltoy's maxHp template value differs from canonical base HP. Current: `40`; canonical: `80`.
+- **Hippopotas #289** [MEDIUM] Hippopotas's hp base stat differs from PokéAPI. Current: `68`; canonical: `150`.
+- **Hippopotas #289** [MEDIUM] Hippopotas's attack base stat differs from PokéAPI. Current: `72`; canonical: `160`.
+- **Hippopotas #289** [MEDIUM] Hippopotas's defense base stat differs from PokéAPI. Current: `78`; canonical: `100`.
+- **Hippopotas #289** [MEDIUM] Hippopotas's specialAttack base stat differs from PokéAPI. Current: `38`; canonical: `95`.
+- **Hippopotas #289** [MEDIUM] Hippopotas's specialDefense base stat differs from PokéAPI. Current: `42`; canonical: `65`.
+- **Hippopotas #289** [MEDIUM] Hippopotas's speed base stat differs from PokéAPI. Current: `55`; canonical: `100`.
+- **Hippopotas #289** [MEDIUM] Hippopotas's maxHp template value differs from canonical base HP. Current: `68`; canonical: `150`.
+- **Darumaka #290** [MEDIUM] Darumaka's hp base stat differs from PokéAPI. Current: `70`; canonical: `31`.
+- **Darumaka #290** [MEDIUM] Darumaka's attack base stat differs from PokéAPI. Current: `90`; canonical: `45`.
+- **Darumaka #290** [MEDIUM] Darumaka's defense base stat differs from PokéAPI. Current: `45`; canonical: `90`.
+- **Darumaka #290** [MEDIUM] Darumaka's specialAttack base stat differs from PokéAPI. Current: `15`; canonical: `30`.
+- **Darumaka #290** [MEDIUM] Darumaka's specialDefense base stat differs from PokéAPI. Current: `45`; canonical: `30`.
+- **Darumaka #290** [MEDIUM] Darumaka's speed base stat differs from PokéAPI. Current: `53`; canonical: `40`.
+- **Darumaka #290** [MEDIUM] Darumaka's maxHp template value differs from canonical base HP. Current: `70`; canonical: `31`.
+- **Scraggy #291** [MEDIUM] Scraggy's hp base stat differs from PokéAPI. Current: `50`; canonical: `61`.
+- **Scraggy #291** [MEDIUM] Scraggy's attack base stat differs from PokéAPI. Current: `75`; canonical: `90`.
+- **Scraggy #291** [MEDIUM] Scraggy's defense base stat differs from PokéAPI. Current: `70`; canonical: `45`.
+- **Scraggy #291** [MEDIUM] Scraggy's specialAttack base stat differs from PokéAPI. Current: `35`; canonical: `50`.
+- **Scraggy #291** [MEDIUM] Scraggy's specialDefense base stat differs from PokéAPI. Current: `70`; canonical: `50`.
+- **Scraggy #291** [MEDIUM] Scraggy's speed base stat differs from PokéAPI. Current: `55`; canonical: `160`.
+- **Scraggy #291** [MEDIUM] Scraggy's maxHp template value differs from canonical base HP. Current: `50`; canonical: `61`.
+- **Silicobra #292** [MEDIUM] Silicobra's hp base stat differs from PokéAPI. Current: `52`; canonical: `1`.
+- **Silicobra #292** [MEDIUM] Silicobra's attack base stat differs from PokéAPI. Current: `57`; canonical: `90`.
+- **Silicobra #292** [MEDIUM] Silicobra's defense base stat differs from PokéAPI. Current: `75`; canonical: `45`.
+- **Silicobra #292** [MEDIUM] Silicobra's specialAttack base stat differs from PokéAPI. Current: `35`; canonical: `30`.
+- **Silicobra #292** [MEDIUM] Silicobra's specialDefense base stat differs from PokéAPI. Current: `50`; canonical: `30`.
+- **Silicobra #292** [MEDIUM] Silicobra's speed base stat differs from PokéAPI. Current: `46`; canonical: `40`.
+- **Silicobra #292** [MEDIUM] Silicobra's maxHp template value differs from canonical base HP. Current: `52`; canonical: `1`.
+- **Shuppet #293** [MEDIUM] Shuppet's hp base stat differs from PokéAPI. Current: `44`; canonical: `64`.
+- **Shuppet #293** [MEDIUM] Shuppet's attack base stat differs from PokéAPI. Current: `75`; canonical: `51`.
+- **Shuppet #293** [MEDIUM] Shuppet's defense base stat differs from PokéAPI. Current: `35`; canonical: `23`.
+- **Shuppet #293** [MEDIUM] Shuppet's specialAttack base stat differs from PokéAPI. Current: `63`; canonical: `51`.
+- **Shuppet #293** [MEDIUM] Shuppet's specialDefense base stat differs from PokéAPI. Current: `33`; canonical: `23`.
+- **Shuppet #293** [MEDIUM] Shuppet's speed base stat differs from PokéAPI. Current: `69`; canonical: `28`.
+- **Shuppet #293** [MEDIUM] Shuppet's maxHp template value differs from canonical base HP. Current: `44`; canonical: `64`.
+- **Litwick #294** [MEDIUM] Litwick's hp base stat differs from PokéAPI. Current: `50`; canonical: `84`.
+- **Litwick #294** [MEDIUM] Litwick's attack base stat differs from PokéAPI. Current: `30`; canonical: `71`.
+- **Litwick #294** [MEDIUM] Litwick's defense base stat differs from PokéAPI. Current: `55`; canonical: `43`.
+- **Litwick #294** [MEDIUM] Litwick's specialAttack base stat differs from PokéAPI. Current: `65`; canonical: `71`.
+- **Litwick #294** [MEDIUM] Litwick's specialDefense base stat differs from PokéAPI. Current: `55`; canonical: `43`.
+- **Litwick #294** [MEDIUM] Litwick's maxHp template value differs from canonical base HP. Current: `50`; canonical: `84`.
+- **Phantump #295** [MEDIUM] Phantump's hp base stat differs from PokéAPI. Current: `43`; canonical: `104`.
+- **Phantump #295** [MEDIUM] Phantump's attack base stat differs from PokéAPI. Current: `70`; canonical: `91`.
+- **Phantump #295** [MEDIUM] Phantump's defense base stat differs from PokéAPI. Current: `48`; canonical: `63`.
+- **Phantump #295** [MEDIUM] Phantump's specialAttack base stat differs from PokéAPI. Current: `50`; canonical: `91`.
+- **Phantump #295** [MEDIUM] Phantump's specialDefense base stat differs from PokéAPI. Current: `60`; canonical: `73`.
+- **Phantump #295** [MEDIUM] Phantump's speed base stat differs from PokéAPI. Current: `60`; canonical: `68`.
+- **Phantump #295** [MEDIUM] Phantump's maxHp template value differs from canonical base HP. Current: `43`; canonical: `104`.
+- **Yamask #296** [MEDIUM] Yamask's hp base stat differs from PokéAPI. Current: `38`; canonical: `72`.
+- **Yamask #296** [MEDIUM] Yamask's attack base stat differs from PokéAPI. Current: `30`; canonical: `60`.
+- **Yamask #296** [MEDIUM] Yamask's defense base stat differs from PokéAPI. Current: `85`; canonical: `30`.
+- **Yamask #296** [MEDIUM] Yamask's specialAttack base stat differs from PokéAPI. Current: `55`; canonical: `20`.
+- **Yamask #296** [MEDIUM] Yamask's specialDefense base stat differs from PokéAPI. Current: `65`; canonical: `30`.
+- **Yamask #296** [MEDIUM] Yamask's speed base stat differs from PokéAPI. Current: `43`; canonical: `25`.
+- **Yamask #296** [MEDIUM] Yamask's maxHp template value differs from canonical base HP. Current: `38`; canonical: `72`.
+- **Spiritomb #297** [MEDIUM] Spiritomb's hp base stat differs from PokéAPI. Current: `50`; canonical: `144`.
+- **Spiritomb #297** [MEDIUM] Spiritomb's attack base stat differs from PokéAPI. Current: `92`; canonical: `120`.
+- **Spiritomb #297** [MEDIUM] Spiritomb's defense base stat differs from PokéAPI. Current: `108`; canonical: `60`.
+- **Spiritomb #297** [MEDIUM] Spiritomb's specialAttack base stat differs from PokéAPI. Current: `92`; canonical: `40`.
+- **Spiritomb #297** [MEDIUM] Spiritomb's specialDefense base stat differs from PokéAPI. Current: `108`; canonical: `60`.
+- **Spiritomb #297** [MEDIUM] Spiritomb's speed base stat differs from PokéAPI. Current: `92`; canonical: `50`.
+- **Spiritomb #297** [MEDIUM] Spiritomb's maxHp template value differs from canonical base HP. Current: `50`; canonical: `144`.
+- **Latios #298** [MEDIUM] Latios's hp base stat differs from PokéAPI. Current: `80`; canonical: `50`.
+- **Latios #298** [MEDIUM] Latios's attack base stat differs from PokéAPI. Current: `90`; canonical: `20`.
+- **Latios #298** [MEDIUM] Latios's defense base stat differs from PokéAPI. Current: `80`; canonical: `40`.
+- **Latios #298** [MEDIUM] Latios's specialAttack base stat differs from PokéAPI. Current: `130`; canonical: `20`.
+- **Latios #298** [MEDIUM] Latios's specialDefense base stat differs from PokéAPI. Current: `110`; canonical: `40`.
+- **Latios #298** [MEDIUM] Latios's speed base stat differs from PokéAPI. Current: `110`; canonical: `20`.
+- **Latios #298** [MEDIUM] Latios's maxHp template value differs from canonical base HP. Current: `80`; canonical: `50`.
+- **Latias #299** [MEDIUM] Latias's hp base stat differs from PokéAPI. Current: `80`; canonical: `30`.
+- **Latias #299** [MEDIUM] Latias's attack base stat differs from PokéAPI. Current: `80`; canonical: `45`.
+- **Latias #299** [MEDIUM] Latias's defense base stat differs from PokéAPI. Current: `90`; canonical: `135`.
+- **Latias #299** [MEDIUM] Latias's specialAttack base stat differs from PokéAPI. Current: `110`; canonical: `45`.
+- **Latias #299** [MEDIUM] Latias's specialDefense base stat differs from PokéAPI. Current: `130`; canonical: `90`.
+- **Latias #299** [MEDIUM] Latias's speed base stat differs from PokéAPI. Current: `110`; canonical: `30`.
+- **Latias #299** [MEDIUM] Latias's maxHp template value differs from canonical base HP. Current: `80`; canonical: `30`.
+- **Jirachi #300** [MEDIUM] Jirachi's hp base stat differs from PokéAPI. Current: `100`; canonical: `50`.
+- **Jirachi #300** [MEDIUM] Jirachi's attack base stat differs from PokéAPI. Current: `100`; canonical: `45`.
+- **Jirachi #300** [MEDIUM] Jirachi's defense base stat differs from PokéAPI. Current: `100`; canonical: `45`.
+- **Jirachi #300** [MEDIUM] Jirachi's specialAttack base stat differs from PokéAPI. Current: `100`; canonical: `35`.
+- **Jirachi #300** [MEDIUM] Jirachi's specialDefense base stat differs from PokéAPI. Current: `100`; canonical: `35`.
+- **Jirachi #300** [MEDIUM] Jirachi's speed base stat differs from PokéAPI. Current: `100`; canonical: `50`.
+- **Jirachi #300** [MEDIUM] Jirachi's maxHp template value differs from canonical base HP. Current: `100`; canonical: `50`.
+- **Darkrai #301** [MEDIUM] Darkrai's attack base stat differs from PokéAPI. Current: `90`; canonical: `65`.
+- **Darkrai #301** [MEDIUM] Darkrai's defense base stat differs from PokéAPI. Current: `90`; canonical: `65`.
+- **Darkrai #301** [MEDIUM] Darkrai's specialAttack base stat differs from PokéAPI. Current: `135`; canonical: `55`.
+- **Darkrai #301** [MEDIUM] Darkrai's specialDefense base stat differs from PokéAPI. Current: `90`; canonical: `55`.
+- **Darkrai #301** [MEDIUM] Darkrai's speed base stat differs from PokéAPI. Current: `125`; canonical: `90`.
+- **Cresselia #302** [MEDIUM] Cresselia's hp base stat differs from PokéAPI. Current: `120`; canonical: `50`.
+- **Cresselia #302** [MEDIUM] Cresselia's attack base stat differs from PokéAPI. Current: `70`; canonical: `75`.
+- **Cresselia #302** [MEDIUM] Cresselia's defense base stat differs from PokéAPI. Current: `120`; canonical: `75`.
+- **Cresselia #302** [MEDIUM] Cresselia's specialAttack base stat differs from PokéAPI. Current: `75`; canonical: `65`.
+- **Cresselia #302** [MEDIUM] Cresselia's specialDefense base stat differs from PokéAPI. Current: `130`; canonical: `65`.
+- **Cresselia #302** [MEDIUM] Cresselia's speed base stat differs from PokéAPI. Current: `85`; canonical: `50`.
+- **Cresselia #302** [MEDIUM] Cresselia's maxHp template value differs from canonical base HP. Current: `120`; canonical: `50`.
+
+## Capture Rate Mismatches
+
+- **Psyduck #54** [MEDIUM] Psyduck's base catch rate differs from PokéAPI. Current: `255`; canonical: `190`.
+- **Gastly #92** [MEDIUM] Gastly's base catch rate differs from PokéAPI. Current: `255`; canonical: `190`.
+- **Mew #151** [MEDIUM] Mew's base catch rate differs from PokéAPI. Current: `10`; canonical: `45`.
+- **Pidgeot #16** [MEDIUM] Pidgeot's base catch rate differs from PokéAPI. Current: `45`; canonical: `255`.
+- **Sneasel #218** [MEDIUM] Sneasel's base catch rate differs from PokéAPI. Current: `120`; canonical: `190`.
+- **Caterpie #219** [MEDIUM] Caterpie's base catch rate differs from PokéAPI. Current: `255`; canonical: `75`.
+- **Weedle #220** [MEDIUM] Weedle's base catch rate differs from PokéAPI. Current: `255`; canonical: `225`.
+- **Oddish #221** [MEDIUM] Oddish's base catch rate differs from PokéAPI. Current: `255`; canonical: `75`.
+- **Butterfree #222** [MEDIUM] Butterfree's base catch rate differs from PokéAPI. Current: `75`; canonical: `60`.
+- **Poliwag #223** [MEDIUM] Poliwag's base catch rate differs from PokéAPI. Current: `255`; canonical: `190`.
+- **Magikarp #224** [MEDIUM] Magikarp's base catch rate differs from PokéAPI. Current: `255`; canonical: `75`.
+- **Goldeen #225** [MEDIUM] Goldeen's base catch rate differs from PokéAPI. Current: `225`; canonical: `45`.
+- **Staryu #226** [MEDIUM] Staryu's base catch rate differs from PokéAPI. Current: `225`; canonical: `25`.
+- **Zubat #227** [MEDIUM] Zubat's base catch rate differs from PokéAPI. Current: `255`; canonical: `25`.
+- **Diglett #228** [MEDIUM] Diglett's base catch rate differs from PokéAPI. Current: `255`; canonical: `120`.
+- **Machop #229** [MEDIUM] Machop's base catch rate differs from PokéAPI. Current: `180`; canonical: `45`.
+- **Tentacool #230** [MEDIUM] Tentacool's base catch rate differs from PokéAPI. Current: `235`; canonical: `45`.
+- **Horsea #231** [MEDIUM] Horsea's base catch rate differs from PokéAPI. Current: `225`; canonical: `120`.
+- **Shellder #232** [MEDIUM] Shellder's base catch rate differs from PokéAPI. Current: `190`; canonical: `60`.
+- **Seel #233** [MEDIUM] Seel's base catch rate differs from PokéAPI. Current: `190`; canonical: `45`.
+- **Vulpix #234** [MEDIUM] Vulpix's base catch rate differs from PokéAPI. Current: `190`; canonical: `45`.
+- **Ponyta #235** [MEDIUM] Ponyta's base catch rate differs from PokéAPI. Current: `170`; canonical: `45`.
+- **Magmar #236** [MEDIUM] Magmar's base catch rate differs from PokéAPI. Current: `90`; canonical: `75`.
+- **Pidgey #237** [MEDIUM] Pidgey's base catch rate differs from PokéAPI. Current: `255`; canonical: `45`.
+- **Larvitar #238** [MEDIUM] Larvitar's base catch rate differs from PokéAPI. Current: `90`; canonical: `45`.
+- **Sandshrew #239** [MEDIUM] Sandshrew's base catch rate differs from PokéAPI. Current: `255`; canonical: `45`.
+- **Trapinch #240** [MEDIUM] Trapinch's base catch rate differs from PokéAPI. Current: `190`; canonical: `45`.
+- **Cacnea #241** [MEDIUM] Cacnea's base catch rate differs from PokéAPI. Current: `190`; canonical: `45`.
+- **Sandile #242** [MEDIUM] Sandile's base catch rate differs from PokéAPI. Current: `90`; canonical: `30`.
+- **Misdreavus #243** [MEDIUM] Misdreavus's base catch rate differs from PokéAPI. Current: `175`; canonical: `3`.
+- **Duskull #244** [MEDIUM] Duskull's base catch rate differs from PokéAPI. Current: `190`; canonical: `3`.
+- **Sableye #245** [MEDIUM] Sableye's base catch rate differs from PokéAPI. Current: `90`; canonical: `3`.
+- **Gengar #94** [MEDIUM] Gengar's base catch rate differs from PokéAPI. Current: `90`; canonical: `45`.
+- **Articuno #247** [MEDIUM] Articuno's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Zapdos #248** [MEDIUM] Zapdos's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Moltres #249** [MEDIUM] Moltres's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
+- **Lugia #250** [MEDIUM] Lugia's base catch rate differs from PokéAPI. Current: `5`; canonical: `3`.
+- **Ho-Oh #251** [MEDIUM] Ho-Oh's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Rayquaza #252** [MEDIUM] Rayquaza's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Kyogre #253** [MEDIUM] Kyogre's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Groudon #254** [MEDIUM] Groudon's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Dialga #255** [MEDIUM] Dialga's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Palkia #256** [MEDIUM] Palkia's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Giratina #257** [MEDIUM] Giratina's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Zekrom #258** [MEDIUM] Zekrom's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Reshiram #259** [MEDIUM] Reshiram's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Xerneas #260** [MEDIUM] Xerneas's base catch rate differs from PokéAPI. Current: `5`; canonical: `45`.
+- **Yveltal #261** [MEDIUM] Yveltal's base catch rate differs from PokéAPI. Current: `5`; canonical: `255`.
+- **Arceus #262** [MEDIUM] Arceus's base catch rate differs from PokéAPI. Current: `3`; canonical: `127`.
+- **Seedot #264** [MEDIUM] Seedot's base catch rate differs from PokéAPI. Current: `255`; canonical: `90`.
+- **Treecko #266** [MEDIUM] Treecko's base catch rate differs from PokéAPI. Current: `45`; canonical: `120`.
+- **Mudkip #268** [MEDIUM] Mudkip's base catch rate differs from PokéAPI. Current: `45`; canonical: `120`.
+- **Lotad #269** [MEDIUM] Lotad's base catch rate differs from PokéAPI. Current: `255`; canonical: `45`.
+- **Wingull #270** [MEDIUM] Wingull's base catch rate differs from PokéAPI. Current: `190`; canonical: `255`.
+- **Feebas #271** [MEDIUM] Feebas's base catch rate differs from PokéAPI. Current: `255`; canonical: `120`.
+- **Buizel #272** [MEDIUM] Buizel's base catch rate differs from PokéAPI. Current: `190`; canonical: `45`.
+- **Aron #273** [MEDIUM] Aron's base catch rate differs from PokéAPI. Current: `180`; canonical: `255`.
+- **Nosepass #274** [MEDIUM] Nosepass's base catch rate differs from PokéAPI. Current: `255`; canonical: `120`.
+- **Roggenrola #275** [MEDIUM] Roggenrola's base catch rate differs from PokéAPI. Current: `255`; canonical: `45`.
+- **Drilbur #276** [MEDIUM] Drilbur's base catch rate differs from PokéAPI. Current: `120`; canonical: `200`.
+- **Torchic #278** [MEDIUM] Torchic's base catch rate differs from PokéAPI. Current: `45`; canonical: `190`.
+- **Numel #279** [MEDIUM] Numel's base catch rate differs from PokéAPI. Current: `255`; canonical: `45`.
+- **Slugma #280** [MEDIUM] Slugma's base catch rate differs from PokéAPI. Current: `190`; canonical: `235`.
+- **Salandit #282** [MEDIUM] Salandit's base catch rate differs from PokéAPI. Current: `120`; canonical: `45`.
+- **Rookidee #283** [MEDIUM] Rookidee's base catch rate differs from PokéAPI. Current: `255`; canonical: `200`.
+- **Absol #285** [MEDIUM] Absol's base catch rate differs from PokéAPI. Current: `30`; canonical: `255`.
+- **Bagon #286** [MEDIUM] Bagon's base catch rate differs from PokéAPI. Current: `45`; canonical: `90`.
+- **Axew #287** [MEDIUM] Axew's base catch rate differs from PokéAPI. Current: `75`; canonical: `255`.
+- **Baltoy #288** [MEDIUM] Baltoy's base catch rate differs from PokéAPI. Current: `255`; canonical: `120`.
+- **Hippopotas #289** [MEDIUM] Hippopotas's base catch rate differs from PokéAPI. Current: `140`; canonical: `45`.
+- **Darumaka #290** [MEDIUM] Darumaka's base catch rate differs from PokéAPI. Current: `120`; canonical: `255`.
+- **Scraggy #291** [MEDIUM] Scraggy's base catch rate differs from PokéAPI. Current: `180`; canonical: `120`.
+- **Silicobra #292** [MEDIUM] Silicobra's base catch rate differs from PokéAPI. Current: `120`; canonical: `45`.
+- **Shuppet #293** [MEDIUM] Shuppet's base catch rate differs from PokéAPI. Current: `225`; canonical: `190`.
+- **Litwick #294** [MEDIUM] Litwick's base catch rate differs from PokéAPI. Current: `190`; canonical: `120`.
+- **Phantump #295** [MEDIUM] Phantump's base catch rate differs from PokéAPI. Current: `120`; canonical: `45`.
+- **Yamask #296** [MEDIUM] Yamask's base catch rate differs from PokéAPI. Current: `190`; canonical: `180`.
+- **Spiritomb #297** [MEDIUM] Spiritomb's base catch rate differs from PokéAPI. Current: `30`; canonical: `200`.
+- **Latios #298** [MEDIUM] Latios's base catch rate differs from PokéAPI. Current: `3`; canonical: `150`.
+- **Latias #299** [MEDIUM] Latias's base catch rate differs from PokéAPI. Current: `3`; canonical: `255`.
+- **Jirachi #300** [MEDIUM] Jirachi's base catch rate differs from PokéAPI. Current: `3`; canonical: `255`.
+- **Darkrai #301** [MEDIUM] Darkrai's base catch rate differs from PokéAPI. Current: `3`; canonical: `60`.
+- **Cresselia #302** [MEDIUM] Cresselia's base catch rate differs from PokéAPI. Current: `3`; canonical: `45`.
+
+## Evolution Mismatches
+
+- **Pikachu #25** [HIGH] Pikachu uses a simplified level evolution for a different canonical method. Current: `{"target":"Raichu","level":12}`; canonical: `{"targets":["Raichu"],"conditions":[{"trigger":"use-item","item":"thunder-stone"},{"trigger":"use-item","item":"thunder-stone"}]}`.
+- **Clefairy #35** [HIGH] Clefairy is missing canonical evolution target information. Current: `none`; canonical: `Clefable`.
+- **Jigglypuff #39** [HIGH] Jigglypuff is missing canonical evolution target information. Current: `none`; canonical: `Wigglytuff`.
+- **Psyduck #54** [HIGH] Psyduck is missing canonical evolution target information. Current: `none`; canonical: `Golduck`.
+- **Growlithe #58** [HIGH] Growlithe is missing canonical evolution target information. Current: `none`; canonical: `Arcanine`.
+- **Cubone #104** [HIGH] Cubone is missing canonical evolution target information. Current: `none`; canonical: `Marowak`.
+- **Dratini #147** [HIGH] Dratini is missing canonical evolution target information. Current: `none`; canonical: `Dragonair`.
+- **Pidgeot #16** [HIGH] Pidgeot is missing canonical evolution target information. Current: `none`; canonical: `Pidgeotto`.
+- **Spearow #21** [HIGH] Spearow is missing canonical evolution target information. Current: `none`; canonical: `Fearow`.
+- **Onix #95** [HIGH] Onix is missing canonical evolution target information. Current: `none`; canonical: `Steelix`.
+- **Voltorb #100** [HIGH] Voltorb is missing canonical evolution target information. Current: `none`; canonical: `Electrode`.
+- **Cyndaquil #155** [HIGH] Cyndaquil's evolution level differs from PokéAPI. Current: `{"target":"Quilava","level":16}`; canonical: `{"targets":["Quilava"],"conditions":[{"trigger":"level-up","minLevel":14},{"trigger":"level-up","minLevel":17}]}`.
+- **Totodile #158** [HIGH] Totodile's evolution level differs from PokéAPI. Current: `{"target":"Croconaw","level":16}`; canonical: `{"targets":["Croconaw"],"conditions":[{"trigger":"level-up","minLevel":18}]}`.
+- **Pichu #172** [HIGH] Pichu uses a simplified level evolution for a different canonical method. Current: `{"target":"Pikachu","level":8}`; canonical: `{"targets":["Pikachu"],"conditions":[{"trigger":"level-up","minHappiness":220}]}`.
+- **Togepi #175** [HIGH] Togepi is missing canonical evolution target information. Current: `none`; canonical: `Togetic`.
+- **Marill #183** [HIGH] Marill is missing canonical evolution target information. Current: `none`; canonical: `Azumarill`.
+- **Girafarig #207** [HIGH] Girafarig is missing canonical evolution target information. Current: `none`; canonical: `Gliscor`.
+- **Sneasel #218** [HIGH] Sneasel is missing canonical evolution target information. Current: `none`; canonical: `Magcargo`.
+- **Weedle #220** [HIGH] Weedle is missing canonical evolution target information. Current: `none`; canonical: `Piloswine`.
+- **Oddish #221** [HIGH] Oddish is missing canonical evolution target information. Current: `none`; canonical: `Mamoswine`.
+- **Butterfree #222** [HIGH] Butterfree is missing canonical evolution target information. Current: `none`; canonical: `Cursola`.
+- **Poliwag #223** [HIGH] Poliwag is missing canonical evolution target information. Current: `none`; canonical: `Octillery`.
+- **Diglett #228** [HIGH] Diglett is missing canonical evolution target information. Current: `none`; canonical: `Houndoom`.
+- **Horsea #231** [HIGH] Horsea is missing canonical evolution target information. Current: `none`; canonical: `Donphan`.
+- **Seel #233** [HIGH] Seel is missing canonical evolution target information. Current: `none`; canonical: `Porygon Z`.
+- **Vulpix #234** [HIGH] Vulpix is missing canonical evolution target information. Current: `none`; canonical: `Wyrdeer`.
+- **Larvitar #238** [HIGH] Larvitar is missing canonical evolution target information. Current: `none`; canonical: `Jynx`.
+- **Sandshrew #239** [HIGH] Sandshrew is missing canonical evolution target information. Current: `none`; canonical: `Electabuzz`.
+- **Trapinch #240** [HIGH] Trapinch is missing canonical evolution target information. Current: `none`; canonical: `Magmar`.
+- **Articuno #247** [HIGH] Articuno is missing canonical evolution target information. Current: `none`; canonical: `Tyranitar`.
+- **Rayquaza #252** [HIGH] Rayquaza is missing canonical evolution target information. Current: `none`; canonical: `Grovyle`.
+- **Kyogre #253** [HIGH] Kyogre is missing canonical evolution target information. Current: `none`; canonical: `Sceptile`.
+- **Dialga #255** [HIGH] Dialga is missing canonical evolution target information. Current: `none`; canonical: `Combusken`.
+- **Palkia #256** [HIGH] Palkia is missing canonical evolution target information. Current: `none`; canonical: `Blaziken`.
+- **Zekrom #258** [HIGH] Zekrom is missing canonical evolution target information. Current: `none`; canonical: `Marshtomp`.
+- **Reshiram #259** [HIGH] Reshiram is missing canonical evolution target information. Current: `none`; canonical: `Swampert`.
+- **Yveltal #261** [HIGH] Yveltal is missing canonical evolution target information. Current: `none`; canonical: `Mightyena`.
+- **Haunter #93** [HIGH] Haunter uses a simplified level evolution for a different canonical method. Current: `{"target":"Gengar","level":36}`; canonical: `{"targets":["Gengar"],"conditions":[{"trigger":"trade"}]}`.
+- **Graveler #75** [HIGH] Graveler is missing canonical evolution target information. Current: `none`; canonical: `Golem`.
+- **Weepinbell #70** [HIGH] Weepinbell is missing canonical evolution target information. Current: `none`; canonical: `Victreebel`.
+- **Hoothoot #263** [HIGH] Hoothoot is missing canonical evolution target information. Current: `none`; canonical: `Linoone`.
+- **Seedot #264** [HIGH] Seedot is missing canonical evolution target information. Current: `none`; canonical: `Obstagoon`.
+- **Treecko #266** [HIGH] Treecko is missing canonical evolution target information. Current: `none`; canonical: `Beautifly`.
+- **Mudkip #268** [HIGH] Mudkip is missing canonical evolution target information. Current: `none`; canonical: `Dustox`.
+- **Wingull #270** [HIGH] Wingull is missing canonical evolution target information. Current: `none`; canonical: `Lombre`.
+- **Feebas #271** [HIGH] Feebas is missing canonical evolution target information. Current: `none`; canonical: `Ludicolo`.
+- **Aron #273** [HIGH] Aron is missing canonical evolution target information. Current: `none`; canonical: `Nuzleaf`.
+- **Nosepass #274** [HIGH] Nosepass is missing canonical evolution target information. Current: `none`; canonical: `Shiftry`.
+- **Drilbur #276** [HIGH] Drilbur is missing canonical evolution target information. Current: `none`; canonical: `Swellow`.
+- **Torchic #278** [HIGH] Torchic is missing canonical evolution target information. Current: `none`; canonical: `Pelipper`.
+- **Slugma #280** [HIGH] Slugma is missing canonical evolution target information. Current: `none`; canonical: `Kirlia`.
+- **Rookidee #283** [HIGH] Rookidee is missing canonical evolution target information. Current: `none`; canonical: `Masquerain`.
+- **Absol #285** [HIGH] Absol is missing canonical evolution target information. Current: `none`; canonical: `Breloom`.
+- **Axew #287** [HIGH] Axew is missing canonical evolution target information. Current: `none`; canonical: `Vigoroth`.
+- **Baltoy #288** [HIGH] Baltoy is missing canonical evolution target information. Current: `none`; canonical: `Slaking`.
+- **Shuppet #293** [HIGH] Shuppet is missing canonical evolution target information. Current: `none`; canonical: `Loudred`.
+- **Litwick #294** [HIGH] Litwick is missing canonical evolution target information. Current: `none`; canonical: `Exploud`.
+- **Yamask #296** [HIGH] Yamask is missing canonical evolution target information. Current: `none`; canonical: `Hariyama`.
+- **Latios #298** [HIGH] Latios is missing canonical evolution target information. Current: `none`; canonical: `Marill`.
+- **Latias #299** [HIGH] Latias is missing canonical evolution target information. Current: `none`; canonical: `Probopass`.
+- **Jirachi #300** [HIGH] Jirachi is missing canonical evolution target information. Current: `none`; canonical: `Delcatty`.
+- **Croconaw #159** [HIGH] Croconaw's evolution level differs from PokéAPI. Current: `{"target":"Feraligatr","level":36}`; canonical: `{"targets":["Feraligatr"],"conditions":[{"trigger":"level-up","minLevel":30}]}`.
+
+## Branching Evolutions
+
+- **Eevee #133** [HIGH] Eevee has multiple canonical evolution branches. Current: `{"target":"Vaporeon","level":16}`; canonical: `{"targets":["Vaporeon","Jolteon","Flareon","Espeon","Umbreon","Leafeon","Glaceon","Sylveon"]}`.
+- **Scyther #123** [HIGH] Scyther is missing canonical evolution target information. Current: `none`; canonical: `Scizor, Kleavor`.
+- **Wooper #194** [HIGH] Wooper is missing canonical evolution target information. Current: `none`; canonical: `Quagsire, Clodsire`.
+- **Magmar #236** [HIGH] Magmar is missing canonical evolution target information. Current: `none`; canonical: `Hitmonlee, Hitmonchan, Hitmontop`.
+- **Shroomish #265** [HIGH] Shroomish is missing canonical evolution target information. Current: `none`; canonical: `Silcoon, Cascoon`.
+- **Houndour #281** [HIGH] Houndour is missing canonical evolution target information. Current: `none`; canonical: `Gardevoir, Gallade`.
+- **Darumaka #290** [HIGH] Darumaka is missing canonical evolution target information. Current: `none`; canonical: `Ninjask, Shedinja`.
+
+## Missing Evolution Family Members
+
+- Chain 14: present **Clefairy**; missing **Cleffa, Clefable**.
+- Chain 16: present **Jigglypuff**; missing **Igglybuff, Wigglytuff**.
+- Chain 23: present **Psyduck**; missing **Golduck**.
+- Chain 25: present **Growlithe**; missing **Arcanine**.
+- Chain 29: present **Bellsprout, Weepinbell**; missing **Victreebel**.
+- Chain 31: present **Geodude, Graveler**; missing **Golem**.
+- Chain 46: present **Cubone**; missing **Marowak**.
+- Chain 67: present **Eevee, Vaporeon**; missing **Jolteon, Flareon, Espeon, Umbreon, Leafeon, Glaceon, Sylveon**.
+- Chain 76: present **Dratini, Dragonite**; missing **Dragonair**.
+- Chain 6: present **Pidgey, Pidgeot**; missing **Pidgeotto**.
+- Chain 8: present **Spearow**; missing **Fearow**.
+- Chain 41: present **Onix**; missing **Steelix**.
+- Chain 44: present **Voltorb**; missing **Electrode**.
+- Chain 58: present **Scyther**; missing **Scizor, Kleavor**.
+- Chain 72: present **Snorlax**; missing **Munchlax**.
+- Chain 87: present **Togepi**; missing **Togetic, Togekiss**.
+- Chain 90: present **Marill**; missing **Azurill, Azumarill**.
+- Chain 96: present **Wooper**; missing **Quagsire, Clodsire**.
+- Chain 104: present **none**; missing **Gligar, Gliscor**.
+- Chain 111: present **Slugma**; missing **Magcargo**.
+- Chain 112: present **none**; missing **Swinub, Piloswine, Mamoswine**.
+- Chain 113: present **none**; missing **Corsola, Cursola**.
+- Chain 114: present **none**; missing **Remoraid, Octillery**.
+- Chain 115: present **none**; missing **Delibird**.
+- Chain 116: present **none**; missing **Mantyke, Mantine**.
+- Chain 117: present **none**; missing **Skarmory**.
+- Chain 118: present **Houndour**; missing **Houndoom**.
+- Chain 54: present **Horsea**; missing **Seadra, Kingdra**.
+- Chain 119: present **none**; missing **Phanpy, Donphan**.
+- Chain 68: present **none**; missing **Porygon, Porygon2, Porygon Z**.
+- Chain 120: present **none**; missing **Stantler, Wyrdeer**.
+- Chain 121: present **none**; missing **Smeargle**.
+- Chain 47: present **none**; missing **Tyrogue, Hitmonlee, Hitmonchan, Hitmontop**.
+- Chain 59: present **none**; missing **Smoochum, Jynx**.
+- Chain 60: present **none**; missing **Elekid, Electabuzz, Electivire**.
+- Chain 61: present **Magmar**; missing **Magby, Magmortar**.
+- Chain 122: present **none**; missing **Miltank**.
+- Chain 51: present **none**; missing **Happiny, Chansey, Blissey**.
+- Chain 123: present **none**; missing **Raikou**.
+- Chain 124: present **none**; missing **Entei**.
+- Chain 125: present **none**; missing **Suicune**.
+- Chain 126: present **Larvitar**; missing **Pupitar, Tyranitar**.
+- Chain 129: present **none**; missing **Celebi**.
+- Chain 130: present **Treecko**; missing **Grovyle, Sceptile**.
+- Chain 131: present **Torchic**; missing **Combusken, Blaziken**.
+- Chain 132: present **Mudkip**; missing **Marshtomp, Swampert**.
+- Chain 133: present **none**; missing **Poochyena, Mightyena**.
+- Chain 134: present **none**; missing **Zigzagoon, Linoone, Obstagoon**.
+- Chain 135: present **none**; missing **Wurmple, Silcoon, Beautifly, Cascoon, Dustox**.
+- Chain 136: present **Lotad**; missing **Lombre, Ludicolo**.
+- Chain 137: present **Seedot**; missing **Nuzleaf, Shiftry**.
+- Chain 138: present **none**; missing **Taillow, Swellow**.
+- Chain 139: present **Wingull**; missing **Pelipper**.
+- Chain 140: present **none**; missing **Ralts, Kirlia, Gardevoir, Gallade**.
+- Chain 141: present **none**; missing **Surskit, Masquerain**.
+- Chain 142: present **Shroomish**; missing **Breloom**.
+- Chain 143: present **none**; missing **Slakoth, Vigoroth, Slaking**.
+- Chain 144: present **none**; missing **Nincada, Ninjask, Shedinja**.
+- Chain 145: present **none**; missing **Whismur, Loudred, Exploud**.
+- Chain 146: present **none**; missing **Makuhita, Hariyama**.
+- Chain 147: present **Nosepass**; missing **Probopass**.
+- Chain 148: present **none**; missing **Skitty, Delcatty**.
+
+## Forms Found
+
+- **Pikachu**: canonical pikachu-rock-star, pikachu-belle, pikachu-pop-star, pikachu-phd, pikachu-libre, pikachu-cosplay, pikachu-original-cap, pikachu-hoenn-cap, pikachu-sinnoh-cap, pikachu-unova-cap, pikachu-kalos-cap, pikachu-alola-cap, pikachu-partner-cap, pikachu-starter, pikachu-world-cap, pikachu-gmax; configured none; missing pikachu-rock-star, pikachu-belle, pikachu-pop-star, pikachu-phd, pikachu-libre, pikachu-cosplay, pikachu-original-cap, pikachu-hoenn-cap, pikachu-sinnoh-cap, pikachu-unova-cap, pikachu-kalos-cap, pikachu-alola-cap, pikachu-partner-cap, pikachu-starter, pikachu-world-cap, pikachu-gmax.
+- **Growlithe**: canonical growlithe-hisui; configured Hisuian Form; missing none.
+- **Geodude**: canonical geodude-alola; configured none; missing geodude-alola.
+- **Eevee**: canonical eevee-starter, eevee-gmax; configured none; missing eevee-starter, eevee-gmax.
+- **Mewtwo**: canonical mewtwo-mega-x, mewtwo-mega-y; configured none; missing mewtwo-mega-x, mewtwo-mega-y.
+- **Voltorb**: canonical voltorb-hisui; configured Hisuian Form; missing none.
+- **Lapras**: canonical lapras-gmax; configured none; missing lapras-gmax.
+- **Snorlax**: canonical snorlax-gmax; configured none; missing snorlax-gmax.
+- **Wooper**: canonical wooper-paldea; configured none; missing wooper-paldea.
+- **Butterfree**: canonical corsola-galar; configured none; missing corsola-galar.
+- **Zubat**: canonical skarmory-mega; configured none; missing skarmory-mega.
+- **Machop**: canonical houndoom-mega; configured none; missing houndoom-mega.
+- **Vulpix**: canonical none; configured Alolan Form; missing none.
+- **Ponyta**: canonical none; configured Galarian Form; missing none.
+- **Gengar**: canonical gengar-mega, gengar-gmax; configured none; missing gengar-mega, gengar-gmax.
+- **Zapdos**: canonical tyranitar-mega; configured none; missing tyranitar-mega.
+- **Groudon**: canonical sceptile-mega; configured none; missing sceptile-mega.
+- **Giratina**: canonical blaziken-mega; configured none; missing blaziken-mega.
+- **Xerneas**: canonical swampert-mega; configured none; missing swampert-mega.
+- **Charizard**: canonical charizard-mega-x, charizard-mega-y, charizard-gmax; configured none; missing charizard-mega-x, charizard-mega-y, charizard-gmax.
+- **Blastoise**: canonical blastoise-mega, blastoise-gmax; configured none; missing blastoise-mega, blastoise-gmax.
+- **Dragonite**: canonical dragonite-mega; configured none; missing dragonite-mega.
+- **Venusaur**: canonical venusaur-mega, venusaur-gmax; configured none; missing venusaur-mega, venusaur-gmax.
+- **Raichu**: canonical raichu-alola, raichu-mega-x, raichu-mega-y; configured Alolan Form; missing raichu-mega-x, raichu-mega-y.
+- **Graveler**: canonical graveler-alola; configured none; missing graveler-alola.
+- **Hoothoot**: canonical zigzagoon-galar; configured none; missing zigzagoon-galar.
+- **Seedot**: canonical linoone-galar; configured none; missing linoone-galar.
+- **Salandit**: canonical gardevoir-mega; configured none; missing gardevoir-mega.
+- **Cresselia**: canonical sableye-mega; configured none; missing sableye-mega.
+- **Meganium**: canonical meganium-mega; configured none; missing meganium-mega.
+- **Typhlosion**: canonical typhlosion-hisui; configured none; missing typhlosion-hisui.
+- **Feraligatr**: canonical feraligatr-mega; configured none; missing feraligatr-mega.
+
+## Canonical Evolution Methods
+
+### Item (27)
+
+- Pikachu → Raichu: `{"trigger":"use-item","item":"thunder-stone"}`
+- Clefairy → Clefable: `{"trigger":"use-item","item":"moon-stone"}`
+- Jigglypuff → Wigglytuff: `{"trigger":"use-item","item":"moon-stone"}`
+- Growlithe → Arcanine: `{"trigger":"use-item","item":"fire-stone"}`
+- Weepinbell → Victreebel: `{"trigger":"use-item","item":"leaf-stone"}`
+- Eevee → Vaporeon: `{"trigger":"use-item","item":"water-stone"}`
+- Eevee → Jolteon: `{"trigger":"use-item","item":"thunder-stone"}`
+- Eevee → Flareon: `{"trigger":"use-item","item":"fire-stone"}`
+- Eevee → Leafeon: `{"trigger":"use-item","item":"leaf-stone"}`
+- Eevee → Glaceon: `{"trigger":"use-item","item":"ice-stone"}`
+- Onix → Steelix: `{"trigger":"trade","heldItem":"metal-coat"}`
+- Voltorb → Electrode: `{"trigger":"use-item","item":"leaf-stone"}`
+- Scyther → Scizor: `{"trigger":"trade","heldItem":"metal-coat"}`
+- Scyther → Kleavor: `{"trigger":"use-item","item":"black-augurite"}`
+- Togetic → Togekiss: `{"trigger":"use-item","item":"shiny-stone"}`
+- Gligar → Gliscor: `{"trigger":"level-up","heldItem":"razor-fang","timeOfDay":"night"}`
+- Seadra → Kingdra: `{"trigger":"trade","heldItem":"dragon-scale"}`
+- Porygon → Porygon2: `{"trigger":"trade","heldItem":"up-grade"}`
+- Porygon2 → Porygon Z: `{"trigger":"trade","heldItem":"dubious-disc"}`
+- Electabuzz → Electivire: `{"trigger":"trade","heldItem":"electirizer"}`
+- Magmar → Magmortar: `{"trigger":"trade","heldItem":"magmarizer"}`
+- Happiny → Chansey: `{"trigger":"level-up","heldItem":"oval-stone","timeOfDay":"day"}`
+- Lombre → Ludicolo: `{"trigger":"use-item","item":"water-stone"}`
+- Nuzleaf → Shiftry: `{"trigger":"use-item","item":"leaf-stone"}`
+- Kirlia → Gallade: `{"trigger":"use-item","item":"dawn-stone","gender":2}`
+- Nosepass → Probopass: `{"trigger":"use-item","item":"thunder-stone"}`
+- Skitty → Delcatty: `{"trigger":"use-item","item":"moon-stone"}`
+
+### Friendship (10)
+
+- Pichu → Pikachu: `{"trigger":"level-up","minHappiness":220}`
+- Cleffa → Clefairy: `{"trigger":"level-up","minHappiness":160}`
+- Igglybuff → Jigglypuff: `{"trigger":"level-up","minHappiness":160}`
+- Eevee → Espeon: `{"trigger":"level-up","minHappiness":160,"timeOfDay":"day"}`
+- Eevee → Umbreon: `{"trigger":"level-up","minHappiness":160,"timeOfDay":"night"}`
+- Eevee → Sylveon: `{"trigger":"level-up","minHappiness":160,"knownMoveType":"fairy"}`
+- Munchlax → Snorlax: `{"trigger":"level-up","minHappiness":160}`
+- Togepi → Togetic: `{"trigger":"level-up","minHappiness":160}`
+- Azurill → Marill: `{"trigger":"level-up","minHappiness":160}`
+- Chansey → Blissey: `{"trigger":"level-up","minHappiness":160}`
+
+### Trade (9)
+
+- Graveler → Golem: `{"trigger":"trade"}`
+- Haunter → Gengar: `{"trigger":"trade"}`
+- Onix → Steelix: `{"trigger":"trade","heldItem":"metal-coat"}`
+- Scyther → Scizor: `{"trigger":"trade","heldItem":"metal-coat"}`
+- Seadra → Kingdra: `{"trigger":"trade","heldItem":"dragon-scale"}`
+- Porygon → Porygon2: `{"trigger":"trade","heldItem":"up-grade"}`
+- Porygon2 → Porygon Z: `{"trigger":"trade","heldItem":"dubious-disc"}`
+- Electabuzz → Electivire: `{"trigger":"trade","heldItem":"electirizer"}`
+- Magmar → Magmortar: `{"trigger":"trade","heldItem":"magmarizer"}`
+
+## Network / Mapping Failures
+
+None.
+
