@@ -6,6 +6,7 @@ const { createPokemonUtils } = require("./pokemonUtils");
 const { createBattleEngine } = require("./battleEngine");
 const { createEncounterEngine } = require("./encounterEngine");
 const { createRewardEngine } = require("./rewardEngine");
+const { createEvolutionEngine } = require("./evolutionEngine");
 const app = express();
 const port = process.env.PORT || 3000;
 const rootDir = path.join(__dirname, "..");
@@ -61,7 +62,6 @@ const {
   applyPokemonForm,
   normalizePokemon,
   restorePokemon,
-  getEvolution,
   isPokemonOrEvolutionOf,
   getEvolutionFamilyKey,
   createLeveledPokemon,
@@ -185,6 +185,18 @@ const encounterEngine = createEncounterEngine({
 const { selectEncounter } = encounterEngine;
 const SHINY_RATE = 1 / 4096;
 
+const evolutionEngine = createEvolutionEngine({
+  evolutionData: gameData.evolutions,
+  getPokemonSpeciesId,
+  getPokemonTemplateBySpeciesId: pokemonUtils.getPokemonTemplateBySpeciesId,
+  getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
+});
+const {
+  getEvolutionOptions,
+  getAvailableEvolutions,
+  canEvolve,
+} = evolutionEngine;
+
 function applyBattleEndOfTurnStatus(playerPokemon, opponentPokemon, log) {
   if (playerPokemon?.currentHp > 0) {
     applyEndOfTurnStatus(playerPokemon, log);
@@ -196,7 +208,8 @@ function applyBattleEndOfTurnStatus(playerPokemon, opponentPokemon, log) {
 
 const rewardEngine = createRewardEngine({
   normalizePokemon,
-  getEvolution,
+  getEvolutionOptions,
+  getAvailableEvolutions,
   getPokemonTemplateByName,
   getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
   updateAchievements,
@@ -207,6 +220,7 @@ const {
   applyXpToPokemon,
   applyXpToParticipants,
   appendXpLog,
+  performEvolution,
 } = rewardEngine;
 
 function calculateBattleEffortXp(opponentPokemon, battleMultiplier = 1) {
@@ -340,6 +354,53 @@ function getPokedexEntries(state) {
       };
     })
     .sort((a, b) => (a.speciesId ?? a.id) - (b.speciesId ?? b.id));
+}
+
+function getEvolutionOptionView(option) {
+  return {
+    targetSpeciesId: option.targetSpeciesId,
+    targetName: option.targetName,
+    supported: option.supported,
+    requirements: option.requirements || [],
+    unsupportedRequirements: option.unsupportedRequirements || [],
+    items: [
+      ...new Set(
+        (option.conditions || [])
+          .filter((condition) => condition.method === "item" && condition.item)
+          .map((condition) => condition.item),
+      ),
+    ],
+  };
+}
+
+function addEvolutionOptions(pokemon) {
+  return {
+    ...pokemon,
+    evolutionOptions: getEvolutionOptions(pokemon).map(getEvolutionOptionView),
+  };
+}
+
+function markOwnedPokemonCaught(state, pokemon) {
+  const speciesId = getPokemonSpeciesId(pokemon);
+  if (!speciesId) return state;
+  state.pokedex.seen = uniqueNumbers([...state.pokedex.seen, speciesId]);
+  state.pokedex.caught = uniqueNumbers([...state.pokedex.caught, speciesId]);
+  const variantKey = getPokemonVariantKey(pokemon);
+  state.pokedex.formsSeen = uniqueStrings([
+    ...(state.pokedex.formsSeen || []),
+    variantKey,
+  ]);
+  state.pokedex.formsCaught = uniqueStrings([
+    ...(state.pokedex.formsCaught || []),
+    variantKey,
+  ]);
+  updateAchievements(state);
+  return state;
+}
+
+function markOwnedTeamCaught(state, team) {
+  (team || []).forEach((pokemon) => markOwnedPokemonCaught(state, pokemon));
+  return state;
 }
 
 function incrementQuestStat(state, stat, amount = 1) {
@@ -657,6 +718,7 @@ function completeNpcBattle(session, log = []) {
 
   session.status = "won";
   persistBattlePlayerTeam(session);
+  markOwnedTeamCaught(state, session.playerTeam);
   activeNpcSessions.delete("player");
   const savedState = savePlayerState(state);
   return {
@@ -696,6 +758,7 @@ function completeGymSession(session, log = []) {
   }
   session.status = "won";
   persistGymPlayerTeam(session);
+  markOwnedTeamCaught(state, session.playerTeam);
   activeGymSessions.delete("player");
   return {
     success: true,
@@ -741,6 +804,7 @@ function completeEliteSession(session, log = []) {
   }
   session.status = "won";
   persistBattlePlayerTeam(session);
+  markOwnedTeamCaught(state, session.playerTeam);
   activeEliteSessions.delete("player");
   return {
     success: true,
@@ -1547,9 +1611,14 @@ app.post("/api/buy", buyItemHandler);
 app.post("/api/shop/buy", buyItemHandler);
 
 app.post("/api/use-item", (req, res) => {
-  const { itemId, pokemonIndex } = req.body;
+  const {
+    itemId,
+    pokemonIndex,
+    section = "team",
+    targetSpeciesId = null,
+  } = req.body;
   const item = itemCatalog[itemId];
-  if (!item || !["healing", "status"].includes(item.category)) {
+  if (!item || !["healing", "status", "evolution"].includes(item.category)) {
     return res.status(400).json({ error: "That item cannot be used here" });
   }
 
@@ -1559,12 +1628,15 @@ app.post("/api/use-item", (req, res) => {
   }
 
   const { team, storage } = loadTeamAndStorage();
-  if (pokemonIndex < 0 || pokemonIndex >= team.length) {
+  const list = section === "storage" ? storage : team;
+  const index = Number(pokemonIndex);
+  if (!Number.isInteger(index) || index < 0 || index >= list.length) {
     return res.status(400).json({ error: "Invalid Pokemon index" });
   }
 
-  const pokemon = team[pokemonIndex];
+  let pokemon = normalizePokemon(list[index]);
   let message = "";
+  let evolution = null;
   if (item.category === "healing") {
     if (pokemon.currentHp >= pokemon.maxHp) {
       return res
@@ -1574,7 +1646,7 @@ app.post("/api/use-item", (req, res) => {
     const healed = Math.min(item.healAmount, pokemon.maxHp - pokemon.currentHp);
     pokemon.currentHp += healed;
     message = `${pokemon.name} recovered ${healed} HP.`;
-  } else {
+  } else if (item.category === "status") {
     if (!item.cures.includes(pokemon.status)) {
       return res.status(400).json({
         error: `${item.name} does not help ${pokemon.name} right now`,
@@ -1582,10 +1654,55 @@ app.post("/api/use-item", (req, res) => {
     }
     pokemon.status = "none";
     message = `${pokemon.name}'s status was cured.`;
+  } else {
+    const context = {
+      trigger: "use-item",
+      item: item.evolutionItem,
+      targetSpeciesId,
+    };
+    const assessment = canEvolve(pokemon, context);
+    const matchingItemOptions = assessment.options.filter((option) =>
+      (option.conditions || []).some(
+        (condition) =>
+          condition.method === "item" && condition.item === item.evolutionItem,
+      ),
+    );
+    if (!assessment.canEvolve) {
+      if (matchingItemOptions.some((option) => !option.supported)) {
+        const requirements = [
+          ...new Set(
+            matchingItemOptions.flatMap(
+              (option) => option.unsupportedRequirements || [],
+            ),
+          ),
+        ];
+        return res.status(400).json({
+          error: `${pokemon.name} cannot use ${item.name} yet: ${requirements.join(", ")}.`,
+        });
+      }
+      return res.status(400).json({
+        error: `${item.name} cannot evolve ${pokemon.name}.`,
+      });
+    }
+
+    evolution = performEvolution(pokemon, context);
+    if (evolution.requiresChoice) {
+      return res.status(409).json({
+        error: evolution.message,
+        requiresEvolutionChoice: true,
+        options: evolution.options,
+      });
+    }
+    if (!evolution.evolved) {
+      return res.status(400).json({ error: evolution.message });
+    }
+    pokemon = evolution.pokemon;
+    message = evolution.message;
+    markOwnedPokemonCaught(state, pokemon);
   }
 
   state.items[itemId] -= 1;
-  team[pokemonIndex] = pokemon;
+  list[index] = pokemon;
   saveTeamAndStorage(team, storage);
   res.json({
     success: true,
@@ -1594,6 +1711,9 @@ app.post("/api/use-item", (req, res) => {
     team,
     storage,
     state: savePlayerState(state),
+    evolved: Boolean(evolution?.evolved),
+    evolvedFrom: evolution?.evolvedFrom || null,
+    evolvedTo: evolution?.evolvedTo || null,
   });
 });
 
@@ -2252,7 +2372,11 @@ app.post("/api/catch", (req, res) => {
 
 app.get("/api/inventory", (req, res) => {
   try {
-    res.json(loadTeamAndStorage());
+    const { team, storage } = loadTeamAndStorage();
+    res.json({
+      team: team.map(addEvolutionOptions),
+      storage: storage.map(addEvolutionOptions),
+    });
   } catch (error) {
     res.status(500).json({ error: "Failed to read inventory" });
   }
@@ -2344,6 +2468,59 @@ app.post("/api/learn-move", (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to update moves" });
+  }
+});
+
+app.post("/api/evolve", (req, res) => {
+  const { section = "team", pokemonIndex, targetSpeciesId } = req.body;
+
+  try {
+    const { team, storage } = loadTeamAndStorage();
+    const list = section === "storage" ? storage : team;
+    const index = Number(pokemonIndex);
+    const requestedTarget = Number(targetSpeciesId);
+    if (!Number.isInteger(index) || index < 0 || index >= list.length) {
+      return res.status(400).json({ error: "Invalid Pokemon index" });
+    }
+    if (!Number.isInteger(requestedTarget)) {
+      return res.status(400).json({ error: "Choose an evolution target" });
+    }
+
+    const pokemon = normalizePokemon(list[index]);
+    const pendingOptions = pokemon.pendingEvolution?.options || [];
+    if (
+      pokemon.pendingEvolution?.trigger !== "level-up" ||
+      !pendingOptions.some(
+        (option) => Number(option.targetSpeciesId) === requestedTarget,
+      )
+    ) {
+      return res.status(400).json({ error: "That evolution is not pending" });
+    }
+
+    const result = performEvolution(pokemon, {
+      trigger: "level-up",
+      targetSpeciesId: requestedTarget,
+    });
+    if (!result.evolved) {
+      return res.status(400).json({ error: result.message });
+    }
+
+    list[index] = result.pokemon;
+    saveTeamAndStorage(team, storage);
+    const state = markOwnedPokemonCaught(loadPlayerState(), result.pokemon);
+    savePlayerState(state);
+    return res.json({
+      success: true,
+      message: result.message,
+      pokemon: result.pokemon,
+      team,
+      storage,
+      evolved: true,
+      evolvedFrom: result.evolvedFrom,
+      evolvedTo: result.evolvedTo,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to evolve Pokemon" });
   }
 });
 

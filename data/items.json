@@ -125,5 +125,85 @@
       "confused"
     ],
     "description": "Cures any major status condition."
+  },
+  "thunderStone": {
+    "name": "Thunder Stone",
+    "category": "evolution",
+    "price": 800,
+    "icon": "evolution",
+    "evolutionItem": "thunder-stone",
+    "description": "Triggers compatible Electric-type evolutions."
+  },
+  "fireStone": {
+    "name": "Fire Stone",
+    "category": "evolution",
+    "price": 800,
+    "icon": "evolution",
+    "evolutionItem": "fire-stone",
+    "description": "Triggers compatible Fire-type evolutions."
+  },
+  "waterStone": {
+    "name": "Water Stone",
+    "category": "evolution",
+    "price": 800,
+    "icon": "evolution",
+    "evolutionItem": "water-stone",
+    "description": "Triggers compatible Water-type evolutions."
+  },
+  "leafStone": {
+    "name": "Leaf Stone",
+    "category": "evolution",
+    "price": 800,
+    "icon": "evolution",
+    "evolutionItem": "leaf-stone",
+    "description": "Triggers compatible Grass-type evolutions."
+  },
+  "moonStone": {
+    "name": "Moon Stone",
+    "category": "evolution",
+    "price": 900,
+    "icon": "evolution",
+    "evolutionItem": "moon-stone",
+    "description": "Triggers evolutions influenced by moonlight."
+  },
+  "sunStone": {
+    "name": "Sun Stone",
+    "category": "evolution",
+    "price": 900,
+    "icon": "evolution",
+    "evolutionItem": "sun-stone",
+    "description": "Triggers evolutions influenced by sunlight."
+  },
+  "shinyStone": {
+    "name": "Shiny Stone",
+    "category": "evolution",
+    "price": 1100,
+    "icon": "evolution",
+    "evolutionItem": "shiny-stone",
+    "description": "A brilliant stone used by certain Pokemon."
+  },
+  "duskStone": {
+    "name": "Dusk Stone",
+    "category": "evolution",
+    "price": 1100,
+    "icon": "evolution",
+    "evolutionItem": "dusk-stone",
+    "description": "A shadowy stone used by certain Pokemon."
+  },
+  "dawnStone": {
+    "name": "Dawn Stone",
+    "category": "evolution",
+    "price": 1100,
+    "icon": "evolution",
+    "evolutionItem": "dawn-stone",
+    "description": "A radiant stone used by certain Pokemon."
+  },
+  "iceStone": {
+    "name": "Ice Stone",
+    "category": "evolution",
+    "price": 1100,
+    "icon": "evolution",
+    "evolutionItem": "ice-stone",
+    "description": "A frozen stone used by certain Pokemon."
   }
 }

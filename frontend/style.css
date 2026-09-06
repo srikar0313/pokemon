@@ -334,6 +334,53 @@ h3 {
   background: linear-gradient(90deg, #4d9de0, #f2b84b);
 }
 
+.evolution-option-list,
+.pending-evolution-options,
+.evolution-choice-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.evolution-option {
+  display: grid;
+  gap: 5px;
+  padding: 9px;
+  border: 1px solid #cbd9e8;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.evolution-option small,
+.evolution-option em {
+  color: #526b86;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.evolution-option.unsupported {
+  opacity: 0.72;
+}
+
+.evolution-item-button {
+  width: 100%;
+}
+
+.evolution-choice-dialog {
+  width: min(420px, 100%);
+  padding: 22px;
+  border: 3px solid #263a58;
+  border-radius: 8px;
+  background: #f8fbff;
+  box-shadow: 0 24px 70px rgba(4, 12, 24, 0.4);
+  text-align: center;
+}
+
+.evolution-choice-dialog h3 {
+  margin-top: 0;
+}
+
 .battle-item-panel {
   margin: 12px 0;
   padding: 12px;

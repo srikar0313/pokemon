@@ -78,6 +78,7 @@ const icons = {
   backpack: "assets/icons/backpack.svg",
   heart: "assets/icons/heart.svg",
   xp: "assets/icons/xp.svg",
+  evolution: "assets/icons/xp.svg",
   run: "assets/icons/arrow-run.svg",
   burned: "assets/icons/status-burn.svg",
   frozen: "assets/icons/status-freeze.svg",
@@ -781,32 +782,63 @@ function renderPokemonStatBars(pokemon) {
   `;
 }
 
-function renderEvolutionPanel(pokemon) {
-  const remainingLevels =
-    pokemon.evolvesTo && pokemon.evolveLevel
-      ? Math.max(0, pokemon.evolveLevel - (pokemon.level || 1))
-      : null;
-  const progress =
-    pokemon.evolvesTo && pokemon.evolveLevel
-      ? Math.min(100, ((pokemon.level || 1) / pokemon.evolveLevel) * 100)
-      : 100;
+function getEvolutionItemBySlug(itemSlug) {
+  return shopCatalog.find((item) => item.evolutionItem === itemSlug) || null;
+}
+
+function renderEvolutionPanel(
+  pokemon,
+  section = "team",
+  index = activeInventoryIndex,
+) {
+  const options = pokemon.evolutionOptions || [];
+  const pendingOptions = pokemon.pendingEvolution?.options || [];
   return `
     <div class="evolution-panel">
       <h4>Evolution</h4>
+      <div class="detail-evolution-stage">
+        <img src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
+        <div><strong>${pokemon.name}</strong><small>Lv${pokemon.level || 1}</small></div>
+      </div>
       ${
-        pokemon.evolvesTo && pokemon.evolveLevel
-          ? `<div class="detail-evolution-stage">
-               <img src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
-               <div><strong>${pokemon.name}</strong><small>Lv${pokemon.level || 1}</small></div>
-             </div>
-             <p>Next: <strong>${pokemon.evolvesTo}</strong> at Lv${pokemon.evolveLevel}</p>
-             <div class="evolution-progress"><div style="width: ${progress}%"></div></div>
-             <span>${remainingLevels === 0 ? "Ready to evolve after XP check" : `${remainingLevels} level${remainingLevels === 1 ? "" : "s"} remaining`}</span>`
-          : `<div class="detail-evolution-stage">
-               <img src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
-               <div><strong>${pokemon.name}</strong><small>Lv${pokemon.level || 1}</small></div>
-             </div>
-             <p>Final evolution</p>`
+        pendingOptions.length
+          ? `<div class="pending-evolution-options">
+              <p><strong>Choose an evolution:</strong></p>
+              ${pendingOptions
+                .map(
+                  (option) => `<button class="secondary-btn" onclick="resolvePendingEvolution('${section}', ${index}, ${option.targetSpeciesId})">${escapeHtml(option.targetName)}</button>`,
+                )
+                .join("")}
+            </div>`
+          : ""
+      }
+      ${
+        options.length
+          ? `<div class="evolution-option-list">
+              ${options
+                .map((option) => {
+                  const itemActions = (option.items || [])
+                    .map((itemSlug) => getEvolutionItemBySlug(itemSlug))
+                    .filter(Boolean)
+                    .map((item) => {
+                      const quantity = playerState?.items?.[item.id] || 0;
+                      return `<button class="secondary-btn evolution-item-button" onclick="useItem(event, '${item.id}', ${index}, '${section}', ${option.targetSpeciesId})" ${quantity > 0 && option.supported ? "" : "disabled"}>Use ${escapeHtml(item.name)} (${quantity})</button>`;
+                    })
+                    .join("");
+                  return `<div class="evolution-option${option.supported ? "" : " unsupported"}">
+                    <strong>${escapeHtml(option.targetName)}</strong>
+                    <small>${(option.requirements || []).map(escapeHtml).join(" or ") || "Special requirement"}</small>
+                    ${
+                      option.unsupportedRequirements?.length
+                        ? `<em>Not supported yet: ${option.unsupportedRequirements.map(escapeHtml).join(", ")}</em>`
+                        : ""
+                    }
+                    ${itemActions}
+                  </div>`;
+                })
+                .join("")}
+            </div>`
+          : "<p>Final evolution</p>"
       }
     </div>
   `;
@@ -872,7 +904,7 @@ function renderPokemonDetailCard(
         </div>
         <div class="pokemon-detail-grid">
           ${renderPokemonStatBars(pokemon)}
-          ${renderEvolutionPanel(pokemon)}
+          ${renderEvolutionPanel(pokemon, section, index)}
         </div>
         ${renderMoveDetails(pokemon)}
         ${renderPendingMovePanel(pokemon, section, index)}
@@ -3671,7 +3703,7 @@ function displayBag() {
                     <div class="bag-item-actions">
                       <span>${playerState.items?.[item.id] || 0}</span>
                       ${
-                        ["healing", "status"].includes(item.category)
+                        ["healing", "status", "evolution"].includes(item.category)
                           ? `<button class="secondary-btn" onclick="useItemOnActive('${item.id}')" ${activePokemon ? "" : "disabled"}>Use</button>`
                           : `<span class="bag-item-note">Battle item</span>`
                       }
@@ -3691,6 +3723,7 @@ function formatItemCategory(category) {
     ball: "Poke Ball",
     healing: "Healing",
     status: "Status",
+    evolution: "Evolution",
   };
   return labels[category] || "Item";
 }
@@ -3803,23 +3836,37 @@ async function healTeam() {
   await loadInventory();
 }
 
-async function useItem(event, itemId, pokemonIndex) {
-  event.stopPropagation();
+async function useItem(
+  event,
+  itemId,
+  pokemonIndex,
+  section = "team",
+  targetSpeciesId = null,
+) {
+  event?.stopPropagation?.();
   const response = await fetch("/api/use-item", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ itemId, pokemonIndex }),
+    body: JSON.stringify({ itemId, pokemonIndex, section, targetSpeciesId }),
   });
   const data = await response.json();
+  if (data.requiresEvolutionChoice) {
+    showEvolutionChoiceDialog(itemId, pokemonIndex, section, data.options || []);
+    return;
+  }
   if (data.error) {
     alert(data.error);
     return;
   }
   playerState = data.state;
+  appendBattleLog([data.message]);
+  if (data.evolved) queueEvolutionPresentations([data.message]);
   await loadInventory();
   displayStats();
   displayCurrentPlayer();
   renderBattlePlaceholder(data.message);
+  const updated = section === "storage" ? storageCache[pokemonIndex] : teamCache[pokemonIndex];
+  if (updated && activeScreen === "party") showPokemonDetail(section, pokemonIndex);
 }
 
 async function useItemOnActive(itemId) {
@@ -3828,6 +3875,48 @@ async function useItemOnActive(itemId) {
     return;
   }
   await useItem({ stopPropagation() {} }, itemId, activeInventoryIndex);
+}
+
+function showEvolutionChoiceDialog(itemId, pokemonIndex, section, options) {
+  document.querySelector(".evolution-choice-overlay")?.remove();
+  const overlay = document.createElement("div");
+  overlay.className = "evolution-overlay evolution-choice-overlay active";
+  overlay.innerHTML = `
+    <div class="evolution-choice-dialog" role="dialog" aria-modal="true" aria-label="Choose evolution">
+      <h3>Choose an evolution</h3>
+      <div class="evolution-choice-actions">
+        ${options
+          .map(
+            (option) => `<button class="primary-action" onclick="closeEvolutionChoiceDialog(); useItem(event, '${itemId}', ${pokemonIndex}, '${section}', ${option.targetSpeciesId})">${escapeHtml(option.targetName)}</button>`,
+          )
+          .join("")}
+      </div>
+      <button class="secondary-btn" onclick="closeEvolutionChoiceDialog()">Cancel</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function closeEvolutionChoiceDialog() {
+  document.querySelector(".evolution-choice-overlay")?.remove();
+}
+
+async function resolvePendingEvolution(section, pokemonIndex, targetSpeciesId) {
+  const response = await fetch("/api/evolve", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ section, pokemonIndex, targetSpeciesId }),
+  });
+  const data = await response.json();
+  if (data.error) {
+    alert(data.error);
+    return;
+  }
+  appendBattleLog([data.message]);
+  queueEvolutionPresentations([data.message]);
+  await loadProfile();
+  await loadInventory();
+  showPokemonDetail(section, pokemonIndex);
 }
 
 async function resolvePendingMove(section, pokemonIndex, payload) {

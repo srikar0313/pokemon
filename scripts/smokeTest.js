@@ -6,6 +6,7 @@ const {
 } = require("../backend/pokemonUtils");
 const { createGameState } = require("../backend/gameState");
 const { createRewardEngine } = require("../backend/rewardEngine");
+const { createEvolutionEngine } = require("../backend/evolutionEngine");
 const { createEncounterEngine } = require("../backend/encounterEngine");
 const variantUtils = require("../frontend/variantUtils");
 
@@ -109,9 +110,16 @@ function main() {
   );
   const starterTemplate = pokemonUtils.getPokemonTemplateByName("Pikachu");
   const starter = pokemonUtils.getStarterPokemon();
+  const evolutionEngine = createEvolutionEngine({
+    evolutionData: gameData.evolutions,
+    getPokemonSpeciesId: pokemonUtils.getPokemonSpeciesId,
+    getPokemonTemplateBySpeciesId: pokemonUtils.getPokemonTemplateBySpeciesId,
+    getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
+  });
   const rewardEngine = createRewardEngine({
     normalizePokemon: pokemonUtils.normalizePokemon,
-    getEvolution: pokemonUtils.getEvolution,
+    getEvolutionOptions: evolutionEngine.getEvolutionOptions,
+    getAvailableEvolutions: evolutionEngine.getAvailableEvolutions,
     getPokemonTemplateByName: pokemonUtils.getPokemonTemplateByName,
     getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
     updateAchievements: () => {},
@@ -134,6 +142,24 @@ function main() {
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
   assert(Array.isArray(gameData.quests), "quests did not load");
+  [
+    "thunderStone",
+    "fireStone",
+    "waterStone",
+    "leafStone",
+    "moonStone",
+    "sunStone",
+    "shinyStone",
+    "duskStone",
+    "dawnStone",
+    "iceStone",
+  ].forEach((itemId) => {
+    assert(
+      gameData.items[itemId]?.category === "evolution" &&
+        gameData.items[itemId]?.evolutionItem,
+      `missing evolution item: ${itemId}`,
+    );
+  });
 
   const mappings = speciesMap.species || [];
   assert(pokemon.length === mappings.length, "catalog and species map counts differ");
@@ -429,9 +455,13 @@ function main() {
     currentHp: 20,
   });
   evolutionBulbasaur.moves[0].currentPp = 3;
+  const bulbasaurEvolutionOption = evolutionEngine.getAvailableEvolutions(
+    evolutionBulbasaur,
+    { trigger: "level-up" },
+  )[0];
   const firstEvolution = rewardEngine.evolvePokemonFromTemplate(
     evolutionBulbasaur,
-    pokemonUtils.getEvolution(evolutionBulbasaur),
+    bulbasaurEvolutionOption,
   );
   assert(firstEvolution.evolved, "Bulbasaur did not evolve");
   assert(
@@ -461,34 +491,43 @@ function main() {
     "direct evolution did not preserve HP ratio",
   );
   const ivysaur = { ...firstEvolution.pokemon, level: 32 };
+  const ivysaurEvolutionOption = evolutionEngine.getAvailableEvolutions(
+    ivysaur,
+    { trigger: "level-up" },
+  )[0];
   const secondEvolution = rewardEngine.evolvePokemonFromTemplate(
     ivysaur,
-    pokemonUtils.getEvolution(ivysaur),
+    ivysaurEvolutionOption,
   );
   assert(
     secondEvolution.pokemon.name === "Venusaur",
     "Ivysaur did not evolve into Venusaur",
   );
   assert(
-    pokemonUtils.getEvolution(secondEvolution.pokemon) === null,
+    evolutionEngine.getEvolutionOptions(secondEvolution.pokemon).length === 0,
     "final evolution retained a stale evolution target",
   );
   [
     ["Charmander", "Charmeleon"],
     ["Squirtle", "Wartortle"],
-    ["Pikachu", "Raichu"],
   ].forEach(([sourceName, targetName]) => {
     const sourceTemplate = pokemonUtils.getPokemonTemplateByName(sourceName);
     const targetTemplate = pokemonUtils.getPokemonTemplateByName(targetName);
+    const canonicalOption = evolutionEngine
+      .getEvolutionOptions(sourceTemplate)
+      .find((option) => option.targetName === targetName);
+    const evolutionLevel = canonicalOption.conditions.find(
+      (condition) => condition.method === "level",
+    ).minLevel;
     const source = pokemonUtils.normalizePokemon({
       ...sourceTemplate,
-      level: sourceTemplate.evolveLevel,
+      level: evolutionLevel,
       xp: 9,
       shiny: true,
     });
     const result = rewardEngine.evolvePokemonFromTemplate(
       source,
-      pokemonUtils.getEvolution(source),
+      evolutionEngine.getAvailableEvolutions(source, { trigger: "level-up" })[0],
     );
     assert(result.evolved, `${sourceName} did not evolve`);
     assert(result.pokemon.name === targetName, `${sourceName} evolved incorrectly`);
@@ -620,9 +659,13 @@ function main() {
     ["Squirtle", "Wartortle"],
   ].forEach(([sourceName, targetName]) => {
     const sourceTemplate = pokemonUtils.getPokemonTemplateByName(sourceName);
+    const canonicalLevel = evolutionEngine
+      .getEvolutionOptions(sourceTemplate)
+      .find((option) => option.targetName === targetName)
+      .conditions.find((condition) => condition.method === "level").minLevel;
     const beforeEvolution = levelPokemonTo(
       pokemonUtils.normalizePokemon(sourceTemplate),
-      sourceTemplate.evolveLevel - 1,
+      canonicalLevel - 1,
     ).pokemon;
     const result = rewardEngine.applyXpToPokemon(
       [beforeEvolution],
@@ -643,6 +686,135 @@ function main() {
       },
     );
   });
+
+  const highLevelPikachu = pokemonUtils.normalizePokemon({
+    ...starterTemplate,
+    level: 50,
+  });
+  const pikachuLevelResult = rewardEngine.applyXpToPokemon(
+    [highLevelPikachu],
+    0,
+    rewardEngine.getXpNeededForLevel(50),
+  );
+  assert(
+    pikachuLevelResult.pokemon.name === "Pikachu" && !pikachuLevelResult.evolved,
+    "Pikachu incorrectly evolved by level",
+  );
+  const overThresholdBulbasaur = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Bulbasaur"),
+    level: 16,
+    xp: 0,
+  });
+  const noLevelEvolution = rewardEngine.applyXpToPokemon(
+    [overThresholdBulbasaur],
+    0,
+    1,
+  );
+  assert(
+    noLevelEvolution.pokemon.name === "Bulbasaur",
+    "level evolution triggered without gaining a level",
+  );
+
+  const stonePikachu = pokemonUtils.normalizePokemon({
+    ...starterTemplate,
+    level: 24,
+    xp: 31,
+    shiny: true,
+    currentHp: Math.round(starterTemplate.maxHp * 0.4),
+  });
+  stonePikachu.moves[0].currentPp = 2;
+  const thunderEvolution = rewardEngine.performEvolution(stonePikachu, {
+    trigger: "use-item",
+    item: "thunder-stone",
+  });
+  assert(thunderEvolution.evolved, "Thunder Stone did not evolve Pikachu");
+  assert(thunderEvolution.pokemon.name === "Raichu", "Pikachu evolved incorrectly");
+  assert(thunderEvolution.pokemon.speciesId === 26, "Raichu has wrong speciesId");
+  assert(thunderEvolution.pokemon.shiny, "stone evolution lost shiny state");
+  assert(thunderEvolution.pokemon.level === 24, "stone evolution lost level");
+  assert(thunderEvolution.pokemon.xp === 31, "stone evolution lost XP");
+  assert(
+    thunderEvolution.pokemon.moves[0].currentPp === 2,
+    "stone evolution reset move PP",
+  );
+  assert(
+    Math.abs(
+      thunderEvolution.pokemon.currentHp / thunderEvolution.pokemon.maxHp -
+        stonePikachu.currentHp / stonePikachu.maxHp,
+    ) <= 0.02,
+    "stone evolution did not preserve HP ratio",
+  );
+
+  let wrongStoneCount = 1;
+  const wrongStoneEvolution = rewardEngine.performEvolution(stonePikachu, {
+    trigger: "use-item",
+    item: "water-stone",
+  });
+  if (wrongStoneEvolution.evolved) wrongStoneCount -= 1;
+  assert(!wrongStoneEvolution.evolved, "wrong stone evolved Pikachu");
+  assert(wrongStoneCount === 1, "wrong stone was consumed");
+
+  const eevee = pokemonUtils.normalizePokemon(
+    pokemonUtils.getPokemonTemplateByName("Eevee"),
+  );
+  const eeveeOptions = evolutionEngine.getEvolutionOptions(eevee);
+  assert(
+    new Set(eeveeOptions.map((option) => option.targetSpeciesId)).size >= 8,
+    "Eevee does not expose all canonical branches",
+  );
+  assert(
+    evolutionEngine.getAvailableEvolutions(eevee, {
+      trigger: "use-item",
+      item: "water-stone",
+    })[0]?.targetName === "Vaporeon",
+    "Eevee Water Stone branch is incorrect",
+  );
+
+  const wurmple = pokemonUtils.createLeveledPokemon("Wurmple", 6);
+  const wurmpleChoice = rewardEngine.applyXpToPokemon(
+    [wurmple],
+    0,
+    rewardEngine.getXpNeededForLevel(6),
+  );
+  assert(
+    !wurmpleChoice.evolved &&
+      wurmpleChoice.pokemon.name === "Wurmple" &&
+      wurmpleChoice.pendingEvolution?.options?.length === 2,
+    "multiple valid branches did not create a pending evolution choice",
+  );
+
+  const caterpie = pokemonUtils.createLeveledPokemon("Caterpie", 6);
+  const caterpieChainXp = [6, 7, 8, 9].reduce(
+    (sum, level) => sum + rewardEngine.getXpNeededForLevel(level),
+    0,
+  );
+  const butterfreeResult = rewardEngine.applyXpToPokemon(
+    [caterpie],
+    0,
+    caterpieChainXp,
+  );
+  assert(
+    butterfreeResult.pokemon.name === "Butterfree" &&
+      butterfreeResult.pokemon.level === 10,
+    "Caterpie did not follow its full canonical level chain",
+  );
+  assert(
+    butterfreeResult.evolutionEvents
+      .map((event) => `${event.from}->${event.to}`)
+      .join(",") === "Caterpie->Metapod,Metapod->Butterfree",
+    "Caterpie evolution events are incomplete",
+  );
+
+  memoryFiles.clear();
+  memoryFiles.set("memory-inventory.json", [thunderEvolution.pokemon]);
+  memoryFiles.set("memory-storage.json", []);
+  const evolvedOwnershipState = createMemoryGameState(pokemonUtils);
+  const evolvedPokedex = evolvedOwnershipState.loadPlayerState().pokedex;
+  assert(
+    evolvedPokedex.caught.includes(26),
+    "evolved owned Pokemon was not marked caught by speciesId",
+  );
+
   assert(starter.name === "Pikachu", "starter Pokemon is not Pikachu");
   assert(starter.id === starterTemplate.id, "starter Pikachu did not use template id");
   assert(
@@ -958,21 +1130,18 @@ function main() {
     "shiny artwork fallback is incorrect",
   );
 
-  const unsupportedRegionalEvolution = rewardEngine.evolvePokemonFromTemplate(
-    pokemonUtils.normalizePokemon({
-      ...pokemonUtils.getPokemonTemplateByName("Pikachu"),
-      level: 12,
-      form: {
-        id: "legacy-regional",
-        name: "Legacy Regional Form",
-        category: "regional",
-      },
-    }),
-    { name: "Raichu", level: 12 },
-  );
+  const unsupportedRegionalEvolution = evolutionEngine.canEvolve(alolanVulpix, {
+    trigger: "use-item",
+    item: "ice-stone",
+  });
   assert(
-    !unsupportedRegionalEvolution.evolved,
-    "unsupported regional evolution silently became a normal form",
+    !unsupportedRegionalEvolution.canEvolve &&
+      unsupportedRegionalEvolution.options.some((option) =>
+        option.unsupportedRequirements.includes(
+          "Unresolved regional form requirement",
+        ),
+      ),
+    "ambiguous regional evolution was not blocked",
   );
 
   const missingPp = pokemon.flatMap((entry) =>

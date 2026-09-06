@@ -292,6 +292,14 @@ function createPokemonUtils({
     return getPokemonTemplates().find((pokemon) => pokemon.name === name) || null;
   }
 
+  function getPokemonTemplateBySpeciesId(speciesId) {
+    return (
+      getPokemonTemplates().find(
+        (pokemon) => pokemon.speciesId === Number(speciesId),
+      ) || null
+    );
+  }
+
   function getPokemonSpeciesId(pokemonOrIdentity) {
     if (
       pokemonOrIdentity &&
@@ -782,6 +790,7 @@ function createPokemonUtils({
     getLegacyPokemonTemplates,
     getPokemonTemplate,
     getPokemonTemplateByName,
+    getPokemonTemplateBySpeciesId,
     getPokemonSpeciesId,
     getLegacyBaseStats,
     getCanonicalBaseStats,

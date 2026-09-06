@@ -1,6 +1,7 @@
 function createRewardEngine({
   normalizePokemon,
-  getEvolution,
+  getEvolutionOptions,
+  getAvailableEvolutions,
   getPokemonTemplateByName,
   getPokemonFormDefinition,
   updateAchievements,
@@ -67,15 +68,16 @@ function createRewardEngine({
   }
 
   function evolvePokemonFromTemplate(pokemon, evolution) {
+    const targetName = evolution?.targetName || evolution?.name;
     const sourceTemplate = getPokemonTemplateByName?.(pokemon.name);
-    const targetTemplate = getPokemonTemplateByName?.(evolution.name);
+    const targetTemplate = getPokemonTemplateByName?.(targetName);
     if (!targetTemplate?.name) {
       return {
         pokemon,
         evolved: false,
         evolvedFrom: null,
         evolvedTo: null,
-        message: `${pokemon.name} could not evolve into ${evolution.name} because that species data is missing.`,
+        message: `${pokemon.name} could not evolve into ${targetName} because that species data is missing.`,
       };
     }
 
@@ -164,6 +166,7 @@ function createRewardEngine({
             ),
           );
     evolvedPokemon.evolvedFrom = evolvedFrom;
+    delete evolvedPokemon.pendingEvolution;
 
     return {
       pokemon: evolvedPokemon,
@@ -171,6 +174,56 @@ function createRewardEngine({
       evolvedFrom,
       evolvedTo: evolvedPokemon.name,
       message: `${evolvedFrom} evolved into ${evolvedPokemon.name}!`,
+    };
+  }
+
+  function serializeEvolutionOptions(options) {
+    return (options || []).map((option) => ({
+      targetSpeciesId: option.targetSpeciesId,
+      targetName: option.targetName,
+      supported: option.supported,
+      requirements: option.requirements,
+      unsupportedRequirements: option.unsupportedRequirements,
+    }));
+  }
+
+  function performEvolution(pokemon, context = {}) {
+    const options = getEvolutionOptions?.(pokemon, context) || [];
+    const available = getAvailableEvolutions?.(pokemon, context) || [];
+    if (!available.length) {
+      return {
+        pokemon,
+        evolved: false,
+        options: serializeEvolutionOptions(options),
+        message: options.length
+          ? `${pokemon.name} does not meet the evolution requirements.`
+          : `${pokemon.name} has no further evolution.`,
+      };
+    }
+    const hasRequestedTarget =
+      context.targetSpeciesId !== null &&
+      context.targetSpeciesId !== undefined &&
+      context.targetSpeciesId !== "";
+    if (available.length > 1 && !hasRequestedTarget) {
+      const pendingEvolution = {
+        trigger: context.trigger,
+        item: context.item || null,
+        options: serializeEvolutionOptions(available),
+      };
+      return {
+        pokemon: { ...pokemon, pendingEvolution },
+        evolved: false,
+        requiresChoice: true,
+        pendingEvolution,
+        options: pendingEvolution.options,
+        message: `${pokemon.name} can evolve. Choose its evolution.`,
+      };
+    }
+    const evolutionResult = evolvePokemonFromTemplate(pokemon, available[0]);
+    return {
+      ...evolutionResult,
+      options: serializeEvolutionOptions(options),
+      evolution: available[0],
     };
   }
 
@@ -216,6 +269,7 @@ function createRewardEngine({
     let leveledUp = false;
     let evolved = false;
     let evolvedFrom = null;
+    const evolutionEvents = [];
     const messages = [];
     const statGains = [];
     const learnedMoves = [];
@@ -270,15 +324,30 @@ function createRewardEngine({
       delete pokemon.pendingMove;
     }
 
-    const evolution = getEvolution(pokemon);
-    if (evolution && pokemon.level >= evolution.level) {
-      const evolutionResult = evolvePokemonFromTemplate(pokemon, evolution);
-      messages.push(evolutionResult.message);
-      if (evolutionResult.evolved) {
+    if (leveledUp) {
+      while (true) {
+        const evolutionResult = performEvolution(pokemon, {
+          trigger: "level-up",
+        });
+        if (evolutionResult.requiresChoice) {
+          pokemon = evolutionResult.pokemon;
+          updatedTeam[pokemonIndex] = pokemon;
+          messages.push(evolutionResult.message);
+          break;
+        }
+        if (!evolutionResult.evolved) {
+          delete pokemon.pendingEvolution;
+          break;
+        }
+        messages.push(evolutionResult.message);
+        evolutionEvents.push({
+          from: evolutionResult.evolvedFrom,
+          to: evolutionResult.evolvedTo,
+        });
         pokemon = evolutionResult.pokemon;
         updatedTeam[pokemonIndex] = pokemon;
         evolved = true;
-        evolvedFrom = evolutionResult.evolvedFrom;
+        evolvedFrom ||= evolutionResult.evolvedFrom;
       }
     }
 
@@ -289,6 +358,7 @@ function createRewardEngine({
       evolved,
       evolvedFrom,
       evolvedTo: evolved ? pokemon.name : null,
+      evolutionEvents,
       startingName,
       startingLevel,
       endingLevel: pokemon.level || startingLevel,
@@ -299,6 +369,7 @@ function createRewardEngine({
       statGains,
       learnedMoves,
       pendingMove: pokemon.pendingMove || null,
+      pendingEvolution: pokemon.pendingEvolution || null,
       messages,
     };
   }
@@ -324,6 +395,7 @@ function createRewardEngine({
         evolved: result.evolved,
         evolvedFrom: result.evolvedFrom,
         evolvedTo: result.evolvedTo,
+        evolutionEvents: result.evolutionEvents,
         startingName: result.startingName,
         startingLevel: result.startingLevel,
         endingLevel: result.endingLevel,
@@ -334,6 +406,7 @@ function createRewardEngine({
         statGains: result.statGains,
         learnedMoves: result.learnedMoves,
         pendingMove: result.pendingMove,
+        pendingEvolution: result.pendingEvolution,
         messages: result.messages,
       };
     });
@@ -362,6 +435,7 @@ function createRewardEngine({
     applyXpToParticipants,
     appendXpLog,
     evolvePokemonFromTemplate,
+    performEvolution,
     getXpNeededForLevel,
   };
 }
