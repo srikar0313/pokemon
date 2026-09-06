@@ -51,7 +51,7 @@ const ROUTE_ENCOUNTER_CHANCES = {
 const storageUiState = {
   search: "",
   type: "all",
-  status: "all",
+  rarity: "all",
   shiny: "all",
   sort: "id",
   page: 1,
@@ -3095,12 +3095,14 @@ function getFilteredStorage(storage = storageCache) {
     .map((pokemon, originalIndex) => ({ pokemon, originalIndex }))
     .filter(({ pokemon }) => {
       const types = Array.isArray(pokemon.types) ? pokemon.types : [pokemon.type];
-      const hp = pokemon.currentHp ?? pokemon.hp ?? 0;
       if (search && !pokemon.name.toLowerCase().includes(search)) return false;
       if (storageUiState.type !== "all" && !types.includes(storageUiState.type))
         return false;
-      if (storageUiState.status === "healthy" && hp <= 0) return false;
-      if (storageUiState.status === "fainted" && hp > 0) return false;
+      if (
+        storageUiState.rarity !== "all" &&
+        pokemon.rarity !== storageUiState.rarity
+      )
+        return false;
       if (storageUiState.shiny === "shiny" && !pokemon.shiny) return false;
       return true;
     });
@@ -3112,6 +3114,19 @@ function getFilteredStorage(storage = storageCache) {
       return (left.pokemon.level || 1) - (right.pokemon.level || 1);
     if (storageUiState.sort === "level-desc")
       return (right.pokemon.level || 1) - (left.pokemon.level || 1);
+    if (storageUiState.sort === "rarity") {
+      const rarityRank = {
+        mythical: 5,
+        legendary: 4,
+        rare: 3,
+        uncommon: 2,
+        common: 1,
+      };
+      return (
+        (rarityRank[right.pokemon.rarity] || 0) -
+        (rarityRank[left.pokemon.rarity] || 0)
+      );
+    }
     return (left.pokemon.id || 0) - (right.pokemon.id || 0);
   });
   return filtered;
@@ -3204,11 +3219,14 @@ function renderStorageBrowser(storage = storageCache) {
           ${types.map((type) => `<option value="${type}" ${storageUiState.type === type ? "selected" : ""}>${type}</option>`).join("")}
         </select>
       </label>
-      <label>Status
-        <select onchange="updateStorageFilter('status', this.value)">
-          <option value="all" ${storageUiState.status === "all" ? "selected" : ""}>All</option>
-          <option value="healthy" ${storageUiState.status === "healthy" ? "selected" : ""}>Healthy</option>
-          <option value="fainted" ${storageUiState.status === "fainted" ? "selected" : ""}>Fainted</option>
+      <label>Rarity
+        <select onchange="updateStorageFilter('rarity', this.value)">
+          <option value="all" ${storageUiState.rarity === "all" ? "selected" : ""}>All</option>
+          <option value="common" ${storageUiState.rarity === "common" ? "selected" : ""}>Common</option>
+          <option value="uncommon" ${storageUiState.rarity === "uncommon" ? "selected" : ""}>Uncommon</option>
+          <option value="rare" ${storageUiState.rarity === "rare" ? "selected" : ""}>Rare</option>
+          <option value="legendary" ${storageUiState.rarity === "legendary" ? "selected" : ""}>Legendary</option>
+          <option value="mythical" ${storageUiState.rarity === "mythical" ? "selected" : ""}>Mythical</option>
         </select>
       </label>
       <label>Shiny
@@ -3223,6 +3241,7 @@ function renderStorageBrowser(storage = storageCache) {
           <option value="name" ${storageUiState.sort === "name" ? "selected" : ""}>Name</option>
           <option value="level-asc" ${storageUiState.sort === "level-asc" ? "selected" : ""}>Level ascending</option>
           <option value="level-desc" ${storageUiState.sort === "level-desc" ? "selected" : ""}>Level descending</option>
+          <option value="rarity" ${storageUiState.sort === "rarity" ? "selected" : ""}>Rarity</option>
         </select>
       </label>
     </div>
