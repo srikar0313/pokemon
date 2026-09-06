@@ -3798,13 +3798,63 @@ async function startWildEncounter(area = selectedArea) {
   }
 }
 
+async function findPokemonQuickly() {
+  if (
+    routeEncounterPending ||
+    battleActionBusy ||
+    activeOverlay ||
+    isInBattle ||
+    npcBattle ||
+    gymBattle ||
+    eliteBattle
+  ) {
+    return;
+  }
+
+  routeEncounterPending = true;
+  try {
+    const started = await startWildEncounter(selectedArea);
+    if (started) routeEncounterCooldownSteps = 3;
+  } finally {
+    routeEncounterPending = false;
+  }
+}
+
+function getWildOwnership(pokemon) {
+  const speciesName = String(pokemon?.name || "").trim().toLowerCase();
+  if (!speciesName) return { owned: false, count: 0, locations: [] };
+
+  const partyCount = teamCache.filter(
+    (ownedPokemon) =>
+      String(ownedPokemon?.name || "").trim().toLowerCase() === speciesName,
+  ).length;
+  const storageCount = storageCache.filter(
+    (ownedPokemon) =>
+      String(ownedPokemon?.name || "").trim().toLowerCase() === speciesName,
+  ).length;
+  const locations = [];
+  if (partyCount) locations.push("Party");
+  if (storageCount) locations.push("Storage");
+
+  return {
+    owned: partyCount + storageCount > 0,
+    count: partyCount + storageCount,
+    locations,
+  };
+}
+
 function showBattle() {
+  const ownership = getWildOwnership(wild);
+  const ownershipText = ownership.owned
+    ? `Owned - ${ownership.locations.join(" + ")} - ${ownership.count} total`
+    : "Not currently owned";
   openWildEncounterLayer();
   document.getElementById("encounter").innerHTML = `
     <div class="wild-encounter-head">
       <div>
         <span>Wild Encounter</span>
         <h2>${wild.name}${wild.shiny ? " *" : ""} appeared!</h2>
+        <p class="wild-ownership ${ownership.owned ? "owned" : "not-owned"}">${ownershipText}</p>
       </div>
       <p class="weather-info">${formatAreaName(wild.area)} | Weather: ${wild.weather}${wild.shiny ? " | Shiny encounter!" : ""}</p>
     </div>

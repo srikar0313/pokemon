@@ -2658,6 +2658,15 @@ h3 {
   background: #546e7a;
 }
 
+.quick-find-btn {
+  background: #d6453d;
+  color: #ffffff;
+}
+
+.quick-find-btn:hover {
+  background: #b93631;
+}
+
 .inventory-item > img {
   width: 78px;
   height: 78px;
@@ -2805,6 +2814,25 @@ button:disabled {
 
 .wild-encounter-head h2 {
   margin: 3px 0 0;
+}
+
+.wild-ownership {
+  display: inline-flex;
+  align-items: center;
+  margin: 8px 0 0;
+  padding: 4px 8px;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.wild-ownership.owned {
+  color: #8be6a8;
+}
+
+.wild-ownership.not-owned {
+  color: #ffd27a;
 }
 
 .wild-encounter-head .weather-info {
