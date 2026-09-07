@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokemon Adventure</title>
-    <link rel="stylesheet" href="style.css?v=20260907-battle-layout" />
+    <link rel="stylesheet" href="style.css?v=20260907-presentation" />
   </head>
   <body>
     <div class="app-shell">
@@ -179,7 +179,42 @@
         </div>
       </div>
     </div>
+    <aside
+      id="presentation-settings-panel"
+      class="presentation-settings-panel hidden"
+      aria-label="Battle audio and motion settings"
+    >
+      <div class="presentation-settings-head">
+        <strong>Battle Settings</strong>
+        <button
+          class="battle-bag-close"
+          onclick="window.BattlePresentation?.toggleSettings()"
+          aria-label="Close battle settings"
+        >&times;</button>
+      </div>
+      <label>
+        <span>Music</span>
+        <input id="music-volume" type="range" min="0" max="100" step="1" />
+      </label>
+      <label>
+        <span>SFX</span>
+        <input id="sfx-volume" type="range" min="0" max="100" step="1" />
+      </label>
+      <label>
+        <span>Cries</span>
+        <input id="cry-volume" type="range" min="0" max="100" step="1" />
+      </label>
+      <label class="presentation-toggle-row">
+        <span>Mute</span>
+        <input id="audio-muted" type="checkbox" />
+      </label>
+      <label class="presentation-toggle-row">
+        <span>Reduce battle motion</span>
+        <input id="reduce-battle-motion" type="checkbox" />
+      </label>
+    </aside>
+    <script type="module" src="js/battlePresentationBootstrap.mjs?v=20260907-presentation"></script>
     <script src="variantUtils.js?v=20260906-variants"></script>
-    <script src="script.js?v=20260907-battle-layout"></script>
+    <script src="script.js?v=20260907-presentation"></script>
   </body>
 </html>

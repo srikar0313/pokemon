@@ -28,6 +28,10 @@ const wildLevelRanges = {
 
 app.use(express.static("frontend"));
 app.use("/assets", express.static(path.join(rootDir, "assets")));
+app.use(
+  "/vendor/three",
+  express.static(path.join(rootDir, "node_modules", "three", "build")),
+);
 app.use(express.json());
 
 const gameData = loadGameData();

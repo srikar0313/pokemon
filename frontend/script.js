@@ -242,6 +242,7 @@ function closeWildEncounterLayer() {
 }
 
 function clearWildEncounterState() {
+  endBattlePresentation();
   wild = null;
   currentWildHP = 0;
   wildStatus = "none";
@@ -432,7 +433,10 @@ function wait(ms) {
 }
 
 function prefersReducedMotion() {
-  return window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  return Boolean(
+    window.BattlePresentation?.reducedMotion ||
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches,
+  );
 }
 
 function getMoveFromPokemon(pokemon, moveName) {
@@ -455,6 +459,55 @@ function getBattleSide(side) {
   return document.querySelector(`.battle-pokemon.${side}-side`);
 }
 
+function getBattlePresentation() {
+  return window.BattlePresentation || null;
+}
+
+function runBattlePresentation(method, ...args) {
+  const presentation = getBattlePresentation();
+  if (typeof presentation?.[method] !== "function") return Promise.resolve(null);
+  try {
+    return Promise.resolve(presentation[method](...args)).catch((error) => {
+      console.warn(`Battle presentation ${method} failed; continuing with CSS.`, error);
+      return null;
+    });
+  } catch (error) {
+    console.warn(`Battle presentation ${method} failed; continuing with CSS.`, error);
+    return Promise.resolve(null);
+  }
+}
+
+function mountBattlePresentation(kind, player, opponent, weather = "clear") {
+  const container = document.querySelector("#battle-screen .battle-container");
+  if (!container) return;
+  runBattlePresentation("mount", { container, kind, weather, player, opponent });
+}
+
+function presentBattleArena(kind, player, opponent, weather = "clear", lines = []) {
+  mountBattlePresentation(kind, player, opponent, weather);
+  showAbilityAnnouncements(lines, player, opponent);
+}
+
+function refreshCurrentBattlePresentation() {
+  if (wild && isInBattle) {
+    mountBattlePresentation("wild", activePokemon, wild, wild.weather);
+  } else if (gymBattle?.playerPokemon && gymBattle?.gymPokemon) {
+    mountBattlePresentation("gym", gymBattle.playerPokemon, gymBattle.gymPokemon);
+  } else if (eliteBattle?.playerPokemon && eliteBattle?.opponentPokemon) {
+    mountBattlePresentation(
+      eliteBattle.isChampion ? "champion" : "elite",
+      eliteBattle.playerPokemon,
+      eliteBattle.opponentPokemon,
+    );
+  } else if (npcBattle?.playerPokemon && npcBattle?.opponentPokemon) {
+    mountBattlePresentation("npc", npcBattle.playerPokemon, npcBattle.opponentPokemon);
+  }
+}
+
+function endBattlePresentation() {
+  runBattlePresentation("endBattle");
+}
+
 function showFloatingBattleText(side, text, tone = "neutral") {
   const target = getBattleSide(side);
   if (!target || !text) return;
@@ -474,9 +527,15 @@ function showTypeEffect(side, type = "Normal") {
   setTimeout(() => effect.remove(), 650);
 }
 
-async function animateAttack(side, moveType = "Normal") {
+async function animateAttack(side, moveOrType = "Normal") {
+  const move =
+    typeof moveOrType === "string"
+      ? { name: "Attack", type: moveOrType, category: "Physical" }
+      : moveOrType || { name: "Attack", type: "Normal", category: "Physical" };
+  const presentation = runBattlePresentation("playMove", side, move);
   if (prefersReducedMotion()) {
-    showTypeEffect(side === "player" ? "opponent" : "player", moveType);
+    await presentation;
+    showTypeEffect(side === "player" ? "opponent" : "player", move.type);
     return;
   }
   const attacker = getBattleSide(side);
@@ -484,16 +543,24 @@ async function animateAttack(side, moveType = "Normal") {
   const defender = getBattleSide(defenderSide);
   if (!attacker || !defender) return;
   attacker.classList.add(side === "player" ? "attack-forward" : "attack-backward");
-  await wait(190);
+  await Promise.all([wait(190), presentation]);
   attacker.classList.remove("attack-forward", "attack-backward");
-  showTypeEffect(defenderSide, moveType);
+  showTypeEffect(defenderSide, move.type);
 }
 
-async function animateHit(side) {
+async function animateHit(side, feedback = {}) {
+  const presentation = runBattlePresentation("hit", side, {
+    heavy: feedback.damage >= 30,
+    critical: feedback.critical,
+    effectiveness: feedback.effectiveness,
+  });
   const defender = getBattleSide(side);
-  if (!defender || prefersReducedMotion()) return;
+  if (!defender || prefersReducedMotion()) {
+    await presentation;
+    return;
+  }
   defender.classList.add("hit-shake", "hit-flash");
-  await wait(230);
+  await Promise.all([wait(230), presentation]);
   defender.classList.remove("hit-shake", "hit-flash");
 }
 
@@ -507,17 +574,25 @@ function animateHpChange(side, before, after, maxHp) {
 }
 
 async function animateFaint(side) {
+  const presentation = runBattlePresentation("faint", side);
   const target = getBattleSide(side);
-  if (!target || prefersReducedMotion()) return;
+  if (!target || prefersReducedMotion()) {
+    await presentation;
+    return;
+  }
   target.classList.add("fainting");
-  await wait(420);
+  await Promise.all([wait(420), presentation]);
 }
 
-async function animatePokemonSwitch(side) {
+async function animatePokemonSwitch(side, pokemon = {}) {
+  const presentation = runBattlePresentation("switchPokemon", side, pokemon);
   const target = getBattleSide(side);
-  if (!target || prefersReducedMotion()) return;
+  if (!target || prefersReducedMotion()) {
+    await presentation;
+    return;
+  }
   target.classList.add("send-out");
-  await wait(260);
+  await Promise.all([wait(260), presentation]);
   target.classList.remove("send-out");
 }
 
@@ -526,7 +601,7 @@ function getStatusFeedback(before, after) {
   return "";
 }
 
-function getMoveTypeFromLog(pokemon, lines = []) {
+function getMoveFromLog(pokemon, lines = []) {
   const moves = pokemon?.moves || [];
   for (let index = lines.length - 1; index >= 0; index -= 1) {
     const line = lines[index] || "";
@@ -534,9 +609,13 @@ function getMoveTypeFromLog(pokemon, lines = []) {
     const move = moves.find((entry) =>
       new RegExp(`\\bused\\s+${escapeRegExp(entry.name)}!?`, "i").test(line),
     );
-    if (move) return move.type || "Normal";
+    if (move) return move;
   }
-  return "Normal";
+  return null;
+}
+
+function getMoveTypeFromLog(pokemon, lines = []) {
+  return getMoveFromLog(pokemon, lines)?.type || "Normal";
 }
 
 function escapeRegExp(value) {
@@ -550,7 +629,18 @@ function getBattleLogEvents(lines = [], playerPokemon, opponentPokemon) {
   const opponentName = escapeRegExp(opponentPokemon?.name || "");
   lines.forEach((line) => {
     if (/ used /i.test(line)) {
-      if (playerName && new RegExp(`\\b${playerName}\\b.* used `, "i").test(line)) {
+      const namesMatch =
+        playerPokemon?.name && playerPokemon.name === opponentPokemon?.name;
+      if (namesMatch) {
+        const playerMove = getMoveFromLog(playerPokemon, [line]);
+        const opponentMove = getMoveFromLog(opponentPokemon, [line]);
+        if (playerMove && !opponentMove) currentSide = "player";
+        else if (opponentMove && !playerMove) currentSide = "opponent";
+        else currentSide = currentSide === "player" ? "opponent" : "player";
+      } else if (
+        playerName &&
+        new RegExp(`\\b${playerName}\\b.* used `, "i").test(line)
+      ) {
         currentSide = "player";
       } else if (
         opponentName &&
@@ -568,8 +658,44 @@ function getBattleLogEvents(lines = [], playerPokemon, opponentPokemon) {
   return events;
 }
 
-function showBattleLogFeedback(lines = [], playerPokemon, opponentPokemon) {
+function getAttackFeedback(lines, playerPokemon, opponentPokemon, attackSide) {
+  const feedback = { critical: false, effectiveness: 1 };
+  getBattleLogEvents(lines, playerPokemon, opponentPokemon)
+    .filter(({ side }) => side === attackSide)
+    .forEach(({ line }) => {
+      if (/critical hit/i.test(line)) feedback.critical = true;
+      if (/super effective/i.test(line)) feedback.effectiveness = 2;
+      if (/not very effective/i.test(line)) feedback.effectiveness = 0.5;
+      if (/no effect/i.test(line)) feedback.effectiveness = 0;
+    });
+  return feedback;
+}
+
+function showAbilityAnnouncements(lines = [], playerPokemon, opponentPokemon) {
+  const abilities = [
+    { side: "player", name: formatAbilityName(playerPokemon?.ability) },
+    { side: "opponent", name: formatAbilityName(opponentPokemon?.ability) },
+  ].filter((entry) => entry.name && entry.name !== "Unknown");
+  lines.forEach((line) => {
+    abilities.forEach(({ side, name }) => {
+      if (
+        new RegExp(`\\b${escapeRegExp(name)}\\b`, "i").test(line) &&
+        /(absorbed|blocked|prevented|lowered|raised|activated)/i.test(line)
+      ) {
+        runBattlePresentation("announceAbility", side, name);
+      }
+    });
+  });
+}
+
+function showBattleLogFeedback(
+  lines = [],
+  playerPokemon,
+  opponentPokemon,
+  attackSide = null,
+) {
   getBattleLogEvents(lines, playerPokemon, opponentPokemon).forEach(({ side, line }) => {
+    if (attackSide && side !== attackSide) return;
     const target = side === "player" ? "opponent" : "player";
     if (/super effective/i.test(line)) showFloatingBattleText(target, "SUPER EFFECTIVE!", "effective");
     if (/not very effective/i.test(line)) showFloatingBattleText(target, "Not very effective...", "weak");
@@ -592,35 +718,60 @@ async function playBattleTurnAnimation({
   opponentStatusAfter = "none",
   playerMoveType = "Normal",
   opponentMoveType = "Normal",
+  playerMove = null,
+  opponentMove = null,
   playerPokemon = null,
   opponentPokemon = null,
 } = {}) {
-  showBattleLogFeedback(lines, playerPokemon, opponentPokemon);
+  showAbilityAnnouncements(lines, playerPokemon, opponentPokemon);
 
   const opponentDamage = Math.max(0, (opponentBeforeHp || 0) - (opponentAfterHp || 0));
   const playerDamage = Math.max(0, (playerBeforeHp || 0) - (playerAfterHp || 0));
+  const events = getBattleLogEvents(lines, playerPokemon, opponentPokemon);
+  const playerActed = events.some(({ side, line }) => side === "player" && / used /i.test(line));
+  const opponentActed = events.some(({ side, line }) => side === "opponent" && / used /i.test(line));
+  const playerFeedback = {
+    ...getAttackFeedback(lines, playerPokemon, opponentPokemon, "player"),
+    damage: opponentDamage,
+  };
+  const opponentFeedback = {
+    ...getAttackFeedback(lines, playerPokemon, opponentPokemon, "opponent"),
+    damage: playerDamage,
+  };
 
-  if (opponentDamage > 0 || lines.some((line) => /used/i.test(line))) {
-    await animateAttack("player", playerMoveType);
+  if (opponentDamage > 0 || playerActed) {
+    await animateAttack(
+      "player",
+      playerMove || { name: "Attack", type: playerMoveType, category: "Physical" },
+    );
   }
   if (opponentDamage > 0) {
     showFloatingBattleText("opponent", `-${opponentDamage}`, "damage");
     animateHpChange("opponent", opponentBeforeHp, opponentAfterHp, opponentMaxHp);
-    await animateHit("opponent");
+    await animateHit("opponent", playerFeedback);
   }
+  showBattleLogFeedback(lines, playerPokemon, opponentPokemon, "player");
 
   const opponentStatus = getStatusFeedback(opponentStatusBefore, opponentStatusAfter);
   if (opponentStatus) showFloatingBattleText("opponent", opponentStatus, "status");
 
+  if (playerDamage > 0 || opponentActed) {
+    await animateAttack(
+      "opponent",
+      opponentMove || { name: "Attack", type: opponentMoveType, category: "Physical" },
+    );
+  }
   if (playerDamage > 0) {
-    await animateAttack("opponent", opponentMoveType);
     showFloatingBattleText("player", `-${playerDamage}`, "damage");
     animateHpChange("player", playerBeforeHp, playerAfterHp, playerMaxHp);
-    await animateHit("player");
+    await animateHit("player", opponentFeedback);
   }
+  showBattleLogFeedback(lines, playerPokemon, opponentPokemon, "opponent");
 
   const playerStatusText = getStatusFeedback(playerStatusBefore, playerStatusAfter);
   if (playerStatusText) showFloatingBattleText("player", playerStatusText, "status");
+  runBattlePresentation("setStatus", "player", playerStatusAfter);
+  runBattlePresentation("setStatus", "opponent", opponentStatusAfter);
 
   if ((opponentAfterHp || 0) <= 0 && opponentBeforeHp > 0) await animateFaint("opponent");
   if ((playerAfterHp || 0) <= 0 && playerBeforeHp > 0) await animateFaint("player");
@@ -712,6 +863,7 @@ async function playTrainerBattleTransition({
     lines,
   );
   const opponentMoveType = getMoveTypeFromLog(opponentBefore, lines);
+  const opponentMove = getMoveFromLog(opponentBefore, lines);
 
   await playBattleTurnAnimation({
     lines,
@@ -727,6 +879,8 @@ async function playTrainerBattleTransition({
     opponentStatusAfter: oldOpponentAfter.status || "none",
     playerMoveType: playerMove?.type || "Normal",
     opponentMoveType,
+    playerMove,
+    opponentMove,
     playerPokemon: playerBefore,
     opponentPokemon: opponentBefore,
   });
@@ -746,8 +900,10 @@ async function playTrainerBattleTransition({
 
   assignState(nextState);
   renderBattle([]);
-  if (opponentIndexChanged) await animatePokemonSwitch("opponent");
-  if (playerIndexChanged) await animatePokemonSwitch("player");
+  if (opponentIndexChanged) {
+    await animatePokemonSwitch("opponent", nextState[opponentField]);
+  }
+  if (playerIndexChanged) await animatePokemonSwitch("player", nextState.playerPokemon);
   appendBattleLog(lines);
   setBattleActionBusy(false);
   if (afterContinue) await afterContinue();
@@ -2088,10 +2244,12 @@ function showGymBattle(lines = []) {
   `;
   showGymMoveButtons(player);
   showGymSwitchButtons();
+  presentBattleArena("gym", player, opponent, "clear", lines);
   appendBattleLog(lines);
 }
 
 function showGymResult(lines = []) {
+  endBattlePresentation();
   setActiveScreen("battle");
   const encounter = document.getElementById("encounter");
   encounter.innerHTML = `
@@ -2214,7 +2372,7 @@ async function gymSwitch(pokemonIndex) {
   }
   gymBattle = data.session;
   showGymBattle([]);
-  await animatePokemonSwitch("player");
+  await animatePokemonSwitch("player", gymBattle.playerPokemon);
   appendBattleLog(data.log);
   setBattleActionBusy(false);
   showGymMoveButtons(normalizePokemon(gymBattle.playerPokemon));
@@ -2289,10 +2447,18 @@ function showEliteBattle(lines = []) {
   `;
   showEliteMoveButtons(player);
   showEliteSwitchButtons();
+  presentBattleArena(
+    eliteBattle.isChampion ? "champion" : "elite",
+    player,
+    opponent,
+    "clear",
+    lines,
+  );
   appendBattleLog(lines);
 }
 
 function showEliteResult(lines = []) {
+  endBattlePresentation();
   setActiveScreen("battle");
   const encounter = document.getElementById("encounter");
   encounter.innerHTML = `
@@ -2413,7 +2579,7 @@ async function eliteSwitch(pokemonIndex) {
   }
   eliteBattle = data.session;
   showEliteBattle([]);
-  await animatePokemonSwitch("player");
+  await animatePokemonSwitch("player", eliteBattle.playerPokemon);
   appendBattleLog(data.log);
   setBattleActionBusy(false);
   showEliteMoveButtons(normalizePokemon(eliteBattle.playerPokemon));
@@ -2474,10 +2640,12 @@ function showNpcBattle(lines = []) {
   `;
   showNpcMoveButtons(player);
   showNpcSwitchButtons();
+  presentBattleArena("npc", player, opponent, "clear", lines);
   appendBattleLog(lines);
 }
 
 function showNpcResult(lines = []) {
+  endBattlePresentation();
   setActiveScreen("battle");
   const encounter = document.getElementById("encounter");
   encounter.innerHTML = `
@@ -2597,7 +2765,7 @@ async function npcSwitch(pokemonIndex) {
   }
   npcBattle = data.session;
   showNpcBattle([]);
-  await animatePokemonSwitch("player");
+  await animatePokemonSwitch("player", npcBattle.playerPokemon);
   appendBattleLog(data.log);
   setBattleActionBusy(false);
   showNpcMoveButtons(normalizePokemon(npcBattle.playerPokemon));
@@ -2656,6 +2824,14 @@ function displayStats() {
         </div>
         ${renderBadgeCollection(playerState.badges || [], true)}
       </div>
+      <button
+        id="presentation-settings-toggle"
+        class="top-settings-button"
+        onclick="window.BattlePresentation?.toggleSettings()"
+        aria-label="Battle audio and motion settings"
+        aria-expanded="false"
+        title="Battle settings"
+      >Audio</button>
     </div>
   `;
 }
@@ -3932,7 +4108,7 @@ function selectPokemon(index) {
     playerStatus = activePokemon.status || "none";
     displayCurrentPlayer();
     showBattle();
-    animatePokemonSwitch("player");
+    animatePokemonSwitch("player", activePokemon);
     isSwitching = false;
     return;
   }
@@ -4265,7 +4441,7 @@ async function startWildEncounter(area = selectedArea) {
     wildParticipantIndexes = new Set([activeInventoryIndex]);
     if (pokedexCache) await loadPokedex();
     showBattle();
-    animatePokemonSwitch("opponent");
+    animatePokemonSwitch("opponent", wild);
     return true;
   } catch (error) {
     console.error("Error:", error);
@@ -4388,6 +4564,7 @@ function showBattle() {
   showMoveButtons();
   showBattleItemPanel();
   showCatchOptions();
+  presentBattleArena("wild", activePokemon, wild, wild.weather);
   isInBattle = true;
 }
 
@@ -4615,6 +4792,7 @@ async function attack(moveName) {
     playerStatus = activePokemon.status || "none";
   }
   wild = normalizePokemon(data.wild);
+  const opponentMove = getMoveFromLog(opponentBefore, data.log);
   const opponentMoveType = getMoveTypeFromLog(opponentBefore, data.log);
 
   await playBattleTurnAnimation({
@@ -4631,6 +4809,8 @@ async function attack(moveName) {
     opponentStatusAfter: wildStatus,
     playerMoveType: move?.type || "Normal",
     opponentMoveType,
+    playerMove: move,
+    opponentMove,
     playerPokemon: playerBefore,
     opponentPokemon: opponentBefore,
   });
@@ -4717,8 +4897,14 @@ async function useBattleItem(itemId) {
   activePokemon = normalizePokemon(teamCache[activeInventoryIndex]);
   currentPlayerHP = activePokemon.currentHp;
   playerStatus = activePokemon.status || "none";
+  const healedAmount = Math.max(0, currentPlayerHP - beforeHp);
   animateHpChange("player", beforeHp, currentPlayerHP, activePokemon.maxHp);
-  showFloatingBattleText("player", item.category === "healing" ? "HEALED" : "CURED", "status");
+  showFloatingBattleText(
+    "player",
+    item.category === "healing" && healedAmount > 0 ? `+${healedAmount}` : "CURED",
+    "status",
+  );
+  runBattlePresentation("setStatus", "player", playerStatus);
   appendBattleLog([data.message]);
   updateBattleDisplay();
   displayStats();
@@ -4957,6 +5143,7 @@ function queueEvolutionPresentations(lines = []) {
 function showNextEvolutionPresentation() {
   if (evolutionPresentationActive || !evolutionPresentationQueue.length) return;
   evolutionPresentationActive = true;
+  runBattlePresentation("playEvolutionCue");
   const event = evolutionPresentationQueue.shift();
   const overlay = document.createElement("div");
   overlay.className = "evolution-overlay";
@@ -5364,5 +5551,6 @@ function handleExploreKeydown(event) {
 
 document.addEventListener("keydown", handleExploreKeydown);
 document.addEventListener("error", handleExternalImageError, true);
+window.addEventListener("battle-presentation-ready", refreshCurrentBattlePresentation);
 
 init();
