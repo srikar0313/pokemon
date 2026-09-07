@@ -1197,6 +1197,37 @@ h3 {
   margin: 8px 0 12px;
 }
 
+.pokedex-availability {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  border-left: 4px solid #6b7b8f;
+  background: #f3f6fa;
+  padding: 6px 8px;
+  color: #40536c;
+  font-size: 12px;
+}
+
+.pokedex-availability strong {
+  color: #233a58;
+}
+
+.pokedex-availability.availability-wild { border-left-color: #2f8f61; }
+.pokedex-availability.availability-evolution { border-left-color: #416cc2; }
+.pokedex-availability.availability-special { border-left-color: #c08a20; }
+.pokedex-availability.availability-unavailable { border-left-color: #a34242; }
+
+.pokedex-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0 4px;
+  color: #40536c;
+  font-weight: 800;
+}
+
 .pokedex-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

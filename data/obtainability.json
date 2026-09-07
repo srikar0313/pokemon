@@ -1,0 +1,6348 @@
+{
+  "version": "obtainability-v1",
+  "playableAreas": [
+    "forest",
+    "cave",
+    "volcano",
+    "lake",
+    "mountain",
+    "desert",
+    "graveyard"
+  ],
+  "summary": {
+    "wild": 291,
+    "evolution": 192,
+    "special": 8,
+    "unavailable": 0
+  },
+  "entries": [
+    {
+      "speciesId": 1,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 2,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 3,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 4,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 5,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 6,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 7,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 8,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 9,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 10,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 11,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        10
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 12,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 13,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 14,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        13
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 15,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        14
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 16,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 17,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        16
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 18,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 19,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 20,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 21,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 22,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        21
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 23,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 24,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        23
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 25,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 26,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 27,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 28,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 29,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 30,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        29
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 31,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        30
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 32,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 33,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        32
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 34,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        33
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 35,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 36,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        35
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 37,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 38,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 39,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 40,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        39
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 41,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 42,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        41
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 43,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 44,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        43
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 45,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        44
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 46,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 47,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        46
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 48,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 49,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        48
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 50,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 51,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 52,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 53,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 54,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 55,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        54
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 56,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 57,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        56
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 58,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 59,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 60,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 61,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        60
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 62,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        61
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 63,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 64,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        63
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 65,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        64
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 66,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 67,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        66
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 68,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        67
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 69,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 70,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 71,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        70
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 72,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 73,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        72
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 74,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 75,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 76,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 77,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 78,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 79,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 80,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 81,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 82,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        81
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 83,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 84,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 85,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        84
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 86,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 87,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        86
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 88,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 89,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 90,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 91,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        90
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 92,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 93,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 94,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 95,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 96,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 97,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        96
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 98,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 99,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        98
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 100,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 101,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 102,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 103,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 104,
+      "status": "wild",
+      "areas": [
+        "cave",
+        "desert"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 105,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 106,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        236
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 107,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        236
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 108,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 109,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 110,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 111,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 112,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        111
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 113,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 114,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 115,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 116,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 117,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        116
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 118,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 119,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        118
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 120,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 121,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        120
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 122,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 123,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 124,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        238
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 125,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        239
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 126,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 127,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 128,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 129,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 130,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        129
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 131,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 132,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 133,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 134,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 135,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        133
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 136,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        133
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 137,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 138,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 139,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        138
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 140,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 141,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        140
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 142,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 143,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 144,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 145,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 146,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 147,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 148,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        147
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 149,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 150,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 151,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 152,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 153,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 154,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 155,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 156,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 157,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 158,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 159,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 160,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 161,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 162,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        161
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 163,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 164,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        163
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 165,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 166,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        165
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 167,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 168,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        167
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 169,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        42
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 170,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 171,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        170
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 172,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 173,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 174,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 175,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 176,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        175
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 177,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 178,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        177
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 179,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 180,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        179
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 181,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        180
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 182,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        44
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 183,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 184,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        183
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 185,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        438
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 186,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        61
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 187,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 188,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        187
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 189,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        188
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 190,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 191,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 192,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        191
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 193,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 194,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 195,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 196,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        133
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 197,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        133
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 198,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 199,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 200,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 201,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 202,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        360
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 203,
+      "status": "wild",
+      "areas": [
+        "desert",
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 204,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 205,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        204
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 206,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 207,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 208,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        95
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 209,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 210,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        209
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 211,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 212,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        123
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 213,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 214,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 215,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 216,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 217,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        216
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 218,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 219,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        218
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 220,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 221,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        220
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 222,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 223,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 224,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        223
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 225,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 226,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 227,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 228,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 229,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        228
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 230,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        117
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 231,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 232,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        231
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 233,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        137
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 234,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 235,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 236,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 237,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        236
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 238,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 239,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 240,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 241,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 242,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 243,
+      "status": "special",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Extremely rare encounter in a matching area",
+      "fallback": false
+    },
+    {
+      "speciesId": 244,
+      "status": "special",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "legendary",
+      "reason": "Extremely rare encounter in a matching area",
+      "fallback": false
+    },
+    {
+      "speciesId": 245,
+      "status": "special",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Extremely rare encounter in a matching area",
+      "fallback": false
+    },
+    {
+      "speciesId": 246,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 247,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        246
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 248,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        247
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 249,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 250,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 251,
+      "status": "special",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "mythical",
+      "reason": "Extremely rare encounter in a matching area",
+      "fallback": false
+    },
+    {
+      "speciesId": 252,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 253,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        252
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 254,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        253
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 255,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 256,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        255
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 257,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        256
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 258,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 259,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        258
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 260,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        259
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 261,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 262,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        261
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 263,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 264,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 265,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 266,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        265
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 267,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        266
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 268,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        265
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 269,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        268
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 270,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 271,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        270
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 272,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        271
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 273,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 274,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        273
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 275,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        274
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 276,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 277,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        276
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 278,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 279,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        278
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 280,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 281,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        280
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 282,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        281
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 283,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 284,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        283
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 285,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 286,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        285
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 287,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 288,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        287
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 289,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        288
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 290,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 291,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        290
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 292,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 293,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 294,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        293
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 295,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        294
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 296,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 297,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        296
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 298,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 299,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 300,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 301,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        300
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 302,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 303,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 304,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 305,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        304
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 306,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        305
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 307,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 308,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        307
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 309,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 310,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        309
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 311,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 312,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 313,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 314,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 315,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        406
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 316,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 317,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        316
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 318,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 319,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        318
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 320,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 321,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        320
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 322,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 323,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        322
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 324,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 325,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 326,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        325
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 327,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 328,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 329,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        328
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 330,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        329
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 331,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 332,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        331
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 333,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 334,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        333
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 335,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 336,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 337,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 338,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 339,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 340,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        339
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 341,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 342,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        341
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 343,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 344,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        343
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 345,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 346,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        345
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 347,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 348,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        347
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 349,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 350,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        349
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 351,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 352,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 353,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 354,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        353
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 355,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 356,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        355
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 357,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 358,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        433
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 359,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 360,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 361,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 362,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        361
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 363,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 364,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        363
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 365,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        364
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 366,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 367,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        366
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 368,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        366
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 369,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 370,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 371,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 372,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        371
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 373,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        372
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 374,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 375,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        374
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 376,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        375
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 377,
+      "status": "special",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Extremely rare encounter in a matching area",
+      "fallback": false
+    },
+    {
+      "speciesId": 378,
+      "status": "special",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Extremely rare encounter in a matching area",
+      "fallback": false
+    },
+    {
+      "speciesId": 379,
+      "status": "special",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Extremely rare encounter in a matching area",
+      "fallback": false
+    },
+    {
+      "speciesId": 380,
+      "status": "wild",
+      "areas": [
+        "lake",
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 381,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 382,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 383,
+      "status": "wild",
+      "areas": [
+        "desert",
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 384,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 385,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "mythical",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 386,
+      "status": "special",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "mythical",
+      "reason": "Extremely rare encounter in a matching area",
+      "fallback": false
+    },
+    {
+      "speciesId": 387,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 388,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        387
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 389,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        388
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 390,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 391,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        390
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 392,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        391
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 393,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 394,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        393
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 395,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        394
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 396,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 397,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        396
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 398,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        397
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 399,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 400,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        399
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 406,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 407,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        315
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 418,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 419,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        418
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 424,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        190
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 429,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        200
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 430,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        198
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 433,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 438,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 439,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 440,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 442,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 446,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 447,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 448,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        447
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 449,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 450,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        449
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 458,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Wild base-stage encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 461,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 462,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        82
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 463,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        108
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 464,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        112
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 465,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        114
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 466,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        125
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 467,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        126
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 468,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        176
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 469,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        193
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 470,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        133
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 471,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        133
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 472,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 473,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        221
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 474,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        233
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 475,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        281
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 476,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        299
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 477,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        356
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 478,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        361
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 483,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 484,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 487,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 488,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 491,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "mythical",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 493,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "mythical",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 524,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 525,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        524
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 526,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        525
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 529,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 530,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        529
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 551,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 552,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        551
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 553,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        552
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 554,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 555,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 559,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 560,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        559
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 562,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 563,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 607,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 608,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        607
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 609,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        608
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 610,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 611,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        610
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 612,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        611
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 643,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 644,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 700,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        133
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 708,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 709,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        708
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 716,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 717,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "legendary",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 757,
+      "status": "wild",
+      "areas": [
+        "volcano"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 758,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        757
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 821,
+      "status": "wild",
+      "areas": [
+        "mountain"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "common",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 822,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        821
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 823,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        822
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 843,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "uncommon",
+      "reason": "Original game encounter",
+      "fallback": false
+    },
+    {
+      "speciesId": 844,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        843
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 862,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 863,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 864,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 865,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 866,
+      "status": "wild",
+      "areas": [
+        "lake"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 867,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 899,
+      "status": "wild",
+      "areas": [
+        "forest"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 900,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 901,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 903,
+      "status": "wild",
+      "areas": [
+        "cave"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 904,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 979,
+      "status": "wild",
+      "areas": [
+        "graveyard"
+      ],
+      "times": [
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 980,
+      "status": "wild",
+      "areas": [
+        "desert"
+      ],
+      "times": [
+        "day",
+        "night"
+      ],
+      "rarity": "rare",
+      "reason": "Rare wild fallback because its canonical evolution requirement is unavailable",
+      "fallback": true
+    },
+    {
+      "speciesId": 981,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        203
+      ],
+      "fallback": false
+    },
+    {
+      "speciesId": 982,
+      "status": "evolution",
+      "areas": [],
+      "times": [],
+      "rarity": "common",
+      "reason": "Obtainable through canonical evolution",
+      "evolvesFrom": [
+        206
+      ],
+      "fallback": false
+    }
+  ]
+}

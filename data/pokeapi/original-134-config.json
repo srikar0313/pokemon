@@ -1,0 +1,1829 @@
+[
+  {
+    "id": 1,
+    "name": "Bulbasaur",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 2,
+    "name": "Ivysaur",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 3,
+    "name": "Venusaur",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 4,
+    "name": "Charmander",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 5,
+    "name": "Charmeleon",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 6,
+    "name": "Charizard",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 7,
+    "name": "Squirtle",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 8,
+    "name": "Wartortle",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 9,
+    "name": "Blastoise",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 16,
+    "name": "Pidgeot",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 21,
+    "name": "Spearow",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 25,
+    "name": "Pikachu",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 26,
+    "name": "Raichu",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 75,
+    "forms": [
+      {
+        "id": "alolan",
+        "name": "Alolan Form",
+        "category": "regional",
+        "types": [
+          "Electric",
+          "Psychic"
+        ],
+        "imageId": 10100,
+        "habitats": [
+          "lake"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "name": "Clefairy",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 150,
+    "forms": []
+  },
+  {
+    "id": 39,
+    "name": "Jigglypuff",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 170,
+    "forms": []
+  },
+  {
+    "id": 54,
+    "name": "Psyduck",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 58,
+    "name": "Growlithe",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": [
+      {
+        "id": "hisuian",
+        "name": "Hisuian Form",
+        "category": "regional",
+        "types": [
+          "Fire",
+          "Rock"
+        ],
+        "imageId": 10229,
+        "habitats": [
+          "mountain"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 69,
+    "name": "Bellsprout",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 70,
+    "name": "Weepinbell",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 120,
+    "forms": []
+  },
+  {
+    "id": 74,
+    "name": "Geodude",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 75,
+    "name": "Graveler",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 120,
+    "forms": []
+  },
+  {
+    "id": 92,
+    "name": "Gastly",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "common",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 93,
+    "name": "Haunter",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 90,
+    "forms": []
+  },
+  {
+    "id": 94,
+    "name": "Gengar",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "rare",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 90,
+    "forms": []
+  },
+  {
+    "id": 95,
+    "name": "Onix",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "rare",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 100,
+    "name": "Voltorb",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": [
+      {
+        "id": "hisuian",
+        "name": "Hisuian Form",
+        "category": "regional",
+        "types": [
+          "Electric",
+          "Grass"
+        ],
+        "imageId": 10231,
+        "habitats": [
+          "forest",
+          "mountain"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 104,
+    "name": "Cubone",
+    "habitats": [
+      "cave",
+      "desert"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 123,
+    "name": "Scyther",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 131,
+    "name": "Lapras",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "rare",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 133,
+    "name": "Eevee",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 134,
+    "name": "Vaporeon",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 143,
+    "name": "Snorlax",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "rare",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 25,
+    "forms": []
+  },
+  {
+    "id": 147,
+    "name": "Dratini",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 149,
+    "name": "Dragonite",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 150,
+    "name": "Mewtwo",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 3,
+    "forms": []
+  },
+  {
+    "id": 151,
+    "name": "Mew",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 10,
+    "forms": []
+  },
+  {
+    "id": 152,
+    "name": "Chikorita",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 153,
+    "name": "Bayleef",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 154,
+    "name": "Meganium",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 155,
+    "name": "Cyndaquil",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 156,
+    "name": "Quilava",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 157,
+    "name": "Typhlosion",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 158,
+    "name": "Totodile",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 159,
+    "name": "Croconaw",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 160,
+    "name": "Feraligatr",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 172,
+    "name": "Pichu",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 175,
+    "name": "Togepi",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 183,
+    "name": "Marill",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 194,
+    "name": "Wooper",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 207,
+    "name": "Girafarig",
+    "habitats": [
+      "desert",
+      "mountain"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 60,
+    "forms": []
+  },
+  {
+    "id": 218,
+    "name": "Sneasel",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 120,
+    "forms": []
+  },
+  {
+    "id": 219,
+    "name": "Caterpie",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 220,
+    "name": "Weedle",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 221,
+    "name": "Oddish",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 222,
+    "name": "Butterfree",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 75,
+    "forms": []
+  },
+  {
+    "id": 223,
+    "name": "Poliwag",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 224,
+    "name": "Magikarp",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 225,
+    "name": "Goldeen",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 225,
+    "forms": []
+  },
+  {
+    "id": 226,
+    "name": "Staryu",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 225,
+    "forms": []
+  },
+  {
+    "id": 227,
+    "name": "Zubat",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "common",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 228,
+    "name": "Diglett",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 229,
+    "name": "Machop",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 180,
+    "forms": []
+  },
+  {
+    "id": 230,
+    "name": "Tentacool",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 235,
+    "forms": []
+  },
+  {
+    "id": 231,
+    "name": "Horsea",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 225,
+    "forms": []
+  },
+  {
+    "id": 232,
+    "name": "Shellder",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 233,
+    "name": "Seel",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 234,
+    "name": "Vulpix",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": [
+      {
+        "id": "alolan",
+        "name": "Alolan Form",
+        "category": "regional",
+        "types": [
+          "Ice"
+        ],
+        "imageId": 10103,
+        "habitats": [
+          "mountain"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 235,
+    "name": "Ponyta",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 170,
+    "forms": [
+      {
+        "id": "galarian",
+        "name": "Galarian Form",
+        "category": "regional",
+        "types": [
+          "Psychic"
+        ],
+        "imageId": 10162,
+        "habitats": [
+          "forest"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 236,
+    "name": "Magmar",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 90,
+    "forms": []
+  },
+  {
+    "id": 237,
+    "name": "Pidgey",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 238,
+    "name": "Larvitar",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 90,
+    "forms": []
+  },
+  {
+    "id": 239,
+    "name": "Sandshrew",
+    "habitats": [
+      "desert"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 240,
+    "name": "Trapinch",
+    "habitats": [
+      "desert"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 241,
+    "name": "Cacnea",
+    "habitats": [
+      "desert"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 242,
+    "name": "Sandile",
+    "habitats": [
+      "desert"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 90,
+    "forms": []
+  },
+  {
+    "id": 243,
+    "name": "Misdreavus",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 175,
+    "forms": []
+  },
+  {
+    "id": 244,
+    "name": "Duskull",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 245,
+    "name": "Sableye",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "rare",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 90,
+    "forms": []
+  },
+  {
+    "id": 247,
+    "name": "Articuno",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 248,
+    "name": "Zapdos",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 249,
+    "name": "Moltres",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 250,
+    "name": "Lugia",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 251,
+    "name": "Ho-Oh",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 252,
+    "name": "Rayquaza",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 253,
+    "name": "Kyogre",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 254,
+    "name": "Groudon",
+    "habitats": [
+      "desert",
+      "volcano"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 255,
+    "name": "Dialga",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 256,
+    "name": "Palkia",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 257,
+    "name": "Giratina",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 258,
+    "name": "Zekrom",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 259,
+    "name": "Reshiram",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 260,
+    "name": "Xerneas",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 261,
+    "name": "Yveltal",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 5,
+    "forms": []
+  },
+  {
+    "id": 262,
+    "name": "Arceus",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "mythical",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 3,
+    "forms": []
+  },
+  {
+    "id": 263,
+    "name": "Hoothoot",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "common",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 264,
+    "name": "Seedot",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 265,
+    "name": "Shroomish",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 266,
+    "name": "Treecko",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 267,
+    "name": "Turtwig",
+    "habitats": [
+      "forest"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 268,
+    "name": "Mudkip",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 269,
+    "name": "Lotad",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 270,
+    "name": "Wingull",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 271,
+    "name": "Feebas",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 272,
+    "name": "Buizel",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 273,
+    "name": "Aron",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 180,
+    "forms": []
+  },
+  {
+    "id": 274,
+    "name": "Nosepass",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 275,
+    "name": "Roggenrola",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "common",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 276,
+    "name": "Drilbur",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 120,
+    "forms": []
+  },
+  {
+    "id": 277,
+    "name": "Mawile",
+    "habitats": [
+      "cave"
+    ],
+    "rarity": "rare",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 278,
+    "name": "Torchic",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 279,
+    "name": "Numel",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 280,
+    "name": "Slugma",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 281,
+    "name": "Houndour",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 120,
+    "forms": []
+  },
+  {
+    "id": 282,
+    "name": "Salandit",
+    "habitats": [
+      "volcano"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day",
+      "night"
+    ],
+    "baseCatchRate": 120,
+    "forms": []
+  },
+  {
+    "id": 283,
+    "name": "Rookidee",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 284,
+    "name": "Riolu",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 75,
+    "forms": []
+  },
+  {
+    "id": 285,
+    "name": "Absol",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 30,
+    "forms": []
+  },
+  {
+    "id": 286,
+    "name": "Bagon",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 45,
+    "forms": []
+  },
+  {
+    "id": 287,
+    "name": "Axew",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "rare",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 75,
+    "forms": []
+  },
+  {
+    "id": 288,
+    "name": "Baltoy",
+    "habitats": [
+      "desert"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 255,
+    "forms": []
+  },
+  {
+    "id": 289,
+    "name": "Hippopotas",
+    "habitats": [
+      "desert"
+    ],
+    "rarity": "common",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 140,
+    "forms": []
+  },
+  {
+    "id": 290,
+    "name": "Darumaka",
+    "habitats": [
+      "desert"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 120,
+    "forms": []
+  },
+  {
+    "id": 291,
+    "name": "Scraggy",
+    "habitats": [
+      "desert"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 180,
+    "forms": []
+  },
+  {
+    "id": 292,
+    "name": "Silicobra",
+    "habitats": [
+      "desert"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 120,
+    "forms": []
+  },
+  {
+    "id": 293,
+    "name": "Shuppet",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "common",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 225,
+    "forms": []
+  },
+  {
+    "id": 294,
+    "name": "Litwick",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 295,
+    "name": "Phantump",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 120,
+    "forms": []
+  },
+  {
+    "id": 296,
+    "name": "Yamask",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "uncommon",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 190,
+    "forms": []
+  },
+  {
+    "id": 297,
+    "name": "Spiritomb",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "rare",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 30,
+    "forms": []
+  },
+  {
+    "id": 298,
+    "name": "Latios",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 3,
+    "forms": []
+  },
+  {
+    "id": 299,
+    "name": "Latias",
+    "habitats": [
+      "lake",
+      "mountain"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "day"
+    ],
+    "baseCatchRate": 3,
+    "forms": []
+  },
+  {
+    "id": 300,
+    "name": "Jirachi",
+    "habitats": [
+      "mountain"
+    ],
+    "rarity": "mythical",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 3,
+    "forms": []
+  },
+  {
+    "id": 301,
+    "name": "Darkrai",
+    "habitats": [
+      "graveyard"
+    ],
+    "rarity": "mythical",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 3,
+    "forms": []
+  },
+  {
+    "id": 302,
+    "name": "Cresselia",
+    "habitats": [
+      "lake"
+    ],
+    "rarity": "legendary",
+    "times": [
+      "night"
+    ],
+    "baseCatchRate": 3,
+    "forms": []
+  }
+]

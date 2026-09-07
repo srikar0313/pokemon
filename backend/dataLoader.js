@@ -648,6 +648,39 @@ function validateGameData(gameData) {
       );
     }
   });
+  const availabilityEntries = gameData.obtainability?.entries || [];
+  const availabilitySpeciesIds = availabilityEntries.map((entry) => entry.speciesId);
+  addDuplicateWarnings(
+    availabilitySpeciesIds,
+    "obtainability speciesId",
+    groups,
+    "encounterWarnings",
+  );
+  if (availabilityEntries.length !== pokemonList.length) {
+    addWarning(
+      groups,
+      "encounterWarnings",
+      `Obtainability covers ${availabilityEntries.length}/${pokemonList.length} Pokemon`,
+    );
+  }
+  availabilityEntries.forEach((entry) => {
+    if (!["wild", "evolution", "special", "unavailable"].includes(entry.status)) {
+      addWarning(
+        groups,
+        "encounterWarnings",
+        `Invalid obtainability status for species ${entry.speciesId}: ${entry.status}`,
+      );
+    }
+    (entry.areas || []).forEach((area) => {
+      if (!validAreaIds.has(area)) {
+        addWarning(
+          groups,
+          "encounterWarnings",
+          `Obtainability for species ${entry.speciesId} uses invalid area: ${area}`,
+        );
+      }
+    });
+  });
   if (
     typeof gameData.formEncounterChance !== "number" ||
     gameData.formEncounterChance < 0 ||
@@ -766,6 +799,10 @@ function loadGameData(options = {}) {
     formEncounterChance: encounterData.formEncounterChance ?? 0.02,
     weatherBoosts: encounterData.weatherBoosts || {},
     quests: loadJson(path.join(dataDir, "quests.json"), []),
+    obtainability: loadJson(path.join(dataDir, "obtainability.json"), {
+      summary: {},
+      entries: [],
+    }),
   };
   if (shouldValidate) {
     logValidationGroups(validateGameData(gameData));

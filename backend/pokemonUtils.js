@@ -1,4 +1,5 @@
 const { createCanonicalPokemonLookup } = require("./canonicalPokemon");
+const { applyObtainability } = require("./obtainability");
 
 const STAT_BASE_VERSION = "pokeapi-v1";
 const BASE_STAT_KEYS = [
@@ -105,28 +106,26 @@ const starterPikachu = {
   ],
 };
 
-const evolutionTriggers = {
-  Pichu: { level: 8, name: "Pikachu", type: "Electric" },
-  Pikachu: { level: 12, name: "Raichu", type: "Electric" },
-  Bulbasaur: { level: 16, name: "Ivysaur", type: "Grass" },
-  Charmander: { level: 16, name: "Charmeleon", type: "Fire" },
-  Squirtle: { level: 16, name: "Wartortle", type: "Water" },
-  Chikorita: { level: 16, name: "Bayleef", type: "Grass" },
-  Cyndaquil: { level: 16, name: "Quilava", type: "Fire" },
-  Totodile: { level: 16, name: "Croconaw", type: "Water" },
-  Eevee: { level: 16, name: "Vaporeon", type: "Water" },
-};
-
 function createPokemonUtils({
   pokemonPath,
   readJsonFile,
   moveCatalog = {},
   canonicalPokemon = {},
   evolutionData = {},
+  obtainability = {},
+  speciesMap = {},
 }) {
   let legacyPokemonTemplateCache = null;
   let pokemonTemplateCache = null;
   const canonicalLookup = createCanonicalPokemonLookup(canonicalPokemon);
+  const availabilityBySpeciesId = new Map(
+    (obtainability.entries || []).map((entry) => [entry.speciesId, entry]),
+  );
+  const originalSpeciesIds = new Set(
+    (speciesMap.species || [])
+      .filter((entry) => entry.existingBeforeExpansion)
+      .map((entry) => entry.canonicalSpeciesId),
+  );
   const evolutionChainBySpeciesId = new Map();
   (evolutionData.chains || []).forEach((chain) => {
     (chain.species || []).forEach((species) => {
@@ -282,7 +281,7 @@ function createPokemonUtils({
     configuredForms.forEach((form) => {
       if (!forms.some((candidate) => candidate.id === form.id)) forms.push(form);
     });
-    return {
+    return applyObtainability({
       ...pokemon,
       hp: baseStats?.maxHp ?? pokemon.hp,
       maxHp: baseStats?.maxHp ?? pokemon.maxHp ?? pokemon.hp,
@@ -306,7 +305,7 @@ function createPokemonUtils({
       forms,
       isLegendary: Boolean(canonical.isLegendary),
       isMythical: Boolean(canonical.isMythical),
-    };
+    }, availabilityBySpeciesId.get(canonical.speciesId), originalSpeciesIds.has(canonical.speciesId));
   }
 
   function getPokemonTemplates() {
@@ -706,8 +705,7 @@ function createPokemonUtils({
     );
 
     if (normalized.evolvedFrom) {
-      const previousTemplate = getPokemonTemplateByName(normalized.evolvedFrom);
-      const previousSpeciesId = getPokemonSpeciesId(previousTemplate);
+      const previousSpeciesId = getPokemonSpeciesId(normalized.evolvedFrom);
       const currentSpeciesId = getPokemonSpeciesId(normalized);
       const canonicalEvolution = (
         evolutionChainBySpeciesId.get(previousSpeciesId)?.edges || []
@@ -717,9 +715,7 @@ function createPokemonUtils({
           edge.toSpeciesId === currentSpeciesId,
       );
       const validPreviousEvolution =
-        canonicalEvolution ||
-        previousTemplate?.evolvesTo === normalized.name ||
-        evolutionTriggers[normalized.evolvedFrom]?.name === normalized.name;
+        canonicalEvolution;
       if (!validPreviousEvolution) {
         delete normalized.evolvedFrom;
       }
@@ -760,54 +756,10 @@ function createPokemonUtils({
     );
   }
 
-  function getEvolution(pokemon) {
-    const template = getPokemonTemplateForOwnedPokemon(pokemon);
-    if (template?.name && !template.evolvesTo) return null;
-    const evolutionSource = template?.name ? template : pokemon;
-    if (evolutionSource?.evolvesTo && evolutionSource.evolveLevel) {
-      return {
-        level: evolutionSource.evolveLevel,
-        name: evolutionSource.evolvesTo,
-        type: evolutionSource.evolveType || evolutionSource.type,
-      };
-    }
-    return evolutionTriggers[pokemon.name];
-  }
-
-  function getPreviousEvolutionNames(name, seen = new Set()) {
-    if (!name || seen.has(name)) return [];
-    seen.add(name);
-    const directPrevious = getPokemonTemplates()
-      .filter((pokemon) => pokemon.evolvesTo === name)
-      .map((pokemon) => pokemon.name);
-    const legacyPrevious = Object.entries(evolutionTriggers)
-      .filter(([, evolution]) => evolution.name === name)
-      .map(([previousName]) => previousName);
-    const previousNames = [...new Set([...directPrevious, ...legacyPrevious])];
-    return previousNames.flatMap((previousName) => [
-      previousName,
-      ...getPreviousEvolutionNames(previousName, seen),
-    ]);
-  }
-
-  function getNextEvolutionNames(name, seen = new Set()) {
-    if (!name || seen.has(name)) return [];
-    seen.add(name);
-    const template = getPokemonTemplateByName(name);
-    const templateNext = template?.evolvesTo ? [template.evolvesTo] : [];
-    const legacyNext = evolutionTriggers[name]?.name
-      ? [evolutionTriggers[name].name]
-      : [];
-    const nextNames = [...new Set([...templateNext, ...legacyNext])];
-    return nextNames.flatMap((nextName) => [
-      nextName,
-      ...getNextEvolutionNames(nextName, seen),
-    ]);
-  }
-
   function getEvolutionRootName(name) {
-    const previousNames = getPreviousEvolutionNames(name);
-    return previousNames.length ? previousNames[previousNames.length - 1] : name;
+    const graph = getPokedexEvolutionGraph(name);
+    const targets = new Set(graph.edges.map((edge) => edge.toSpeciesId));
+    return graph.stages.find((stage) => !targets.has(stage.speciesId))?.name || name;
   }
 
   function getEvolutionFamilyNames(name) {
@@ -815,42 +767,30 @@ function createPokemonUtils({
   }
 
   function getEvolutionChain(pokemonOrName) {
-    const name =
-      typeof pokemonOrName === "string" ? pokemonOrName : pokemonOrName?.name;
-    let current = getPokemonTemplateByName(name);
-    if (!current) return [];
-
-    const rootVisited = new Set();
-    while (current && !rootVisited.has(current.name)) {
-      rootVisited.add(current.name);
-      const previous = getPokemonTemplates().find(
-        (candidate) => candidate.evolvesTo === current.name,
-      );
-      if (!previous) break;
-      current = previous;
-    }
-
-    const chain = [];
-    const visited = new Set();
-    while (current && !visited.has(current.name)) {
-      visited.add(current.name);
-      chain.push({
-        id: current.id,
-        speciesId: current.speciesId,
-        imageId: current.imageId || current.id,
-        name: current.name,
-        canonicalName: current.canonicalName,
-        artwork: current.artwork,
-        type: current.type,
-        types: getPokemonTypes(current),
-        evolvesTo: current.evolvesTo || null,
-        evolveLevel: current.evolveLevel || null,
+    const graph = getPokedexEvolutionGraph(pokemonOrName);
+    const targets = new Set(graph.edges.map((edge) => edge.toSpeciesId));
+    const depth = new Map(
+      graph.stages
+        .filter((stage) => !targets.has(stage.speciesId))
+        .map((stage) => [stage.speciesId, 0]),
+    );
+    let changed = true;
+    while (changed) {
+      changed = false;
+      graph.edges.forEach((edge) => {
+        if (!depth.has(edge.fromSpeciesId)) return;
+        const nextDepth = depth.get(edge.fromSpeciesId) + 1;
+        if ((depth.get(edge.toSpeciesId) ?? -1) < nextDepth) {
+          depth.set(edge.toSpeciesId, nextDepth);
+          changed = true;
+        }
       });
-      current = current.evolvesTo
-        ? getPokemonTemplateByName(current.evolvesTo)
-        : null;
     }
-    return chain;
+    return graph.stages.slice().sort(
+      (left, right) =>
+        (depth.get(left.speciesId) || 0) - (depth.get(right.speciesId) || 0) ||
+        left.speciesId - right.speciesId,
+    );
   }
 
   function getEvolutionFamilyKey(pokemonOrName) {
@@ -935,7 +875,6 @@ function createPokemonUtils({
     normalizeMove,
     normalizePokemon,
     restorePokemon,
-    getEvolution,
     getEvolutionChain,
     getEvolutionRootName,
     getEvolutionFamilyNames,

@@ -50,6 +50,8 @@ const pokemonUtils = createPokemonUtils({
   moveCatalog: gameData.moves,
   canonicalPokemon: gameData.canonicalPokemon,
   evolutionData: gameData.evolutions,
+  obtainability: gameData.obtainability,
+  speciesMap: gameData.speciesMap,
 });
 const {
   getStarterPokemon,
@@ -365,6 +367,11 @@ function getPokedexEntries(state) {
         forms: [getFormStatus(), ...(pokemon.forms || []).map(getFormStatus)],
         seen,
         caught,
+        availability: pokemon.availability || {
+          status: "unavailable",
+          areas: [],
+          reason: "Availability has not been assigned",
+        },
       };
     })
     .sort((a, b) => (a.speciesId ?? a.id) - (b.speciesId ?? b.id));

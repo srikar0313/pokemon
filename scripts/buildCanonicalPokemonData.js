@@ -19,6 +19,7 @@ const pokemonPath = path.join(rootDir, "pokemon.json");
 const canonicalOutputPath = path.join(outputDir, "canonical-pokemon.json");
 const canonicalMovesOutputPath = path.join(outputDir, "canonical-moves.json");
 const evolutionOutputPath = path.join(outputDir, "evolutions.json");
+const importsPath = path.join(outputDir, "imports.json");
 const refresh = process.argv.includes("--refresh");
 const dexMaxArgument = process.argv.find((argument) =>
   argument.startsWith("--dex-max="),
@@ -78,6 +79,10 @@ function createExpansionTargets(existingSpeciesMap) {
     if (mapping.canonicalSpeciesId > dexMax) {
       speciesIds.add(mapping.canonicalSpeciesId);
     }
+  });
+  const imports = readValidJson(importsPath)?.speciesIds || [];
+  imports.forEach((speciesId) => {
+    if (Number.isInteger(speciesId) && speciesId > 0) speciesIds.add(speciesId);
   });
   return [...speciesIds].sort((left, right) => left - right);
 }

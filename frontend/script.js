@@ -19,8 +19,11 @@ let pokedexFilters = {
   habitat: "all",
   type: "all",
   rarity: "all",
+  availability: "all",
   search: "",
 };
+let pokedexPage = 1;
+const POKEDEX_PAGE_SIZE = 48;
 let gymCache = [];
 let eliteCache = null;
 let gymBattle = null;
@@ -2846,17 +2849,26 @@ function setPokedexStatusFilter(status) {
     return;
   }
   pokedexFilters.status = status;
+  pokedexPage = 1;
   displayPokedex();
 }
 
 function updatePokedexSelectFilter(key, value) {
   pokedexFilters[key] = value;
+  pokedexPage = 1;
   displayPokedex();
 }
 
 function updatePokedexSearch(value) {
   pokedexFilters.search = value;
+  pokedexPage = 1;
   displayPokedex();
+}
+
+function setPokedexPage(page) {
+  pokedexPage = Math.max(1, Number(page) || 1);
+  displayPokedex();
+  document.getElementById("pokedex-panel")?.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function resetPokedexFilters() {
@@ -2865,8 +2877,10 @@ function resetPokedexFilters() {
     habitat: "all",
     type: "all",
     rarity: "all",
+    availability: "all",
     search: "",
   };
+  pokedexPage = 1;
   displayPokedex();
 }
 
@@ -2901,12 +2915,20 @@ function getFilteredPokedexEntries() {
     ) {
       return false;
     }
+    if (
+      pokedexFilters.availability !== "all" &&
+      entry.availability?.status !== pokedexFilters.availability
+    ) {
+      return false;
+    }
     if (searchTerm) {
       const searchable = [
         entry.name,
         entry.rarity,
         ...(entry.types || []),
         ...(entry.habitats || []),
+        entry.availability?.status,
+        ...(entry.availability?.areas || []),
       ]
         .join(" ")
         .toLowerCase();
@@ -3040,6 +3062,31 @@ function renderLegendaryHint(entry, canShowDetails) {
   return `<p class="legendary-hint">Extremely rare. ${clue}</p>`;
 }
 
+function getAvailabilityLabel(status) {
+  return {
+    wild: "Wild",
+    evolution: "Evolution-only",
+    special: "Special",
+    unavailable: "Unavailable",
+  }[status] || "Unknown";
+}
+
+function renderAvailability(entry, canShowDetails) {
+  const availability = entry.availability || {};
+  const label = getAvailabilityLabel(availability.status);
+  const areas = availability.areas || [];
+  const hint = areas.length
+    ? `${canShowDetails ? "Area" : "Area hint"}: ${formatList(areas, formatAreaName)}`
+    : canShowDetails
+      ? availability.reason || "No wild area"
+      : "Discover this Pokémon to reveal its requirements.";
+  return `
+    <div class="pokedex-availability availability-${availability.status || "unavailable"}">
+      <strong>${label}</strong><span>${escapeHtml(hint)}</span>
+    </div>
+  `;
+}
+
 function renderPokedexCard(entry) {
   const canShowDetails = entry.seen || entry.caught;
   const status = entry.caught ? "Caught" : entry.seen ? "Seen" : "Unknown";
@@ -3066,6 +3113,7 @@ function renderPokedexCard(entry) {
           <span class="rarity-pill rarity-${entry.rarity}">${entry.rarity}</span>
           ${canShowDetails ? renderTypeBadges(entry.types || []) : ""}
         </div>
+        ${renderAvailability(entry, canShowDetails)}
         ${
           canShowDetails
             ? `
@@ -3146,6 +3194,10 @@ function displayPokedex() {
   const types = getPokedexFilterOptions("type");
   const rarities = getPokedexFilterOptions("rarity");
   const achievements = pokedexCache.achievements || [];
+  const pageCount = Math.max(1, Math.ceil(entries.length / POKEDEX_PAGE_SIZE));
+  pokedexPage = Math.min(pokedexPage, pageCount);
+  const pageStart = (pokedexPage - 1) * POKEDEX_PAGE_SIZE;
+  const pageEntries = entries.slice(pageStart, pageStart + POKEDEX_PAGE_SIZE);
 
   panel.innerHTML = `
     <div class="screen-header pokedex-header">
@@ -3194,6 +3246,12 @@ function displayPokedex() {
         ${renderPokedexSelect("habitat", "Biome", habitats, formatAreaName)}
         ${renderPokedexSelect("type", "Type", types)}
         ${renderPokedexSelect("rarity", "Rarity", rarities)}
+        ${renderPokedexSelect(
+          "availability",
+          "Obtainable",
+          ["wild", "evolution", "special", "unavailable"],
+          getAvailabilityLabel,
+        )}
         <button class="secondary-btn" onclick="resetPokedexFilters()">Clear</button>
       </div>
     </div>
@@ -3201,10 +3259,19 @@ function displayPokedex() {
     <div class="pokedex-grid">
       ${
         entries.length
-          ? entries.map(renderPokedexCard).join("")
+          ? pageEntries.map(renderPokedexCard).join("")
           : "<p>No Pokémon match these filters.</p>"
       }
     </div>
+    ${
+      entries.length
+        ? `<nav class="pokedex-pagination" aria-label="Pokédex pages">
+            <button class="secondary-btn" onclick="setPokedexPage(${pokedexPage - 1})" ${pokedexPage === 1 ? "disabled" : ""}>Previous</button>
+            <span>Page ${pokedexPage} of ${pageCount} · ${pageStart + 1}-${Math.min(pageStart + pageEntries.length, entries.length)} of ${entries.length}</span>
+            <button class="secondary-btn" onclick="setPokedexPage(${pokedexPage + 1})" ${pokedexPage === pageCount ? "disabled" : ""}>Next</button>
+          </nav>`
+        : ""
+    }
   `;
 }
 

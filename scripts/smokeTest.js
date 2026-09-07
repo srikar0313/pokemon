@@ -77,6 +77,8 @@ function main() {
     moveCatalog: gameData.moves,
     canonicalPokemon: gameData.canonicalPokemon,
     evolutionData: gameData.evolutions,
+    obtainability: gameData.obtainability,
+    speciesMap: gameData.speciesMap,
   });
   const gameState = createGameState({
     inventoryPath: path.join(rootDir, "inventory.json"),
@@ -101,6 +103,10 @@ function main() {
   const playerState = gameState.loadPlayerState();
   const { team, storage } = gameState.loadTeamAndStorage();
   const pokemon = pokemonUtils.getPokemonTemplates();
+  const originalConfig = loadJson(
+    path.join(rootDir, "data", "pokeapi", "original-134-config.json"),
+    [],
+  );
   const speciesMap = loadJson(
     path.join(rootDir, "data", "pokeapi", "species-map.json"),
     {},
@@ -146,6 +152,47 @@ function main() {
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
   assert(Array.isArray(gameData.quests), "quests did not load");
+  const normalizedLegacyAreas = gameState.normalizePlayerState({
+    coins: 321,
+    unlockedAreas: ["forest", "ocean"],
+  });
+  assert(
+    normalizedLegacyAreas.coins === 321 &&
+      normalizedLegacyAreas.unlockedAreas.includes("forest") &&
+      !normalizedLegacyAreas.unlockedAreas.includes("ocean"),
+    "legacy ocean unlock normalization reset or retained invalid save data",
+  );
+  assert(
+    gameData.obtainability.entries.length === pokemon.length &&
+      gameData.obtainability.summary.unavailable === 0,
+    "obtainability does not cover the full catalog",
+  );
+  assert(
+    gameData.areas.length === 7 &&
+      !gameData.areas.some((area) => area.id === "ocean") &&
+      !Object.hasOwn(gameData.areaUnlocks, "ocean"),
+    "the playable world must contain seven areas and no ocean",
+  );
+  const originalById = new Map(originalConfig.map((entry) => [entry.id, entry]));
+  gameData.speciesMap.species
+    .filter((mapping) => mapping.existingBeforeExpansion)
+    .forEach((mapping) => {
+      const template = gameData.pokemon.find((entry) => entry.id === mapping.localId);
+      const baseline = originalById.get(mapping.localId);
+      assert(
+        baseline &&
+          JSON.stringify({
+            id: template.id,
+            name: template.name,
+            habitats: template.habitats || [],
+            rarity: template.rarity,
+            times: template.times || [],
+            baseCatchRate: template.baseCatchRate,
+            forms: template.forms || [],
+          }) === JSON.stringify(baseline),
+        `original encounter configuration changed for ${template?.name || mapping.localId}`,
+      );
+    });
   [
     "thunderStone",
     "fireStone",
@@ -294,15 +341,10 @@ function main() {
     "catalog-only Pokemon count is wrong",
   );
   assert(
-    catalogOnlyPokemon.every(
-      (entry) =>
-        entry.habitats.length === 0 &&
-        entry.times.length === 0 &&
-        ["canonical-level-up", "canonical-unavailable"].includes(
-          entry.movesetPolicy,
-        ),
+    catalogOnlyPokemon.every((entry) =>
+      ["canonical-level-up", "canonical-unavailable"].includes(entry.movesetPolicy),
     ),
-    "a catalog-only Pokemon received an encounter assignment or invalid moveset policy",
+    "a catalog-only Pokemon has an invalid moveset policy",
   );
 
   const sampleSpecies = new Map([
@@ -357,11 +399,10 @@ function main() {
       return (
         template?.speciesId === mapping.canonicalSpeciesId &&
         template.catalogOnly === true &&
-        template.habitats.length === 0 &&
-        template.times.length === 0
+        template.availability
       );
     }),
-    "an evolution-closure Pokemon is missing or can spawn",
+    "an evolution-closure Pokemon is missing obtainability metadata",
   );
 
   const canonicalSpeciesIds = pokemon.map((entry) => entry.speciesId);
@@ -1477,6 +1518,27 @@ function main() {
     "volcano",
   );
   assert(!ordinaryEncounter.form, "regional form appeared outside its habitat");
+
+  const worldEncounterEngine = createEncounterEngine({
+    rarityWeights: gameData.rarityWeights,
+    legendaryRollChance: 0,
+    weatherBoosts: gameData.weatherBoosts,
+    getPokemonTypes: pokemonUtils.getPokemonTypes,
+    formEncounterChance: 0,
+  });
+  gameData.areas.forEach((area) => {
+    const areaPool = pokemon.filter((entry) =>
+      (entry.habitats || []).includes(area.id),
+    );
+    assert(areaPool.length > 0, `${area.id} has an empty wild pool`);
+    for (let attempt = 0; attempt < 10; attempt += 1) {
+      const encounter = worldEncounterEngine.selectEncounter(pokemon, area.id);
+      assert(
+        encounter.pokemon?.habitats?.includes(area.id),
+        `${area.id} selected an unrelated biome Pokemon`,
+      );
+    }
+  });
 
   assert(
     variantUtils.getArtworkUrl(normalVulpix, normalVulpix.id).endsWith("/37.png"),

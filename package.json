@@ -6,8 +6,12 @@
     "start": "node backend/server.js",
     "validate": "node scripts/validateData.js",
     "smoke": "node scripts/smokeTest.js",
+    "test": "npm run validate && npm run smoke && npm run obtainability:audit",
+    "obtainability:build": "node scripts/generateObtainability.js",
+    "obtainability:audit": "node scripts/auditObtainability.js",
+    "pokemon:add": "node scripts/addPokemon.js",
     "pokeapi:audit": "node scripts/auditPokeApi.js",
-    "pokeapi:build": "node scripts/buildCanonicalPokemonData.js"
+    "pokeapi:build": "node scripts/buildCanonicalPokemonData.js && node scripts/generateObtainability.js"
   },
   "dependencies": {
     "express": "^4.18.2"
