@@ -1859,7 +1859,22 @@ app.post("/api/npc/interact", (req, res) => {
   if (!npc) {
     return res.status(404).json({ error: "NPC not found" });
   }
-  if (activeNpcSessions.get("player")?.status === "active") {
+  const activeNpcSession = activeNpcSessions.get("player");
+  if (
+    activeNpcSession?.status === "active" &&
+    activeNpcSession.npc?.id === npc.id
+  ) {
+    return res.json({
+      success: true,
+      action: "battle",
+      dialogue: `Your battle with ${npc.name} is still in progress.`,
+      log: [`Battle with ${npc.name} resumed.`],
+      npc: getNpcView(npc, loadPlayerState()),
+      session: getNpcSessionView(activeNpcSession),
+      resumed: true,
+    });
+  }
+  if (activeNpcSession?.status === "active") {
     return res
       .status(400)
       .json({ error: "Finish your current trainer battle first" });

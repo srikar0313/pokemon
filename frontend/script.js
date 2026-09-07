@@ -31,6 +31,7 @@ let eliteBattle = null;
 let npcCache = [];
 let npcMap = null;
 let npcBattle = null;
+let npcInteractionPending = false;
 let isInBattle = false;
 let isSwitching = false;
 let activeScreen = "explore";
@@ -1434,6 +1435,17 @@ function inspectNpc(npcId) {
   renderRouteWorld();
 }
 
+function selectOrInteractNpc(npcId) {
+  const npc = npcCache.find((entry) => entry.id === Number(npcId));
+  if (!npc) return;
+  focusedNpcId = npc.id;
+  if (getNearbyNpc()?.id === npc.id) {
+    interactNearbyNpc();
+    return;
+  }
+  renderRouteWorld();
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -1604,6 +1616,7 @@ function renderRouteDialogue() {
       nearbyNpc.id === speaker.id &&
       activeScreen === "explore" &&
       !activeOverlay &&
+      !npcInteractionPending &&
       !npcBattle &&
       !gymBattle &&
       !eliteBattle &&
@@ -1653,6 +1666,7 @@ function renderRouteWorld() {
     nearbyNpc &&
     activeScreen === "explore" &&
     !activeOverlay &&
+    !npcInteractionPending &&
     !npcBattle &&
     !gymBattle &&
     !eliteBattle &&
@@ -1759,7 +1773,7 @@ function renderRouteTiles(playerPosition, nearbyNpc) {
       html += `
         <button
           class="${classes.join(" ")}"
-          ${showNpc ? `onclick="inspectNpc(${npc.id})"` : 'type="button"'}
+          ${showNpc ? `onclick="selectOrInteractNpc(${npc.id})"` : 'type="button"'}
           ${showNpc ? "" : 'tabindex="-1"'}
         >
           ${
@@ -1972,6 +1986,16 @@ async function moveRoutePlayer(dx, dy) {
 }
 
 async function interactNearbyNpc() {
+  if (
+    npcInteractionPending ||
+    activeOverlay ||
+    npcBattle ||
+    gymBattle ||
+    eliteBattle ||
+    isInBattle
+  ) {
+    return;
+  }
   const npc = getNearbyNpc() || getFocusedNpc();
   if (!npc) {
     setRouteDialogue(null, "No one is nearby to interact with.", "warning");
@@ -1993,15 +2017,30 @@ async function interactNearbyNpc() {
     return;
   }
 
-  const response = await fetch("/api/npc/interact", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ npcId: npc.id }),
-  });
-  const data = await response.json();
-  if (data.error) {
-    alert(data.error);
+  npcInteractionPending = true;
+  renderRouteWorld();
+  let data;
+  try {
+    const response = await fetch("/api/npc/interact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ npcId: npc.id }),
+    });
+    data = await response.json();
+    if (!response.ok || data.error) {
+      throw new Error(data.error || "NPC interaction failed");
+    }
+  } catch (error) {
+    console.error("NPC interaction failed:", error);
+    setRouteDialogue(
+      npc,
+      error.message || "Could not interact right now.",
+      "warning",
+    );
     return;
+  } finally {
+    npcInteractionPending = false;
+    renderRouteWorld();
   }
 
   focusedNpcId = npc.id;
