@@ -1,7 +1,10 @@
 const express = require("express");
 const path = require("path");
 const { loadGameData, loadJson, saveJson } = require("./dataLoader");
-const { createGameState } = require("./gameState");
+const {
+  createGameState,
+  createRandomPartySelection,
+} = require("./gameState");
 const { createPokemonUtils } = require("./pokemonUtils");
 const { createBattleEngine } = require("./battleEngine");
 const { createEncounterEngine } = require("./encounterEngine");
@@ -2738,6 +2741,43 @@ app.post("/api/swap-storage", (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to swap Pokemon" });
+  }
+});
+
+app.post("/api/party/randomize", (req, res) => {
+  if (
+    activeNpcSessions.get("player")?.status === "active" ||
+    activeGymSessions.get("player")?.status === "active" ||
+    activeEliteSessions.get("player")?.status === "active"
+  ) {
+    return res.status(400).json({
+      error: "Finish the current trainer battle before changing your party.",
+    });
+  }
+
+  try {
+    const owned = loadTeamAndStorage();
+    if (owned.storage.length === 0) {
+      return res.status(400).json({
+        error: "Catch or store more Pokemon before creating a random party.",
+      });
+    }
+
+    const randomized = createRandomPartySelection(
+      owned.team,
+      owned.storage,
+      teamLimit,
+    );
+    saveTeamAndStorage(randomized.team, randomized.storage);
+
+    return res.json({
+      success: true,
+      message: `A random party of ${randomized.team.length} Pokemon is ready.`,
+      team: randomized.team,
+      storage: randomized.storage,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to create a random party" });
   }
 });
 

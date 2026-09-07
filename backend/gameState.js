@@ -81,6 +81,33 @@ function uniqueStrings(values) {
   return [...new Set(values.filter(Boolean).map(String))];
 }
 
+function createRandomPartySelection(
+  team = [],
+  storage = [],
+  teamLimit = 6,
+  random = Math.random,
+) {
+  const shuffled = [...team, ...storage];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const sample = Number(random());
+    const boundedSample = Number.isFinite(sample)
+      ? Math.min(Math.max(sample, 0), 0.999999999)
+      : 0;
+    const randomIndex = Math.floor(boundedSample * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [
+      shuffled[randomIndex],
+      shuffled[index],
+    ];
+  }
+
+  const partySize = Math.min(Math.max(0, teamLimit), shuffled.length);
+  return {
+    team: shuffled.slice(0, partySize),
+    storage: shuffled.slice(partySize),
+  };
+}
+
 function createGameState({
   inventoryPath,
   storagePath,
@@ -389,6 +416,7 @@ function createGameState({
 
 module.exports = {
   POKEDEX_IDENTITY_VERSION,
+  createRandomPartySelection,
   createGameState,
   defaultPlayerState,
   uniqueNumbers,

@@ -2969,6 +2969,17 @@ h3 {
   font-size: 13px;
 }
 
+.storage-browser-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.storage-browser-actions button {
+  margin: 0;
+  white-space: nowrap;
+}
+
 .storage-controls {
   display: grid;
   grid-template-columns: minmax(180px, 1.5fr) repeat(5, minmax(105px, 1fr));
@@ -4462,6 +4473,12 @@ button:disabled {
   .quick-selection-bar {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .storage-browser-actions {
+    align-items: stretch;
+    flex-direction: column;
+    width: 100%;
   }
 
   .quick-active-card {

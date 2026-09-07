@@ -37,6 +37,7 @@ let isSwitching = false;
 let activeScreen = "explore";
 let activeOverlay = null;
 let pendingSwapStorageIndex = null;
+let storageRandomizing = false;
 let quickPokemonSelectedIndex = 0;
 let quickPokemonDetailIndex = null;
 let focusedNpcId = null;
@@ -3940,7 +3941,10 @@ function renderStorageBrowser(storage = storageCache) {
         <h3>Storage ${storage.length}</h3>
         <p>Search and organize your collection without changing its saved order.</p>
       </div>
-      <strong>Showing ${showingStart}-${showingEnd} of ${filtered.length}</strong>
+      <div class="storage-browser-actions">
+        <strong>Showing ${showingStart}-${showingEnd} of ${filtered.length}</strong>
+        <button class="primary-btn" onclick="randomizePartyFromStorage()" ${storage.length === 0 || storageRandomizing ? "disabled" : ""}>${storageRandomizing ? "Choosing..." : "Random Party"}</button>
+      </div>
     </div>
     <div class="storage-controls">
       <label>Search
@@ -4421,6 +4425,53 @@ async function swapWithStorage(storageIndex) {
 
   pendingSwapStorageIndex = storageIndex;
   openOverlay("swap");
+}
+
+async function randomizePartyFromStorage() {
+  if (storageRandomizing) return;
+  if (
+    battleActionBusy ||
+    isInBattle ||
+    npcBattle ||
+    gymBattle ||
+    eliteBattle
+  ) {
+    alert("Finish the current battle before changing your party.");
+    return;
+  }
+  if (storageCache.length === 0) {
+    alert("Catch or store more Pokemon before creating a random party.");
+    return;
+  }
+  if (
+    !confirm(
+      `Choose a random party of up to ${PARTY_LIMIT} from all owned Pokemon?`,
+    )
+  ) {
+    return;
+  }
+
+  storageRandomizing = true;
+  renderStorageBrowser();
+  try {
+    const response = await fetch("/api/party/randomize", { method: "POST" });
+    const data = await response.json();
+    if (!response.ok || data.error) {
+      alert(data.error || "Could not create a random party.");
+      return;
+    }
+
+    activeInventoryIndex = 0;
+    storageUiState.detailIndex = null;
+    storageUiState.page = 1;
+    await loadInventory();
+    renderBattlePlaceholder(data.message);
+  } catch (error) {
+    alert("Could not create a random party.");
+  } finally {
+    storageRandomizing = false;
+    renderStorageBrowser();
+  }
 }
 
 async function confirmStorageSwap(

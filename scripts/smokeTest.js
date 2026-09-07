@@ -4,7 +4,10 @@ const {
   createPokemonUtils,
   STAT_BASE_VERSION,
 } = require("../backend/pokemonUtils");
-const { createGameState } = require("../backend/gameState");
+const {
+  createGameState,
+  createRandomPartySelection,
+} = require("../backend/gameState");
 const { createRewardEngine } = require("../backend/rewardEngine");
 const { createEvolutionEngine } = require("../backend/evolutionEngine");
 const { createEncounterEngine } = require("../backend/encounterEngine");
@@ -151,6 +154,34 @@ function main() {
   assert(playerState.trainerName, "player state did not load");
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
+  const randomPartySource = {
+    team: Array.from({ length: 6 }, (_, index) => ({ name: `Team-${index}` })),
+    storage: Array.from({ length: 4 }, (_, index) => ({ name: `Box-${index}` })),
+  };
+  const randomizedParty = createRandomPartySelection(
+    randomPartySource.team,
+    randomPartySource.storage,
+    teamLimit,
+    () => 0,
+  );
+  const beforeRandomization = [...randomPartySource.team, ...randomPartySource.storage]
+    .map((entry) => entry.name)
+    .sort();
+  const afterRandomization = [...randomizedParty.team, ...randomizedParty.storage]
+    .map((entry) => entry.name)
+    .sort();
+  assert(
+    randomizedParty.team.length === teamLimit,
+    "random party does not respect the party limit",
+  );
+  assert(
+    JSON.stringify(afterRandomization) === JSON.stringify(beforeRandomization),
+    "random party lost or duplicated owned Pokemon",
+  );
+  assert(
+    randomizedParty.team.some((entry) => entry.name.startsWith("Box-")),
+    "random party did not select from storage",
+  );
   assert(Array.isArray(gameData.quests), "quests did not load");
   assert(
     gameData.shinyRollChance === 0.01,
