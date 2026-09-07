@@ -456,28 +456,91 @@ h3 {
   margin-top: 0;
 }
 
-.battle-item-panel {
-  margin: 12px 0;
-  padding: 12px;
-  border: 1px solid #d8e3ef;
-  border-radius: 12px;
-  background: #f8fbff;
+.battle-bag {
+  position: relative;
 }
 
-.battle-item-head {
+.battle-bag-toggle {
+  min-width: 112px;
+  margin: 0;
+}
+
+.battle-bag-toggle strong {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  border-radius: 11px;
+  background: #284c7a;
+  color: #ffffff;
+  font-size: 11px;
+}
+
+.battle-bag-menu {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 12;
+  width: min(440px, calc(100vw - 64px));
+  max-height: min(360px, 48vh);
+  overflow-y: auto;
+  padding: 14px;
+  border: 2px solid #284c7a;
+  border-radius: 8px;
+  background: #f8fbff;
+  box-shadow: 0 16px 36px rgba(15, 34, 58, 0.28);
+}
+
+.battle-bag-head {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   color: #315170;
-  font-size: 13px;
-  font-weight: 800;
+}
+
+.battle-bag-head div {
+  display: grid;
+  gap: 2px;
+}
+
+.battle-bag-head span {
+  font-size: 12px;
+}
+
+.battle-bag-close {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  background: #e8eff8;
+  color: #28405f;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.battle-bag-close:hover {
+  background: #d9e5f2;
+  color: #1d3552;
 }
 
 .battle-item-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 12px;
+}
+
+.battle-item-grid .mini-item-btn {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.battle-item-grid .mini-item-btn span {
+  flex: 1;
+  text-align: left;
 }
 
 .pending-move-panel {
@@ -3313,6 +3376,7 @@ button:disabled {
 
 .battle-screen-card {
   padding: 14px;
+  scroll-behavior: smooth;
 }
 
 .screen-panel.wild-encounter-layer {
@@ -3422,6 +3486,7 @@ button:disabled {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+  min-height: 40px;
 }
 
 @media (max-width: 700px) {
@@ -3436,6 +3501,19 @@ button:disabled {
 
   .wild-encounter-actions {
     align-items: stretch;
+  }
+
+  .battle-bag-menu {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: auto;
+    max-height: 60vh;
+  }
+
+  .battle-item-grid {
+    grid-template-columns: 1fr;
   }
 
 }

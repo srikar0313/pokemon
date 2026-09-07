@@ -41,6 +41,7 @@ let quickPokemonDetailIndex = null;
 let focusedNpcId = null;
 let routeDialogue = null;
 let battleActionBusy = false;
+let battleBagOpen = false;
 let routeEncounterPending = false;
 let routeEncounterCooldownSteps = 0;
 const evolutionPresentationQueue = [];
@@ -206,6 +207,19 @@ function setActiveScreen(screen) {
   });
   if (screen === "pokedex") loadPokedex();
   if (screen === "quests") loadQuests();
+  if (screen === "battle") focusBattlePresentation();
+}
+
+function focusBattlePresentation() {
+  window.requestAnimationFrame(() => {
+    const battleScreen = document.getElementById("battle-screen");
+    const battleCard = battleScreen?.querySelector(".battle-screen-card");
+    if (!battleScreen || !battleCard) return;
+    battleCard.scrollTop = 0;
+    if (!battleScreen.classList.contains("wild-encounter-layer")) {
+      battleScreen.scrollIntoView({ block: "start", behavior: "smooth" });
+    }
+  });
 }
 
 function openWildEncounterLayer() {
@@ -215,6 +229,7 @@ function openWildEncounterLayer() {
   document.querySelectorAll(".nav-tab").forEach((button) => {
     button.classList.toggle("active", button.dataset.screen === activeScreen);
   });
+  focusBattlePresentation();
 }
 
 function closeWildEncounterLayer() {
@@ -233,6 +248,7 @@ function clearWildEncounterState() {
   wildParticipantIndexes = new Set();
   isInBattle = false;
   isSwitching = false;
+  battleBagOpen = false;
   closeWildEncounterLayer();
 }
 
@@ -427,7 +443,7 @@ function setBattleActionBusy(isBusy) {
   battleActionBusy = isBusy;
   document
     .querySelectorAll(
-      ".move-btn, .battle-action-row button, .battle-item-panel button, .gym-switch-buttons button, .wild-switch-panel button, .catch-options button",
+      ".move-btn, .battle-action-row button, .battle-bag button, .gym-switch-buttons button, .wild-switch-panel button, .catch-options button",
     )
     .forEach((button) => {
       button.disabled = isBusy || button.dataset.locked === "true";
@@ -4360,8 +4376,8 @@ function showBattle() {
     </div>
     <div id="type-advantage" class="type-advantage"></div>
     <div id="move-buttons" class="move-buttons"></div>
-    <div id="battle-item-panel"></div>
     <div class="battle-action-row">
+      <div id="battle-item-panel"></div>
       <button onclick="switchPokemon()" class="secondary-btn">Switch Pokémon</button>
     </div>
     <div id="wild-switch-panel"></div>
@@ -4410,37 +4426,70 @@ function showBattleItemPanel(disabled = false) {
   const panel = document.getElementById("battle-item-panel");
   if (!panel) return;
   const items = getBattleUsableItems();
-  if (!items.length) {
-    panel.innerHTML = "";
-    return;
-  }
+  const totalItems = items.reduce(
+    (total, item) => total + (playerState.items[item.id] || 0),
+    0,
+  );
+  const bagDisabled = battleActionBusy || disabled || !items.length;
 
   panel.innerHTML = `
-    <div class="battle-item-panel">
-      <div class="battle-item-head">
-        <strong>${renderIcon("backpack", "Bag")} Battle Items</strong>
-        <span>Use on ${activePokemon?.name || "active Pokemon"}</span>
-      </div>
-      <div class="battle-item-grid">
-        ${items
-          .map((item) => {
-            const count = playerState.items[item.id] || 0;
-            const itemDisabled = battleActionBusy || disabled || !canUseBattleItem(item);
-            return `
-              <button class="mini-item-btn icon-button" ${itemDisabled ? "disabled" : ""} onclick="useBattleItem('${item.id}')">
-                ${renderIcon(item.icon, item.name)}
-                <span>${item.name} (${count})</span>
-              </button>
-            `;
-          })
-          .join("")}
-      </div>
+    <div class="battle-bag${battleBagOpen ? " open" : ""}">
+      <button
+        class="secondary-btn icon-button battle-bag-toggle"
+        ${bagDisabled ? "disabled" : ""}
+        data-locked="${disabled || !items.length}"
+        aria-expanded="${battleBagOpen}"
+        onclick="toggleBattleBag()"
+      >
+        ${renderIcon("backpack", "Bag")}
+        <span>Bag</span>
+        <strong>${totalItems}</strong>
+      </button>
+      ${
+        battleBagOpen && items.length
+          ? `
+            <div class="battle-bag-menu" role="dialog" aria-label="Battle Bag">
+              <div class="battle-bag-head">
+                <div>
+                  <strong>Battle Bag</strong>
+                  <span>Use on ${activePokemon?.name || "active Pokemon"}</span>
+                </div>
+                <button class="battle-bag-close" onclick="toggleBattleBag()" aria-label="Close battle bag">&times;</button>
+              </div>
+              <div class="battle-item-grid">
+                ${items
+                  .map((item) => {
+                    const count = playerState.items[item.id] || 0;
+                    const itemLocked = disabled || !canUseBattleItem(item);
+                    const itemDisabled = battleActionBusy || itemLocked;
+                    return `
+                      <button class="mini-item-btn icon-button" ${itemDisabled ? "disabled" : ""} data-locked="${itemLocked}" onclick="useBattleItem('${item.id}')">
+                        ${renderIcon(item.icon, item.name)}
+                        <span>${item.name}</span>
+                        <strong>${count}</strong>
+                      </button>
+                    `;
+                  })
+                  .join("")}
+              </div>
+            </div>
+          `
+          : ""
+      }
     </div>
   `;
 }
 
+function toggleBattleBag() {
+  if (battleActionBusy || !wild || !isInBattle) return;
+  battleBagOpen = !battleBagOpen;
+  showBattleItemPanel();
+}
+
 function switchPokemon() {
   if (battleActionBusy) return;
+  battleBagOpen = false;
+  showBattleItemPanel();
   isSwitching = true;
   if (wild && isInBattle) {
     showWildSwitchPanel();
@@ -4517,6 +4566,7 @@ async function attack(moveName) {
   const opponentBefore = normalizePokemon(wild);
   const playerStatusBefore = playerStatus;
   const move = getMoveFromPokemon(playerBefore, moveName);
+  battleBagOpen = false;
   setBattleActionBusy(true);
 
   let data;
@@ -4639,6 +4689,7 @@ async function useBattleItem(itemId) {
   }
 
   const beforeHp = currentPlayerHP;
+  battleBagOpen = false;
   setBattleActionBusy(true);
   let data;
   try {
