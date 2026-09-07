@@ -798,6 +798,7 @@ function loadGameData(options = {}) {
     legendaryRollChance: encounterData.legendaryRollChance ?? 0.02,
     shinyRollChance: encounterData.shinyRollChance ?? 1 / 4096,
     formEncounterChance: encounterData.formEncounterChance ?? 0.02,
+    speciesEncounterBoosts: encounterData.speciesEncounterBoosts || {},
     weatherBoosts: encounterData.weatherBoosts || {},
     quests: loadJson(path.join(dataDir, "quests.json"), []),
     obtainability: loadJson(path.join(dataDir, "obtainability.json"), {

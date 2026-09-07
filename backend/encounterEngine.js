@@ -4,6 +4,7 @@ function createEncounterEngine({
   weatherBoosts,
   getPokemonTypes,
   formEncounterChance = 0.02,
+  speciesEncounterBoosts = {},
 }) {
   function getTimeOfDay() {
     const hour = new Date().getHours();
@@ -39,7 +40,8 @@ function createEncounterEngine({
     if (habitats.includes(selectedArea)) weight += 30;
     if (times.includes(currentTime)) weight += 15;
     if (getWeatherMatch(types, weather)) weight += 10;
-    return Math.max(1, weight);
+    const speciesBoost = Math.max(1, Number(speciesEncounterBoosts[pokemon.name]) || 1);
+    return Math.max(1, weight * speciesBoost);
   }
 
   function weightedSelection(items) {

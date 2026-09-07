@@ -705,7 +705,8 @@ function createPokemonUtils({
     );
 
     if (normalized.evolvedFrom) {
-      const previousSpeciesId = getPokemonSpeciesId(normalized.evolvedFrom);
+      const previousTemplate = getPokemonTemplateByName(normalized.evolvedFrom);
+      const previousSpeciesId = getPokemonSpeciesId(previousTemplate);
       const currentSpeciesId = getPokemonSpeciesId(normalized);
       const canonicalEvolution = (
         evolutionChainBySpeciesId.get(previousSpeciesId)?.edges || []

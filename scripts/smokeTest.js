@@ -156,6 +156,10 @@ function main() {
     gameData.shinyRollChance === 0.01,
     `expected a 1% shiny chance, got ${gameData.shinyRollChance}`,
   );
+  assert(
+    gameData.speciesEncounterBoosts.Eevee === 4,
+    "Eevee encounter boost is not configured",
+  );
   const normalizedLegacyAreas = gameState.normalizePlayerState({
     coins: 321,
     unlockedAreas: ["forest", "ocean"],
@@ -1162,8 +1166,17 @@ function main() {
     }
     if (owned.evolvedFrom) {
       const previousTemplate = pokemonUtils.getPokemonTemplateByName(owned.evolvedFrom);
+      const previousSpeciesId = previousTemplate?.speciesId;
+      const currentSpeciesId = template.speciesId;
+      const isCanonicalEvolution = pokemonUtils
+        .getPokedexEvolutionGraph(previousTemplate)
+        .edges.some(
+          (edge) =>
+            edge.fromSpeciesId === previousSpeciesId &&
+            edge.toSpeciesId === currentSpeciesId,
+        );
       assert(
-        previousTemplate?.evolvesTo === owned.name,
+        isCanonicalEvolution,
         `${owned.name} has invalid evolvedFrom ${owned.evolvedFrom}`,
       );
     }
@@ -1529,6 +1542,7 @@ function main() {
     weatherBoosts: gameData.weatherBoosts,
     getPokemonTypes: pokemonUtils.getPokemonTypes,
     formEncounterChance: 0,
+    speciesEncounterBoosts: gameData.speciesEncounterBoosts,
   });
   gameData.areas.forEach((area) => {
     const areaPool = pokemon.filter((entry) =>

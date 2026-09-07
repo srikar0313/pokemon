@@ -43,6 +43,7 @@ const rarityWeights = gameData.rarityWeights;
 const legendaryRollChance = gameData.legendaryRollChance;
 const shinyRollChance = gameData.shinyRollChance;
 const formEncounterChance = gameData.formEncounterChance;
+const speciesEncounterBoosts = gameData.speciesEncounterBoosts;
 const weatherBoosts = gameData.weatherBoosts;
 const quests = gameData.quests || [];
 const pokemonUtils = createPokemonUtils({
@@ -191,6 +192,7 @@ const encounterEngine = createEncounterEngine({
   weatherBoosts,
   getPokemonTypes,
   formEncounterChance,
+  speciesEncounterBoosts,
 });
 const { selectEncounter, getTimeOfDay } = encounterEngine;
 const SHINY_RATE = shinyRollChance;
