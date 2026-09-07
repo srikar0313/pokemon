@@ -3319,6 +3319,26 @@ button:disabled {
   margin: 3px 0 0;
 }
 
+.wild-encounter-name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.wild-encounter-head .shiny-encounter-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border: 1px solid #ffe36a;
+  border-radius: 4px;
+  background: #fff2a8;
+  color: #654700;
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
 .wild-ownership {
   display: inline-flex;
   align-items: center;

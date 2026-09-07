@@ -7,6 +7,7 @@
     "mythical": 1
   },
   "legendaryRollChance": 0.15,
+  "shinyRollChance": 0.01,
   "formEncounterChance": 0.02,
   "weatherBoosts": {
     "Fire": [

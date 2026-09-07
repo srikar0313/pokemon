@@ -4270,7 +4270,10 @@ function showBattle() {
     <div class="wild-encounter-head">
       <div>
         <span>Wild Encounter</span>
-        <h2>${escapeHtml(getPokemonDisplayName(wild))} appeared!</h2>
+        <h2 class="wild-encounter-name">
+          ${escapeHtml(getPokemonDisplayName(wild))} appeared!
+          ${wild.shiny ? '<span class="shiny-encounter-label">SHINY</span>' : ""}
+        </h2>
         <div class="variant-badges">${renderVariantBadges(wild)}</div>
         <p class="wild-ownership ${ownership.owned ? "owned" : "not-owned"}">${ownershipText}</p>
       </div>

@@ -41,6 +41,7 @@ const areas = gameData.areas;
 const areaUnlocks = gameData.areaUnlocks;
 const rarityWeights = gameData.rarityWeights;
 const legendaryRollChance = gameData.legendaryRollChance;
+const shinyRollChance = gameData.shinyRollChance;
 const formEncounterChance = gameData.formEncounterChance;
 const weatherBoosts = gameData.weatherBoosts;
 const quests = gameData.quests || [];
@@ -192,7 +193,7 @@ const encounterEngine = createEncounterEngine({
   formEncounterChance,
 });
 const { selectEncounter, getTimeOfDay } = encounterEngine;
-const SHINY_RATE = 1 / 4096;
+const SHINY_RATE = shinyRollChance;
 
 const evolutionEngine = createEvolutionEngine({
   evolutionData: gameData.evolutions,

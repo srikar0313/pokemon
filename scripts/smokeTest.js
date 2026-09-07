@@ -152,6 +152,10 @@ function main() {
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
   assert(Array.isArray(gameData.quests), "quests did not load");
+  assert(
+    gameData.shinyRollChance === 0.01,
+    `expected a 1% shiny chance, got ${gameData.shinyRollChance}`,
+  );
   const normalizedLegacyAreas = gameState.normalizePlayerState({
     coins: 321,
     unlockedAreas: ["forest", "ocean"],
