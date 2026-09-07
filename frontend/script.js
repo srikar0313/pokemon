@@ -3826,8 +3826,10 @@ function displayBag() {
                     <div class="bag-item-actions">
                       <span>${playerState.items?.[item.id] || 0}</span>
                       ${
-                        ["healing", "status", "evolution"].includes(item.category)
-                          ? `<button class="secondary-btn" onclick="useItemOnActive('${item.id}')" ${activePokemon ? "" : "disabled"}>Use</button>`
+                        item.category === "evolution"
+                          ? `<button class="secondary-btn" onclick="showEvolutionItemPokemonDialog('${item.id}')">Choose Pokémon</button>`
+                          : ["healing", "status"].includes(item.category)
+                            ? `<button class="secondary-btn" onclick="useItemOnActive('${item.id}')" ${activePokemon ? "" : "disabled"}>Use</button>`
                           : `<span class="bag-item-note">Battle item</span>`
                       }
                     </div>
@@ -3998,6 +4000,59 @@ async function useItemOnActive(itemId) {
     return;
   }
   await useItem({ stopPropagation() {} }, itemId, activeInventoryIndex);
+}
+
+function getEvolutionItemTargets(item) {
+  return [
+    ...teamCache.map((pokemon, index) => ({ pokemon, index, section: "team" })),
+    ...storageCache.map((pokemon, index) => ({ pokemon, index, section: "storage" })),
+  ].flatMap((entry) =>
+    (entry.pokemon.evolutionOptions || [])
+      .filter(
+        (option) =>
+          option.supported &&
+          (option.items || []).includes(item.evolutionItem),
+      )
+      .map((option) => ({ ...entry, option })),
+  );
+}
+
+function showEvolutionItemPokemonDialog(itemId) {
+  const item = shopCatalog.find((entry) => entry.id === itemId);
+  if (!item?.evolutionItem) return;
+  const targets = getEvolutionItemTargets(item);
+  document.querySelector(".evolution-item-picker-overlay")?.remove();
+  const overlay = document.createElement("div");
+  overlay.className =
+    "evolution-overlay evolution-item-picker-overlay active";
+  overlay.innerHTML = `
+    <div class="evolution-choice-dialog evolution-item-picker" role="dialog" aria-modal="true" aria-label="Choose Pokémon for ${escapeHtml(item.name)}">
+      <h3>Use ${escapeHtml(item.name)}</h3>
+      <p>Choose a compatible Pokémon from your Party or Storage.</p>
+      <div class="evolution-item-targets">
+        ${
+          targets.length
+            ? targets
+                .map(
+                  ({ pokemon, index, section, option }) => `
+                    <button class="evolution-item-target" onclick="closeEvolutionItemPokemonDialog(); useItem(event, '${item.id}', ${index}, '${section}', ${option.targetSpeciesId})">
+                      <img src="${getPokemonImage(pokemon)}" alt="${escapeHtml(pokemon.name)}">
+                      <span><strong>${escapeHtml(getPokemonDisplayName(pokemon))}</strong><small>${section === "team" ? "Party" : "Storage"} · Evolves into ${escapeHtml(option.targetName)}</small></span>
+                    </button>
+                  `,
+                )
+                .join("")
+            : `<p class="evolution-item-empty">You do not currently own a Pokémon that can use this stone.</p>`
+        }
+      </div>
+      <button class="secondary-btn" onclick="closeEvolutionItemPokemonDialog()">Cancel</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function closeEvolutionItemPokemonDialog() {
+  document.querySelector(".evolution-item-picker-overlay")?.remove();
 }
 
 function showEvolutionChoiceDialog(itemId, pokemonIndex, section, options) {

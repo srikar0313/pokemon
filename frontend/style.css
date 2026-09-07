@@ -1228,6 +1228,52 @@ h3 {
   font-weight: 800;
 }
 
+.evolution-item-targets {
+  display: grid;
+  gap: 8px;
+  max-height: min(52vh, 440px);
+  overflow-y: auto;
+  margin: 12px 0;
+}
+
+.evolution-item-target {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #c9d8ea;
+  border-radius: 6px;
+  background: #f8fbff;
+  color: #233a58;
+  padding: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.evolution-item-target:hover {
+  border-color: #416cc2;
+  background: #eef5ff;
+}
+
+.evolution-item-target img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+.evolution-item-target span,
+.evolution-item-target strong,
+.evolution-item-target small {
+  display: block;
+  min-width: 0;
+}
+
+.evolution-item-target small,
+.evolution-item-empty {
+  color: #60758d;
+}
+
 .pokedex-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
