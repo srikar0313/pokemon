@@ -1593,7 +1593,7 @@ function main() {
   const intimidateLog = [];
   battleEngine.applyEntryAbility(intimidateUser, intimidatedTarget, intimidateLog);
   assert(
-    intimidatedTarget.battleModifiers?.attack < 1 &&
+    battleEngine.ensureBattleState(intimidatedTarget).stages.attack === -1 &&
       intimidateLog.some((line) => line.includes("Intimidate")),
     "Intimidate entry hook did not lower Attack",
   );
@@ -1627,6 +1627,285 @@ function main() {
     immuneSnorlax.status === "none" &&
       immunityResult.log.some((line) => line.includes("prevented")),
     "Immunity did not prevent poison",
+  );
+
+  const mechanicsEngine = createBattleEngine({
+    getRandomInt: (minimum) => minimum,
+    random: () => 0.5,
+  });
+  const makeBattler = (overrides = {}) => ({
+    name: "Testmon",
+    level: 20,
+    types: ["Normal"],
+    maxHp: 120,
+    currentHp: 120,
+    attack: 60,
+    defense: 60,
+    specialAttack: 60,
+    specialDefense: 60,
+    speed: 60,
+    status: "none",
+    moves: [],
+    ...overrides,
+  });
+  const stageTarget = makeBattler();
+  const originalAttack = stageTarget.attack;
+  mechanicsEngine.changeStat(stageTarget, "attack", 10);
+  mechanicsEngine.changeStat(stageTarget, "defense", -10);
+  assert(
+    mechanicsEngine.ensureBattleState(stageTarget).stages.attack === 6 &&
+      mechanicsEngine.ensureBattleState(stageTarget).stages.defense === -6,
+    "battle stat stages did not cap at +/-6",
+  );
+  assert(stageTarget.attack === originalAttack, "battle stages modified a permanent stat");
+  assert(
+    mechanicsEngine.getStageMultiplier(6) === 4 &&
+      mechanicsEngine.getStageMultiplier(-6) === 0.25,
+    "standard battle stat multipliers are incorrect",
+  );
+
+  const accuracyEngine = createBattleEngine({
+    getRandomInt: (minimum) => minimum,
+    random: () => 0.6,
+  });
+  const inaccurate = makeBattler();
+  const evasive = makeBattler();
+  accuracyEngine.changeStat(inaccurate, "accuracy", -6);
+  accuracyEngine.changeStat(evasive, "evasion", 6);
+  assert(
+    !accuracyEngine.checkAccuracy({ accuracy: 100 }, inaccurate, evasive),
+    "accuracy/evasion stages were not applied",
+  );
+
+  const fast = makeBattler({ name: "Fast", speed: 100 });
+  const slow = makeBattler({ name: "Slow", speed: 40 });
+  const normalMove = { name: "Hit", priority: 0 };
+  const priorityMove = { name: "Quick Hit", priority: 1 };
+  assert(
+    mechanicsEngine.resolveTurnOrder([
+      { side: "slow", type: "move", pokemon: slow, move: normalMove },
+      { side: "fast", type: "move", pokemon: fast, move: normalMove },
+    ])[0].side === "fast",
+    "effective Speed did not determine move order",
+  );
+  assert(
+    mechanicsEngine.resolveTurnOrder([
+      { side: "fast", type: "move", pokemon: fast, move: normalMove },
+      { side: "slow", type: "move", pokemon: slow, move: priorityMove },
+    ])[0].side === "slow",
+    "move priority did not override Speed",
+  );
+  assert(
+    mechanicsEngine.resolveTurnOrder([
+      { side: "move", type: "move", pokemon: fast, move: priorityMove },
+      { side: "switch", type: "switch", pokemon: slow },
+      { side: "item", type: "item", pokemon: slow },
+    ]).slice(0, 2).every((action) => ["switch", "item"].includes(action.type)),
+    "switch/item actions did not resolve before attacks",
+  );
+  fast.status = "paralyzed";
+  assert(
+    mechanicsEngine.getEffectiveStat(fast, "speed") === 50,
+    "paralysis did not reduce effective Speed",
+  );
+
+  const effectAttacker = makeBattler({
+    currentHp: 50,
+    moves: [
+      {
+        name: "Drain Test",
+        type: "Normal",
+        category: "Physical",
+        power: 40,
+        accuracy: 100,
+        pp: 10,
+        maxPp: 10,
+        currentPp: 10,
+        effect: { type: "drain", percent: 50, chance: 100 },
+      },
+      {
+        name: "Recoil Test",
+        type: "Normal",
+        category: "Physical",
+        power: 40,
+        accuracy: 100,
+        pp: 10,
+        maxPp: 10,
+        currentPp: 10,
+        effect: { type: "recoil", percent: 25, chance: 100 },
+      },
+      {
+        name: "Multi Test",
+        type: "Normal",
+        category: "Physical",
+        power: 10,
+        accuracy: 100,
+        pp: 10,
+        maxPp: 10,
+        currentPp: 10,
+        hits: 3,
+      },
+    ],
+  });
+  const effectDefender = makeBattler();
+  const drainTurn = mechanicsEngine.executeBattleMove(effectAttacker, effectDefender, "Drain Test");
+  assert(effectAttacker.currentHp > 50, "drain did not restore HP");
+  const hpBeforeRecoil = effectAttacker.currentHp;
+  mechanicsEngine.executeBattleMove(effectAttacker, effectDefender, "Recoil Test");
+  assert(effectAttacker.currentHp < hpBeforeRecoil, "recoil did not reduce attacker HP");
+  const multiTurn = mechanicsEngine.executeBattleMove(effectAttacker, effectDefender, "Multi Test");
+  assert(multiTurn.metadata.hits === 3, "multi-hit metadata was not preserved");
+
+  const protectUser = makeBattler({
+    moves: [{ ...gameData.moves.Protect, currentPp: gameData.moves.Protect.maxPp }],
+  });
+  const protectAttacker = makeBattler({
+    moves: [{ ...gameData.moves.Tackle, currentPp: gameData.moves.Tackle.maxPp }],
+  });
+  mechanicsEngine.executeBattleMove(protectUser, protectAttacker, "Protect");
+  const protectedHp = protectUser.currentHp;
+  const protectedTurn = mechanicsEngine.executeBattleMove(
+    protectAttacker,
+    protectUser,
+    "Tackle",
+  );
+  assert(
+    protectUser.currentHp === protectedHp && protectedTurn.protected,
+    "Protect did not block the incoming move",
+  );
+
+  const flinchUser = makeBattler({
+    moves: [{
+      name: "Flinch Test",
+      type: "Normal",
+      category: "Physical",
+      power: 20,
+      accuracy: 100,
+      pp: 10,
+      maxPp: 10,
+      currentPp: 10,
+      effect: { type: "status", status: "flinched", chance: 100 },
+    }],
+  });
+  const flinchTarget = makeBattler({
+    moves: [{ ...gameData.moves.Tackle, currentPp: gameData.moves.Tackle.maxPp }],
+  });
+  mechanicsEngine.executeBattleMove(flinchUser, flinchTarget, "Flinch Test");
+  assert(
+    mechanicsEngine.executeBattleMove(flinchTarget, flinchUser, "Tackle").skipped === "flinch",
+    "flinch did not prevent the pending move",
+  );
+
+  const sleeping = makeBattler({
+    status: "asleep",
+    battleState: { stages: {}, volatile: { sleepTurns: 2 } },
+    moves: [{ ...gameData.moves.Tackle, currentPp: gameData.moves.Tackle.maxPp }],
+  });
+  assert(
+    mechanicsEngine.executeBattleMove(sleeping, makeBattler(), "Tackle").skipped === "sleep" &&
+      mechanicsEngine.ensureBattleState(sleeping).volatile.sleepTurns === 1,
+    "sleep counter did not decrement",
+  );
+  const confusionEngine = createBattleEngine({
+    getRandomInt: (minimum) => minimum,
+    random: () => 0,
+  });
+  const confused = makeBattler({
+    battleState: { stages: {}, volatile: { confusionTurns: 2 } },
+    moves: [{ ...gameData.moves.Tackle, currentPp: gameData.moves.Tackle.maxPp }],
+  });
+  assert(
+    confusionEngine.executeBattleMove(confused, makeBattler(), "Tackle").skipped === "confusion" &&
+      confusionEngine.ensureBattleState(confused).volatile.confusionTurns === 1,
+    "confusion counter/self-hit did not resolve",
+  );
+
+  const weatherAttacker = makeBattler({ types: ["Water"] });
+  const weatherDefender = makeBattler({ types: ["Normal"] });
+  const waterMove = { type: "Water", category: "Special", power: 60 };
+  const rainDamage = mechanicsEngine.calculateMoveDamage(weatherAttacker, weatherDefender, waterMove, "rain").damage;
+  const sunDamage = mechanicsEngine.calculateMoveDamage(weatherAttacker, weatherDefender, waterMove, "sun").damage;
+  assert(rainDamage > sunDamage, "rain/sun damage modifiers are incorrect");
+  const iceDefender = makeBattler({ types: ["Ice"] });
+  const physicalMove = { type: "Normal", category: "Physical", power: 60 };
+  assert(
+    mechanicsEngine.calculateMoveDamage(weatherAttacker, iceDefender, physicalMove, "snow").damage <
+      mechanicsEngine.calculateMoveDamage(weatherAttacker, iceDefender, physicalMove, "clear").damage,
+    "snow did not provide the Ice-type physical Defense benefit",
+  );
+  const sandVictim = makeBattler({ currentHp: 100 });
+  const sandImmune = makeBattler({ types: ["Rock"], currentHp: 100 });
+  mechanicsEngine.applyEndOfTurnStatus(sandVictim, [], "sandstorm");
+  mechanicsEngine.applyEndOfTurnStatus(sandImmune, [], "sandstorm");
+  assert(
+    sandVictim.currentHp < 100 && sandImmune.currentHp === 100,
+    "sandstorm chip or immunity is incorrect",
+  );
+
+  mechanicsEngine.resetSwitchState(stageTarget);
+  assert(
+    mechanicsEngine.ensureBattleState(stageTarget).stages.attack === 0 &&
+      stageTarget.attack === originalAttack,
+    "switching did not reset temporary stages safely",
+  );
+
+  const aiAttacker = makeBattler({
+    types: ["Ground"],
+    moves: [
+      { ...gameData.moves["Mud Shot"], currentPp: 15 },
+      { ...gameData.moves.Tackle, currentPp: 35 },
+    ],
+  });
+  const aiLevitateTarget = makeBattler({
+    types: ["Poison", "Ghost"],
+    ability: { name: "levitate", slot: 1 },
+  });
+  assert(
+    mechanicsEngine.chooseAiMove(aiAttacker, aiLevitateTarget, mechanicsEngine.aiDifficulty.HARD).name === "Tackle",
+    "HARD AI selected an ability-immune move",
+  );
+  const koAttacker = makeBattler({
+    types: ["Electric"],
+    moves: [
+      { ...gameData.moves.Thunderbolt, currentPp: 15 },
+      { ...gameData.moves.Tackle, currentPp: 35 },
+    ],
+  });
+  const koTarget = makeBattler({ types: ["Water"], currentHp: 10 });
+  assert(
+    mechanicsEngine.chooseAiMove(koAttacker, koTarget, mechanicsEngine.aiDifficulty.HARD).name === "Thunderbolt",
+    "HARD AI missed an obvious super-effective KO",
+  );
+  const cappedSetupUser = makeBattler({
+    currentHp: 20,
+    moves: [
+      { ...gameData.moves["Defense Curl"], currentPp: 40 },
+      { ...gameData.moves.Tackle, currentPp: 35 },
+    ],
+  });
+  mechanicsEngine.changeStat(cappedSetupUser, "defense", 6);
+  assert(
+    mechanicsEngine.chooseGymAction(
+      { gymTeam: [cappedSetupUser], gymIndex: 0, weather: "clear" },
+      makeBattler(),
+    ).move.name === "Tackle",
+    "HARD AI repeated a setup move at the +6 stage cap",
+  );
+  const switchTeam = [
+    makeBattler({ name: "Fire Current", types: ["Fire"] }),
+    makeBattler({
+      name: "Grass Counter",
+      types: ["Grass"],
+      moves: [{ ...gameData.moves["Vine Whip"], currentPp: 25 }],
+    }),
+  ];
+  const waterOpponent = makeBattler({
+    types: ["Water"],
+    moves: [{ ...gameData.moves["Water Gun"], currentPp: 25 }],
+  });
+  assert(
+    mechanicsEngine.chooseAiSwitch(switchTeam, 0, waterOpponent) === 1,
+    "HARD AI did not identify a healthy tactical counter",
   );
 
   memoryFiles.clear();

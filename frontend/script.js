@@ -248,6 +248,7 @@ function closeWildEncounterLayer() {
 
 function clearWildEncounterState() {
   endBattlePresentation();
+  if (activePokemon) delete activePokemon.battleState;
   wild = null;
   currentWildHP = 0;
   wildStatus = "none";
@@ -728,6 +729,7 @@ async function playBattleTurnAnimation({
   opponentMove = null,
   playerPokemon = null,
   opponentPokemon = null,
+  turnMetadata = null,
 } = {}) {
   showAbilityAnnouncements(lines, playerPokemon, opponentPokemon);
 
@@ -745,42 +747,55 @@ async function playBattleTurnAnimation({
     damage: playerDamage,
   };
 
-  if (opponentDamage > 0 || playerActed) {
-    await animateAttack(
-      "player",
-      playerMove || { name: "Attack", type: playerMoveType, category: "Physical" },
-    );
-  }
-  if (opponentDamage > 0) {
-    showFloatingBattleText("opponent", `-${opponentDamage}`, "damage");
-    animateHpChange("opponent", opponentBeforeHp, opponentAfterHp, opponentMaxHp);
-    await animateHit("opponent", playerFeedback);
-  }
-  showBattleLogFeedback(lines, playerPokemon, opponentPokemon, "player");
+  const animatePlayerAction = async () => {
+    if (opponentDamage > 0 || playerActed) {
+      await animateAttack(
+        "player",
+        playerMove || { name: "Attack", type: playerMoveType, category: "Physical" },
+      );
+    }
+    if (opponentDamage > 0) {
+      showFloatingBattleText("opponent", `-${opponentDamage}`, "damage");
+      animateHpChange("opponent", opponentBeforeHp, opponentAfterHp, opponentMaxHp);
+      await animateHit("opponent", playerFeedback);
+    }
+    showBattleLogFeedback(lines, playerPokemon, opponentPokemon, "player");
+    const statusText = getStatusFeedback(opponentStatusBefore, opponentStatusAfter);
+    if (statusText) {
+      showFloatingBattleText("opponent", statusText, "status");
+      runBattlePresentation("playStatus");
+    }
+  };
 
-  const opponentStatus = getStatusFeedback(opponentStatusBefore, opponentStatusAfter);
-  if (opponentStatus) {
-    showFloatingBattleText("opponent", opponentStatus, "status");
-    runBattlePresentation("playStatus");
-  }
+  const animateOpponentAction = async () => {
+    if (playerDamage > 0 || opponentActed) {
+      await animateAttack(
+        "opponent",
+        opponentMove || { name: "Attack", type: opponentMoveType, category: "Physical" },
+      );
+    }
+    if (playerDamage > 0) {
+      showFloatingBattleText("player", `-${playerDamage}`, "damage");
+      animateHpChange("player", playerBeforeHp, playerAfterHp, playerMaxHp);
+      await animateHit("player", opponentFeedback);
+    }
+    showBattleLogFeedback(lines, playerPokemon, opponentPokemon, "opponent");
+    const statusText = getStatusFeedback(playerStatusBefore, playerStatusAfter);
+    if (statusText) {
+      showFloatingBattleText("player", statusText, "status");
+      runBattlePresentation("playStatus");
+    }
+  };
 
-  if (playerDamage > 0 || opponentActed) {
-    await animateAttack(
-      "opponent",
-      opponentMove || { name: "Attack", type: opponentMoveType, category: "Physical" },
-    );
-  }
-  if (playerDamage > 0) {
-    showFloatingBattleText("player", `-${playerDamage}`, "damage");
-    animateHpChange("player", playerBeforeHp, playerAfterHp, playerMaxHp);
-    await animateHit("player", opponentFeedback);
-  }
-  showBattleLogFeedback(lines, playerPokemon, opponentPokemon, "opponent");
-
-  const playerStatusText = getStatusFeedback(playerStatusBefore, playerStatusAfter);
-  if (playerStatusText) {
-    showFloatingBattleText("player", playerStatusText, "status");
-    runBattlePresentation("playStatus");
+  const resolvedOrder = (turnMetadata?.order || []).filter((side, index, order) =>
+    ["player", "opponent"].includes(side) && order.indexOf(side) === index,
+  );
+  if (resolvedOrder[0] === "opponent") {
+    await animateOpponentAction();
+    await animatePlayerAction();
+  } else {
+    await animatePlayerAction();
+    await animateOpponentAction();
   }
   if (playerAfterHp > playerBeforeHp || opponentAfterHp > opponentBeforeHp) {
     runBattlePresentation("playHealing");
@@ -898,6 +913,7 @@ async function playTrainerBattleTransition({
     opponentMove,
     playerPokemon: playerBefore,
     opponentPokemon: opponentBefore,
+    turnMetadata: nextState.turnMetadata,
   });
 
   if (won || lost) {
@@ -2299,7 +2315,7 @@ function showGymBattle(lines = []) {
   `;
   showGymMoveButtons(player);
   showGymSwitchButtons();
-  presentBattleArena("gym", player, opponent, "clear", lines);
+  presentBattleArena("gym", player, opponent, gymBattle.weather || "clear", lines);
   appendBattleLog(lines);
 }
 
@@ -2507,7 +2523,7 @@ function showEliteBattle(lines = []) {
     eliteBattle.isChampion ? "champion" : "elite",
     player,
     opponent,
-    "clear",
+    eliteBattle.weather || "clear",
     lines,
   );
   appendBattleLog(lines);
@@ -2696,7 +2712,7 @@ function showNpcBattle(lines = []) {
   `;
   showNpcMoveButtons(player);
   showNpcSwitchButtons();
-  presentBattleArena("npc", player, opponent, "clear", lines);
+  presentBattleArena("npc", player, opponent, npcBattle.weather || "clear", lines);
   appendBattleLog(lines);
 }
 
@@ -3594,6 +3610,10 @@ async function buyItem(itemId) {
 }
 
 async function loadInventory() {
+  const activeBattleState =
+    wild && isInBattle && activePokemon?.battleState
+      ? JSON.parse(JSON.stringify(activePokemon.battleState))
+      : null;
   const response = await fetch("/api/inventory");
   const data = await response.json();
   teamCache = (data.team || []).map(normalizePokemon);
@@ -3603,6 +3623,7 @@ async function loadInventory() {
   if (teamCache.length > 0) {
     if (activeInventoryIndex >= teamCache.length) activeInventoryIndex = 0;
     activePokemon = teamCache[activeInventoryIndex];
+    if (activeBattleState) activePokemon.battleState = activeBattleState;
   } else {
     activeInventoryIndex = 0;
     activePokemon = null;
@@ -4258,6 +4279,8 @@ function selectPokemon(index) {
       alert("Cannot switch to a fainted Pokémon.");
       return;
     }
+    if (activePokemon) delete activePokemon.battleState;
+    delete selected.battleState;
     activeInventoryIndex = index;
     activePokemon = normalizePokemon(selected);
     if (wild && isInBattle) wildParticipantIndexes.add(index);
@@ -5078,6 +5101,7 @@ async function attack(moveName) {
         wildHP: currentWildHP,
         playerStatus,
         wildStatus,
+        playerBattleState: activePokemon.battleState || null,
         participantIndexes: [...wildParticipantIndexes],
       }),
     });
@@ -5131,6 +5155,7 @@ async function attack(moveName) {
     opponentMove,
     playerPokemon: playerBefore,
     opponentPokemon: opponentBefore,
+    turnMetadata: data.turnMetadata,
   });
   appendBattleLog(data.log);
   updateBattleDisplay();

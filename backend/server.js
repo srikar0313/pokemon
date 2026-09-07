@@ -181,12 +181,16 @@ const {
 const battleEngine = createBattleEngine({ getRandomInt });
 const {
   aiDifficulty,
+  getMoveByName,
   executeBattleMove,
   applyEndOfTurnStatus,
   chooseBestMove,
   chooseGymAction,
   chooseTrainerAction,
   applyEntryAbility,
+  ensureBattleState,
+  resetSwitchState,
+  resolveTurnOrder,
 } = battleEngine;
 
 function applyBattleEntryAbilities(playerPokemon, opponentPokemon, log = []) {
@@ -218,13 +222,79 @@ const {
   canEvolve,
 } = evolutionEngine;
 
-function applyBattleEndOfTurnStatus(playerPokemon, opponentPokemon, log) {
+function applyBattleEndOfTurnStatus(playerPokemon, opponentPokemon, log, weather = "clear") {
+  const effects = [];
   if (playerPokemon?.currentHp > 0) {
-    applyEndOfTurnStatus(playerPokemon, log);
+    const hpBefore = playerPokemon.currentHp;
+    applyEndOfTurnStatus(playerPokemon, log, weather);
+    if (playerPokemon.currentHp !== hpBefore) {
+      effects.push({ side: "player", hpChange: playerPokemon.currentHp - hpBefore });
+    }
   }
   if (opponentPokemon?.currentHp > 0) {
-    applyEndOfTurnStatus(opponentPokemon, log);
+    const hpBefore = opponentPokemon.currentHp;
+    applyEndOfTurnStatus(opponentPokemon, log, weather);
+    if (opponentPokemon.currentHp !== hpBefore) {
+      effects.push({ side: "opponent", hpChange: opponentPokemon.currentHp - hpBefore });
+    }
   }
+  return { weather, effects };
+}
+
+function executeOrderedMoveTurn({
+  playerPokemon,
+  opponentPokemon,
+  playerMoveName,
+  opponentMove,
+  opponentLabel = "Opponent",
+  opponentPrefix = "",
+  battle,
+  log,
+}) {
+  const playerMove = getMoveByName(playerPokemon, playerMoveName);
+  if (!playerMove) return { error: "Move not found" };
+  if ((playerMove.currentPp ?? 0) <= 0) {
+    log.push("No PP left for this move!");
+    return { error: "No PP left for this move" };
+  }
+
+  const actions = [
+    { side: "player", type: "move", pokemon: playerPokemon, move: playerMove },
+  ];
+  if (opponentMove) {
+    actions.push({
+      side: "opponent",
+      type: "move",
+      pokemon: opponentPokemon,
+      move: opponentMove,
+    });
+  }
+
+  const orderedActions = resolveTurnOrder(actions);
+  const metadata = { order: orderedActions.map((entry) => entry.side), turns: [] };
+  for (const action of orderedActions) {
+    const attacker = action.side === "player" ? playerPokemon : opponentPokemon;
+    const defender = action.side === "player" ? opponentPokemon : playerPokemon;
+    if (attacker.currentHp <= 0 || defender.currentHp <= 0) continue;
+    if (action.side === "opponent") log.push(`${opponentLabel}'s turn:`);
+    const result = executeBattleMove(
+      attacker,
+      defender,
+      action.move.name,
+      action.side === "player" ? opponentPrefix : "",
+      { battle },
+    );
+    log.push(...result.log);
+    metadata.turns.push({
+      side: action.side,
+      move: action.move.name,
+      ...result.metadata,
+    });
+    if (action.side === "player" && result.error) {
+      return { error: result.error, metadata };
+    }
+  }
+  return { metadata };
 }
 
 const rewardEngine = createRewardEngine({
@@ -252,6 +322,19 @@ function calculateBattleEffortXp(opponentPokemon, battleMultiplier = 1) {
   );
 }
 
+function applyBattleXpToParty(team, xpAward) {
+  const transientStates = team.map((pokemon) =>
+    pokemon.battleState
+      ? JSON.parse(JSON.stringify(pokemon.battleState))
+      : null,
+  );
+  const xpResult = applyXpToParty(team, xpAward);
+  xpResult.team.forEach((pokemon, index) => {
+    if (transientStates[index]) pokemon.battleState = transientStates[index];
+  });
+  return xpResult;
+}
+
 function applyBattleEffortXp(
   team,
   opponentPokemon,
@@ -262,7 +345,7 @@ function applyBattleEffortXp(
     return { team, xpResult: null, xpAward: 0 };
   }
   const xpAward = calculateBattleEffortXp(opponentPokemon, battleMultiplier);
-  const xpResult = applyXpToParty(team, xpAward);
+  const xpResult = applyBattleXpToParty(team, xpAward);
   appendXpLog(log, xpResult.results);
   return {
     team: xpResult.team,
@@ -651,6 +734,8 @@ function getNpcSessionView(session) {
     canCatch: false,
     canRun: false,
     status: session.status,
+    weather: session.weather || "clear",
+    turnMetadata: session.lastTurn || null,
   };
 }
 
@@ -677,6 +762,8 @@ function getGymSessionView(session) {
     canCatch: false,
     canRun: false,
     status: session.status,
+    weather: session.weather || "clear",
+    turnMetadata: session.lastTurn || null,
   };
 }
 
@@ -704,6 +791,8 @@ function getEliteSessionView(session) {
     canCatch: false,
     canRun: false,
     status: session.status,
+    weather: session.weather || "clear",
+    turnMetadata: session.lastTurn || null,
   };
 }
 
@@ -1101,6 +1190,7 @@ app.post("/api/gym/start", (req, res) => {
     aiItems: {},
     ppPrepared: true,
     status: "active",
+    weather: "clear",
   };
   activeGymSessions.set("player", session);
 
@@ -1163,6 +1253,7 @@ app.post("/api/elite/start", (req, res) => {
     isChampion: false,
     status: "active",
     aiItems: {},
+    weather: "clear",
   };
   refreshEliteStage(session);
   activeEliteSessions.set("player", session);
@@ -1199,12 +1290,21 @@ app.post("/api/gym/move", (req, res) => {
     if (!session.playerTeam[nextIndex]) {
       return res.status(400).json({ error: "Invalid Pokemon" });
     }
+    if (nextIndex === session.playerIndex) {
+      return res.status(400).json({ error: "That Pokemon is already active" });
+    }
     if (session.playerTeam[nextIndex].currentHp <= 0) {
       return res
         .status(400)
         .json({ error: "Cannot switch to a fainted Pokemon" });
     }
+    resetSwitchState(session.playerTeam[session.playerIndex]);
+    resetSwitchState(session.playerTeam[nextIndex]);
     session.playerIndex = nextIndex;
+    session.lastTurn = {
+      order: ["player"],
+      turns: [{ side: "player", action: "switch" }],
+    };
     session.participantIndexes = [
       ...new Set([...(session.participantIndexes || []), nextIndex]),
     ];
@@ -1231,26 +1331,66 @@ app.post("/api/gym/move", (req, res) => {
     return res.json(completeGymSession(session, ["Gym battle complete."]));
   }
 
-  const playerTurn = executeBattleMove(
-    playerPokemon,
-    gymPokemon,
-    moveName,
-    "Gym ",
-  );
-  log.push(...playerTurn.log);
-  if (playerTurn.error) {
+  const selectedMove = getMoveByName(playerPokemon, moveName);
+  if (!selectedMove || (selectedMove.currentPp ?? 0) <= 0) {
+    if (selectedMove) log.push("No PP left for this move!");
     return res.status(400).json({
-      error: playerTurn.error,
+      error: selectedMove ? "No PP left for this move" : "Move not found",
       log,
       session: getGymSessionView(session),
     });
   }
 
-  if (gymPokemon.currentHp <= 0) {
-    const xpAward = calculateBattleXp(gymPokemon, 3.25);
-    const xpResult = applyXpToParty(session.playerTeam, xpAward);
+  const gymAction = chooseGymAction(session, playerPokemon) || { type: "none" };
+  let activeGymPokemon = gymPokemon;
+  let gymMove = gymAction.move || null;
+  if (gymAction.type === "switch") {
+    const outgoing = session.gymTeam[session.gymIndex];
+    const incoming = session.gymTeam[gymAction.index];
+    if (incoming && outgoing) {
+      resetSwitchState(outgoing);
+      resetSwitchState(incoming);
+      incoming.battleState.volatile.switchCooldown = 2;
+      session.gymTeam[gymAction.index] = outgoing;
+      session.gymTeam[session.gymIndex] = incoming;
+      activeGymPokemon = incoming;
+      gymMove = null;
+      log.push(
+        `${session.gym.leaderName} withdrew ${outgoing.name} and sent out ${incoming.name}!`,
+      );
+      applyEntryAbility(incoming, playerPokemon, log);
+    }
+  }
+  if (!gymMove && gymAction.type !== "switch") {
+    gymMove = (activeGymPokemon.moves || []).find(
+      (move) => (move.currentPp ?? 0) > 0,
+    );
+  }
+
+  const orderedTurn = executeOrderedMoveTurn({
+    playerPokemon,
+    opponentPokemon: activeGymPokemon,
+    playerMoveName: moveName,
+    opponentMove: gymMove,
+    opponentLabel: session.gym.leaderName,
+    opponentPrefix: "Gym ",
+    battle: session,
+    log,
+  });
+  session.lastTurn = orderedTurn.metadata;
+  if (orderedTurn.error) {
+    return res.status(400).json({
+      error: orderedTurn.error,
+      log,
+      session: getGymSessionView(session),
+    });
+  }
+
+  if (activeGymPokemon.currentHp <= 0) {
+    const xpAward = calculateBattleXp(activeGymPokemon, 3.25);
+    const xpResult = applyBattleXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
-    log.push(`Gym ${gymPokemon.name} fainted!`);
+    log.push(`Gym ${activeGymPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
     session.participantIndexes = [session.playerIndex];
     session.gymIndex += 1;
@@ -1273,50 +1413,16 @@ app.post("/api/gym/move", (req, res) => {
     });
   }
 
-  const gymAction = chooseGymAction(session, playerPokemon) || { type: "none" };
-  let gymActed = false;
-  if (gymAction.type === "switch") {
-    const outgoing = session.gymTeam[session.gymIndex];
-    const incoming = session.gymTeam[gymAction.index];
-    if (incoming && outgoing) {
-      session.gymTeam[gymAction.index] = session.gymTeam[session.gymIndex];
-      session.gymTeam[session.gymIndex] = incoming;
-      log.push(
-        `${session.gym.leaderName} withdrew ${outgoing.name} and sent out ${incoming.name}!`,
-      );
-      applyEntryAbility(incoming, playerPokemon, log);
-      gymActed = true;
-    }
-  } else if (gymAction.move) {
-    log.push(`${session.gym.leaderName}'s turn:`);
-    log.push(
-      ...executeBattleMove(gymPokemon, playerPokemon, gymAction.move.name).log,
-    );
-    gymActed = true;
-  }
-
-  if (!gymActed) {
-    const fallbackMove = (gymPokemon.moves || []).find(
-      (move) => (move.currentPp ?? 0) > 0,
-    );
-    if (fallbackMove) {
-      log.push(`${session.gym.leaderName}'s turn:`);
-      log.push(
-        ...executeBattleMove(gymPokemon, playerPokemon, fallbackMove.name).log,
-      );
-    } else {
-      log.push(
-        `${session.gym.leaderName}'s ${gymPokemon.name} has no moves left!`,
-      );
-    }
-  }
-
-  const activeGymPokemon = session.gymTeam[session.gymIndex];
-  applyBattleEndOfTurnStatus(playerPokemon, activeGymPokemon, log);
+  session.lastTurn.endOfTurn = applyBattleEndOfTurnStatus(
+    playerPokemon,
+    activeGymPokemon,
+    log,
+    session.weather,
+  );
 
   if (activeGymPokemon?.currentHp <= 0) {
     const xpAward = calculateBattleXp(activeGymPokemon, 3.25);
-    const xpResult = applyXpToParty(session.playerTeam, xpAward);
+    const xpResult = applyBattleXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
     log.push(`Gym ${activeGymPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
@@ -1343,7 +1449,7 @@ app.post("/api/gym/move", (req, res) => {
 
   const effortResult = applyBattleEffortXp(
     session.playerTeam,
-    gymPokemon,
+    activeGymPokemon,
     3.25,
     log,
   );
@@ -1364,7 +1470,12 @@ app.post("/api/gym/move", (req, res) => {
         session: getGymSessionView(session),
       });
     }
+    resetSwitchState(session.playerTeam[nextIndex]);
     session.playerIndex = nextIndex;
+    session.lastTurn = {
+      order: ["player"],
+      turns: [{ side: "player", action: "switch" }],
+    };
     session.participantIndexes = [
       ...new Set([...(session.participantIndexes || []), nextIndex]),
     ];
@@ -1392,12 +1503,21 @@ app.post("/api/elite/move", (req, res) => {
     if (!session.playerTeam[nextIndex]) {
       return res.status(400).json({ error: "Invalid Pokemon" });
     }
+    if (nextIndex === session.playerIndex) {
+      return res.status(400).json({ error: "That Pokemon is already active" });
+    }
     if (session.playerTeam[nextIndex].currentHp <= 0) {
       return res
         .status(400)
         .json({ error: "Cannot switch to a fainted Pokemon" });
     }
+    resetSwitchState(session.playerTeam[session.playerIndex]);
+    resetSwitchState(session.playerTeam[nextIndex]);
     session.playerIndex = nextIndex;
+    session.lastTurn = {
+      order: ["player"],
+      turns: [{ side: "player", action: "switch" }],
+    };
     session.participantIndexes = [
       ...new Set([...(session.participantIndexes || []), nextIndex]),
     ];
@@ -1424,26 +1544,81 @@ app.post("/api/elite/move", (req, res) => {
     return res.status(400).json({ error: "Elite battle is already finished" });
   }
 
-  const playerTurn = executeBattleMove(
-    playerPokemon,
-    opponentPokemon,
-    moveName,
-    "Elite ",
-  );
-  log.push(...playerTurn.log);
-  if (playerTurn.error) {
+  const selectedMove = getMoveByName(playerPokemon, moveName);
+  if (!selectedMove || (selectedMove.currentPp ?? 0) <= 0) {
+    if (selectedMove) log.push("No PP left for this move!");
     return res.status(400).json({
-      error: playerTurn.error,
+      error: selectedMove ? "No PP left for this move" : "Move not found",
       log,
       session: getEliteSessionView(session),
     });
   }
 
-  if (opponentPokemon.currentHp <= 0) {
-    const xpAward = calculateBattleXp(opponentPokemon, session.isChampion ? 4.5 : 4);
-    const xpResult = applyXpToParty(session.playerTeam, xpAward);
+  const eliteAction = chooseTrainerAction(
+    session.opponentTeam,
+    session.opponentIndex,
+    session.aiItems,
+    playerPokemon,
+    session.currentTrainer.name,
+    aiDifficulty.HARD,
+    session.weather,
+  );
+  let activeOpponentPokemon = opponentPokemon;
+  let opponentMove = eliteAction.move || null;
+  if (eliteAction.type === "switch") {
+    const incoming = session.opponentTeam[eliteAction.index];
+    if (incoming) {
+      resetSwitchState(opponentPokemon);
+      resetSwitchState(incoming);
+      incoming.battleState.volatile.switchCooldown = 2;
+      session.opponentTeam[eliteAction.index] = opponentPokemon;
+      session.opponentTeam[session.opponentIndex] = incoming;
+      activeOpponentPokemon = incoming;
+      opponentMove = null;
+      log.push(`${session.currentTrainer.name} switched to ${incoming.name}!`);
+      applyEntryAbility(incoming, playerPokemon, log);
+    }
+  } else if (eliteAction.type === "item") {
+    const healed = Math.min(
+      50,
+      opponentPokemon.maxHp - opponentPokemon.currentHp,
+    );
+    opponentPokemon.currentHp += healed;
+    session.aiItems.potion -= 1;
+    opponentMove = null;
+    log.push(
+      `${session.currentTrainer.name} used a Potion. ${opponentPokemon.name} recovered ${healed} HP.`,
+    );
+  } else if (!opponentMove) {
+    opponentMove = (activeOpponentPokemon.moves || []).find(
+      (move) => (move.currentPp ?? 0) > 0,
+    );
+  }
+
+  const orderedTurn = executeOrderedMoveTurn({
+    playerPokemon,
+    opponentPokemon: activeOpponentPokemon,
+    playerMoveName: moveName,
+    opponentMove,
+    opponentLabel: session.currentTrainer.name,
+    opponentPrefix: "Elite ",
+    battle: session,
+    log,
+  });
+  session.lastTurn = orderedTurn.metadata;
+  if (orderedTurn.error) {
+    return res.status(400).json({
+      error: orderedTurn.error,
+      log,
+      session: getEliteSessionView(session),
+    });
+  }
+
+  if (activeOpponentPokemon.currentHp <= 0) {
+    const xpAward = calculateBattleXp(activeOpponentPokemon, session.isChampion ? 4.5 : 4);
+    const xpResult = applyBattleXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
-    log.push(`${opponentPokemon.name} fainted!`);
+    log.push(`${activeOpponentPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
     session.participantIndexes = [session.playerIndex];
     session.opponentIndex = getFirstHealthyPokemonIndex(session.opponentTeam);
@@ -1496,60 +1671,19 @@ app.post("/api/elite/move", (req, res) => {
     });
   }
 
-  const eliteAction = chooseTrainerAction(
-    session.opponentTeam,
-    session.opponentIndex,
-    session.aiItems,
+  session.lastTurn.endOfTurn = applyBattleEndOfTurnStatus(
     playerPokemon,
-    session.currentTrainer.name,
+    activeOpponentPokemon,
+    log,
+    session.weather,
   );
-  if (eliteAction.type === "switch") {
-    const incoming = session.opponentTeam[eliteAction.index];
-    if (incoming) {
-      session.opponentTeam[eliteAction.index] =
-        session.opponentTeam[session.opponentIndex];
-      session.opponentTeam[session.opponentIndex] = incoming;
-      log.push(`${session.currentTrainer.name} switched to ${incoming.name}!`);
-      applyEntryAbility(incoming, playerPokemon, log);
-    }
-  } else if (eliteAction.move) {
-    log.push(`${session.currentTrainer.name}'s turn:`);
-    log.push(
-      ...executeBattleMove(
-        opponentPokemon,
-        playerPokemon,
-        eliteAction.move.name,
-      ).log,
-    );
-  } else {
-    const fallbackMove = (opponentPokemon.moves || []).find(
-      (move) => (move.currentPp ?? 0) > 0,
-    );
-    if (fallbackMove) {
-      log.push(`${session.currentTrainer.name}'s turn:`);
-      log.push(
-        ...executeBattleMove(
-          opponentPokemon,
-          playerPokemon,
-          fallbackMove.name,
-        ).log,
-      );
-    } else {
-      log.push(
-        `${session.currentTrainer.name}'s ${opponentPokemon.name} has no moves left!`,
-      );
-    }
-  }
-
-  const activeOpponentPokemon = session.opponentTeam[session.opponentIndex];
-  applyBattleEndOfTurnStatus(playerPokemon, activeOpponentPokemon, log);
 
   if (activeOpponentPokemon?.currentHp <= 0) {
     const xpAward = calculateBattleXp(
       activeOpponentPokemon,
       session.isChampion ? 4.5 : 4,
     );
-    const xpResult = applyXpToParty(session.playerTeam, xpAward);
+    const xpResult = applyBattleXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
     log.push(`${activeOpponentPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
@@ -1604,7 +1738,7 @@ app.post("/api/elite/move", (req, res) => {
 
   const eliteEffortResult = applyBattleEffortXp(
     session.playerTeam,
-    opponentPokemon,
+    activeOpponentPokemon,
     session.isChampion ? 4.5 : 4,
     log,
   );
@@ -1616,6 +1750,7 @@ app.post("/api/elite/move", (req, res) => {
     if (nextIndex < 0) {
       return res.json(finishEliteLoss(session, log));
     }
+    resetSwitchState(session.playerTeam[nextIndex]);
     session.playerIndex = nextIndex;
     log.push("Choose another Pokemon to continue.");
   }
@@ -1907,6 +2042,7 @@ app.post("/api/npc/interact", (req, res) => {
         potion: npc.team && npc.team.length > 1 ? 1 : 0,
       },
       status: "active",
+      weather: "clear",
     };
     activeNpcSessions.set("player", session);
 
@@ -1977,12 +2113,21 @@ app.post("/api/npc/move", (req, res) => {
     if (!session.playerTeam[nextIndex]) {
       return res.status(400).json({ error: "Invalid Pokemon" });
     }
+    if (nextIndex === session.playerIndex) {
+      return res.status(400).json({ error: "That Pokemon is already active" });
+    }
     if (session.playerTeam[nextIndex].currentHp <= 0) {
       return res
         .status(400)
         .json({ error: "Cannot switch to a fainted Pokemon" });
     }
+    resetSwitchState(session.playerTeam[session.playerIndex]);
+    resetSwitchState(session.playerTeam[nextIndex]);
     session.playerIndex = nextIndex;
+    session.lastTurn = {
+      order: ["player"],
+      turns: [{ side: "player", action: "switch" }],
+    };
     session.participantIndexes = [
       ...new Set([...(session.participantIndexes || []), nextIndex]),
     ];
@@ -2009,26 +2154,81 @@ app.post("/api/npc/move", (req, res) => {
     return res.status(400).json({ error: "NPC battle is already finished" });
   }
 
-  const playerTurn = executeBattleMove(
-    playerPokemon,
-    opponentPokemon,
-    moveName,
-    `${session.npc.name}'s `,
-  );
-  log.push(...playerTurn.log);
-  if (playerTurn.error) {
+  const selectedMove = getMoveByName(playerPokemon, moveName);
+  if (!selectedMove || (selectedMove.currentPp ?? 0) <= 0) {
+    if (selectedMove) log.push("No PP left for this move!");
     return res.status(400).json({
-      error: playerTurn.error,
+      error: selectedMove ? "No PP left for this move" : "Move not found",
       log,
       session: getNpcSessionView(session),
     });
   }
 
-  if (opponentPokemon.currentHp <= 0) {
-    const xpAward = calculateBattleXp(opponentPokemon, 2.75);
-    const xpResult = applyXpToParty(session.playerTeam, xpAward);
+  const npcAction = chooseTrainerAction(
+    session.opponentTeam,
+    session.opponentIndex,
+    session.aiItems,
+    playerPokemon,
+    session.npc.name,
+    aiDifficulty.MEDIUM,
+    session.weather,
+  );
+  let activeNpcPokemon = opponentPokemon;
+  let opponentMove = npcAction.move || null;
+  if (npcAction.type === "switch") {
+    const incoming = session.opponentTeam[npcAction.index];
+    if (incoming) {
+      resetSwitchState(opponentPokemon);
+      resetSwitchState(incoming);
+      incoming.battleState.volatile.switchCooldown = 2;
+      session.opponentTeam[npcAction.index] = opponentPokemon;
+      session.opponentTeam[session.opponentIndex] = incoming;
+      activeNpcPokemon = incoming;
+      opponentMove = null;
+      log.push(`${session.npc.name} switched to ${incoming.name}!`);
+      applyEntryAbility(incoming, playerPokemon, log);
+    }
+  } else if (npcAction.type === "item") {
+    const healed = Math.min(
+      50,
+      opponentPokemon.maxHp - opponentPokemon.currentHp,
+    );
+    opponentPokemon.currentHp += healed;
+    session.aiItems.potion -= 1;
+    opponentMove = null;
+    log.push(
+      `${session.npc.name} used a Potion. ${opponentPokemon.name} recovered ${healed} HP.`,
+    );
+  } else if (!opponentMove) {
+    opponentMove = (activeNpcPokemon.moves || []).find(
+      (move) => (move.currentPp ?? 0) > 0,
+    );
+  }
+
+  const orderedTurn = executeOrderedMoveTurn({
+    playerPokemon,
+    opponentPokemon: activeNpcPokemon,
+    playerMoveName: moveName,
+    opponentMove,
+    opponentLabel: session.npc.name,
+    opponentPrefix: `${session.npc.name}'s `,
+    battle: session,
+    log,
+  });
+  session.lastTurn = orderedTurn.metadata;
+  if (orderedTurn.error) {
+    return res.status(400).json({
+      error: orderedTurn.error,
+      log,
+      session: getNpcSessionView(session),
+    });
+  }
+
+  if (activeNpcPokemon.currentHp <= 0) {
+    const xpAward = calculateBattleXp(activeNpcPokemon, 2.75);
+    const xpResult = applyBattleXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
-    log.push(`${session.npc.name}'s ${opponentPokemon.name} fainted!`);
+    log.push(`${session.npc.name}'s ${activeNpcPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
     session.participantIndexes = [session.playerIndex];
     session.opponentIndex = getFirstHealthyPokemonIndex(session.opponentTeam);
@@ -2051,47 +2251,16 @@ app.post("/api/npc/move", (req, res) => {
     });
   }
 
-  const npcAction = chooseTrainerAction(
-    session.opponentTeam,
-    session.opponentIndex,
-    session.aiItems,
+  session.lastTurn.endOfTurn = applyBattleEndOfTurnStatus(
     playerPokemon,
-    session.npc.name,
-    aiDifficulty.MEDIUM,
+    activeNpcPokemon,
+    log,
+    session.weather,
   );
-  if (npcAction.type === "switch") {
-    const incoming = session.opponentTeam[npcAction.index];
-    if (incoming) {
-      session.opponentTeam[npcAction.index] =
-        session.opponentTeam[session.opponentIndex];
-      session.opponentTeam[session.opponentIndex] = incoming;
-      log.push(`${session.npc.name} switched to ${incoming.name}!`);
-      applyEntryAbility(incoming, playerPokemon, log);
-    }
-  } else if (npcAction.type === "item") {
-    const healAmount = 50;
-    const healed = Math.min(
-      healAmount,
-      opponentPokemon.maxHp - opponentPokemon.currentHp,
-    );
-    opponentPokemon.currentHp += healed;
-    session.aiItems.potion -= 1;
-    log.push(
-      `${session.npc.name} used a Potion. ${opponentPokemon.name} recovered ${healed} HP.`,
-    );
-  } else if (npcAction.move) {
-    log.push(
-      ...executeBattleMove(opponentPokemon, playerPokemon, npcAction.move.name)
-        .log,
-    );
-  }
-
-  const activeNpcPokemon = session.opponentTeam[session.opponentIndex];
-  applyBattleEndOfTurnStatus(playerPokemon, activeNpcPokemon, log);
 
   if (activeNpcPokemon?.currentHp <= 0) {
     const xpAward = calculateBattleXp(activeNpcPokemon, 2.75);
-    const xpResult = applyXpToParty(session.playerTeam, xpAward);
+    const xpResult = applyBattleXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
     log.push(`${session.npc.name}'s ${activeNpcPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
@@ -2118,7 +2287,7 @@ app.post("/api/npc/move", (req, res) => {
 
   const npcEffortResult = applyBattleEffortXp(
     session.playerTeam,
-    opponentPokemon,
+    activeNpcPokemon,
     2.75,
     log,
   );
@@ -2130,6 +2299,7 @@ app.post("/api/npc/move", (req, res) => {
     if (nextIndex < 0) {
       return res.json(finishNpcLoss(session, log));
     }
+    resetSwitchState(session.playerTeam[nextIndex]);
     session.playerIndex = nextIndex;
     log.push("Choose another Pokemon to continue.");
   }
@@ -2229,6 +2399,7 @@ app.post("/api/battle", (req, res) => {
     wildHP,
     playerStatus = "none",
     wildStatus = "none",
+    playerBattleState = null,
   } = req.body;
 
   try {
@@ -2243,7 +2414,16 @@ app.post("/api/battle", (req, res) => {
     }
 
     const playerPokemon = inventory[playerIndex];
+    if (playerBattleState && typeof playerBattleState === "object") {
+      playerPokemon.battleState = JSON.parse(JSON.stringify(playerBattleState));
+      ensureBattleState(playerPokemon);
+    }
+    const incomingWildBattleState = wild?.battleState;
     const wildPokemon = normalizePokemon(wild || {});
+    if (incomingWildBattleState && typeof incomingWildBattleState === "object") {
+      wildPokemon.battleState = JSON.parse(JSON.stringify(incomingWildBattleState));
+      ensureBattleState(wildPokemon);
+    }
     if (!wildPokemon.id) {
       return res.status(400).json({ error: "Wild Pokémon is required" });
     }
@@ -2255,42 +2435,39 @@ app.post("/api/battle", (req, res) => {
     let winner = null;
     const log = [];
 
-    const playerTurn = executeBattleMove(
+    const availableMoves = wildPokemon.moves.filter((m) => m.currentPp > 0);
+    const wildMove =
+      chooseBestMove(wildPokemon, playerPokemon, wildPokemon.weather) ||
+      availableMoves[Math.floor(Math.random() * availableMoves.length)];
+    const orderedTurn = executeOrderedMoveTurn({
       playerPokemon,
-      wildPokemon,
-      moveName,
-      "Wild ",
-    );
-    log.push(...playerTurn.log);
-    if (playerTurn.error) {
-      return res.status(400).json({ error: playerTurn.error, log });
+      opponentPokemon: wildPokemon,
+      playerMoveName: moveName,
+      opponentMove: wildMove,
+      opponentLabel: `Wild ${wildPokemon.name}`,
+      opponentPrefix: "Wild ",
+      battle: wildPokemon,
+      log,
+    });
+    if (orderedTurn.error) {
+      return res.status(400).json({ error: orderedTurn.error, log });
     }
 
     if (wildPokemon.currentHp <= 0) {
       winner = "player";
       log.push(`Wild ${wildPokemon.name} fainted!`);
+    } else if (availableMoves.length === 0) {
+      winner = "player";
+      log.push(`Wild ${wildPokemon.name} has no moves left!`);
     }
 
     if (!winner) {
-      const availableMoves = wildPokemon.moves.filter((m) => m.currentPp > 0);
-      if (availableMoves.length === 0) {
-        winner = "player";
-        log.push(`Wild ${wildPokemon.name} has no moves left!`);
-      } else {
-        const wildMove =
-          chooseBestMove(wildPokemon, playerPokemon) ||
-          availableMoves[Math.floor(Math.random() * availableMoves.length)];
-        const wildTurn = executeBattleMove(
-          wildPokemon,
-          playerPokemon,
-          wildMove.name,
-        );
-        log.push(...wildTurn.log);
-      }
-    }
-
-    if (!winner) {
-      applyBattleEndOfTurnStatus(playerPokemon, wildPokemon, log);
+      orderedTurn.metadata.endOfTurn = applyBattleEndOfTurnStatus(
+        playerPokemon,
+        wildPokemon,
+        log,
+        wildPokemon.weather,
+      );
       if (wildPokemon.currentHp <= 0) {
         winner = "player";
         log.push(`Wild ${wildPokemon.name} fainted!`);
@@ -2355,6 +2532,7 @@ app.post("/api/battle", (req, res) => {
       playerMoves: inventory[playerIndex].moves,
       playerPokemon: inventory[playerIndex],
       wild: wildPokemon,
+      turnMetadata: orderedTurn.metadata,
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to process battle" });

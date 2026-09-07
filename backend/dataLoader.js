@@ -27,6 +27,8 @@ const supportedEffectTypes = new Set([
   "randomMove",
   "criticalBoost",
   "weather",
+  "recoil",
+  "drain",
   "trap",
 ]);
 const requiredRarityWeights = [

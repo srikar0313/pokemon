@@ -731,6 +731,7 @@ function createPokemonUtils({
       delete normalized.pendingMove;
     }
     delete normalized.battleModifiers;
+    delete normalized.battleState;
     return normalized;
   }
 

@@ -140,13 +140,12 @@ function applyEntryAbility(entering, opponent, log = []) {
   if (!entering || !opponent || getAbilityName(entering) !== "intimidate") {
     return log;
   }
-  opponent.battleModifiers = {
-    ...(opponent.battleModifiers || {}),
-    attack: Math.max(
-      0.5,
-      Number(opponent.battleModifiers?.attack || 1) * (2 / 3),
-    ),
-  };
+  opponent.battleState = opponent.battleState || {};
+  opponent.battleState.stages = opponent.battleState.stages || {};
+  opponent.battleState.stages.attack = Math.max(
+    -6,
+    Number(opponent.battleState.stages.attack || 0) - 1,
+  );
   log.push(`${entering.name}'s Intimidate lowered ${opponent.name}'s Attack!`);
   return log;
 }
