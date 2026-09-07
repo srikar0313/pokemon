@@ -504,6 +504,31 @@ function createGameState({
     return { success: true, slots: getPartyPresetSlots() };
   }
 
+  function randomizePartyPreset(slotNumber, random = Math.random) {
+    const slot = Number(slotNumber);
+    if (!Number.isInteger(slot) || slot < 1 || slot > PARTY_PRESET_COUNT) {
+      return { error: "Invalid party slot." };
+    }
+    const { team, storage } = loadTeamAndStorage();
+    const randomized = createRandomPartySelection(
+      team,
+      storage,
+      teamLimit,
+      random,
+    );
+    if (!randomized.team.length) {
+      return { error: "No owned Pokemon are available." };
+    }
+
+    const state = loadPlayerState();
+    state.partyPresets[slot - 1] = {
+      slot,
+      pokemonIds: randomized.team.map((pokemon) => pokemon.ownedId),
+    };
+    savePlayerState(state);
+    return { success: true, slots: getPartyPresetSlots() };
+  }
+
   function loadPartyPreset(slotNumber) {
     const slot = Number(slotNumber);
     if (!Number.isInteger(slot) || slot < 1 || slot > PARTY_PRESET_COUNT) {
@@ -556,6 +581,7 @@ function createGameState({
     getPartyPresetSlots,
     savePartyPreset,
     updatePartyPreset,
+    randomizePartyPreset,
     loadPartyPreset,
     resolvePokedexSpeciesId,
     updateAchievements,

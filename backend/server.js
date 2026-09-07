@@ -1,10 +1,7 @@
 const express = require("express");
 const path = require("path");
 const { loadGameData, loadJson, saveJson } = require("./dataLoader");
-const {
-  createGameState,
-  createRandomPartySelection,
-} = require("./gameState");
+const { createGameState } = require("./gameState");
 const { createPokemonUtils } = require("./pokemonUtils");
 const { createBattleEngine } = require("./battleEngine");
 const { createEncounterEngine } = require("./encounterEngine");
@@ -177,6 +174,7 @@ const {
   getPartyPresetSlots,
   savePartyPreset,
   updatePartyPreset,
+  randomizePartyPreset,
   loadPartyPreset,
 } = gameState;
 
@@ -2756,33 +2754,15 @@ app.post("/api/party/randomize", (req, res) => {
     activeEliteSessions.get("player")?.status === "active"
   ) {
     return res.status(400).json({
-      error: "Finish the current trainer battle before changing your party.",
+      error: "Finish the current battle before editing a party slot.",
     });
   }
 
   try {
-    const owned = loadTeamAndStorage();
-    if (owned.storage.length === 0) {
-      return res.status(400).json({
-        error: "Catch or store more Pokemon before creating a random party.",
-      });
-    }
-
-    const randomized = createRandomPartySelection(
-      owned.team,
-      owned.storage,
-      teamLimit,
-    );
-    saveTeamAndStorage(randomized.team, randomized.storage);
-
-    return res.json({
-      success: true,
-      message: `A random party of ${randomized.team.length} Pokemon is ready.`,
-      team: randomized.team,
-      storage: randomized.storage,
-    });
+    const result = randomizePartyPreset(req.body?.slot);
+    return result.error ? res.status(400).json(result) : res.json(result);
   } catch (error) {
-    return res.status(500).json({ error: "Failed to create a random party" });
+    return res.status(500).json({ error: "Failed to randomize the party slot" });
   }
 });
 

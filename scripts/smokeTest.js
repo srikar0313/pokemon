@@ -223,6 +223,18 @@ function main() {
       removedPresetPokemon.slots[2].pokemon.length === 0,
     "Pokemon could not be removed from a party preset",
   );
+  const activeBeforeRandomPreset = partyPresetState.loadTeamAndStorage();
+  const randomizedPreset = partyPresetState.randomizePartyPreset(2, () => 0);
+  const activeAfterRandomPreset = partyPresetState.loadTeamAndStorage();
+  assert(
+    randomizedPreset.success && randomizedPreset.slots[1].pokemon.length === 5,
+    "selected party preset was not filled with random owned Pokemon",
+  );
+  assert(
+    activeAfterRandomPreset.team.map((entry) => entry.ownedId).join("|") ===
+      activeBeforeRandomPreset.team.map((entry) => entry.ownedId).join("|"),
+    "randomizing a party preset changed the active team",
+  );
   partyPresetState.saveTeamAndStorage(
     [ownedBeforePreset.storage[0]],
     [...ownedBeforePreset.team, ...ownedBeforePreset.storage.slice(1)],

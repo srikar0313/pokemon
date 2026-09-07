@@ -3950,7 +3950,6 @@ function renderStorageBrowser(storage = storageCache) {
       </div>
       <div class="storage-browser-actions">
         <strong>Showing ${showingStart}-${showingEnd} of ${filtered.length}</strong>
-        <button class="primary-btn" onclick="randomizePartyFromStorage()" ${storage.length === 0 || storageRandomizing ? "disabled" : ""}>${storageRandomizing ? "Choosing..." : "Random Party"}</button>
       </div>
     </div>
     <div class="storage-controls">
@@ -4052,7 +4051,7 @@ function renderPartyPresetSlots() {
       <div class="party-presets-title">
         <div>
           <h3>Party Decks</h3>
-          <span>Build a team, then use it as your active party.</span>
+          <span>Editing Party ${activePartyPresetSlot}. Your active team changes only when you press Use Party.</span>
         </div>
         ${partyPresetMessage ? `<strong class="party-preset-message">${escapeHtml(partyPresetMessage)}</strong>` : ""}
       </div>
@@ -4099,6 +4098,7 @@ function renderPartyPresetSlots() {
       </div>
       <div class="party-preset-actions">
         <button class="secondary-btn" onclick="savePartyPresetSlot(${activePartyPresetSlot})">Copy Current Team</button>
+        <button class="secondary-btn random-slot-btn" onclick="randomizePartyFromStorage()" ${storageRandomizing ? "disabled" : ""}>${storageRandomizing ? "Choosing..." : `Randomize Party ${activePartyPresetSlot}`}</button>
         <button class="secondary-btn" onclick="clearPartyPresetSlot()" ${selectedPokemon.length === 0 ? "disabled" : ""}>Clear</button>
         <button class="primary-btn" onclick="loadPartyPresetSlot(${activePartyPresetSlot})" ${selectedPokemon.length === 0 ? "disabled" : ""}>Use Party ${activePartyPresetSlot}</button>
       </div>
@@ -4538,16 +4538,12 @@ async function randomizePartyFromStorage() {
     gymBattle ||
     eliteBattle
   ) {
-    alert("Finish the current battle before changing your party.");
-    return;
-  }
-  if (storageCache.length === 0) {
-    alert("Catch or store more Pokemon before creating a random party.");
+    alert("Finish the current battle before editing a party slot.");
     return;
   }
   if (
     !confirm(
-      `Choose a random party of up to ${PARTY_LIMIT} from all owned Pokemon?`,
+      `Replace saved Party ${activePartyPresetSlot} with ${PARTY_LIMIT} random owned Pokemon? Your active team will not change.`,
     )
   ) {
     return;
@@ -4556,19 +4552,19 @@ async function randomizePartyFromStorage() {
   storageRandomizing = true;
   renderStorageBrowser();
   try {
-    const response = await fetch("/api/party/randomize", { method: "POST" });
+    const response = await fetch("/api/party/randomize", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slot: activePartyPresetSlot }),
+    });
     const data = await response.json();
     if (!response.ok || data.error) {
       alert(data.error || "Could not create a random party.");
       return;
     }
 
-    activeInventoryIndex = 0;
-    storageUiState.detailIndex = null;
-    storageUiState.page = 1;
-    await loadInventory();
-    partyPresetMessage = data.message;
-    renderBattlePlaceholder(data.message);
+    partyPresetCache = data.slots || partyPresetCache;
+    partyPresetMessage = `Party ${activePartyPresetSlot} randomized. Press Use Party to activate it.`;
   } catch (error) {
     alert("Could not create a random party.");
   } finally {
