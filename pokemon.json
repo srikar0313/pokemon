@@ -376,13 +376,14 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden"
 		],
 		"imageId": 11,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"name": "Butterfree",
@@ -477,13 +478,14 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden"
 		],
 		"imageId": 14,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 15,
@@ -510,13 +512,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Twineedle",
+			"Fury Attack",
+			"Rage",
+			"Pursuit"
 		],
 		"imageId": 15,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"name": "Pidgey",
@@ -577,13 +583,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Sand Attack",
+			"Gust",
+			"Quick Attack"
 		],
 		"imageId": 17,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 16,
@@ -642,13 +652,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Tail Whip",
+			"Quick Attack",
+			"Focus Energy"
 		],
 		"imageId": 19,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 20,
@@ -674,13 +688,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Scary Face",
+			"Swords Dance",
+			"Tackle",
+			"Tail Whip"
 		],
 		"imageId": 20,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 21,
@@ -741,13 +759,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Peck",
+			"Pluck",
+			"Leer"
 		],
 		"imageId": 22,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 23,
@@ -773,13 +795,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Wrap",
+			"Poison Sting",
+			"Bite"
 		],
 		"imageId": 23,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 24,
@@ -805,13 +831,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"Crunch",
+			"Fire Fang",
+			"Ice Fang"
 		],
 		"imageId": 24,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 25,
@@ -960,13 +990,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Crush Claw",
+			"Defense Curl",
+			"Poison Sting",
+			"Sand Attack"
 		],
 		"imageId": 28,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 29,
@@ -992,13 +1026,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Poison Sting",
+			"Scratch",
+			"Tail Whip"
 		],
 		"imageId": 29,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 30,
@@ -1024,13 +1062,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Poison Sting",
+			"Scratch",
+			"Tail Whip"
 		],
 		"imageId": 30,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 31,
@@ -1057,13 +1099,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"Crunch",
+			"Double Kick",
+			"Earth Power"
 		],
 		"imageId": 31,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 32,
@@ -1089,13 +1135,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Poison Sting",
+			"Peck",
+			"Focus Energy"
 		],
 		"imageId": 32,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 33,
@@ -1121,13 +1171,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Focus Energy",
+			"Leer",
+			"Peck",
+			"Poison Sting"
 		],
 		"imageId": 33,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 34,
@@ -1154,13 +1208,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Double Kick",
+			"Earth Power",
+			"Flatter",
+			"Focus Energy"
 		],
 		"imageId": 34,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 35,
@@ -1219,13 +1277,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Life Dew",
+			"Meteor Mash",
+			"Metronome",
+			"Moonblast"
 		],
 		"imageId": 36,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Vulpix",
@@ -1298,13 +1360,16 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Flamethrower",
+			"Quick Attack",
+			"Tail Whip"
 		],
 		"imageId": 38,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 39,
@@ -1365,13 +1430,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Body Slam",
+			"Charm",
+			"Copycat",
+			"Covet"
 		],
 		"imageId": 40,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Zubat",
@@ -1432,13 +1501,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Astonish",
+			"Mean Look",
+			"Screech"
 		],
 		"imageId": 42,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"name": "Oddish",
@@ -1499,13 +1572,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Acid",
+			"Growth",
+			"Sweet Scent"
 		],
 		"imageId": 44,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 45,
@@ -1532,13 +1609,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Acid",
+			"Giga Drain",
+			"Grassy Terrain"
 		],
 		"imageId": 45,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 46,
@@ -1565,13 +1646,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Scratch",
+			"Poison Powder",
+			"Stun Spore",
+			"Absorb"
 		],
 		"imageId": 46,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 47,
@@ -1598,13 +1683,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Cross Poison",
+			"Scratch",
+			"Poison Powder",
+			"Stun Spore"
 		],
 		"imageId": 47,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 48,
@@ -1631,13 +1720,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Disable",
+			"Tackle",
+			"Supersonic",
+			"Confusion"
 		],
 		"imageId": 48,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 49,
@@ -1664,13 +1757,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Air Slash",
+			"Disable",
+			"Quiver Dance",
+			"Supersonic"
 		],
 		"imageId": 49,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Diglett",
@@ -1729,13 +1826,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Growl",
+			"Night Slash",
+			"Sand Attack"
 		],
 		"imageId": 51,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 52,
@@ -1761,13 +1862,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Fake Out",
+			"Growl",
+			"Feint",
+			"Scratch"
 		],
 		"imageId": 52,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 53,
@@ -1793,13 +1898,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Fake Out",
+			"Feint",
+			"Growl",
+			"Power Gem"
 		],
 		"imageId": 53,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 54,
@@ -1858,13 +1967,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Aqua Jet",
+			"Confusion",
+			"Scratch",
+			"Tail Whip"
 		],
 		"imageId": 55,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 56,
@@ -1890,13 +2003,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Covet",
+			"Focus Energy",
+			"Leer",
+			"Scratch"
 		],
 		"imageId": 56,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 57,
@@ -1922,13 +2039,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Fling",
+			"Focus Energy",
+			"Leer",
+			"Scratch"
 		],
 		"imageId": 57,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 58,
@@ -2002,13 +2123,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Agility",
+			"Bite",
+			"Crunch",
+			"Ember"
 		],
 		"imageId": 59,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Poliwag",
@@ -2067,13 +2192,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Hypnosis",
+			"Mud Shot",
+			"Pound",
+			"Water Gun"
 		],
 		"imageId": 61,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 62,
@@ -2100,13 +2229,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Body Slam",
+			"Bubble Beam",
+			"Dynamic Punch",
+			"Hypnosis"
 		],
 		"imageId": 62,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 63,
@@ -2132,13 +2265,14 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Teleport"
 		],
 		"imageId": 63,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 64,
@@ -2164,13 +2298,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Disable",
+			"Kinesis",
+			"Teleport"
 		],
 		"imageId": 64,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 65,
@@ -2196,13 +2334,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Disable",
+			"Kinesis",
+			"Teleport"
 		],
 		"imageId": 65,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"name": "Machop",
@@ -2261,13 +2403,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Focus Energy",
+			"Leer",
+			"Low Kick",
+			"Revenge"
 		],
 		"imageId": 67,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 68,
@@ -2293,13 +2439,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Focus Energy",
+			"Leer",
+			"Low Kick",
+			"Revenge"
 		],
 		"imageId": 68,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 69,
@@ -2396,13 +2546,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leaf Storm",
+			"Razor Leaf",
+			"Sleep Powder",
+			"Sweet Scent"
 		],
 		"imageId": 71,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Tentacool",
@@ -2464,13 +2618,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Acid",
+			"Poison Sting",
+			"Reflect Type",
+			"Water Gun"
 		],
 		"imageId": 73,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 74,
@@ -2568,13 +2726,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Defense Curl",
+			"Heavy Slam",
+			"Rock Polish",
 			"Tackle"
 		],
 		"imageId": 76,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Ponyta",
@@ -2647,13 +2809,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Ember",
+			"Growl",
+			"Megahorn",
+			"Poison Jab"
 		],
 		"imageId": 78,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 79,
@@ -2680,13 +2846,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Curse",
+			"Tackle",
+			"Growl",
+			"Water Gun"
 		],
 		"imageId": 79,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 80,
@@ -2713,13 +2883,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Curse",
+			"Growl",
+			"Tackle",
+			"Water Gun"
 		],
 		"imageId": 80,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 81,
@@ -2746,13 +2920,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Thunder Shock",
+			"Supersonic",
+			"Thunder Wave"
 		],
 		"imageId": 81,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 82,
@@ -2779,13 +2957,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Electric Terrain",
+			"Supersonic",
+			"Tackle",
+			"Thunder Shock"
 		],
 		"imageId": 82,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 83,
@@ -2812,13 +2994,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Peck",
+			"Sand Attack",
+			"Leer",
+			"Fury Cutter"
 		],
 		"imageId": 83,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 84,
@@ -2845,13 +3031,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Peck",
+			"Quick Attack",
+			"Fury Attack"
 		],
 		"imageId": 84,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 85,
@@ -2878,13 +3068,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Peck",
+			"Quick Attack",
+			"Tri Attack"
 		],
 		"imageId": 85,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Seel",
@@ -2946,13 +3140,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Headbutt",
+			"Icy Wind",
+			"Sheer Cold"
 		],
 		"imageId": 87,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 88,
@@ -2978,13 +3176,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Poison Gas",
+			"Pound",
+			"Harden",
+			"Mud Slap"
 		],
 		"imageId": 88,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 89,
@@ -3010,13 +3212,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden",
+			"Mud Slap",
+			"Poison Gas",
+			"Pound"
 		],
 		"imageId": 89,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Shellder",
@@ -3076,13 +3282,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Aurora Beam",
+			"Hydro Pump",
+			"Ice Beam",
+			"Ice Shard"
 		],
 		"imageId": 91,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 92,
@@ -3250,13 +3460,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Hypnosis",
+			"Pound",
+			"Disable",
+			"Confusion"
 		],
 		"imageId": 96,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 97,
@@ -3282,13 +3496,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Disable",
+			"Hypnosis",
+			"Pound"
 		],
 		"imageId": 97,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 98,
@@ -3314,13 +3532,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Water Gun",
+			"Harden",
+			"Metal Claw"
 		],
 		"imageId": 98,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 99,
@@ -3346,13 +3568,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Hammer Arm",
+			"Harden",
+			"Leer",
+			"Metal Claw"
 		],
 		"imageId": 99,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 100,
@@ -3427,13 +3653,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Charge",
+			"Eerie Impulse",
+			"Magnetic Flux",
 			"Tackle"
 		],
 		"imageId": 101,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 102,
@@ -3460,13 +3690,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Hypnosis",
+			"Reflect",
+			"Leech Seed"
 		],
 		"imageId": 102,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 103,
@@ -3493,13 +3727,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Bullet Seed",
+			"Confusion",
+			"Extrasensory"
 		],
 		"imageId": 103,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 104,
@@ -3559,13 +3797,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"False Swipe",
+			"Growl",
+			"Mud Slap",
+			"Tail Whip"
 		],
 		"imageId": 105,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 106,
@@ -3591,13 +3833,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Brick Break",
+			"Fake Out",
+			"Focus Energy",
+			"Helping Hand"
 		],
 		"imageId": 106,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 107,
@@ -3623,13 +3869,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Drain Punch",
+			"Fake Out",
+			"Feint",
+			"Focus Energy"
 		],
 		"imageId": 107,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 108,
@@ -3655,13 +3905,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Defense Curl",
+			"Lick",
+			"Rollout",
+			"Supersonic"
 		],
 		"imageId": 108,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 109,
@@ -3687,13 +3941,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Poison Gas",
+			"Tackle",
+			"Smog",
+			"Smokescreen"
 		],
 		"imageId": 109,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 110,
@@ -3719,13 +3977,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Double Hit",
+			"Heat Wave",
+			"Poison Gas",
+			"Smog"
 		],
 		"imageId": 110,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 111,
@@ -3752,13 +4014,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Tail Whip",
+			"Smack Down",
+			"Bulldoze"
 		],
 		"imageId": 111,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 112,
@@ -3785,13 +4051,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Bulldoze",
+			"Hammer Arm",
+			"Smack Down",
 			"Tackle"
 		],
 		"imageId": 112,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 113,
@@ -3817,13 +4087,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charm",
+			"Copycat",
+			"Covet",
+			"Defense Curl"
 		],
 		"imageId": 113,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 114,
@@ -3849,13 +4123,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Bind",
+			"Stun Spore",
+			"Growth"
 		],
 		"imageId": 114,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 115,
@@ -3881,13 +4159,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Pound",
+			"Tail Whip",
+			"Growl",
+			"Fake Out"
 		],
 		"imageId": 115,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"name": "Horsea",
@@ -3946,13 +4228,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Smokescreen",
+			"Twister",
+			"Water Gun"
 		],
 		"imageId": 117,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Goldeen",
@@ -4011,13 +4297,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Peck",
+			"Supersonic",
+			"Tail Whip",
+			"Water Pulse"
 		],
 		"imageId": 119,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"name": "Staryu",
@@ -4077,13 +4367,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Brine",
+			"Confuse Ray",
+			"Cosmic Power",
+			"Harden"
 		],
 		"imageId": 121,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 122,
@@ -4110,13 +4404,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baton Pass",
+			"Copycat",
+			"Encore",
+			"Guard Swap"
 		],
 		"imageId": 122,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 123,
@@ -4177,13 +4475,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Copycat",
+			"Lick",
+			"Pound",
+			"Powder Snow"
 		],
 		"imageId": 124,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 125,
@@ -4209,13 +4511,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charge",
+			"Leer",
+			"Quick Attack",
+			"Thunder Shock"
 		],
 		"imageId": 125,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Magmar",
@@ -4274,13 +4580,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden",
+			"Vice Grip",
+			"Focus Energy",
+			"Bind"
 		],
 		"imageId": 127,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 128,
@@ -4306,13 +4616,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Tail Whip",
+			"Work Up",
+			"Payback"
 		],
 		"imageId": 128,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Magikarp",
@@ -4372,13 +4686,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"Flail",
+			"Leer",
+			"Splash"
 		],
 		"imageId": 130,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 131,
@@ -4438,13 +4756,14 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Transform"
 		],
 		"imageId": 132,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 133,
@@ -4540,13 +4859,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baton Pass",
+			"Bite",
+			"Charm",
+			"Copycat"
 		],
 		"imageId": 135,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 136,
@@ -4572,13 +4895,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baton Pass",
+			"Charm",
+			"Copycat",
+			"Covet"
 		],
 		"imageId": 136,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 137,
@@ -4604,13 +4931,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Conversion",
+			"Tackle",
+			"Recycle",
+			"Magnet Rise"
 		],
 		"imageId": 137,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 138,
@@ -4637,13 +4968,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bind",
+			"Withdraw",
+			"Rollout",
+			"Sand Attack"
 		],
 		"imageId": 138,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 139,
@@ -4670,13 +5005,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bind",
+			"Crunch",
+			"Rollout",
+			"Sand Attack"
 		],
 		"imageId": 139,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 140,
@@ -4703,13 +5042,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Harden",
+			"Scratch",
+			"Sand Attack"
 		],
 		"imageId": 140,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 141,
@@ -4736,13 +5079,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Feint",
+			"Harden",
+			"Night Slash"
 		],
 		"imageId": 141,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 142,
@@ -4769,13 +5116,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Ancient Power",
+			"Bite",
+			"Supersonic",
+			"Wing Attack"
 		],
 		"imageId": 142,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 143,
@@ -4969,13 +5320,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Thunder Wave",
+			"Twister",
+			"Wrap"
 		],
 		"imageId": 148,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 149,
@@ -5419,13 +5774,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Scratch",
+			"Defense Curl",
+			"Quick Attack",
+			"Fury Swipes"
 		],
 		"imageId": 161,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 162,
@@ -5451,13 +5810,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Agility",
+			"Coil",
+			"Defense Curl",
+			"Quick Attack"
 		],
 		"imageId": 162,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 263,
@@ -5518,13 +5881,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Echoed Voice",
+			"Growl",
+			"Peck",
+			"Sky Attack"
 		],
 		"imageId": 164,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 165,
@@ -5551,13 +5918,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Supersonic",
+			"Swift",
+			"Light Screen"
 		],
 		"imageId": 165,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 166,
@@ -5584,13 +5955,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Supersonic",
+			"Swift",
+			"Light Screen"
 		],
 		"imageId": 166,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 167,
@@ -5617,13 +5992,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Poison Sting",
+			"String Shot",
+			"Absorb",
+			"Infestation"
 		],
 		"imageId": 167,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 168,
@@ -5650,13 +6029,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Bug Bite",
+			"Fell Stinger",
+			"Focus Energy"
 		],
 		"imageId": 168,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 169,
@@ -5683,13 +6066,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Astonish",
+			"Cross Poison",
+			"Mean Look"
 		],
 		"imageId": 169,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 170,
@@ -5716,13 +6103,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Supersonic",
+			"Water Gun",
+			"Electro Ball",
+			"Thunder Wave"
 		],
 		"imageId": 170,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 171,
@@ -5749,13 +6140,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Eerie Impulse",
+			"Electro Ball",
+			"Spit Up",
+			"Stockpile"
 		],
 		"imageId": 171,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 172,
@@ -5817,13 +6212,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Copycat",
+			"Pound",
+			"Splash",
+			"Sing"
 		],
 		"imageId": 173,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 174,
@@ -5850,13 +6249,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Copycat",
+			"Pound",
+			"Sing",
+			"Defense Curl"
 		],
 		"imageId": 174,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 175,
@@ -5916,13 +6319,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Fairy Wind",
+			"Growl",
+			"Life Dew",
+			"Pound"
 		],
 		"imageId": 176,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 177,
@@ -5949,13 +6356,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Peck",
+			"Stored Power",
+			"Teleport"
 		],
 		"imageId": 177,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 178,
@@ -5982,13 +6393,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Air Slash",
+			"Leer",
+			"Peck",
+			"Stored Power"
 		],
 		"imageId": 178,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 179,
@@ -6014,13 +6429,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Tackle",
+			"Thunder Wave",
+			"Thunder Shock"
 		],
 		"imageId": 179,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 180,
@@ -6046,13 +6465,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Tackle",
+			"Thunder Shock",
+			"Thunder Wave"
 		],
 		"imageId": 180,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 181,
@@ -6078,13 +6501,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Dragon Pulse",
+			"Fire Punch",
+			"Growl",
+			"Magnetic Flux"
 		],
 		"imageId": 181,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 182,
@@ -6110,13 +6537,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Acid",
+			"Giga Drain",
+			"Grassy Terrain"
 		],
 		"imageId": 182,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 183,
@@ -6176,13 +6607,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Defense Curl",
+			"Helping Hand",
+			"Rollout",
 			"Tackle"
 		],
 		"imageId": 184,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 185,
@@ -6208,13 +6643,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Copycat",
+			"Fake Tears",
+			"Flail",
+			"Hammer Arm"
 		],
 		"imageId": 185,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 186,
@@ -6240,13 +6679,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Belly Drum",
+			"Bounce",
+			"Hydro Pump",
+			"Pound"
 		],
 		"imageId": 186,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 187,
@@ -6273,13 +6716,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Splash",
+			"Tackle",
+			"Tail Whip",
+			"Absorb"
 		],
 		"imageId": 187,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 188,
@@ -6306,13 +6753,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Splash",
+			"Synthesis",
+			"Tail Whip"
 		],
 		"imageId": 188,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 189,
@@ -6339,13 +6790,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Splash",
+			"Synthesis",
+			"Tail Whip"
 		],
 		"imageId": 189,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 190,
@@ -6371,13 +6826,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Scratch",
+			"Tail Whip",
+			"Sand Attack",
+			"Astonish"
 		],
 		"imageId": 190,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 191,
@@ -6403,13 +6862,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growth",
+			"Tackle",
+			"Absorb",
+			"Mega Drain"
 		],
 		"imageId": 191,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 192,
@@ -6435,13 +6898,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growth",
+			"Pound",
+			"Tackle",
+			"Ingrain"
 		],
 		"imageId": 192,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 193,
@@ -6468,13 +6935,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Quick Attack",
+			"Double Team",
+			"Air Cutter"
 		],
 		"imageId": 193,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 194,
@@ -6534,13 +7005,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Mud Shot",
+			"Rain Dance",
+			"Tail Whip",
+			"Water Gun"
 		],
 		"imageId": 195,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 196,
@@ -6566,13 +7041,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baton Pass",
+			"Bite",
+			"Charm",
+			"Confusion"
 		],
 		"imageId": 196,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 197,
@@ -6598,13 +7077,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baton Pass",
+			"Bite",
+			"Charm",
+			"Copycat"
 		],
 		"imageId": 197,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 198,
@@ -6631,13 +7114,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Peck",
+			"Gust",
+			"Haze"
 		],
 		"imageId": 198,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 199,
@@ -6664,13 +7151,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Curse",
+			"Growl",
+			"Nasty Plot",
+			"Power Gem"
 		],
 		"imageId": 199,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Misdreavus",
@@ -6729,13 +7220,14 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Hidden Power"
 		],
 		"imageId": 201,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 202,
@@ -6761,13 +7253,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Amnesia",
+			"Charm",
+			"Counter",
+			"Destiny Bond"
 		],
 		"imageId": 202,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 207,
@@ -6828,13 +7324,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Protect",
+			"Tackle",
+			"Self Destruct",
+			"Bug Bite"
 		],
 		"imageId": 204,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 205,
@@ -6861,13 +7361,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bug Bite",
+			"Heavy Slam",
+			"Magnet Rise",
+			"Protect"
 		],
 		"imageId": 205,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 206,
@@ -6893,13 +7397,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Defense Curl",
+			"Flail",
+			"Mud Slap",
+			"Rollout"
 		],
 		"imageId": 206,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10001,
@@ -6926,13 +7434,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Poison Sting",
+			"Sand Attack",
+			"Harden",
+			"Knock Off"
 		],
 		"imageId": 207,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 208,
@@ -6959,13 +7471,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bind",
+			"Crunch",
+			"Fire Fang",
+			"Harden"
 		],
 		"imageId": 208,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 209,
@@ -6991,13 +7507,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charm",
+			"Fire Fang",
+			"Growl",
+			"Ice Fang"
 		],
 		"imageId": 209,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 210,
@@ -7023,13 +7543,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charm",
+			"Fire Fang",
+			"Growl",
+			"Ice Fang"
 		],
 		"imageId": 210,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 211,
@@ -7056,13 +7580,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Poison Sting",
+			"Tackle",
+			"Harden",
+			"Water Gun"
 		],
 		"imageId": 211,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 212,
@@ -7089,13 +7617,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Agility",
+			"Air Slash",
+			"Bullet Punch",
+			"False Swipe"
 		],
 		"imageId": 212,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 213,
@@ -7122,13 +7654,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Withdraw",
+			"Wrap",
+			"Rollout",
+			"Struggle Bug"
 		],
 		"imageId": 213,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 214,
@@ -7155,13 +7691,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Arm Thrust",
+			"Leer",
+			"Tackle",
+			"Fury Attack"
 		],
 		"imageId": 214,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 218,
@@ -7220,13 +7760,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baby Doll Eyes",
+			"Covet",
+			"Fling",
+			"Lick"
 		],
 		"imageId": 216,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 217,
@@ -7252,13 +7796,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Covet",
+			"Fake Tears",
+			"Leer",
+			"Lick"
 		],
 		"imageId": 217,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 280,
@@ -7318,13 +7866,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Earth Power",
+			"Ember",
+			"Rock Throw",
+			"Shell Smash"
 		],
 		"imageId": 219,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10003,
@@ -7351,13 +7903,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Mud Slap",
+			"Tackle",
+			"Powder Snow",
+			"Flail"
 		],
 		"imageId": 220,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10004,
@@ -7384,13 +7940,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Ancient Power",
+			"Flail",
+			"Ice Fang",
+			"Mud Slap"
 		],
 		"imageId": 221,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10005,
@@ -7417,13 +7977,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden",
+			"Tackle",
+			"Water Gun",
+			"Aqua Ring"
 		],
 		"imageId": 222,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10006,
@@ -7449,13 +8013,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Helping Hand",
+			"Water Gun",
+			"Water Pulse",
+			"Focus Energy"
 		],
 		"imageId": 223,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10007,
@@ -7481,13 +8049,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Focus Energy",
+			"Gunk Shot",
+			"Helping Hand",
+			"Octazooka"
 		],
 		"imageId": 224,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10008,
@@ -7514,13 +8086,15 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Present",
+			"Drill Peck"
 		],
 		"imageId": 225,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10009,
@@ -7547,13 +8121,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bullet Seed",
+			"Psybeam",
+			"Roost",
+			"Supersonic"
 		],
 		"imageId": 226,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10010,
@@ -7580,13 +8158,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Peck",
+			"Sand Attack",
+			"Fury Attack"
 		],
 		"imageId": 227,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 281,
@@ -7647,13 +8229,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Ember",
+			"Howl",
+			"Leer",
+			"Nasty Plot"
 		],
 		"imageId": 229,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10012,
@@ -7680,13 +8266,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Smokescreen",
+			"Twister",
+			"Water Gun"
 		],
 		"imageId": 230,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10013,
@@ -7712,13 +8302,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Defense Curl",
+			"Growl",
+			"Tackle",
+			"Flail"
 		],
 		"imageId": 231,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10014,
@@ -7744,13 +8338,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bulldoze",
+			"Defense Curl",
+			"Fire Fang",
+			"Fury Attack"
 		],
 		"imageId": 232,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10015,
@@ -7776,13 +8374,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Conversion",
+			"Defense Curl",
+			"Magnet Rise",
+			"Recycle"
 		],
 		"imageId": 233,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10016,
@@ -7808,13 +8410,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Leer",
+			"Astonish",
+			"Hypnosis"
 		],
 		"imageId": 234,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10017,
@@ -7840,13 +8446,14 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Sketch"
 		],
 		"imageId": 235,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10018,
@@ -7872,13 +8479,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Fake Out",
+			"Focus Energy",
+			"Helping Hand",
 			"Tackle"
 		],
 		"imageId": 236,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10019,
@@ -7904,13 +8515,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Fake Out",
+			"Feint",
+			"Focus Energy",
+			"Helping Hand"
 		],
 		"imageId": 237,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10020,
@@ -7937,13 +8552,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Lick",
+			"Pound",
+			"Powder Snow",
+			"Copycat"
 		],
 		"imageId": 238,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10021,
@@ -7969,13 +8588,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Quick Attack",
+			"Thunder Shock",
+			"Charge"
 		],
 		"imageId": 239,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10022,
@@ -8001,13 +8624,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Smog",
+			"Ember",
+			"Smokescreen"
 		],
 		"imageId": 240,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10023,
@@ -8033,13 +8660,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Tackle",
+			"Rollout",
+			"Defense Curl"
 		],
 		"imageId": 241,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10024,
@@ -8065,13 +8696,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charm",
+			"Copycat",
+			"Covet",
+			"Defense Curl"
 		],
 		"imageId": 242,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10025,
@@ -8097,13 +8732,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charge",
+			"Extreme Speed",
+			"Leer",
+			"Quick Attack"
 		],
 		"imageId": 243,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10026,
@@ -8129,13 +8768,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Ember",
+			"Leer",
+			"Smokescreen",
+			"Stomp"
 		],
 		"imageId": 244,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10027,
@@ -8161,13 +8804,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Gust",
+			"Leer",
+			"Mist",
+			"Water Gun"
 		],
 		"imageId": 245,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Larvitar",
@@ -8228,13 +8875,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Iron Defense",
+			"Leer",
+			"Payback",
+			"Rock Throw"
 		],
 		"imageId": 247,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10029,
@@ -8261,13 +8912,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Dark Pulse",
+			"Fire Fang",
+			"Ice Fang",
+			"Iron Defense"
 		],
 		"imageId": 248,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Lugia",
@@ -8362,13 +9017,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Heal Bell",
+			"Magical Leaf",
+			"Baton Pass"
 		],
 		"imageId": 251,
 		"isLegendary": false,
 		"isMythical": true,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 266,
@@ -8427,13 +9086,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leafage",
+			"Leer",
+			"Pound",
+			"Quick Attack"
 		],
 		"imageId": 253,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10032,
@@ -8459,13 +9122,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leaf Blade",
+			"Leafage",
+			"Leer",
+			"Pound"
 		],
 		"imageId": 254,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 278,
@@ -8525,13 +9192,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Double Kick",
+			"Ember",
+			"Growl",
+			"Quick Attack"
 		],
 		"imageId": 256,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10034,
@@ -8558,13 +9229,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Blaze Kick",
+			"Double Kick",
+			"Growl",
+			"Quick Attack"
 		],
 		"imageId": 257,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 268,
@@ -8624,13 +9299,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Mud Shot",
+			"Tackle",
+			"Water Gun"
 		],
 		"imageId": 259,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10036,
@@ -8657,13 +9336,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Mud Shot",
+			"Tackle",
+			"Water Gun"
 		],
 		"imageId": 260,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10037,
@@ -8689,13 +9372,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Howl",
+			"Sand Attack",
+			"Bite"
 		],
 		"imageId": 261,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10038,
@@ -8721,13 +9408,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"Crunch",
+			"Fire Fang",
+			"Ice Fang"
 		],
 		"imageId": 262,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10039,
@@ -8753,13 +9444,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Tackle",
+			"Sand Attack",
+			"Tail Whip"
 		],
 		"imageId": 263,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10040,
@@ -8785,13 +9480,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baby Doll Eyes",
+			"Growl",
+			"Pin Missile",
+			"Sand Attack"
 		],
 		"imageId": 264,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10041,
@@ -8817,13 +9516,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"String Shot",
+			"Tackle",
+			"Poison Sting",
+			"Bug Bite"
 		],
 		"imageId": 265,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 10042,
@@ -8849,13 +9552,14 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden"
 		],
 		"imageId": 266,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 10043,
@@ -8882,13 +9586,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Gust",
+			"Absorb",
+			"Stun Spore",
+			"Morning Sun"
 		],
 		"imageId": 267,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 10044,
@@ -8914,13 +9622,14 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden"
 		],
 		"imageId": 268,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 10045,
@@ -8947,13 +9656,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Gust",
+			"Confusion",
+			"Poison Powder",
+			"Moonlight"
 		],
 		"imageId": 269,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 269,
@@ -9015,13 +9728,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Astonish",
+			"Fake Out",
+			"Flail"
 		],
 		"imageId": 271,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10047,
@@ -9048,13 +9765,16 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bubble Beam",
+			"Fake Out",
+			"Rain Dance"
 		],
 		"imageId": 272,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 264,
@@ -9114,13 +9834,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Air Cutter",
+			"Astonish",
+			"Explosion"
 		],
 		"imageId": 274,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10049,
@@ -9147,13 +9871,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Air Cutter",
+			"Hurricane",
+			"Leaf Blade",
+			"Payback"
 		],
 		"imageId": 275,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10050,
@@ -9180,13 +9908,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Peck",
+			"Focus Energy",
+			"Quick Attack"
 		],
 		"imageId": 276,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 10051,
@@ -9213,13 +9945,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Peck",
+			"Pluck",
+			"Focus Energy"
 		],
 		"imageId": 277,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 270,
@@ -9280,13 +10016,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Agility",
+			"Air Slash",
+			"Growl",
+			"Protect"
 		],
 		"imageId": 279,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10053,
@@ -9313,13 +10053,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Disarming Voice",
+			"Growl",
+			"Double Team",
+			"Confusion"
 		],
 		"imageId": 280,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10054,
@@ -9346,13 +10090,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Disarming Voice",
+			"Double Team",
+			"Growl"
 		],
 		"imageId": 281,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10055,
@@ -9379,13 +10127,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charm",
+			"Confusion",
+			"Dazzling Gleam",
+			"Disarming Voice"
 		],
 		"imageId": 282,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10056,
@@ -9412,13 +10164,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Water Gun",
+			"Quick Attack",
+			"Sweet Scent",
+			"Soak"
 		],
 		"imageId": 283,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10057,
@@ -9445,13 +10201,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Quick Attack",
+			"Soak",
+			"Sweet Scent",
+			"Water Gun"
 		],
 		"imageId": 284,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 265,
@@ -9511,13 +10271,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Growth",
+			"Leech Seed",
+			"Mach Punch"
 		],
 		"imageId": 286,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10059,
@@ -9543,13 +10307,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Scratch",
+			"Yawn",
+			"Encore",
+			"Slack Off"
 		],
 		"imageId": 287,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10060,
@@ -9575,13 +10343,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Encore",
+			"Focus Energy",
+			"Scratch",
+			"Uproar"
 		],
 		"imageId": 288,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10061,
@@ -9607,13 +10379,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Encore",
+			"Scratch",
+			"Slack Off",
+			"Sucker Punch"
 		],
 		"imageId": 289,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10062,
@@ -9640,13 +10416,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Sand Attack",
+			"Scratch",
+			"Harden",
+			"False Swipe"
 		],
 		"imageId": 290,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10063,
@@ -9673,13 +10453,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Aerial Ace",
+			"Baton Pass",
+			"Dig",
+			"Double Team"
 		],
 		"imageId": 291,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10064,
@@ -9706,13 +10490,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Dig",
+			"False Swipe",
+			"Grudge",
+			"Harden"
 		],
 		"imageId": 292,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10065,
@@ -9738,13 +10526,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Pound",
+			"Echoed Voice",
+			"Howl"
 		],
 		"imageId": 293,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10066,
@@ -9770,13 +10562,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Bite",
+			"Echoed Voice",
+			"Howl"
 		],
 		"imageId": 294,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10067,
@@ -9802,13 +10598,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Bite",
+			"Crunch",
+			"Echoed Voice"
 		],
 		"imageId": 295,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 10068,
@@ -9834,13 +10634,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Focus Energy",
+			"Tackle",
+			"Sand Attack",
+			"Arm Thrust"
 		],
 		"imageId": 296,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10069,
@@ -9866,13 +10670,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Arm Thrust",
+			"Brine",
+			"Focus Energy",
+			"Sand Attack"
 		],
 		"imageId": 297,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 10070,
@@ -9899,13 +10707,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Splash",
+			"Tail Whip",
+			"Water Gun",
+			"Helping Hand"
 		],
 		"imageId": 298,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 274,
@@ -9964,13 +10776,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Fake Out",
+			"Growl",
+			"Tackle",
+			"Tail Whip"
 		],
 		"imageId": 300,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 10072,
@@ -9996,13 +10812,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Attract",
+			"Double Slap",
+			"Fake Out",
+			"Sing"
 		],
 		"imageId": 301,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"name": "Sableye",
@@ -10132,13 +10952,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Harden",
+			"Metal Claw",
+			"Rock Tomb",
 			"Tackle"
 		],
 		"imageId": 305,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 306,
@@ -10165,13 +10989,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Harden",
+			"Metal Claw",
+			"Rock Tomb",
 			"Tackle"
 		],
 		"imageId": 306,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 307,
@@ -10198,13 +11026,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Work Up",
+			"Detect",
+			"Endure"
 		],
 		"imageId": 307,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 308,
@@ -10231,13 +11063,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Detect",
+			"Fire Punch",
+			"Ice Punch"
 		],
 		"imageId": 308,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 309,
@@ -10263,13 +11099,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Thunder Wave",
+			"Leer",
+			"Howl"
 		],
 		"imageId": 309,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 310,
@@ -10295,13 +11135,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Fire Fang",
+			"Howl",
+			"Leer",
 			"Tackle"
 		],
 		"imageId": 310,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 311,
@@ -10327,13 +11171,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Play Nice",
+			"Quick Attack",
+			"Thunder Wave"
 		],
 		"imageId": 311,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 312,
@@ -10359,13 +11207,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Play Nice",
+			"Quick Attack",
+			"Thunder Wave"
 		],
 		"imageId": 312,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 313,
@@ -10391,13 +11243,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Double Team",
+			"Confuse Ray",
+			"Quick Attack"
 		],
 		"imageId": 313,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 314,
@@ -10423,13 +11279,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Play Nice",
+			"Tackle",
+			"Sweet Scent",
+			"Charm"
 		],
 		"imageId": 314,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 315,
@@ -10456,13 +11316,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Growth",
+			"Poison Sting",
+			"Stun Spore"
 		],
 		"imageId": 315,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 316,
@@ -10488,13 +11352,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Pound",
+			"Yawn",
+			"Poison Gas",
+			"Sludge"
 		],
 		"imageId": 316,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 317,
@@ -10520,13 +11388,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Body Slam",
+			"Gunk Shot",
+			"Poison Gas",
+			"Pound"
 		],
 		"imageId": 317,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 318,
@@ -10553,13 +11425,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Aqua Jet",
+			"Leer",
+			"Poison Fang",
+			"Focus Energy"
 		],
 		"imageId": 318,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 319,
@@ -10586,13 +11462,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Aqua Jet",
+			"Focus Energy",
+			"Leer",
+			"Night Slash"
 		],
 		"imageId": 319,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 320,
@@ -10618,13 +11498,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Splash",
+			"Growl",
+			"Astonish",
+			"Water Gun"
 		],
 		"imageId": 320,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 321,
@@ -10650,13 +11534,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Growl",
+			"Noble Roar",
+			"Soak"
 		],
 		"imageId": 321,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 279,
@@ -10717,13 +11605,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Ember",
+			"Eruption",
+			"Fissure",
+			"Focus Energy"
 		],
 		"imageId": 323,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 324,
@@ -10749,13 +11641,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Ember",
+			"Smog",
+			"Withdraw",
+			"Rapid Spin"
 		],
 		"imageId": 324,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 325,
@@ -10781,13 +11677,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Splash",
+			"Confusion",
+			"Growl",
+			"Psybeam"
 		],
 		"imageId": 325,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 326,
@@ -10813,13 +11713,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Belch",
+			"Confusion",
+			"Psybeam",
+			"Splash"
 		],
 		"imageId": 326,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 327,
@@ -10845,13 +11749,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Copycat",
+			"Feint Attack",
+			"Psybeam"
 		],
 		"imageId": 327,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"name": "Trapinch",
@@ -10911,13 +11819,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"Dig",
+			"Dragon Breath",
+			"Sand Attack"
 		],
 		"imageId": 329,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 330,
@@ -10944,13 +11856,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bulldoze",
+			"Dragon Breath",
+			"Dragon Claw",
+			"Sand Attack"
 		],
 		"imageId": 330,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Cacnea",
@@ -11010,13 +11926,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Destiny Bond",
+			"Growth",
+			"Leer"
 		],
 		"imageId": 332,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 333,
@@ -11043,13 +11963,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Peck",
+			"Disarming Voice",
+			"Mist"
 		],
 		"imageId": 333,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 334,
@@ -11076,13 +12000,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Disarming Voice",
+			"Dragon Pulse",
+			"Growl",
+			"Mist"
 		],
 		"imageId": 334,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 335,
@@ -11108,13 +12036,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Scratch",
+			"Quick Attack",
+			"Fury Cutter"
 		],
 		"imageId": 335,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 336,
@@ -11140,13 +12072,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Swagger",
+			"Wrap",
+			"Bite",
+			"Lick"
 		],
 		"imageId": 336,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 337,
@@ -11173,13 +12109,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Harden",
+			"Moonblast",
+			"Moonlight"
 		],
 		"imageId": 337,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 338,
@@ -11206,13 +12146,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Flare Blitz",
+			"Harden",
+			"Morning Sun"
 		],
 		"imageId": 338,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 339,
@@ -11239,13 +12183,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Mud Slap",
+			"Water Gun",
+			"Rest",
+			"Snore"
 		],
 		"imageId": 339,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 340,
@@ -11272,13 +12220,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Belch",
+			"Mud Slap",
+			"Rest",
+			"Snore"
 		],
 		"imageId": 340,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 341,
@@ -11304,13 +12256,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden",
+			"Water Gun",
+			"Leer",
+			"Taunt"
 		],
 		"imageId": 341,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 342,
@@ -11337,13 +12293,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden",
+			"Leer",
+			"Swift",
+			"Taunt"
 		],
 		"imageId": 342,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 288,
@@ -11404,13 +12364,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Harden",
+			"Hyper Beam",
+			"Mud Slap"
 		],
 		"imageId": 344,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 345,
@@ -11437,13 +12401,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Wrap",
+			"Acid",
+			"Confuse Ray"
 		],
 		"imageId": 345,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 346,
@@ -11470,13 +12438,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Acid",
+			"Astonish",
+			"Confuse Ray",
+			"Leech Seed"
 		],
 		"imageId": 346,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 347,
@@ -11503,13 +12475,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Fury Cutter",
+			"Harden",
+			"Water Gun",
+			"Smack Down"
 		],
 		"imageId": 347,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 348,
@@ -11536,13 +12512,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Fury Cutter",
+			"Harden",
+			"Smack Down",
+			"Water Gun"
 		],
 		"imageId": 348,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 271,
@@ -11602,13 +12582,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Flail",
+			"Splash",
+			"Tackle",
+			"Water Gun"
 		],
 		"imageId": 350,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 351,
@@ -11634,13 +12618,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Ember",
+			"Powder Snow",
+			"Water Gun"
 		],
 		"imageId": 351,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 352,
@@ -11666,13 +12654,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Lick",
+			"Scratch",
+			"Tail Whip"
 		],
 		"imageId": 352,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 293,
@@ -11731,13 +12723,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Knock Off",
+			"Night Shade",
+			"Screech",
+			"Spite"
 		],
 		"imageId": 354,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Duskull",
@@ -11796,13 +12792,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Bind",
+			"Disable",
+			"Fire Punch"
 		],
 		"imageId": 356,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 357,
@@ -11829,13 +12829,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growth",
+			"Gust",
+			"Leaf Storm",
+			"Leer"
 		],
 		"imageId": 357,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 358,
@@ -11861,13 +12865,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Confusion",
+			"Growl",
+			"Healing Wish"
 		],
 		"imageId": 358,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 285,
@@ -11926,13 +12934,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Amnesia",
+			"Charm",
+			"Counter",
+			"Destiny Bond"
 		],
 		"imageId": 360,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 361,
@@ -11958,13 +12970,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Headbutt",
+			"Powder Snow",
+			"Leer"
 		],
 		"imageId": 361,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 362,
@@ -11990,13 +13006,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Double Team",
+			"Freeze Dry",
+			"Headbutt"
 		],
 		"imageId": 362,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 363,
@@ -12023,13 +13043,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Defense Curl",
+			"Rollout",
+			"Growl",
+			"Water Gun"
 		],
 		"imageId": 363,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 364,
@@ -12056,13 +13080,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Defense Curl",
+			"Growl",
+			"Rollout",
+			"Swagger"
 		],
 		"imageId": 364,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 365,
@@ -12089,13 +13117,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Crunch",
+			"Defense Curl",
+			"Growl",
+			"Ice Fang"
 		],
 		"imageId": 365,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 366,
@@ -12121,13 +13153,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Clamp",
+			"Iron Defense",
+			"Water Gun",
+			"Whirlpool"
 		],
 		"imageId": 366,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 367,
@@ -12153,13 +13189,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"Whirlpool",
+			"Screech",
+			"Scary Face"
 		],
 		"imageId": 367,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 368,
@@ -12185,13 +13225,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Confusion",
+			"Whirlpool",
+			"Water Sport",
+			"Agility"
 		],
 		"imageId": 368,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 369,
@@ -12218,13 +13262,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden",
+			"Tackle",
+			"Water Gun",
+			"Ancient Power"
 		],
 		"imageId": 369,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 370,
@@ -12250,13 +13298,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charm",
+			"Tackle",
+			"Water Gun",
+			"Agility"
 		],
 		"imageId": 370,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 286,
@@ -12315,13 +13367,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"Dragon Breath",
+			"Ember",
+			"Leer"
 		],
 		"imageId": 372,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 373,
@@ -12348,13 +13404,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"Dragon Breath",
+			"Dragon Tail",
+			"Dual Wingbeat"
 		],
 		"imageId": 373,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 374,
@@ -12387,7 +13447,8 @@
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 375,
@@ -12414,13 +13475,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bullet Punch",
+			"Confusion",
+			"Hone Claws",
+			"Metal Claw"
 		],
 		"imageId": 375,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 376,
@@ -12447,13 +13512,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bullet Punch",
+			"Confusion",
+			"Hammer Arm",
+			"Metal Claw"
 		],
 		"imageId": 376,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 377,
@@ -12479,13 +13548,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charge Beam",
+			"Rock Throw",
+			"Bulldoze",
+			"Ancient Power"
 		],
 		"imageId": 377,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 378,
@@ -12511,13 +13584,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charge Beam",
+			"Icy Wind",
+			"Bulldoze",
+			"Ancient Power"
 		],
 		"imageId": 378,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 379,
@@ -12543,13 +13620,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charge Beam",
+			"Metal Claw",
+			"Bulldoze",
+			"Ancient Power"
 		],
 		"imageId": 379,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 299,
@@ -12779,13 +13860,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Wrap",
+			"Night Shade",
+			"Teleport"
 		],
 		"imageId": 386,
 		"isLegendary": false,
 		"isMythical": true,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 267,
@@ -12844,13 +13929,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Tackle",
+			"Withdraw",
+			"Razor Leaf"
 		],
 		"imageId": 388,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 389,
@@ -12877,13 +13966,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Absorb",
+			"Earthquake",
+			"Razor Leaf",
 			"Tackle"
 		],
 		"imageId": 389,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 390,
@@ -12909,13 +14002,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Scratch",
+			"Ember",
+			"Taunt"
 		],
 		"imageId": 390,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 391,
@@ -12942,13 +14039,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Ember",
+			"Leer",
+			"Mach Punch",
+			"Scratch"
 		],
 		"imageId": 391,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 392,
@@ -12975,13 +14076,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Close Combat",
+			"Ember",
+			"Leer",
+			"Mach Punch"
 		],
 		"imageId": 392,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 393,
@@ -13007,13 +14112,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Pound",
+			"Growl",
+			"Water Gun",
+			"Charm"
 		],
 		"imageId": 393,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 394,
@@ -13039,13 +14148,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Metal Claw",
+			"Tackle",
+			"Water Gun"
 		],
 		"imageId": 394,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 395,
@@ -13072,13 +14185,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Aqua Jet",
+			"Growl",
+			"Metal Claw",
 			"Tackle"
 		],
 		"imageId": 395,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 396,
@@ -13105,13 +14222,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Tackle",
+			"Quick Attack",
+			"Wing Attack"
 		],
 		"imageId": 396,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 397,
@@ -13138,13 +14259,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Quick Attack",
+			"Tackle",
+			"Wing Attack"
 		],
 		"imageId": 397,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 398,
@@ -13171,13 +14296,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Close Combat",
+			"Growl",
+			"Quick Attack",
 			"Tackle"
 		],
 		"imageId": 398,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 399,
@@ -13203,13 +14332,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Growl",
+			"Tackle",
+			"Defense Curl",
+			"Rollout"
 		],
 		"imageId": 399,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 400,
@@ -13236,13 +14369,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Aqua Jet",
+			"Growl",
+			"Rototiller",
 			"Tackle"
 		],
 		"imageId": 400,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "ultra-sun-ultra-moon"
 	},
 	{
 		"id": 406,
@@ -13269,13 +14406,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Growth",
+			"Stun Spore",
+			"Worry Seed"
 		],
 		"imageId": 406,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 407,
@@ -13302,13 +14443,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Aromatherapy",
+			"Giga Drain",
+			"Grassy Terrain"
 		],
 		"imageId": 407,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 272,
@@ -13367,13 +14512,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Crunch",
+			"Growl",
+			"Ice Fang",
+			"Quick Attack"
 		],
 		"imageId": 419,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 424,
@@ -13399,13 +14548,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Sand Attack",
+			"Scratch",
+			"Tail Whip"
 		],
 		"imageId": 424,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 429,
@@ -13431,13 +14584,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Growl",
+			"Magical Leaf",
+			"Mystical Fire"
 		],
 		"imageId": 429,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 430,
@@ -13464,13 +14621,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Haze",
+			"Night Slash",
+			"Quash"
 		],
 		"imageId": 430,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 433,
@@ -13496,13 +14657,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Wrap",
+			"Growl",
+			"Astonish",
+			"Confusion"
 		],
 		"imageId": 433,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 438,
@@ -13528,13 +14693,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Copycat",
+			"Fake Tears",
+			"Flail",
+			"Rock Throw"
 		],
 		"imageId": 438,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 439,
@@ -13561,13 +14730,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Copycat",
+			"Pound",
+			"Baton Pass",
+			"Encore"
 		],
 		"imageId": 439,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 440,
@@ -13593,13 +14766,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Copycat",
+			"Pound",
+			"Defense Curl",
+			"Sweet Kiss"
 		],
 		"imageId": 440,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 297,
@@ -13659,13 +14836,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Lick",
+			"Tackle",
+			"Defense Curl",
+			"Recycle"
 		],
 		"imageId": 446,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 284,
@@ -13725,13 +14906,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Aura Sphere",
+			"Copycat",
+			"Detect",
+			"Feint"
 		],
 		"imageId": 448,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 289,
@@ -13790,13 +14975,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"Fire Fang",
+			"Ice Fang",
+			"Sand Attack"
 		],
 		"imageId": 450,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 458,
@@ -13823,13 +15012,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Tackle",
+			"Water Gun",
+			"Supersonic",
+			"Wing Attack"
 		],
 		"imageId": 458,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 461,
@@ -13856,13 +15049,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Agility",
+			"Assurance",
+			"Beat Up",
+			"Ice Shard"
 		],
 		"imageId": 461,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 462,
@@ -13889,13 +15086,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Electric Terrain",
+			"Magnetic Flux",
+			"Mirror Coat",
+			"Supersonic"
 		],
 		"imageId": 462,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 463,
@@ -13921,13 +15122,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Defense Curl",
+			"Lick",
+			"Rollout",
+			"Supersonic"
 		],
 		"imageId": 463,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 464,
@@ -13954,13 +15159,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Bulldoze",
+			"Hammer Arm",
+			"Smack Down",
 			"Tackle"
 		],
 		"imageId": 464,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 465,
@@ -13986,13 +15195,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Absorb",
+			"Bind",
+			"Block",
+			"Growth"
 		],
 		"imageId": 465,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 466,
@@ -14018,13 +15231,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Charge",
+			"Leer",
+			"Quick Attack",
+			"Thunder Shock"
 		],
 		"imageId": 466,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 467,
@@ -14050,13 +15267,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Ember",
+			"Leer",
+			"Smog",
+			"Smokescreen"
 		],
 		"imageId": 467,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 468,
@@ -14083,13 +15304,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"After You",
+			"Air Slash",
+			"Ancient Power",
+			"Aura Sphere"
 		],
 		"imageId": 468,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 469,
@@ -14116,13 +15341,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Air Slash",
+			"Bug Buzz",
+			"Double Team",
+			"Night Slash"
 		],
 		"imageId": 469,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 470,
@@ -14148,13 +15377,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baton Pass",
+			"Bite",
+			"Charm",
+			"Copycat"
 		],
 		"imageId": 470,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 471,
@@ -14180,13 +15413,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baton Pass",
+			"Charm",
+			"Copycat",
+			"Covet"
 		],
 		"imageId": 471,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 472,
@@ -14213,13 +15450,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Fire Fang",
+			"Harden",
+			"Ice Fang",
+			"Poison Jab"
 		],
 		"imageId": 472,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 473,
@@ -14246,13 +15487,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Ancient Power",
+			"Double Hit",
+			"Flail",
+			"Ice Fang"
 		],
 		"imageId": 473,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 474,
@@ -14278,13 +15523,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Conversion",
+			"Defense Curl",
+			"Magnet Rise",
+			"Nasty Plot"
 		],
 		"imageId": 474,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 475,
@@ -14311,13 +15560,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Aqua Cutter",
+			"Calm Mind",
+			"Charm",
+			"Confusion"
 		],
 		"imageId": 475,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 476,
@@ -14344,13 +15597,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Block",
+			"Gravity",
+			"Iron Defense",
+			"Magnet Rise"
 		],
 		"imageId": 476,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 477,
@@ -14376,13 +15633,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Bind",
+			"Disable",
+			"Fire Punch"
 		],
 		"imageId": 477,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 478,
@@ -14409,13 +15670,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Bite",
+			"Crunch",
+			"Destiny Bond"
 		],
 		"imageId": 478,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Dialga",
@@ -14676,13 +15941,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden",
+			"Power Gem",
+			"Sand Attack",
+			"Stealth Rock"
 		],
 		"imageId": 525,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 526,
@@ -14708,13 +15977,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Harden",
+			"Power Gem",
+			"Sand Attack",
+			"Stealth Rock"
 		],
 		"imageId": 526,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 276,
@@ -14774,13 +16047,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Hone Claws",
+			"Horn Drill",
+			"Mud Slap",
+			"Rapid Spin"
 		],
 		"imageId": 530,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Sandile",
@@ -14841,13 +16118,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Hone Claws",
+			"Leer",
+			"Power Trip",
+			"Sand Attack"
 		],
 		"imageId": 552,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 553,
@@ -14874,13 +16155,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Hone Claws",
+			"Leer",
+			"Power Trip",
+			"Sand Attack"
 		],
 		"imageId": 553,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 290,
@@ -14939,13 +16224,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
+			"Bite",
+			"Ember",
+			"Hammer Arm",
 			"Tackle"
 		],
 		"imageId": 555,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 291,
@@ -15006,13 +16295,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Headbutt",
+			"Leer",
+			"Low Kick",
+			"Payback"
 		],
 		"imageId": 560,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 296,
@@ -15071,13 +16364,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Haze",
+			"Night Shade",
+			"Protect"
 		],
 		"imageId": 563,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 294,
@@ -15138,13 +16435,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Ember",
+			"Minimize",
+			"Smog"
 		],
 		"imageId": 608,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 609,
@@ -15171,13 +16472,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Confuse Ray",
+			"Curse",
+			"Ember"
 		],
 		"imageId": 609,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 287,
@@ -15236,13 +16541,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"False Swipe",
+			"Leer",
+			"Scratch"
 		],
 		"imageId": 611,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 612,
@@ -15268,13 +16577,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Bite",
+			"False Swipe",
+			"Leer",
+			"Scratch"
 		],
 		"imageId": 612,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Reshiram",
@@ -15368,13 +16681,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baton Pass",
+			"Bite",
+			"Charm",
+			"Copycat"
 		],
 		"imageId": 700,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 295,
@@ -15435,13 +16752,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Branch Poke",
+			"Leech Seed",
+			"Shadow Claw"
 		],
 		"imageId": 709,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"name": "Xerneas",
@@ -15570,13 +16891,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Disable",
+			"Ember",
+			"Encore",
+			"Endeavor"
 		],
 		"imageId": 758,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 283,
@@ -15635,13 +16960,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Hone Claws",
+			"Leer",
+			"Peck",
+			"Power Trip"
 		],
 		"imageId": 822,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 823,
@@ -15668,13 +16997,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Hone Claws",
+			"Iron Defense",
+			"Leer",
+			"Metal Sound"
 		],
 		"imageId": 823,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 292,
@@ -15733,13 +17066,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Brutal Swing",
+			"Minimize",
+			"Sand Attack",
+			"Wrap"
 		],
 		"imageId": 844,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 862,
@@ -15766,13 +17103,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Baby Doll Eyes",
+			"Cross Chop",
+			"Leer",
+			"Lick"
 		],
 		"imageId": 862,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 863,
@@ -15798,13 +17139,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Fake Out",
+			"Growl",
+			"Hone Claws",
+			"Iron Defense"
 		],
 		"imageId": 863,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 864,
@@ -15830,13 +17175,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Disable",
+			"Harden",
+			"Perish Song"
 		],
 		"imageId": 864,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 865,
@@ -15862,13 +17211,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"First Impression",
+			"Fury Cutter",
+			"Iron Defense",
+			"Leer"
 		],
 		"imageId": 865,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 866,
@@ -15895,13 +17248,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"After You",
+			"Baton Pass",
+			"Block",
+			"Copycat"
 		],
 		"imageId": 866,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 867,
@@ -15928,13 +17285,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Haze",
+			"Night Shade",
+			"Protect"
 		],
 		"imageId": 867,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "sword-shield"
 	},
 	{
 		"id": 899,
@@ -15961,13 +17322,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Psyshield Bash",
+			"Tackle",
+			"Leer",
+			"Astonish"
 		],
 		"imageId": 899,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 900,
@@ -15994,13 +17359,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Leer",
+			"Quick Attack",
+			"Stone Axe",
+			"Fury Cutter"
 		],
 		"imageId": 900,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 901,
@@ -16027,13 +17396,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Covet",
+			"Fake Tears",
+			"Headlong Rush",
+			"Leer"
 		],
 		"imageId": 901,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 903,
@@ -16060,13 +17433,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Dire Claw",
+			"Fling",
+			"Leer",
+			"Rock Smash"
 		],
 		"imageId": 903,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 904,
@@ -16093,13 +17470,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Poison Sting",
+			"Tackle",
+			"Harden",
+			"Bite"
 		],
 		"imageId": 904,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 979,
@@ -16126,13 +17507,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Counter",
+			"Fling",
+			"Focus Energy",
+			"Leer"
 		],
 		"imageId": 979,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 980,
@@ -16159,13 +17544,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Amnesia",
+			"Poison Sting",
+			"Tail Whip",
+			"Toxic Spikes"
 		],
 		"imageId": 980,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 981,
@@ -16192,13 +17581,17 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Astonish",
+			"Growl",
+			"Guard Swap",
+			"Power Swap"
 		],
 		"imageId": 981,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	},
 	{
 		"id": 982,
@@ -16224,12 +17617,16 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Tackle"
+			"Defense Curl",
+			"Flail",
+			"Mud Slap",
+			"Rollout"
 		],
 		"imageId": 982,
 		"isLegendary": false,
 		"isMythical": false,
 		"catalogOnly": true,
-		"movesetPolicy": "temporary-default"
+		"movesetPolicy": "canonical-level-up",
+		"learnsetVersionGroup": "scarlet-violet"
 	}
 ]

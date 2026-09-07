@@ -126,6 +126,7 @@ function createRewardEngine({
       status: pokemon.status || "none",
       friendship: pokemon.friendship ?? targetTemplate.baseHappiness ?? 70,
       gender: pokemon.gender,
+      ability: pokemon.ability,
       pendingMove: pokemon.pendingMove || undefined,
     });
     [

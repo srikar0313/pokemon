@@ -756,6 +756,33 @@ function renderMoveDetails(pokemon) {
   `;
 }
 
+function formatAbilityName(ability) {
+  const name = typeof ability === "string" ? ability : ability?.name;
+  return String(name || "Unknown")
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function renderLearnsetDetails(pokemon) {
+  const learnset = pokemon.learnset || [];
+  if (!learnset.length) return "";
+  return `
+    <details class="learnset-panel">
+      <summary>Level-up moves (${learnset.length})</summary>
+      <div class="learnset-list">
+        ${learnset
+          .map(
+            (entry) => `<span><strong>Lv${entry.level}</strong> ${escapeHtml(typeof entry.move === "string" ? entry.move : entry.move?.name)}</span>`,
+          )
+          .join("")}
+      </div>
+      ${pokemon.learnsetVersionGroup ? `<small>Source: ${escapeHtml(pokemon.learnsetVersionGroup)}</small>` : ""}
+    </details>
+  `;
+}
+
 function renderPokemonStatBars(pokemon) {
   const stats = [
     ["HP", pokemon.maxHp || pokemon.hp || 1],
@@ -923,6 +950,8 @@ function renderPokemonDetailCard(
             <p>${renderIcon("heart", "HP")} HP: ${pokemon.currentHp}/${pokemon.maxHp}</p>
             <p>Status: ${fainted ? renderStatus("fainted") : renderStatus(pokemon.status)}</p>
             <p>Friendship: ${pokemon.friendship ?? 70}/255 | ${escapeHtml(formatPokemonGender(pokemon.gender))}</p>
+            <p>Ability: <strong>${escapeHtml(formatAbilityName(pokemon.ability))}</strong></p>
+            ${pokemon.form ? `<p>Form: <strong>${escapeHtml(pokemon.form.name || pokemon.form.id)}</strong></p>` : ""}
             ${renderXpBar(pokemon)}
           </div>
         </div>
@@ -931,6 +960,7 @@ function renderPokemonDetailCard(
           ${renderEvolutionPanel(pokemon, section, index)}
         </div>
         ${renderMoveDetails(pokemon)}
+        ${renderLearnsetDetails(pokemon)}
         ${renderPendingMovePanel(pokemon, section, index)}
         <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(pokemon.currentHp, pokemon.maxHp)}%"></div></div>
       </div>
@@ -3042,6 +3072,8 @@ function renderPokedexCard(entry) {
               <p>Habitats: ${habitats}</p>
               <p>Availability: ${times}</p>
               <p>Base catch rate: ${entry.baseCatchRate ?? "Unknown"}</p>
+              <p>Abilities: ${escapeHtml((entry.abilities || []).map(formatAbilityName).join(", ") || "Unknown")}</p>
+              <p>Level-up moves: ${(entry.learnset || []).length}${entry.learnsetVersionGroup ? ` (${escapeHtml(entry.learnsetVersionGroup)})` : ""}</p>
               ${renderEvolutionChain(entry, true)}
             `
             : `

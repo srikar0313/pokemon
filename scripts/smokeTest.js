@@ -8,6 +8,7 @@ const { createGameState } = require("../backend/gameState");
 const { createRewardEngine } = require("../backend/rewardEngine");
 const { createEvolutionEngine } = require("../backend/evolutionEngine");
 const { createEncounterEngine } = require("../backend/encounterEngine");
+const { createBattleEngine } = require("../backend/battleEngine");
 const variantUtils = require("../frontend/variantUtils");
 
 const rootDir = path.join(__dirname, "..");
@@ -126,6 +127,7 @@ function main() {
     getTimeOfDay: () => evolutionTimeOfDay,
     updateAchievements: () => {},
   });
+  const battleEngine = createBattleEngine({ getRandomInt: () => 100 });
   const levelPokemonTo = (startingPokemon, targetLevel) => {
     let current = startingPokemon;
     let result = null;
@@ -177,6 +179,78 @@ function main() {
   });
 
   const mappings = speciesMap.species || [];
+  assert(
+    gameData.canonicalPokemon.pokemon.filter((entry) => entry.learnset?.length)
+      .length === pokemon.length,
+    "not every runtime species has a canonical level-up learnset",
+  );
+  assert(
+    gameData.canonicalPokemon.pokemon.filter((entry) =>
+      entry.abilities?.some((ability) => !ability.hidden),
+    ).length === pokemon.length,
+    "not every runtime species has a canonical normal ability",
+  );
+  ["Bulbasaur", "Pikachu", "Treecko", "Riolu", "Salandit"].forEach(
+    (name) => {
+      const template = pokemonUtils.getPokemonTemplateByName(name);
+      assert(
+        template.learnset?.length > 1 && template.learnsetVersionGroup,
+        `${name} lacks a usable canonical learnset`,
+      );
+    },
+  );
+  const catalogOnlyTackleDefaults = pokemon.filter(
+    (entry) =>
+      entry.catalogOnly &&
+      entry.learnset?.length > 1 &&
+      entry.moves?.length === 1 &&
+      (entry.moves[0].name || entry.moves[0]) === "Tackle",
+  );
+  assert(
+    catalogOnlyTackleDefaults.length === 0,
+    `catalog species still use Tackle-only defaults: ${catalogOnlyTackleDefaults
+      .slice(0, 5)
+      .map((entry) => entry.name)
+      .join(", ")}`,
+  );
+  const ownedMoveBulbasaur = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Bulbasaur"),
+    moves: [
+      {
+        ...gameData.moves["Vine Whip"],
+        currentPp: 3,
+      },
+    ],
+  });
+  memoryFiles.clear();
+  const moveAbilitySaveState = createMemoryGameState(pokemonUtils);
+  moveAbilitySaveState.saveTeamAndStorage([ownedMoveBulbasaur], []);
+  const reloadedOwnedBulbasaur = moveAbilitySaveState
+    .loadTeamAndStorage()
+    .team.find((owned) => owned.name === "Bulbasaur");
+  assert(
+    reloadedOwnedBulbasaur.moves.length === 1 &&
+      reloadedOwnedBulbasaur.moves[0].name === "Vine Whip" &&
+      reloadedOwnedBulbasaur.moves[0].currentPp === 3,
+    "owned moves or PP changed during canonical save migration",
+  );
+  assert(
+    reloadedOwnedBulbasaur.ability?.name === ownedMoveBulbasaur.ability?.name,
+    "selected ability changed across save/load",
+  );
+  const moveLearningBulbasaur = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Bulbasaur"),
+    level: 5,
+  });
+  const canonicalMoveLearning = rewardEngine.applyXpToPokemon(
+    [moveLearningBulbasaur],
+    0,
+    rewardEngine.getXpNeededForLevel(5),
+  );
+  assert(
+    canonicalMoveLearning.pendingMove?.name === "Growth",
+    "canonical level-up learnset did not feed the pending-move system",
+  );
   assert(pokemon.length === mappings.length, "catalog and species map counts differ");
   const closureMappings = mappings.filter(
     (mapping) => mapping.addedByEvolutionClosure === true,
@@ -224,9 +298,11 @@ function main() {
       (entry) =>
         entry.habitats.length === 0 &&
         entry.times.length === 0 &&
-        entry.movesetPolicy === "temporary-default",
+        ["canonical-level-up", "canonical-unavailable"].includes(
+          entry.movesetPolicy,
+        ),
     ),
-    "a catalog-only Pokemon received an encounter assignment",
+    "a catalog-only Pokemon received an encounter assignment or invalid moveset policy",
   );
 
   const sampleSpecies = new Map([
@@ -931,6 +1007,12 @@ function main() {
     "stone evolution reset move PP",
   );
   assert(
+    thunderEvolution.pokemon.abilities.some(
+      (ability) => ability.name === thunderEvolution.pokemon.ability?.name,
+    ),
+    "evolution left the Pokemon with an invalid target-species ability",
+  );
+  assert(
     Math.abs(
       thunderEvolution.pokemon.currentHp / thunderEvolution.pokemon.maxHp -
         stonePikachu.currentHp / stonePikachu.maxHp,
@@ -1138,11 +1220,40 @@ function main() {
     ...normalVulpix,
     shiny: true,
   });
+  const alolanMeowth = pokemonUtils.applyPokemonForm(
+    pokemonUtils.getPokemonTemplateByName("Meowth"),
+    "alolan",
+  );
+  const galarianMeowth = pokemonUtils.applyPokemonForm(
+    pokemonUtils.getPokemonTemplateByName("Meowth"),
+    "galarian",
+  );
+  const paldeanWooper = pokemonUtils.applyPokemonForm(
+    pokemonUtils.getPokemonTemplateByName("Wooper"),
+    "paldean",
+  );
   assert(
     alolanVulpix.form?.id === "alolan" &&
       alolanVulpix.types.join(",") === "Ice" &&
-      alolanVulpix.imageId === 10103,
+      alolanVulpix.imageId === 10103 &&
+      alolanVulpix.abilities.some(
+        (ability) => ability.name === alolanVulpix.ability?.name,
+      ),
     "regional form overrides were not normalized",
+  );
+  assert(
+    alolanMeowth.form?.id === "alolan" &&
+      alolanMeowth.types.join(",") === "Dark" &&
+      alolanMeowth.form.artwork?.normal &&
+      galarianMeowth.form?.id === "galarian" &&
+      galarianMeowth.types.join(",") === "Steel",
+    "Meowth regional form types or artwork are incorrect",
+  );
+  assert(
+    paldeanWooper.form?.id === "paldean" &&
+      paldeanWooper.types.join(",") === "Poison,Ground" &&
+      paldeanWooper.form.artwork?.normal,
+    "Paldean Wooper type or artwork is incorrect",
   );
   assert(
     new Set([
@@ -1257,6 +1368,74 @@ function main() {
       .stages.map((stage) => stage.name)
       .join(" -> ") === "Bulbasaur -> Ivysaur -> Venusaur",
     "Bulbasaur's canonical display chain is incorrect",
+  );
+
+  const levitatingGastly = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Gastly"),
+    ability: { name: "levitate", slot: 1 },
+  });
+  const groundAttacker = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Geodude"),
+    moves: [
+      { ...gameData.moves["Mud Shot"], accuracy: 100, currentPp: 10 },
+    ],
+  });
+  const gastlyHp = levitatingGastly.currentHp;
+  const levitateResult = battleEngine.executeBattleMove(
+    groundAttacker,
+    levitatingGastly,
+    "Mud Shot",
+  );
+  assert(
+    levitatingGastly.currentHp === gastlyHp &&
+      levitateResult.log.some((line) => line.includes("Levitate")),
+    "Levitate did not provide Ground immunity",
+  );
+
+  const intimidateUser = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Arcanine"),
+    ability: { name: "intimidate", slot: 1 },
+  });
+  const intimidatedTarget = pokemonUtils.normalizePokemon(
+    pokemonUtils.getPokemonTemplateByName("Machop"),
+  );
+  const intimidateLog = [];
+  battleEngine.applyEntryAbility(intimidateUser, intimidatedTarget, intimidateLog);
+  assert(
+    intimidatedTarget.battleModifiers?.attack < 1 &&
+      intimidateLog.some((line) => line.includes("Intimidate")),
+    "Intimidate entry hook did not lower Attack",
+  );
+
+  const immuneSnorlax = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Snorlax"),
+    ability: { name: "immunity", slot: 1 },
+  });
+  const poisonAttacker = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Oddish"),
+    moves: [
+      {
+        name: "Test Poison",
+        type: "Poison",
+        category: "Status",
+        power: 0,
+        accuracy: 100,
+        pp: 10,
+        maxPp: 10,
+        currentPp: 10,
+        effect: { type: "status", status: "poisoned", chance: 100 },
+      },
+    ],
+  });
+  const immunityResult = battleEngine.executeBattleMove(
+    poisonAttacker,
+    immuneSnorlax,
+    "Test Poison",
+  );
+  assert(
+    immuneSnorlax.status === "none" &&
+      immunityResult.log.some((line) => line.includes("prevented")),
+    "Immunity did not prevent poison",
   );
 
   memoryFiles.clear();

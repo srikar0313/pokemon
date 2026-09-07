@@ -17,6 +17,7 @@ const cacheRoot = path.join(outputDir, "raw");
 const speciesMapPath = path.join(outputDir, "species-map.json");
 const pokemonPath = path.join(rootDir, "pokemon.json");
 const canonicalOutputPath = path.join(outputDir, "canonical-pokemon.json");
+const canonicalMovesOutputPath = path.join(outputDir, "canonical-moves.json");
 const evolutionOutputPath = path.join(outputDir, "evolutions.json");
 const refresh = process.argv.includes("--refresh");
 const dexMaxArgument = process.argv.find((argument) =>
@@ -36,6 +37,13 @@ const statNameMap = {
   speed: "speed",
 };
 const regionalSuffixes = ["alola", "galar", "hisui", "paldea"];
+const learnsetVersionPreference = [
+  "scarlet-violet",
+  "sword-shield",
+  "ultra-sun-ultra-moon",
+  "omega-ruby-alpha-sapphire",
+  "black-2-white-2",
+];
 
 function readRequiredJson(filePath, label) {
   const data = readValidJson(filePath);
@@ -207,9 +215,9 @@ function buildExpandedSpeciesMap(
     summary: {
       currentPokemon: species.length,
       resolved: species.length,
-      unresolved: 0,
-      localIdMatches: species.filter((mapping) => mapping.idMatches).length,
+      localIdsCorrect: species.filter((mapping) => mapping.idMatches).length,
       localIdMismatches: species.filter((mapping) => !mapping.idMatches).length,
+      unresolved: 0,
       nationalDexCoverage,
       existingAboveDexMax,
       existingBeforeExpansion: species.filter(
@@ -257,8 +265,141 @@ function getAbilities(pokemonData) {
     .sort((left, right) => left.slot - right.slot)
     .map((entry) => ({
       name: entry.ability?.name || null,
+      slot: entry.slot ?? null,
       hidden: Boolean(entry.is_hidden),
     }));
+}
+
+function selectLevelUpLearnset(pokemonData) {
+  for (const versionGroup of learnsetVersionPreference) {
+    const entries = (pokemonData?.moves || []).flatMap((entry) =>
+      (entry.version_group_details || [])
+        .filter(
+          (detail) =>
+            detail.move_learn_method?.name === "level-up" &&
+            detail.version_group?.name === versionGroup,
+        )
+        .map((detail) => ({
+          level: Math.max(1, Number(detail.level_learned_at) || 1),
+          move: entry.move?.name,
+          moveUrl: entry.move?.url,
+        })),
+    );
+    if (!entries.length) continue;
+    const deduplicated = [
+      ...new Map(
+        entries
+          .sort((left, right) => left.level - right.level)
+          .map((entry) => [entry.move, entry]),
+      ).values(),
+    ].sort((left, right) => left.level - right.level || left.move.localeCompare(right.move));
+    return { versionGroup, entries: deduplicated };
+  }
+  return { versionGroup: null, entries: [] };
+}
+
+function buildLearnsetIndex(records) {
+  return new Map(
+    records.map((record) => [
+      record.mapping.canonicalSpeciesId,
+      selectLevelUpLearnset(record.pokemonData),
+    ]),
+  );
+}
+
+async function loadCanonicalMoves(learnsets) {
+  const requests = new Map();
+  learnsets.forEach((learnset) => {
+    learnset.entries.forEach((entry) => {
+      if (entry.move && entry.moveUrl) requests.set(entry.move, entry.moveUrl);
+    });
+  });
+  const loaded = await mapLimit(
+    [...requests.entries()].sort(([left], [right]) => left.localeCompare(right)),
+    concurrency,
+    async ([moveName, url]) => [
+      moveName,
+      await loadResource("moves", moveName, url, `move ${moveName}`),
+    ],
+  );
+  return new Map(loaded);
+}
+
+function normalizeMoveEffect(moveData) {
+  const ailmentMap = {
+    burn: "burned",
+    confusion: "confused",
+    freeze: "frozen",
+    paralysis: "paralyzed",
+    poison: "poisoned",
+    sleep: "asleep",
+    "badly-poisoned": "badpoison",
+  };
+  const ailment = ailmentMap[moveData?.meta?.ailment?.name];
+  if (ailment) {
+    return {
+      type: "status",
+      status: ailment,
+      chance: moveData.meta.ailment_chance || 100,
+    };
+  }
+  const statChange = moveData?.stat_changes?.[0];
+  if (statChange?.stat?.name) {
+    const stat = statNameMap[statChange.stat.name];
+    if (!stat) return undefined;
+    return {
+      type: "statChange",
+      target: moveData.target?.name === "user" ? "self" : "opponent",
+      stat,
+      stages: statChange.change,
+      chance: moveData.meta?.stat_chance || 100,
+    };
+  }
+  if (Number(moveData?.meta?.drain) > 0) {
+    return { type: "heal", target: "self", percent: moveData.meta.drain };
+  }
+  return undefined;
+}
+
+function buildCanonicalMoveData(moveDataByName, generatedAt) {
+  const moves = {};
+  [...moveDataByName.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .forEach(([canonicalName, moveData]) => {
+      if (!moveData) return;
+      const name = titleCaseName(canonicalName);
+      const effect = normalizeMoveEffect(moveData);
+      moves[name] = {
+        name,
+        canonicalName,
+        type: titleCaseName(moveData.type?.name),
+        category: titleCaseName(moveData.damage_class?.name),
+        power: moveData.power ?? 0,
+        accuracy: moveData.accuracy ?? 100,
+        pp: moveData.pp ?? 10,
+        maxPp: moveData.pp ?? 10,
+        priority: moveData.priority || 0,
+        ...(effect ? { effect } : {}),
+      };
+    });
+  return {
+    generatedAt,
+    source: "https://pokeapi.co",
+    moveCount: Object.keys(moves).length,
+    moves,
+  };
+}
+
+function getLearnsetOutput(learnset, canonicalMoves) {
+  return {
+    learnsetVersionGroup: learnset.versionGroup,
+    learnset: learnset.entries
+      .map((entry) => ({
+        level: entry.level,
+        move: titleCaseName(entry.move),
+      }))
+      .filter((entry) => canonicalMoves.moves[entry.move]),
+  };
 }
 
 function getRegionalScope(varietyName) {
@@ -408,6 +549,7 @@ function buildForms(speciesData, varietyData) {
         category: classification.category,
         region: classification.region,
         types: getTypes(pokemonData),
+        abilities: getAbilities(pokemonData),
         artwork: getArtwork(pokemonData),
       };
     })
@@ -418,7 +560,13 @@ function buildForms(speciesData, varietyData) {
     );
 }
 
-function buildCanonicalPokemon(records, varietyData, generatedAt) {
+function buildCanonicalPokemon(
+  records,
+  varietyData,
+  learnsets,
+  canonicalMoves,
+  generatedAt,
+) {
   return {
     generatedAt,
     source: "https://pokeapi.co",
@@ -442,6 +590,10 @@ function buildCanonicalPokemon(records, varietyData, generatedAt) {
         isMythical: Boolean(speciesData?.is_mythical),
         generation: speciesData?.generation?.name || null,
         abilities: getAbilities(pokemonData),
+        ...getLearnsetOutput(
+          learnsets.get(mapping.canonicalSpeciesId),
+          canonicalMoves,
+        ),
         evolutionChainId: getResourceId(speciesData?.evolution_chain?.url),
         artwork: getArtwork(pokemonData),
         forms: buildForms(speciesData || {}, varietyData),
@@ -450,7 +602,11 @@ function buildCanonicalPokemon(records, varietyData, generatedAt) {
   };
 }
 
-function buildCatalogOnlyTemplate(record) {
+function getInitialCanonicalMoves(learnset) {
+  return learnset.slice(0, 4).map((entry) => entry.move);
+}
+
+function buildCatalogOnlyTemplate(record, canonicalEntry) {
   const { mapping, pokemonData, speciesData } = record;
   const baseStats = getBaseStats(pokemonData);
   const types = getTypes(pokemonData);
@@ -475,16 +631,21 @@ function buildCatalogOnlyTemplate(record) {
     baseCatchRate: speciesData.capture_rate,
     level: 1,
     xp: 0,
-    moves: ["Tackle"],
+    moves: getInitialCanonicalMoves(canonicalEntry.learnset).length
+      ? getInitialCanonicalMoves(canonicalEntry.learnset)
+      : ["Tackle"],
+    learnsetVersionGroup: canonicalEntry.learnsetVersionGroup,
     imageId: mapping.canonicalSpeciesId,
     isLegendary: Boolean(speciesData.is_legendary),
     isMythical: Boolean(speciesData.is_mythical),
     catalogOnly: true,
-    movesetPolicy: "temporary-default",
+    movesetPolicy: canonicalEntry.learnset.length
+      ? "canonical-level-up"
+      : "canonical-unavailable",
   };
 }
 
-function buildExpandedPokemonCatalog(currentPokemon, records) {
+function buildExpandedPokemonCatalog(currentPokemon, records, canonicalData) {
   const currentByLocalIdentity = new Map(
     currentPokemon.map((pokemon) => [
       `${pokemon.id}:${normalizePokemonName(pokemon.name)}`,
@@ -502,8 +663,33 @@ function buildExpandedPokemonCatalog(currentPokemon, records) {
       const existing = currentByLocalIdentity.get(
         `${record.mapping.localId}:${normalizePokemonName(record.mapping.localName)}`,
       );
-      if (existing) return existing;
-      return buildCatalogOnlyTemplate(record);
+      const canonicalEntry = canonicalData.pokemon.find(
+        (entry) => entry.speciesId === record.mapping.canonicalSpeciesId,
+      );
+      const isGeneratedCatalogMoveset =
+        existing?.catalogOnly &&
+        [
+          "temporary-default",
+          "canonical-level-up",
+          "canonical-unavailable",
+        ].includes(existing.movesetPolicy);
+      if (existing && !isGeneratedCatalogMoveset) return existing;
+      if (existing) {
+        const canonicalInitialMoves = getInitialCanonicalMoves(
+          canonicalEntry.learnset,
+        );
+        const updated = {
+          ...existing,
+          moves: canonicalInitialMoves.length ? canonicalInitialMoves : existing.moves,
+          learnsetVersionGroup: canonicalEntry.learnsetVersionGroup,
+          movesetPolicy: canonicalEntry.learnset.length
+            ? "canonical-level-up"
+            : "canonical-unavailable",
+        };
+        delete updated.learnset;
+        return updated;
+      }
+      return buildCatalogOnlyTemplate(record, canonicalEntry);
     });
 }
 
@@ -544,7 +730,24 @@ function validateCatalogExpansion(
       errors.push(`existing Pokemon removed: ${before.name}`);
       return;
     }
-    if (JSON.stringify(before) !== JSON.stringify(after)) {
+    const isGeneratedMoveset =
+      before.catalogOnly &&
+      [
+        "temporary-default",
+        "canonical-level-up",
+        "canonical-unavailable",
+      ].includes(before.movesetPolicy);
+    const comparableBefore = { ...before };
+    const comparableAfter = { ...after };
+    if (isGeneratedMoveset) {
+      ["moves", "learnset", "learnsetVersionGroup", "movesetPolicy"].forEach(
+        (key) => {
+          delete comparableBefore[key];
+          delete comparableAfter[key];
+        },
+      );
+    }
+    if (JSON.stringify(comparableBefore) !== JSON.stringify(comparableAfter)) {
       errors.push(`existing game configuration changed: ${before.name}`);
     }
   });
@@ -555,8 +758,15 @@ function validateCatalogExpansion(
       if ((pokemon.habitats || []).length || (pokemon.times || []).length) {
         errors.push(`new catalog-only Pokemon can spawn: ${pokemon.name}`);
       }
-      if (pokemon.movesetPolicy !== "temporary-default") {
-        errors.push(`new Pokemon lacks temporary moveset marker: ${pokemon.name}`);
+      if (
+        !["canonical-level-up", "canonical-unavailable"].includes(
+          pokemon.movesetPolicy,
+        )
+      ) {
+        errors.push(`new Pokemon lacks canonical moveset marker: ${pokemon.name}`);
+      }
+      if (!(pokemon.moves || []).length) {
+        errors.push(`new Pokemon lacks usable canonical moves: ${pokemon.name}`);
       }
     });
 
@@ -881,7 +1091,12 @@ function countEvolutionSummary(evolutionData) {
   };
 }
 
-function validateGeneratedData(canonicalData, evolutionData, speciesMap) {
+function validateGeneratedData(
+  canonicalData,
+  canonicalMoves,
+  evolutionData,
+  speciesMap,
+) {
   const errors = [...fetchErrors];
   const entries = canonicalData.pokemon;
   const speciesIds = entries.map((entry) => entry.speciesId);
@@ -905,6 +1120,14 @@ function validateGeneratedData(canonicalData, evolutionData, speciesMap) {
       errors.push(`${entry.localName} has invalid speciesId`);
     }
     if (!entry.types.length) errors.push(`${entry.localName} has no canonical types`);
+    (entry.learnset || []).forEach((learnedMove) => {
+      if (!canonicalMoves.moves[learnedMove.move]) {
+        errors.push(`${entry.localName} references missing move ${learnedMove.move}`);
+      }
+    });
+    if (!(entry.abilities || []).some((ability) => !ability.hidden)) {
+      errors.push(`${entry.localName} has no normal canonical ability`);
+    }
     ["hp", "attack", "defense", "specialAttack", "specialDefense", "speed"].forEach(
       (stat) => {
         if (!Number.isFinite(entry.baseStats[stat])) {
@@ -996,6 +1219,12 @@ function printSummary(canonicalData, evolutionData, speciesMap) {
   console.log(`Special evolutions: ${summary.specialEvolutions}`);
   console.log(`Branching species: ${summary.branchingSpecies}`);
   console.log(`Canonical forms represented: ${forms}`);
+  console.log(
+    `Canonical learnsets: ${canonicalData.pokemon.filter((entry) => entry.learnset.length).length}/${canonicalData.speciesCount}`,
+  );
+  console.log(
+    `Canonical abilities: ${canonicalData.pokemon.filter((entry) => entry.abilities.length).length}/${canonicalData.speciesCount}`,
+  );
   console.log(`Form-specific edges: ${summary.formSpecificEdges}`);
   console.log(`Ambiguous form edges: ${summary.ambiguousFormEdges}`);
   console.log(
@@ -1034,17 +1263,38 @@ async function main() {
     mapping: expandedMappingBySpeciesId.get(record.mapping.canonicalSpeciesId),
   }));
   const varietyData = await loadVarietyData(records);
+  const learnsets = buildLearnsetIndex(records);
+  const canonicalMoveRecords = await loadCanonicalMoves(learnsets);
+  const canonicalMoves = buildCanonicalMoveData(
+    canonicalMoveRecords,
+    generatedAt,
+  );
   const chains = closure.chains;
   const evolutionSpecies = await loadEvolutionSpecies(chains, records);
-  const canonicalData = buildCanonicalPokemon(records, varietyData, generatedAt);
+  const canonicalData = buildCanonicalPokemon(
+    records,
+    varietyData,
+    learnsets,
+    canonicalMoves,
+    generatedAt,
+  );
   const evolutionData = buildEvolutionData(
     chains,
     evolutionSpecies,
     records,
     generatedAt,
   );
-  const expandedPokemon = buildExpandedPokemonCatalog(localPokemon, records);
-  validateGeneratedData(canonicalData, evolutionData, speciesMap);
+  const expandedPokemon = buildExpandedPokemonCatalog(
+    localPokemon,
+    records,
+    canonicalData,
+  );
+  validateGeneratedData(
+    canonicalData,
+    canonicalMoves,
+    evolutionData,
+    speciesMap,
+  );
   validateCatalogExpansion(
     localPokemon,
     expandedPokemon,
@@ -1056,6 +1306,7 @@ async function main() {
   saveJsonAtomic(speciesMapPath, speciesMap);
   savePokemonCatalog(expandedPokemon);
   saveJsonAtomic(canonicalOutputPath, canonicalData);
+  saveJsonAtomic(canonicalMovesOutputPath, canonicalMoves);
   saveJsonAtomic(evolutionOutputPath, evolutionData);
   printSummary(canonicalData, evolutionData, speciesMap);
 }

@@ -561,6 +561,21 @@ function validateGameData(gameData) {
     if (!canonical.artwork?.normal && !pokemon.imageId) {
       addWarning(groups, "pokemonWarnings", `${label} has no safe artwork fallback`);
     }
+    if (!(canonical.abilities || []).some((ability) => ability.name && !ability.hidden)) {
+      addWarning(groups, "pokemonWarnings", `${label} has no normal canonical ability`);
+    }
+    if (!(canonical.learnset || []).length || !canonical.learnsetVersionGroup) {
+      addWarning(groups, "moveWarnings", `${label} has no canonical level-up learnset`);
+    }
+    (canonical.learnset || []).forEach((entry) => {
+      if (!entry.move || !moveNames.has(entry.move)) {
+        addWarning(
+          groups,
+          "moveWarnings",
+          `${label} canonical learnset references missing move: ${entry.move || "unknown"}`,
+        );
+      }
+    });
 
     const existingOwner = canonicalSpeciesOwners.get(canonical.speciesId);
     const currentOwner = normalizeCanonicalName(pokemon.name);
@@ -589,6 +604,24 @@ function validateGameData(gameData) {
   Object.entries(gameData.moves || {}).forEach(([name, move]) =>
     validateMoveDefinition(`Move ${name}`, move, groups, knownTypes),
   );
+  Object.entries(gameData.customMoves || {}).forEach(([name, move]) => {
+    const canonicalMove = gameData.canonicalMoves?.moves?.[name];
+    if (!canonicalMove) return;
+    ["name", "type", "category", "power", "accuracy", "pp"].forEach((field) => {
+      const customValue = field === "name" ? move.name || name : move[field];
+      if (
+        customValue !== undefined &&
+        canonicalMove[field] !== undefined &&
+        customValue !== canonicalMove[field]
+      ) {
+        addWarning(
+          groups,
+          "moveWarnings",
+          `Move ${name} custom ${field} (${customValue}) differs from canonical ${field} (${canonicalMove[field]})`,
+        );
+      }
+    });
+  });
 
   (gameData.gyms || []).forEach((gym) =>
     validateTeam(`Gym ${gym.name}`, gym.team, pokemonNames, groups),
@@ -684,6 +717,25 @@ function loadGameData(options = {}) {
   const npcData = loadJson(path.join(dataDir, "npcs.json"), {});
   const encounterData = loadJson(path.join(dataDir, "encounters.json"), {});
   const areaData = loadJson(path.join(dataDir, "areas.json"), {});
+  const canonicalMoveData = loadJson(
+    path.join(dataDir, "pokeapi", "canonical-moves.json"),
+    { moves: {} },
+  );
+  const customMoves = loadJson(path.join(dataDir, "moves.json"), {});
+  const moves = Object.fromEntries(
+    [
+      ...new Set([
+        ...Object.keys(canonicalMoveData.moves || {}),
+        ...Object.keys(customMoves),
+      ]),
+    ].map((name) => [
+      name,
+      {
+        ...(canonicalMoveData.moves?.[name] || {}),
+        ...(customMoves[name] || {}),
+      },
+    ]),
+  );
   const gameData = {
     pokemon: loadJson(path.join(rootDir, "pokemon.json"), []),
     canonicalPokemon: loadJson(
@@ -698,7 +750,9 @@ function loadGameData(options = {}) {
       path.join(dataDir, "pokeapi", "evolutions.json"),
       { chains: [], species: [] },
     ),
-    moves: loadJson(path.join(dataDir, "moves.json"), {}),
+    canonicalMoves: canonicalMoveData,
+    customMoves,
+    moves,
     items: loadJson(path.join(dataDir, "items.json"), {}),
     gyms: loadJson(path.join(dataDir, "gyms.json"), []),
     eliteFour: eliteData.eliteFour || [],

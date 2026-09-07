@@ -157,6 +157,9 @@ function createGameState({
       pokemon.evolvedFrom || "",
       pokemon.form?.id || "normal",
       pokemon.shiny ? "shiny" : "normal",
+      typeof pokemon.ability === "string"
+        ? pokemon.ability
+        : pokemon.ability?.name || "",
       moveSignature,
     ].join("::");
   }

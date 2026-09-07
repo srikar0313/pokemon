@@ -1,3 +1,11 @@
+const {
+  applyEntryAbility,
+  canApplyStatus,
+  getDamageModifier,
+  getStatusPreventionMessage,
+  resolveTypeImmunity,
+} = require("./abilityEngine");
+
 const typeChart = {
   Normal: { Rock: 0.5, Ghost: 0, Steel: 0.5 },
   Fire: {
@@ -271,8 +279,12 @@ function createBattleEngine({ getRandomInt }) {
 
     if (effect.type === "status") {
       if (!target.status || target.status === "none") {
-        target.status = effect.status;
-        log.push(`${targetName} was ${formatStatusForLog(effect.status)}!`);
+        if (canApplyStatus(target, effect.status)) {
+          target.status = effect.status;
+          log.push(`${targetName} was ${formatStatusForLog(effect.status)}!`);
+        } else {
+          log.push(getStatusPreventionMessage(target));
+        }
       }
     } else if (effect.type === "statChange") {
       if (changeStat(target, effect.stat, effect.stages)) {
@@ -310,8 +322,16 @@ function createBattleEngine({ getRandomInt }) {
   }
 
   function calculateMoveDamage(attacker, defender, move) {
+    const modifiedAttacker = {
+      ...attacker,
+      attack:
+        (attacker.attack || 1) * Number(attacker.battleModifiers?.attack || 1),
+      specialAttack:
+        (attacker.specialAttack || attacker.attack || 1) *
+        Number(attacker.battleModifiers?.specialAttack || 1),
+    };
     const baseResult = calculateDamage(
-      attacker,
+      modifiedAttacker,
       defender,
       move.power || 0,
       move.category,
@@ -322,12 +342,23 @@ function createBattleEngine({ getRandomInt }) {
       Math.random() * 100 < (move.effect.chance ?? 0);
     const hits = Math.max(1, move.hits || 1);
     const criticalMultiplier = boostedCritical && !baseResult.critical ? 1.5 : 1;
+    const abilityModifier = getDamageModifier(
+      attacker,
+      defender,
+      move,
+      baseResult.effectiveness,
+    );
     return {
       ...baseResult,
       damage:
         baseResult.effectiveness === 0
           ? 0
-          : Math.max(1, Math.floor(baseResult.damage * criticalMultiplier)) *
+          : Math.max(
+              1,
+              Math.floor(
+                baseResult.damage * criticalMultiplier * abilityModifier,
+              ),
+            ) *
             hits,
       hits,
       critical: baseResult.critical || boostedCritical,
@@ -379,6 +410,11 @@ function createBattleEngine({ getRandomInt }) {
     }
 
     if (move.category !== "Status" && (move.power || 0) > 0) {
+      const immunity = resolveTypeImmunity(defender, move);
+      if (immunity.immune) {
+        log.push(immunity.message);
+        return { move, log, abilityImmune: true };
+      }
       const damageResult = calculateMoveDamage(attacker, defender, move);
       defender.currentHp = Math.max(0, defender.currentHp - damageResult.damage);
       if (damageResult.critical) log.push("A critical hit!");
@@ -624,6 +660,7 @@ function createBattleEngine({ getRandomInt }) {
     chooseAiSwitch,
     chooseGymAction,
     chooseTrainerAction,
+    applyEntryAbility,
   };
 }
 

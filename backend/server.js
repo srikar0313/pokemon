@@ -173,7 +173,14 @@ const {
   chooseBestMove,
   chooseGymAction,
   chooseTrainerAction,
+  applyEntryAbility,
 } = battleEngine;
+
+function applyBattleEntryAbilities(playerPokemon, opponentPokemon, log = []) {
+  applyEntryAbility(playerPokemon, opponentPokemon, log);
+  applyEntryAbility(opponentPokemon, playerPokemon, log);
+  return log;
+}
 
 const encounterEngine = createEncounterEngine({
   rarityWeights,
@@ -332,6 +339,12 @@ function getPokedexEntries(state) {
         habitats: pokemon.habitats || [],
         times: pokemon.times || ["day"],
         baseCatchRate: pokemon.baseCatchRate ?? null,
+        abilities: (pokemon.abilities || []).map((ability) => ({ ...ability })),
+        learnset: (pokemon.learnset || []).map((entry) => ({
+          level: entry.level,
+          move: typeof entry.move === "string" ? entry.move : entry.move?.name,
+        })),
+        learnsetVersionGroup: pokemon.learnsetVersionGroup || null,
         evolvesTo: currentEvolutionStage?.evolvesTo || null,
         evolveLevel: currentEvolutionStage?.evolveLevel || null,
         previousStage: previousStage
@@ -1073,12 +1086,19 @@ app.post("/api/gym/start", (req, res) => {
   };
   activeGymSessions.set("player", session);
 
+  const log = [
+    `${gym.leaderName} of the ${gym.name} challenged you!`,
+    "Catching and running are disabled in gym battles.",
+  ];
+  applyBattleEntryAbilities(
+    session.playerTeam[session.playerIndex],
+    session.gymTeam[session.gymIndex],
+    log,
+  );
+
   res.json({
     success: true,
-    log: [
-      `${gym.leaderName} of the ${gym.name} challenged you!`,
-      "Catching and running are disabled in gym battles.",
-    ],
+    log,
     session: getGymSessionView(session),
   });
 });
@@ -1129,13 +1149,20 @@ app.post("/api/elite/start", (req, res) => {
   refreshEliteStage(session);
   activeEliteSessions.set("player", session);
 
+  const log = [
+    "The Elite Four challenge begins.",
+    `${session.currentTrainer.name} stepped into the arena!`,
+    "No healing between battles. Catching and running are disabled.",
+  ];
+  applyBattleEntryAbilities(
+    session.playerTeam[session.playerIndex],
+    session.opponentTeam[session.opponentIndex],
+    log,
+  );
+
   res.json({
     success: true,
-    log: [
-      "The Elite Four challenge begins.",
-      `${session.currentTrainer.name} stepped into the arena!`,
-      "No healing between battles. Catching and running are disabled.",
-    ],
+    log,
     session: getEliteSessionView(session),
   });
 });
@@ -1164,6 +1191,11 @@ app.post("/api/gym/move", (req, res) => {
       ...new Set([...(session.participantIndexes || []), nextIndex]),
     ];
     log.push(`Go, ${session.playerTeam[nextIndex].name}!`);
+    applyEntryAbility(
+      session.playerTeam[nextIndex],
+      session.gymTeam[session.gymIndex],
+      log,
+    );
     persistGymPlayerTeam(session);
     return res.json({
       success: true,
@@ -1214,6 +1246,11 @@ app.post("/api/gym/move", (req, res) => {
     log.push(
       `${session.gym.name} sent out ${session.gymTeam[session.gymIndex].name}!`,
     );
+    applyEntryAbility(
+      session.gymTeam[session.gymIndex],
+      session.playerTeam[session.playerIndex],
+      log,
+    );
     persistGymPlayerTeam(session);
     return res.json({
       success: true,
@@ -1233,6 +1270,7 @@ app.post("/api/gym/move", (req, res) => {
       log.push(
         `${session.gym.leaderName} withdrew ${outgoing.name} and sent out ${incoming.name}!`,
       );
+      applyEntryAbility(incoming, playerPokemon, log);
       gymActed = true;
     }
   } else if (gymAction.move) {
@@ -1279,6 +1317,11 @@ app.post("/api/gym/move", (req, res) => {
     }
     log.push(
       `${session.gym.name} sent out ${session.gymTeam[session.gymIndex].name}!`,
+    );
+    applyEntryAbility(
+      session.gymTeam[session.gymIndex],
+      session.playerTeam[session.playerIndex],
+      log,
     );
     persistGymPlayerTeam(session);
     return res.json({
@@ -1350,6 +1393,11 @@ app.post("/api/elite/move", (req, res) => {
       ...new Set([...(session.participantIndexes || []), nextIndex]),
     ];
     log.push(`Go, ${session.playerTeam[nextIndex].name}!`);
+    applyEntryAbility(
+      session.playerTeam[nextIndex],
+      session.opponentTeam[session.opponentIndex],
+      log,
+    );
     persistBattlePlayerTeam(session);
     return res.json({
       success: true,
@@ -1413,6 +1461,11 @@ app.post("/api/elite/move", (req, res) => {
       log.push(
         `${session.currentTrainer.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
       );
+      applyEntryAbility(
+        session.opponentTeam[session.opponentIndex],
+        session.playerTeam[session.playerIndex],
+        log,
+      );
       persistBattlePlayerTeam(session);
       return res.json({
         success: true,
@@ -1424,6 +1477,11 @@ app.post("/api/elite/move", (req, res) => {
 
     log.push(
       `${session.currentTrainer.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
+    );
+    applyEntryAbility(
+      session.opponentTeam[session.opponentIndex],
+      session.playerTeam[session.playerIndex],
+      log,
     );
     persistBattlePlayerTeam(session);
     return res.json({
@@ -1447,6 +1505,7 @@ app.post("/api/elite/move", (req, res) => {
         session.opponentTeam[session.opponentIndex];
       session.opponentTeam[session.opponentIndex] = incoming;
       log.push(`${session.currentTrainer.name} switched to ${incoming.name}!`);
+      applyEntryAbility(incoming, playerPokemon, log);
     }
   } else if (eliteAction.move) {
     log.push(`${session.currentTrainer.name}'s turn:`);
@@ -1512,6 +1571,11 @@ app.post("/api/elite/move", (req, res) => {
       log.push(
         `${session.currentTrainer.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
       );
+      applyEntryAbility(
+        session.opponentTeam[session.opponentIndex],
+        session.playerTeam[session.playerIndex],
+        log,
+      );
       persistBattlePlayerTeam(session);
       return res.json({
         success: true,
@@ -1523,6 +1587,11 @@ app.post("/api/elite/move", (req, res) => {
 
     log.push(
       `${session.currentTrainer.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
+    );
+    applyEntryAbility(
+      session.opponentTeam[session.opponentIndex],
+      session.playerTeam[session.playerIndex],
+      log,
     );
     persistBattlePlayerTeam(session);
     return res.json({
@@ -1826,15 +1895,22 @@ app.post("/api/npc/interact", (req, res) => {
     };
     activeNpcSessions.set("player", session);
 
+    const log = [
+      npc.introDialogue || `${npc.name} wants to battle!`,
+      `${npc.name} sent out ${session.opponentTeam[0].name}!`,
+      "Trainer battles do not allow catching or running.",
+    ];
+    applyBattleEntryAbilities(
+      session.playerTeam[session.playerIndex],
+      session.opponentTeam[session.opponentIndex],
+      log,
+    );
+
     return res.json({
       success: true,
       action: "battle",
       dialogue: npc.introDialogue || "Let's battle!",
-      log: [
-        npc.introDialogue || `${npc.name} wants to battle!`,
-        `${npc.name} sent out ${session.opponentTeam[0].name}!`,
-        "Trainer battles do not allow catching or running.",
-      ],
+      log,
       npc: npcView,
       session: getNpcSessionView(session),
     });
@@ -1897,6 +1973,11 @@ app.post("/api/npc/move", (req, res) => {
     ];
     persistBattlePlayerTeam(session);
     log.push(`Go, ${session.playerTeam[nextIndex].name}!`);
+    applyEntryAbility(
+      session.playerTeam[nextIndex],
+      session.opponentTeam[session.opponentIndex],
+      log,
+    );
     return res.json({
       success: true,
       log,
@@ -1946,6 +2027,11 @@ app.post("/api/npc/move", (req, res) => {
     log.push(
       `${session.npc.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
     );
+    applyEntryAbility(
+      session.opponentTeam[session.opponentIndex],
+      session.playerTeam[session.playerIndex],
+      log,
+    );
     persistBattlePlayerTeam(session);
     return res.json({
       success: true,
@@ -1969,6 +2055,7 @@ app.post("/api/npc/move", (req, res) => {
         session.opponentTeam[session.opponentIndex];
       session.opponentTeam[session.opponentIndex] = incoming;
       log.push(`${session.npc.name} switched to ${incoming.name}!`);
+      applyEntryAbility(incoming, playerPokemon, log);
     }
   } else if (npcAction.type === "item") {
     const healAmount = 50;
@@ -2008,6 +2095,11 @@ app.post("/api/npc/move", (req, res) => {
     }
     log.push(
       `${session.npc.name} sent out ${session.opponentTeam[session.opponentIndex].name}!`,
+    );
+    applyEntryAbility(
+      session.opponentTeam[session.opponentIndex],
+      session.playerTeam[session.playerIndex],
+      log,
     );
     persistBattlePlayerTeam(session);
     return res.json({

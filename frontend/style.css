@@ -382,6 +382,35 @@ h3 {
   background: #fff0f2;
 }
 
+.learnset-panel {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #f8fafc;
+}
+
+.learnset-panel summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.learnset-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 6px;
+  max-height: 180px;
+  margin: 10px 0 6px;
+  overflow-y: auto;
+}
+
+.learnset-list span {
+  padding: 5px 7px;
+  border-left: 3px solid #3b82f6;
+  background: #fff;
+  font-size: 0.82rem;
+}
+
 .evolution-requirement strong,
 .evolution-requirement span {
   font-size: 11px;

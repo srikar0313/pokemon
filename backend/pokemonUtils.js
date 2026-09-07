@@ -256,6 +256,32 @@ function createPokemonUtils({
     if (!canonical) return { ...pokemon };
     const types = Array.isArray(canonical.types) ? [...canonical.types] : [];
     const baseStats = getCanonicalBaseStats(pokemon);
+    const formIdByRegion = {
+      alola: "alolan",
+      galar: "galarian",
+      hisui: "hisuian",
+      paldea: "paldean",
+    };
+    const configuredForms = pokemon.forms || [];
+    const forms = (canonical.forms || [])
+      .filter((form) => form.category === "regional" && form.region)
+      .map((form) => {
+        const id = formIdByRegion[form.region] || form.region;
+        const configured = configuredForms.find((entry) => entry.id === id) || {};
+        return {
+          ...configured,
+          id,
+          name: `${formatEvolutionValue(form.region)} Form`,
+          category: "regional",
+          types: form.types || configured.types || [],
+          imageId: form.pokemonId,
+          artwork: form.artwork,
+          abilities: form.abilities || [],
+        };
+      });
+    configuredForms.forEach((form) => {
+      if (!forms.some((candidate) => candidate.id === form.id)) forms.push(form);
+    });
     return {
       ...pokemon,
       hp: baseStats?.maxHp ?? pokemon.hp,
@@ -273,6 +299,11 @@ function createPokemonUtils({
       artwork: { ...(canonical.artwork || {}) },
       baseHappiness: canonical.baseHappiness ?? pokemon.baseHappiness ?? 70,
       genderRate: canonical.genderRate ?? pokemon.genderRate ?? -1,
+      abilities: canonical.abilities || pokemon.abilities || [],
+      learnset: canonical.learnset || pokemon.learnset || [],
+      learnsetVersionGroup:
+        canonical.learnsetVersionGroup || pokemon.learnsetVersionGroup || null,
+      forms,
       isLegendary: Boolean(canonical.isLegendary),
       isMythical: Boolean(canonical.isMythical),
     };
@@ -371,6 +402,34 @@ function createPokemonUtils({
       0,
     );
     return stableRoll < rate ? "female" : "male";
+  }
+
+  function getNormalAbilities(abilities = []) {
+    const normal = abilities.filter((ability) => ability?.name && !ability.hidden);
+    return normal.length ? normal : abilities.filter((ability) => ability?.name);
+  }
+
+  function getDeterministicAbility(abilities, pokemon = {}) {
+    const available = getNormalAbilities(abilities);
+    if (!available.length) return null;
+    const identity = `${pokemon.speciesId || pokemon.id || ""}:${pokemon.name || ""}`;
+    const index = [...identity].reduce(
+      (value, character) =>
+        (value * 31 + character.charCodeAt(0)) % available.length,
+      0,
+    );
+    return { ...available[index] };
+  }
+
+  function normalizeAbility(ability, abilities, pokemon = {}) {
+    const available = getNormalAbilities(abilities);
+    if (!available.length) return null;
+    const savedName = typeof ability === "string" ? ability : ability?.name;
+    const savedSlot = typeof ability === "object" ? ability?.slot : null;
+    const byName = available.find((candidate) => candidate.name === savedName);
+    if (byName) return { ...byName };
+    const bySlot = available.find((candidate) => candidate.slot === savedSlot);
+    return { ...(bySlot || getDeterministicAbility(available, pokemon)) };
   }
 
   function getPokemonFormDefinition(pokemonOrName, formId) {
@@ -545,20 +604,17 @@ function createPokemonUtils({
         ? template.moves
         : null;
     const savedMoves = Array.isArray(pokemon.moves) ? pokemon.moves : [];
-    const hasOwnedMoveState = savedMoves.some(
-      (move) => move && typeof move === "object",
-    );
-    const moveSource = hasOwnedMoveState
+    const moveSource = savedMoves.length
       ? savedMoves
-      : templateMoves || savedMoves.length
-        ? templateMoves || savedMoves
-        : defaultMoves;
+      : templateMoves || defaultMoves;
     const moves = moveSource.map((move) => {
       const moveName = getMoveName(move);
       const savedMove = savedMoves.find((saved) => getMoveName(saved) === moveName);
       return normalizeMove(move, savedMove);
     });
 
+    const canonicalLearnset =
+      canonical?.learnset || template.learnset || merged.learnset || [];
     const normalized = {
       ...merged,
       type: merged.type || types[0] || "Normal",
@@ -579,7 +635,9 @@ function createPokemonUtils({
       ),
       gender: getNormalizedGender(merged.gender, merged.genderRate, merged),
       moves,
-      learnset: normalizeLearnset(merged.learnset || []),
+      learnset: normalizeLearnset(canonicalLearnset),
+      learnsetVersionGroup:
+        canonical?.learnsetVersionGroup || merged.learnsetVersionGroup || null,
     };
     if (template?.name) {
       normalized.imageId = template.imageId || template.id || normalized.imageId;
@@ -636,6 +694,16 @@ function createPokemonUtils({
         });
       }
     }
+    normalized.abilities = (
+      form?.abilities?.length
+        ? form.abilities
+        : canonical?.abilities || merged.abilities || []
+    ).map((ability) => ({ ...ability }));
+    normalized.ability = normalizeAbility(
+      merged.ability,
+      normalized.abilities,
+      normalized,
+    );
 
     if (normalized.evolvedFrom) {
       const previousTemplate = getPokemonTemplateByName(normalized.evolvedFrom);
@@ -665,6 +733,7 @@ function createPokemonUtils({
     } else {
       delete normalized.pendingMove;
     }
+    delete normalized.battleModifiers;
     return normalized;
   }
 
@@ -811,6 +880,7 @@ function createPokemonUtils({
       getPokemonTemplates().find((pokemon) => pokemon.name === name) || {},
     );
     const multiplier = 1 + Math.max(0, level - 1) * 0.08;
+    const normalAbilities = getNormalAbilities(template.abilities);
     return {
       ...template,
       level,
@@ -823,6 +893,9 @@ function createPokemonUtils({
       status: "none",
       friendship: template.baseHappiness ?? template.friendship ?? 70,
       gender: rollPokemonGender(template.genderRate),
+      ability: normalAbilities.length
+        ? { ...normalAbilities[Math.floor(Math.random() * normalAbilities.length)] }
+        : null,
       moves: template.moves.map((move) => ({
         ...move,
         currentPp: move.maxPp ?? move.pp,
