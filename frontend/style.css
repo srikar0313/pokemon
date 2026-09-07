@@ -2980,11 +2980,40 @@ h3 {
   white-space: nowrap;
 }
 
+.party-presets-panel {
+  margin-bottom: 16px;
+}
+
+.party-presets-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.party-presets-title h3,
+.party-presets-title span {
+  display: block;
+}
+
+.party-presets-title span {
+  color: #61758f;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.party-preset-message {
+  border-left: 4px solid #2f9e69;
+  background: #e9f8f0;
+  color: #176340;
+  padding: 8px 10px;
+}
+
 .party-presets {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  margin-bottom: 16px;
 }
 
 .party-preset-slot {
@@ -3002,6 +3031,12 @@ h3 {
   gap: 8px;
 }
 
+.party-preset-state {
+  color: #61758f;
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .party-preset-pokemon {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -3016,7 +3051,8 @@ h3 {
 }
 
 .party-preset-actions button {
-  min-width: 68px;
+  flex: 1;
+  min-width: 0;
   margin: 0;
 }
 
@@ -4523,6 +4559,11 @@ button:disabled {
 
   .party-presets {
     grid-template-columns: 1fr;
+  }
+
+  .party-presets-title {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .quick-active-card {

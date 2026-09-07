@@ -10,6 +10,7 @@ let selectedArea = null;
 let teamCache = [];
 let storageCache = [];
 let partyPresetCache = [];
+let partyPresetMessage = "";
 let playerState = null;
 let shopCatalog = [];
 let pokedexCache = null;
@@ -311,6 +312,7 @@ function openOverlay(type) {
   if (type === "swap") renderSwapPicker();
   if (type === "storage") {
     storageUiState.detailIndex = null;
+    partyPresetMessage = "";
     renderStorageBrowser();
   }
   if (type === "quickPokemon") {
@@ -4039,15 +4041,23 @@ function renderPartyPresetSlots() {
     },
   );
   return `
-    <section class="party-presets" aria-label="Saved party slots">
-      ${slots
+    <section class="party-presets-panel" aria-label="Saved party slots">
+      <div class="party-presets-title">
+        <div>
+          <h3>Saved Parties</h3>
+          <span>Current team: ${teamCache.length}/${PARTY_LIMIT} Pokemon</span>
+        </div>
+        ${partyPresetMessage ? `<strong class="party-preset-message">${escapeHtml(partyPresetMessage)}</strong>` : ""}
+      </div>
+      <div class="party-presets">
+        ${slots
         .map((preset) => {
           const pokemon = preset.pokemon || [];
           return `
             <article class="party-preset-slot">
               <div class="party-preset-head">
-                <strong>Party ${preset.slot}</strong>
-                <span>${pokemon.length}/${PARTY_LIMIT}</span>
+                <strong>Saved Party ${preset.slot}</strong>
+                <span class="party-preset-state">${pokemon.length ? `${pokemon.length} saved` : "Empty"}</span>
               </div>
               <div class="party-preset-pokemon">
                 ${pokemon.length
@@ -4061,13 +4071,14 @@ function renderPartyPresetSlots() {
               </div>
               ${preset.missingCount ? `<small>${preset.missingCount} released Pokemon unavailable</small>` : ""}
               <div class="party-preset-actions">
-                <button class="secondary-btn" onclick="savePartyPresetSlot(${preset.slot})">Save</button>
-                <button class="primary-btn" onclick="loadPartyPresetSlot(${preset.slot})" ${pokemon.length === 0 ? "disabled" : ""}>Load</button>
+                <button class="secondary-btn" onclick="savePartyPresetSlot(${preset.slot})">${pokemon.length ? "Replace Saved Team" : "Save Current Team Here"}</button>
+                <button class="primary-btn" onclick="loadPartyPresetSlot(${preset.slot})" ${pokemon.length === 0 ? "disabled" : ""}>Use This Team</button>
               </div>
             </article>
           `;
         })
         .join("")}
+      </div>
     </section>
   `;
 }
@@ -4510,6 +4521,7 @@ async function randomizePartyFromStorage() {
     storageUiState.detailIndex = null;
     storageUiState.page = 1;
     await loadInventory();
+    partyPresetMessage = data.message;
     renderBattlePlaceholder(data.message);
   } catch (error) {
     alert("Could not create a random party.");
@@ -4539,6 +4551,7 @@ async function savePartyPresetSlot(slot) {
     return;
   }
   partyPresetCache = data.slots || partyPresetCache;
+  partyPresetMessage = `Current team saved in Party ${slot}.`;
   renderStorageBrowser();
 }
 
@@ -4561,6 +4574,10 @@ async function loadPartyPresetSlot(slot) {
   storageUiState.detailIndex = null;
   storageUiState.page = 1;
   await loadInventory();
+  partyPresetMessage = data.missingCount
+    ? `Party ${slot} loaded with ${data.missingCount} unavailable member.`
+    : `Party ${slot} is now your active team.`;
+  renderStorageBrowser();
   renderBattlePlaceholder(
     data.missingCount
       ? `Party ${slot} loaded without ${data.missingCount} unavailable Pokemon.`
