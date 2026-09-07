@@ -68,7 +68,7 @@ export class BattlePresentationController {
   }
 
   async hit(side, { heavy = false, critical = false, effectiveness = 1 } = {}) {
-    await this.audio.playHit(heavy || critical || effectiveness > 1);
+    await this.audio.playHit(heavy || effectiveness > 1, { critical });
     this.scene?.pulseHit(side, critical);
     const tone = critical ? "critical" : effectiveness > 1 ? "effective" : "hit";
     flashBattlefield(this.container, tone, this.reducedMotion);
@@ -82,10 +82,14 @@ export class BattlePresentationController {
   }
 
   async switchPokemon(side, pokemon = {}) {
-    await this.audio.playSendOut(pokemon.speciesId || pokemon.id || 1);
+    await this.audio.playSendOut(pokemon);
     const target = this.getSide(side);
     if (target) flashBattlefield(target, "send-out", this.reducedMotion);
     return Boolean(this.scene);
+  }
+
+  playBall() {
+    return this.audio.playBall();
   }
 
   setStatus(side, status) {
@@ -96,8 +100,16 @@ export class BattlePresentationController {
     createAbilityAnnouncement(this.getSide(side), text, this.reducedMotion);
   }
 
-  playEvolutionCue() {
-    return this.audio.playEvolutionCue();
+  playHealing() {
+    return this.audio.playHealing();
+  }
+
+  playStatus() {
+    return this.audio.playStatus();
+  }
+
+  playEvolutionCue(pokemon) {
+    return this.audio.playEvolutionCue(pokemon);
   }
 
   getSide(side) {

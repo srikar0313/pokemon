@@ -754,7 +754,10 @@ async function playBattleTurnAnimation({
   showBattleLogFeedback(lines, playerPokemon, opponentPokemon, "player");
 
   const opponentStatus = getStatusFeedback(opponentStatusBefore, opponentStatusAfter);
-  if (opponentStatus) showFloatingBattleText("opponent", opponentStatus, "status");
+  if (opponentStatus) {
+    showFloatingBattleText("opponent", opponentStatus, "status");
+    runBattlePresentation("playStatus");
+  }
 
   if (playerDamage > 0 || opponentActed) {
     await animateAttack(
@@ -770,7 +773,13 @@ async function playBattleTurnAnimation({
   showBattleLogFeedback(lines, playerPokemon, opponentPokemon, "opponent");
 
   const playerStatusText = getStatusFeedback(playerStatusBefore, playerStatusAfter);
-  if (playerStatusText) showFloatingBattleText("player", playerStatusText, "status");
+  if (playerStatusText) {
+    showFloatingBattleText("player", playerStatusText, "status");
+    runBattlePresentation("playStatus");
+  }
+  if (playerAfterHp > playerBeforeHp || opponentAfterHp > opponentBeforeHp) {
+    runBattlePresentation("playHealing");
+  }
   runBattlePresentation("setStatus", "player", playerStatusAfter);
   runBattlePresentation("setStatus", "opponent", opponentStatusAfter);
 
@@ -2048,6 +2057,7 @@ async function interactNearbyNpc() {
     npcBattle = data.session;
     setRouteDialogue(data.npc, data.dialogue, "battle");
     showNpcBattle(data.log || []);
+    animatePokemonSwitch("opponent", npcBattle.opponentPokemon);
     return;
   }
 
@@ -2204,6 +2214,7 @@ async function startGymBattle(gymId) {
   }
   gymBattle = data.session;
   showGymBattle(data.log);
+  animatePokemonSwitch("opponent", gymBattle.gymPokemon);
 }
 
 function renderGymTeamIndicators() {
@@ -2431,6 +2442,7 @@ async function startEliteRun() {
   }
   eliteBattle = data.session;
   showEliteBattle(data.log);
+  animatePokemonSwitch("opponent", eliteBattle.opponentPokemon);
 }
 
 function showEliteBattle(lines = []) {
@@ -4944,6 +4956,7 @@ async function useBattleItem(itemId) {
     "status",
   );
   runBattlePresentation("setStatus", "player", playerStatus);
+  runBattlePresentation("playHealing");
   appendBattleLog([data.message]);
   updateBattleDisplay();
   displayStats();
@@ -5007,6 +5020,7 @@ async function throwBall(type) {
 
   const hpPercent = currentWildHP / wild.maxHp;
   setBattleActionBusy(true);
+  runBattlePresentation("playBall");
   let data;
   try {
     const response = await fetch("/api/catch", {
@@ -5182,8 +5196,10 @@ function queueEvolutionPresentations(lines = []) {
 function showNextEvolutionPresentation() {
   if (evolutionPresentationActive || !evolutionPresentationQueue.length) return;
   evolutionPresentationActive = true;
-  runBattlePresentation("playEvolutionCue");
   const event = evolutionPresentationQueue.shift();
+  runBattlePresentation("playEvolutionCue", {
+    speciesId: pokemonImageIdByName.get(event.to.toLowerCase()),
+  });
   const overlay = document.createElement("div");
   overlay.className = "evolution-overlay";
   overlay.innerHTML = `
