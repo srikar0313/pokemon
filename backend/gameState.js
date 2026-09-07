@@ -462,6 +462,48 @@ function createGameState({
     return { success: true, slots: getPartyPresetSlots() };
   }
 
+  function updatePartyPreset(slotNumber, { action, ownedId, position } = {}) {
+    const slot = Number(slotNumber);
+    if (!Number.isInteger(slot) || slot < 1 || slot > PARTY_PRESET_COUNT) {
+      return { error: "Invalid party slot." };
+    }
+
+    const state = loadPlayerState();
+    const preset = state.partyPresets[slot - 1];
+    if (action === "clear") {
+      preset.pokemonIds = [];
+    } else if (action === "remove") {
+      const removeIndex = Number(position);
+      if (
+        !Number.isInteger(removeIndex) ||
+        removeIndex < 0 ||
+        removeIndex >= preset.pokemonIds.length
+      ) {
+        return { error: "Choose a valid Pokemon slot to remove." };
+      }
+      preset.pokemonIds.splice(removeIndex, 1);
+    } else if (action === "add") {
+      const normalizedOwnedId = String(ownedId || "").trim();
+      const { team, storage } = loadTeamAndStorage();
+      const ownedPokemon = [...team, ...storage].find(
+        (pokemon) => pokemon.ownedId === normalizedOwnedId,
+      );
+      if (!ownedPokemon) return { error: "That Pokemon is no longer owned." };
+      if (preset.pokemonIds.includes(normalizedOwnedId)) {
+        return { error: `${ownedPokemon.name} is already in Party ${slot}.` };
+      }
+      if (preset.pokemonIds.length >= teamLimit) {
+        return { error: `Party ${slot} already has ${teamLimit} Pokemon.` };
+      }
+      preset.pokemonIds.push(normalizedOwnedId);
+    } else {
+      return { error: "Invalid party slot action." };
+    }
+
+    savePlayerState(state);
+    return { success: true, slots: getPartyPresetSlots() };
+  }
+
   function loadPartyPreset(slotNumber) {
     const slot = Number(slotNumber);
     if (!Number.isInteger(slot) || slot < 1 || slot > PARTY_PRESET_COUNT) {
@@ -513,6 +555,7 @@ function createGameState({
     markPokedexCaught,
     getPartyPresetSlots,
     savePartyPreset,
+    updatePartyPreset,
     loadPartyPreset,
     resolvePokedexSpeciesId,
     updateAchievements,

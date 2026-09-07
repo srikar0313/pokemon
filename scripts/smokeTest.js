@@ -198,6 +198,31 @@ function main() {
   const ownedBeforePreset = partyPresetState.loadTeamAndStorage();
   const savedPreset = partyPresetState.savePartyPreset(1);
   assert(savedPreset.success, "party preset could not be saved");
+  const addedPresetPokemon = partyPresetState.updatePartyPreset(3, {
+    action: "add",
+    ownedId: ownedBeforePreset.storage[0].ownedId,
+  });
+  assert(
+    addedPresetPokemon.success &&
+      addedPresetPokemon.slots[2].pokemon[0].name === "Squirtle",
+    "stored Pokemon could not be added directly to a party preset",
+  );
+  assert(
+    partyPresetState.updatePartyPreset(3, {
+      action: "add",
+      ownedId: ownedBeforePreset.storage[0].ownedId,
+    }).error,
+    "party preset accepted the same owned Pokemon twice",
+  );
+  const removedPresetPokemon = partyPresetState.updatePartyPreset(3, {
+    action: "remove",
+    position: 0,
+  });
+  assert(
+    removedPresetPokemon.success &&
+      removedPresetPokemon.slots[2].pokemon.length === 0,
+    "Pokemon could not be removed from a party preset",
+  );
   partyPresetState.saveTeamAndStorage(
     [ownedBeforePreset.storage[0]],
     [...ownedBeforePreset.team, ...ownedBeforePreset.storage.slice(1)],

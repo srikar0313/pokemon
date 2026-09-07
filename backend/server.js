@@ -176,6 +176,7 @@ const {
   updateAchievements,
   getPartyPresetSlots,
   savePartyPreset,
+  updatePartyPreset,
   loadPartyPreset,
 } = gameState;
 
@@ -2796,6 +2797,20 @@ app.post("/api/party-presets/save", (req, res) => {
     });
   }
   const result = savePartyPreset(req.body?.slot);
+  return result.error ? res.status(400).json(result) : res.json(result);
+});
+
+app.post("/api/party-presets/update", (req, res) => {
+  if (
+    activeNpcSessions.get("player")?.status === "active" ||
+    activeGymSessions.get("player")?.status === "active" ||
+    activeEliteSessions.get("player")?.status === "active"
+  ) {
+    return res.status(400).json({
+      error: "Finish the current battle before editing a party slot.",
+    });
+  }
+  const result = updatePartyPreset(req.body?.slot, req.body);
   return result.error ? res.status(400).json(result) : res.json(result);
 });
 

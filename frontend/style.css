@@ -3010,50 +3010,167 @@ h3 {
   padding: 8px 10px;
 }
 
-.party-presets {
+.party-deck-tabs {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
-.party-preset-slot {
-  border: 2px solid #cfdeed;
-  border-radius: 8px;
-  background: #f7fbff;
-  padding: 10px;
-}
-
-.party-preset-head,
-.party-preset-actions {
+.party-deck-tab {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 8px;
+  min-height: 42px;
+  margin: 0;
+  border: 2px solid #b8c9da;
+  border-radius: 6px;
+  background: #eaf1f7;
+  color: #314863;
+  font-weight: 900;
 }
 
-.party-preset-state {
-  color: #61758f;
-  font-size: 12px;
-  font-weight: 800;
+.party-deck-tab.active {
+  border-color: #e5a923;
+  background: #ffd75a;
+  color: #442f00;
 }
 
-.party-preset-pokemon {
+.party-deck-tab span {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 2px 7px;
+  font-size: 11px;
+}
+
+.party-deck-builder {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  min-height: 38px;
-  margin: 8px 0;
+  gap: 7px;
+  border: 2px solid #adbdcc;
+  border-radius: 8px;
+  background: #dce8f1;
+  padding: 9px;
 }
 
-.party-preset-pokemon img {
+.party-deck-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 116px;
+  margin: 0;
+  border: 2px solid #7089a2;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #253850;
+  padding: 6px 4px;
+  overflow: hidden;
+}
+
+.party-deck-card:not(.empty):hover {
+  border-color: #ca4141;
+}
+
+.party-deck-card.empty {
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.45);
+  color: #71869a;
+}
+
+.party-deck-card.empty > strong {
+  font-size: 28px;
+}
+
+.party-deck-card img {
   width: 100%;
-  height: 36px;
+  height: 60px;
   object-fit: contain;
+}
+
+.party-deck-card strong,
+.party-deck-card small {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.party-deck-number {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  color: #75889c;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.party-deck-remove {
+  position: absolute;
+  inset: auto 0 0;
+  background: #b63838;
+  color: #ffffff;
+  opacity: 0;
+  padding: 3px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.party-deck-card:hover .party-deck-remove,
+.party-deck-card:focus .party-deck-remove {
+  opacity: 1;
+}
+
+.party-deck-current {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.party-deck-current-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.party-deck-current-list button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  margin: 0;
+  border: 1px solid #b8c9da;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #314863;
+  padding: 3px 7px;
+}
+
+.party-deck-current-list img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.party-preset-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
 }
 
 .party-preset-actions button {
   flex: 1;
   min-width: 0;
   margin: 0;
+}
+
+.preset-add-btn {
+  background: #ffd75a;
+  color: #442f00;
 }
 
 .storage-controls {
@@ -4557,12 +4674,21 @@ button:disabled {
     width: 100%;
   }
 
-  .party-presets {
-    grid-template-columns: 1fr;
+  .party-deck-builder {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .party-presets-title {
     align-items: stretch;
+    flex-direction: column;
+  }
+
+  .party-deck-current {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .party-preset-actions {
     flex-direction: column;
   }
 
