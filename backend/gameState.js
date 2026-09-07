@@ -1,4 +1,7 @@
+const { randomUUID } = require("crypto");
+
 const POKEDEX_IDENTITY_VERSION = "species-v1";
+const PARTY_PRESET_COUNT = 3;
 
 const defaultPlayerState = {
   trainerName: "Player",
@@ -67,6 +70,10 @@ const defaultPlayerState = {
   quests: {
     claimed: [],
   },
+  partyPresets: Array.from({ length: PARTY_PRESET_COUNT }, (_, index) => ({
+    slot: index + 1,
+    pokemonIds: [],
+  })),
   defeatedNpcs: [],
   achievements: [],
 };
@@ -79,6 +86,21 @@ function uniqueNumbers(values) {
 
 function uniqueStrings(values) {
   return [...new Set(values.filter(Boolean).map(String))];
+}
+
+function normalizePartyPresets(presets = []) {
+  const presetsBySlot = new Map(
+    (Array.isArray(presets) ? presets : [])
+      .filter((preset) => Number.isInteger(Number(preset?.slot)))
+      .map((preset) => [Number(preset.slot), preset]),
+  );
+  return Array.from({ length: PARTY_PRESET_COUNT }, (_, index) => {
+    const slot = index + 1;
+    return {
+      slot,
+      pokemonIds: uniqueStrings(presetsBySlot.get(slot)?.pokemonIds || []),
+    };
+  });
 }
 
 function createRandomPartySelection(
@@ -205,7 +227,18 @@ function createGameState({
     };
   }
 
+  function ensureOwnedPokemonIds(team, storage) {
+    const usedIds = new Set();
+    [...team, ...storage].forEach((pokemon) => {
+      let ownedId = String(pokemon.ownedId || "").trim();
+      if (!ownedId || usedIds.has(ownedId)) ownedId = randomUUID();
+      pokemon.ownedId = ownedId;
+      usedIds.add(ownedId);
+    });
+  }
+
   function saveTeamAndStorage(team, storage) {
+    ensureOwnedPokemonIds(team, storage);
     writeJsonFile(inventoryPath, team.map(normalizePokemon));
     writeJsonFile(storagePath, storage.map(normalizePokemon));
   }
@@ -232,6 +265,7 @@ function createGameState({
       team = team.slice(0, teamLimit);
     }
 
+    ensureOwnedPokemonIds(team, storage);
     saveTeamAndStorage(team, storage);
     return { team, storage };
   }
@@ -297,6 +331,7 @@ function createGameState({
         ...(state.quests || {}),
         claimed: uniqueStrings(state.quests?.claimed || []),
       },
+      partyPresets: normalizePartyPresets(state.partyPresets),
       defeatedNpcs: uniqueNumbers(state.defeatedNpcs || []),
       badges,
       championDefeated,
@@ -395,6 +430,73 @@ function createGameState({
     return savePlayerState(state);
   }
 
+  function getPartyPresetSlots() {
+    const state = loadPlayerState();
+    const { team, storage } = loadTeamAndStorage();
+    const ownedById = new Map(
+      [...team, ...storage].map((pokemon) => [pokemon.ownedId, pokemon]),
+    );
+    return state.partyPresets.map((preset) => ({
+      slot: preset.slot,
+      pokemon: preset.pokemonIds
+        .map((ownedId) => ownedById.get(ownedId))
+        .filter(Boolean),
+      missingCount: preset.pokemonIds.filter(
+        (ownedId) => !ownedById.has(ownedId),
+      ).length,
+    }));
+  }
+
+  function savePartyPreset(slotNumber) {
+    const slot = Number(slotNumber);
+    if (!Number.isInteger(slot) || slot < 1 || slot > PARTY_PRESET_COUNT) {
+      return { error: "Invalid party slot." };
+    }
+    const { team } = loadTeamAndStorage();
+    const state = loadPlayerState();
+    state.partyPresets[slot - 1] = {
+      slot,
+      pokemonIds: team.map((pokemon) => pokemon.ownedId),
+    };
+    savePlayerState(state);
+    return { success: true, slots: getPartyPresetSlots() };
+  }
+
+  function loadPartyPreset(slotNumber) {
+    const slot = Number(slotNumber);
+    if (!Number.isInteger(slot) || slot < 1 || slot > PARTY_PRESET_COUNT) {
+      return { error: "Invalid party slot." };
+    }
+    const state = loadPlayerState();
+    const preset = state.partyPresets[slot - 1];
+    if (!preset?.pokemonIds.length) return { error: "This party slot is empty." };
+
+    const { team, storage } = loadTeamAndStorage();
+    const allOwned = [...team, ...storage];
+    const ownedById = new Map(
+      allOwned.map((pokemon) => [pokemon.ownedId, pokemon]),
+    );
+    const selectedTeam = preset.pokemonIds
+      .map((ownedId) => ownedById.get(ownedId))
+      .filter(Boolean)
+      .slice(0, teamLimit);
+    if (!selectedTeam.length) {
+      return { error: "None of this slot's Pokemon are still owned." };
+    }
+
+    const selectedIds = new Set(selectedTeam.map((pokemon) => pokemon.ownedId));
+    const nextStorage = allOwned.filter(
+      (pokemon) => !selectedIds.has(pokemon.ownedId),
+    );
+    saveTeamAndStorage(selectedTeam, nextStorage);
+    return {
+      success: true,
+      team: selectedTeam,
+      storage: nextStorage,
+      missingCount: preset.pokemonIds.length - selectedTeam.length,
+    };
+  }
+
   return {
     defaultPlayerState,
     readJsonFile,
@@ -409,12 +511,16 @@ function createGameState({
     savePlayerState,
     markPokedexSeen,
     markPokedexCaught,
+    getPartyPresetSlots,
+    savePartyPreset,
+    loadPartyPreset,
     resolvePokedexSpeciesId,
     updateAchievements,
   };
 }
 
 module.exports = {
+  PARTY_PRESET_COUNT,
   POKEDEX_IDENTITY_VERSION,
   createRandomPartySelection,
   createGameState,

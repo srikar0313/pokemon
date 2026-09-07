@@ -182,6 +182,40 @@ function main() {
     randomizedParty.team.some((entry) => entry.name.startsWith("Box-")),
     "random party did not select from storage",
   );
+  memoryFiles.clear();
+  const partyPresetState = createMemoryGameState(pokemonUtils);
+  const presetTeam = ["Pikachu", "Bulbasaur", "Charmander"].map((name) =>
+    pokemonUtils.normalizePokemon(
+      pokemonUtils.getPokemonTemplateByName(name),
+    ),
+  );
+  const presetStorage = ["Squirtle", "Caterpie"].map((name) =>
+    pokemonUtils.normalizePokemon(
+      pokemonUtils.getPokemonTemplateByName(name),
+    ),
+  );
+  partyPresetState.saveTeamAndStorage(presetTeam, presetStorage);
+  const ownedBeforePreset = partyPresetState.loadTeamAndStorage();
+  const savedPreset = partyPresetState.savePartyPreset(1);
+  assert(savedPreset.success, "party preset could not be saved");
+  partyPresetState.saveTeamAndStorage(
+    [ownedBeforePreset.storage[0]],
+    [...ownedBeforePreset.team, ...ownedBeforePreset.storage.slice(1)],
+  );
+  const loadedPreset = partyPresetState.loadPartyPreset(1);
+  assert(loadedPreset.success, "party preset could not be loaded");
+  assert(
+    loadedPreset.team.map((entry) => entry.name).join("|") ===
+      "Pikachu|Bulbasaur|Charmander",
+    "party preset did not restore its exact saved members",
+  );
+  const presetOwnedIds = [...loadedPreset.team, ...loadedPreset.storage].map(
+    (entry) => entry.ownedId,
+  );
+  assert(
+    presetOwnedIds.length === 5 && new Set(presetOwnedIds).size === 5,
+    "party preset load lost or duplicated owned Pokemon",
+  );
   assert(Array.isArray(gameData.quests), "quests did not load");
   assert(
     gameData.shinyRollChance === 0.01,
@@ -1066,6 +1100,7 @@ function main() {
 
   const stonePikachu = pokemonUtils.normalizePokemon({
     ...starterTemplate,
+    ownedId: "preset-evolution-test",
     level: 24,
     xp: 31,
     shiny: true,
@@ -1082,6 +1117,10 @@ function main() {
   assert(thunderEvolution.pokemon.shiny, "stone evolution lost shiny state");
   assert(thunderEvolution.pokemon.level === 24, "stone evolution lost level");
   assert(thunderEvolution.pokemon.xp === 31, "stone evolution lost XP");
+  assert(
+    thunderEvolution.pokemon.ownedId === "preset-evolution-test",
+    "evolution lost party-preset ownership identity",
+  );
   assert(
     thunderEvolution.pokemon.moves[0].currentPp === 2,
     "stone evolution reset move PP",

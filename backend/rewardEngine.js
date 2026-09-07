@@ -119,6 +119,7 @@ function createRewardEngine({
       .map(normalizeLearnedMove);
     const evolvedPokemon = normalizePokemon({
       ...targetTemplate,
+      ownedId: pokemon.ownedId,
       level: pokemon.level || 1,
       xp: pokemon.xp ?? 0,
       shiny: pokemon.shiny ?? false,

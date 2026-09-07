@@ -9,6 +9,7 @@ let wildParticipantIndexes = new Set();
 let selectedArea = null;
 let teamCache = [];
 let storageCache = [];
+let partyPresetCache = [];
 let playerState = null;
 let shopCatalog = [];
 let pokedexCache = null;
@@ -3594,6 +3595,7 @@ async function loadInventory() {
   const data = await response.json();
   teamCache = (data.team || []).map(normalizePokemon);
   storageCache = (data.storage || []).map(normalizePokemon);
+  partyPresetCache = data.partyPresets || [];
 
   if (teamCache.length > 0) {
     if (activeInventoryIndex >= teamCache.length) activeInventoryIndex = 0;
@@ -3936,6 +3938,7 @@ function renderStorageBrowser(storage = storageCache) {
   const showingEnd = Math.min(start + STORAGE_PAGE_SIZE, filtered.length);
 
   browser.innerHTML = `
+    ${renderPartyPresetSlots()}
     <div class="storage-browser-head">
       <div>
         <h3>Storage ${storage.length}</h3>
@@ -4024,6 +4027,48 @@ function renderStorageBrowser(storage = storageCache) {
       <strong>Page ${storageUiState.page}/${pageCount}</strong>
       <button class="secondary-btn" onclick="changeStoragePage(1)" ${storageUiState.page >= pageCount ? "disabled" : ""}>Next</button>
     </div>
+  `;
+}
+
+function renderPartyPresetSlots() {
+  const slots = Array.from({ length: 3 }, (_, index) =>
+    partyPresetCache.find((preset) => preset.slot === index + 1) || {
+      slot: index + 1,
+      pokemon: [],
+      missingCount: 0,
+    },
+  );
+  return `
+    <section class="party-presets" aria-label="Saved party slots">
+      ${slots
+        .map((preset) => {
+          const pokemon = preset.pokemon || [];
+          return `
+            <article class="party-preset-slot">
+              <div class="party-preset-head">
+                <strong>Party ${preset.slot}</strong>
+                <span>${pokemon.length}/${PARTY_LIMIT}</span>
+              </div>
+              <div class="party-preset-pokemon">
+                ${pokemon.length
+                  ? pokemon
+                      .map(
+                        (entry) =>
+                          `<img src="${getPokemonImage(entry)}" alt="${escapeHtml(entry.name)}" title="${escapeHtml(entry.name)} Lv${entry.level || 1}">`,
+                      )
+                      .join("")
+                  : "<small>Empty slot</small>"}
+              </div>
+              ${preset.missingCount ? `<small>${preset.missingCount} released Pokemon unavailable</small>` : ""}
+              <div class="party-preset-actions">
+                <button class="secondary-btn" onclick="savePartyPresetSlot(${preset.slot})">Save</button>
+                <button class="primary-btn" onclick="loadPartyPresetSlot(${preset.slot})" ${pokemon.length === 0 ? "disabled" : ""}>Load</button>
+              </div>
+            </article>
+          `;
+        })
+        .join("")}
+    </section>
   `;
 }
 
@@ -4472,6 +4517,55 @@ async function randomizePartyFromStorage() {
     storageRandomizing = false;
     renderStorageBrowser();
   }
+}
+
+async function savePartyPresetSlot(slot) {
+  if (battleActionBusy || isInBattle || npcBattle || gymBattle || eliteBattle) {
+    alert("Finish the current battle before saving a party slot.");
+    return;
+  }
+  const existing = partyPresetCache.find((preset) => preset.slot === slot);
+  if (existing?.pokemon?.length && !confirm(`Replace saved Party ${slot}?`)) {
+    return;
+  }
+  const response = await fetch("/api/party-presets/save", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ slot }),
+  });
+  const data = await response.json();
+  if (!response.ok || data.error) {
+    alert(data.error || "Could not save this party.");
+    return;
+  }
+  partyPresetCache = data.slots || partyPresetCache;
+  renderStorageBrowser();
+}
+
+async function loadPartyPresetSlot(slot) {
+  if (battleActionBusy || isInBattle || npcBattle || gymBattle || eliteBattle) {
+    alert("Finish the current battle before loading a party slot.");
+    return;
+  }
+  const response = await fetch("/api/party-presets/load", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ slot }),
+  });
+  const data = await response.json();
+  if (!response.ok || data.error) {
+    alert(data.error || "Could not load this party.");
+    return;
+  }
+  activeInventoryIndex = 0;
+  storageUiState.detailIndex = null;
+  storageUiState.page = 1;
+  await loadInventory();
+  renderBattlePlaceholder(
+    data.missingCount
+      ? `Party ${slot} loaded without ${data.missingCount} unavailable Pokemon.`
+      : `Party ${slot} loaded.`,
+  );
 }
 
 async function confirmStorageSwap(

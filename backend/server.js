@@ -174,6 +174,9 @@ const {
   savePlayerState,
   markPokedexSeen,
   updateAchievements,
+  getPartyPresetSlots,
+  savePartyPreset,
+  loadPartyPreset,
 } = gameState;
 
 const battleEngine = createBattleEngine({ getRandomInt });
@@ -2523,6 +2526,7 @@ app.get("/api/inventory", (req, res) => {
     res.json({
       team: team.map(addEvolutionOptions),
       storage: storage.map(addEvolutionOptions),
+      partyPresets: getPartyPresetSlots(),
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to read inventory" });
@@ -2779,6 +2783,34 @@ app.post("/api/party/randomize", (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: "Failed to create a random party" });
   }
+});
+
+app.post("/api/party-presets/save", (req, res) => {
+  if (
+    activeNpcSessions.get("player")?.status === "active" ||
+    activeGymSessions.get("player")?.status === "active" ||
+    activeEliteSessions.get("player")?.status === "active"
+  ) {
+    return res.status(400).json({
+      error: "Finish the current battle before saving a party slot.",
+    });
+  }
+  const result = savePartyPreset(req.body?.slot);
+  return result.error ? res.status(400).json(result) : res.json(result);
+});
+
+app.post("/api/party-presets/load", (req, res) => {
+  if (
+    activeNpcSessions.get("player")?.status === "active" ||
+    activeGymSessions.get("player")?.status === "active" ||
+    activeEliteSessions.get("player")?.status === "active"
+  ) {
+    return res.status(400).json({
+      error: "Finish the current battle before loading a party slot.",
+    });
+  }
+  const result = loadPartyPreset(req.body?.slot);
+  return result.error ? res.status(400).json(result) : res.json(result);
 });
 
 app.post("/api/heal-pokemon", (req, res) => {
