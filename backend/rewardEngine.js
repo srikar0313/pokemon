@@ -430,6 +430,14 @@ function createRewardEngine({
     return { team: updatedTeam, results, xpEach };
   }
 
+  function applyXpToParty(team, xpAmount) {
+    return applyXpToParticipants(
+      team,
+      team.map((_, index) => index),
+      xpAmount,
+    );
+  }
+
   function appendXpLog(log, xpResults) {
     (xpResults || []).forEach((result) => {
       if (!result.pokemon || result.xpAward <= 0) return;
@@ -449,6 +457,7 @@ function createRewardEngine({
     calculateBattleXp,
     applyXpToPokemon,
     applyXpToParticipants,
+    applyXpToParty,
     appendXpLog,
     evolvePokemonFromTemplate,
     performEvolution,

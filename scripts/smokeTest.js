@@ -151,6 +151,32 @@ function main() {
     return { pokemon: current, result };
   };
 
+  const sharedXpTeam = ["Pikachu", "Snorlax", "Mew"].map((name, index) =>
+    pokemonUtils.normalizePokemon({
+      ...pokemonUtils.getPokemonTemplateByName(name),
+      level: 20,
+      xp: 0,
+      currentHp:
+        index === 1
+          ? 0
+          : pokemonUtils.getPokemonTemplateByName(name).maxHp,
+    }),
+  );
+  const sharedXpResult = rewardEngine.applyXpToParty(sharedXpTeam, 90);
+  assert(
+    sharedXpResult.results.length === sharedXpTeam.length &&
+      sharedXpResult.results.every((result) => result.xpAward === 30),
+    "battle XP was not shared across every active-party Pokemon",
+  );
+  assert(
+    sharedXpResult.team.every((pokemon) => pokemon.xp === 30),
+    "one or more active-party Pokemon did not gain shared XP",
+  );
+  assert(
+    sharedXpResult.team[1].currentHp === 0,
+    "fainted party Pokemon was revived by shared XP",
+  );
+
   assert(playerState.trainerName, "player state did not load");
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");

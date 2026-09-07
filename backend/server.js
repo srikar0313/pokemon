@@ -240,7 +240,7 @@ const {
   awardCoins,
   calculateBattleXp,
   applyXpToPokemon,
-  applyXpToParticipants,
+  applyXpToParty,
   appendXpLog,
   performEvolution,
 } = rewardEngine;
@@ -254,7 +254,6 @@ function calculateBattleEffortXp(opponentPokemon, battleMultiplier = 1) {
 
 function applyBattleEffortXp(
   team,
-  participantIndexes,
   opponentPokemon,
   battleMultiplier,
   log,
@@ -263,7 +262,7 @@ function applyBattleEffortXp(
     return { team, xpResult: null, xpAward: 0 };
   }
   const xpAward = calculateBattleEffortXp(opponentPokemon, battleMultiplier);
-  const xpResult = applyXpToParticipants(team, participantIndexes, xpAward);
+  const xpResult = applyXpToParty(team, xpAward);
   appendXpLog(log, xpResult.results);
   return {
     team: xpResult.team,
@@ -1249,11 +1248,7 @@ app.post("/api/gym/move", (req, res) => {
 
   if (gymPokemon.currentHp <= 0) {
     const xpAward = calculateBattleXp(gymPokemon, 3.25);
-    const xpResult = applyXpToParticipants(
-      session.playerTeam,
-      session.participantIndexes || [session.playerIndex],
-      xpAward,
-    );
+    const xpResult = applyXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
     log.push(`Gym ${gymPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
@@ -1321,11 +1316,7 @@ app.post("/api/gym/move", (req, res) => {
 
   if (activeGymPokemon?.currentHp <= 0) {
     const xpAward = calculateBattleXp(activeGymPokemon, 3.25);
-    const xpResult = applyXpToParticipants(
-      session.playerTeam,
-      session.participantIndexes || [session.playerIndex],
-      xpAward,
-    );
+    const xpResult = applyXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
     log.push(`Gym ${activeGymPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
@@ -1352,7 +1343,6 @@ app.post("/api/gym/move", (req, res) => {
 
   const effortResult = applyBattleEffortXp(
     session.playerTeam,
-    session.participantIndexes || [session.playerIndex],
     gymPokemon,
     3.25,
     log,
@@ -1451,11 +1441,7 @@ app.post("/api/elite/move", (req, res) => {
 
   if (opponentPokemon.currentHp <= 0) {
     const xpAward = calculateBattleXp(opponentPokemon, session.isChampion ? 4.5 : 4);
-    const xpResult = applyXpToParticipants(
-      session.playerTeam,
-      session.participantIndexes || [session.playerIndex],
-      xpAward,
-    );
+    const xpResult = applyXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
     log.push(`${opponentPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
@@ -1563,11 +1549,7 @@ app.post("/api/elite/move", (req, res) => {
       activeOpponentPokemon,
       session.isChampion ? 4.5 : 4,
     );
-    const xpResult = applyXpToParticipants(
-      session.playerTeam,
-      session.participantIndexes || [session.playerIndex],
-      xpAward,
-    );
+    const xpResult = applyXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
     log.push(`${activeOpponentPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
@@ -1622,7 +1604,6 @@ app.post("/api/elite/move", (req, res) => {
 
   const eliteEffortResult = applyBattleEffortXp(
     session.playerTeam,
-    session.participantIndexes || [session.playerIndex],
     opponentPokemon,
     session.isChampion ? 4.5 : 4,
     log,
@@ -2045,11 +2026,7 @@ app.post("/api/npc/move", (req, res) => {
 
   if (opponentPokemon.currentHp <= 0) {
     const xpAward = calculateBattleXp(opponentPokemon, 2.75);
-    const xpResult = applyXpToParticipants(
-      session.playerTeam,
-      session.participantIndexes || [session.playerIndex],
-      xpAward,
-    );
+    const xpResult = applyXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
     log.push(`${session.npc.name}'s ${opponentPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
@@ -2114,11 +2091,7 @@ app.post("/api/npc/move", (req, res) => {
 
   if (activeNpcPokemon?.currentHp <= 0) {
     const xpAward = calculateBattleXp(activeNpcPokemon, 2.75);
-    const xpResult = applyXpToParticipants(
-      session.playerTeam,
-      session.participantIndexes || [session.playerIndex],
-      xpAward,
-    );
+    const xpResult = applyXpToParty(session.playerTeam, xpAward);
     session.playerTeam = xpResult.team;
     log.push(`${session.npc.name}'s ${activeNpcPokemon.name} fainted!`);
     appendXpLog(log, xpResult.results);
@@ -2145,7 +2118,6 @@ app.post("/api/npc/move", (req, res) => {
 
   const npcEffortResult = applyBattleEffortXp(
     session.playerTeam,
-    session.participantIndexes || [session.playerIndex],
     opponentPokemon,
     2.75,
     log,
@@ -2257,7 +2229,6 @@ app.post("/api/battle", (req, res) => {
     wildHP,
     playerStatus = "none",
     wildStatus = "none",
-    participantIndexes = [],
   } = req.body;
 
   try {
@@ -2349,15 +2320,12 @@ app.post("/api/battle", (req, res) => {
     let xpAward = 0;
     if (winner === "player") {
       xpAward = calculateBattleXp(wildPokemon, 2.5);
-      const participants = [...new Set([...participantIndexes, playerIndex])];
-      xpResult = applyXpToParticipants(inventory, participants, xpAward);
+      xpResult = applyXpToParty(inventory, xpAward);
       inventory = xpResult.team;
       appendXpLog(log, xpResult.results);
     } else {
-      const participants = [...new Set([...participantIndexes, playerIndex])];
       const effort = applyBattleEffortXp(
         inventory,
-        participants,
         wildPokemon,
         2.5,
         log,
