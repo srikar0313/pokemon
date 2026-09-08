@@ -164,7 +164,6 @@ const {
   writeJsonFile,
   loadTeamAndStorage,
   saveTeamAndStorage,
-  getAllOwnedPokemon,
   uniqueNumbers,
   uniqueStrings,
   loadPlayerState,
@@ -2989,23 +2988,10 @@ app.post("/api/catch", (req, res) => {
     if (!target.id) {
       return res.status(404).json({ error: "Pokemon not found" });
     }
-    const isLegendary =
-      target.rarity === "legendary" || target.rarity === "mythical";
     const targetVariant = {
       ...target,
       shiny: Boolean(req.body.shiny ?? target.shiny),
     };
-    const alreadyOwnsVariant = getAllOwnedPokemon().some(
-      (ownedPokemon) =>
-        getPokemonVariantKey(ownedPokemon) ===
-        getPokemonVariantKey(targetVariant),
-    );
-    if (isLegendary && alreadyOwnsVariant) {
-      const variantLabel = targetVariant.shiny ? `shiny ${target.name}` : target.name;
-      return res
-        .status(400)
-        .json({ error: `You already caught this ${variantLabel} variant.` });
-    }
 
     const currentHP = Math.max(
       1,

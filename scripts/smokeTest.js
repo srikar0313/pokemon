@@ -1480,6 +1480,29 @@ function main() {
   );
 
   memoryFiles.clear();
+  const repeatLegendary = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Articuno"),
+    ownedId: "repeat-legendary-one",
+  });
+  const secondRepeatLegendary = {
+    ...repeatLegendary,
+    ownedId: "repeat-legendary-two",
+  };
+  memoryFiles.set(
+    "memory-inventory.json",
+    [repeatLegendary, secondRepeatLegendary],
+  );
+  memoryFiles.set("memory-storage.json", []);
+  const repeatCatchState = createMemoryGameState(pokemonUtils);
+  const repeatCatchLoad = repeatCatchState.loadTeamAndStorage();
+  assert(
+    [...repeatCatchLoad.team, ...repeatCatchLoad.storage].filter(
+      (owned) => owned.name === "Articuno",
+    ).length === 2,
+    "distinct repeat legendary catches were collapsed on save/load",
+  );
+
+  memoryFiles.clear();
   const bulbasaur = pokemonUtils.normalizePokemon(
     pokemonUtils.getPokemonTemplateByName("Bulbasaur"),
   );

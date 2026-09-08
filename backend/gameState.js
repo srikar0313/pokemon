@@ -216,7 +216,10 @@ function createGameState({
   function removeExactOwnedPokemonClones(team, storage) {
     const seen = new Set();
     const keepUnique = (pokemon) => {
-      const signature = getOwnedPokemonSignature(pokemon);
+      const ownedId = String(pokemon.ownedId || "").trim();
+      const signature = ownedId
+        ? `owned:${ownedId}`
+        : `legacy:${getOwnedPokemonSignature(pokemon)}`;
       if (seen.has(signature)) return false;
       seen.add(signature);
       return true;
