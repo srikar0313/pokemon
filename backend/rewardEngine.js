@@ -447,13 +447,6 @@ function createRewardEngine({
   function appendXpLog(log, xpResults) {
     (xpResults || []).forEach((result) => {
       if (!result.pokemon || result.xpAward <= 0) return;
-      const startName = result.startingName || result.pokemon.name;
-      const endName = result.pokemon.name;
-      const nameLabel =
-        startName === endName ? endName : `${startName} -> ${endName}`;
-      log.push(
-        `${nameLabel} gained ${result.xpAward} XP (Lv ${result.startingLevel} ${result.startingXp}/${result.startingXpNeeded} -> Lv ${result.endingLevel} ${result.endingXp}/${result.endingXpNeeded}).`,
-      );
       (result.messages || []).forEach((message) => log.push(message));
     });
   }

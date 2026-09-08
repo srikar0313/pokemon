@@ -185,6 +185,32 @@ function main() {
     sharedXpResult.team[1].currentHp === 0,
     "fainted party Pokemon was revived by shared XP",
   );
+  const routineXpLog = [];
+  rewardEngine.appendXpLog(routineXpLog, sharedXpResult.results);
+  assert(
+    routineXpLog.length === 0,
+    "routine XP amounts are still shown in the battle log",
+  );
+  const levelUpCandidate = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Snorlax"),
+    level: 20,
+    xp: 0,
+  });
+  const levelUpResult = rewardEngine.applyXpToPokemon(
+    [levelUpCandidate],
+    0,
+    rewardEngine.getXpNeededForLevel(20),
+  );
+  const levelUpLog = [];
+  rewardEngine.appendXpLog(levelUpLog, [{
+    ...levelUpResult,
+    xpAward: rewardEngine.getXpNeededForLevel(20),
+  }]);
+  assert(
+    levelUpLog.some((line) => /grew to level 21/i.test(line)) &&
+      levelUpLog.every((line) => !/gained .* XP/i.test(line)),
+    "level-up notification was lost while hiding routine XP amounts",
+  );
 
   assert(playerState.trainerName, "player state did not load");
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
