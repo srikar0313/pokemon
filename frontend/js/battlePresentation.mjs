@@ -3,6 +3,13 @@ import { isWebGLAvailable, selectBattleRenderer } from "./battleCapabilities.mjs
 import { resolveBattlePresentationMode, resolveMoveAnimation } from "./battleAnimationRegistry.mjs";
 import { BattleScene } from "./battleScene.mjs";
 import {
+  createCaptureAnimationPlan,
+  createEvolutionAnimationPlan,
+  playCaptureDomSequence,
+  playEvolutionDomSequence,
+  restoreCaptureScene,
+} from "./battleCinematics.mjs";
+import {
   createAbilityAnnouncement,
   flashBattlefield,
   renderStatusParticles,
@@ -92,6 +99,27 @@ export class BattlePresentationController {
     return this.audio.playBall();
   }
 
+  async playCaptureSequence({ ballType, caught, player, opponent } = {}) {
+    const plan = createCaptureAnimationPlan({
+      ballType,
+      caught,
+      reducedMotion: this.reducedMotion,
+    });
+    if (!this.container) {
+      for (const step of plan.steps) await this.audio.playCaptureCue(step.audio);
+      return { rendered: false, player, opponent, ...plan };
+    }
+    return playCaptureDomSequence({
+      container: this.container,
+      plan,
+      audio: this.audio,
+    });
+  }
+
+  restoreCaptureScene() {
+    restoreCaptureScene(this.container);
+  }
+
   setStatus(side, status) {
     renderStatusParticles(this.getSide(side), status, this.reducedMotion);
   }
@@ -110,6 +138,19 @@ export class BattlePresentationController {
 
   playEvolutionCue(pokemon) {
     return this.audio.playEvolutionCue(pokemon);
+  }
+
+  playEvolutionSequence({ before, after, container } = {}) {
+    const plan = createEvolutionAnimationPlan({
+      before,
+      after,
+      reducedMotion: this.reducedMotion,
+    });
+    if (!container) {
+      this.audio.playEvolutionCue(after);
+      return Promise.resolve({ rendered: false, ...plan });
+    }
+    return playEvolutionDomSequence({ container, plan, audio: this.audio });
   }
 
   getSide(side) {

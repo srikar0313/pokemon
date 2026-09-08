@@ -43,4 +43,16 @@ All imported samples are local OGG files released under the Creative Commons Zer
   - `select_001.ogg`: UI/select
   - `switch_003.ogg`: Poke Ball/send-out
 
+## Capture cue mappings
+
+The capture cinematic reuses the CC0 files above as layered cues; no additional
+audio was imported:
+
+- Throw: `switch_003.ogg`
+- Impact/absorb: `phaseJump2.ogg`
+- Ball bounce: `impactGeneric_light_000.ogg`
+- Ball shake: `select_001.ogg`
+- Capture success: `threeTone1.ogg`
+- Breakout: `glitch_001.ogg`
+
 Attribution is not required by CC0, but source details are retained here for provenance. Local user-supplied cries may be placed at `assets/audio/cries/<pokemonId>.ogg`; users are responsible for ensuring they have permission to use those files.

@@ -27,6 +27,30 @@ export const SAMPLE_FILES = Object.freeze({
   faint: "/assets/audio/sfx/lowDown.ogg",
   evolution: "/assets/audio/sfx/threeTone1.ogg",
   "ui-select": "/assets/audio/sfx/select_001.ogg",
+  "capture-throw": "/assets/audio/sfx/switch_003.ogg",
+  "capture-impact": "/assets/audio/sfx/phaseJump2.ogg",
+  "capture-bounce": "/assets/audio/sfx/impactGeneric_light_000.ogg",
+  "capture-shake": "/assets/audio/sfx/select_001.ogg",
+  "capture-success": "/assets/audio/sfx/threeTone1.ogg",
+  "capture-breakout": "/assets/audio/sfx/glitch_001.ogg",
+});
+
+const CAPTURE_SAMPLE_KEYS = Object.freeze({
+  throw: "capture-throw",
+  impact: "capture-impact",
+  bounce: "capture-bounce",
+  shake: "capture-shake",
+  success: "capture-success",
+  breakout: "capture-breakout",
+});
+
+const CAPTURE_TONES = Object.freeze({
+  throw: { frequency: 260, end: 920, duration: 0.18, wave: "sine", gain: 0.11 },
+  impact: { frequency: 880, end: 240, duration: 0.2, wave: "triangle", gain: 0.14 },
+  bounce: { frequency: 150, end: 72, duration: 0.09, wave: "square", gain: 0.1 },
+  shake: { frequency: 440, end: 520, duration: 0.07, wave: "sine", gain: 0.07 },
+  success: { frequency: 523, end: 1046, duration: 0.34, wave: "triangle", gain: 0.13 },
+  breakout: { frequency: 720, end: 130, duration: 0.28, wave: "sawtooth", gain: 0.12 },
 });
 
 const TYPE_SAMPLE_KEYS = Object.freeze({
@@ -321,11 +345,19 @@ export class AudioManager {
   }
 
   async playBall() {
-    if (!(await this.unlock())) return { source: "none" };
-    const sample = await this.playSample("sendout", { gain: 0.72 });
-    if (sample) return { source: "sample" };
-    this.playTone({ frequency: 240, end: 920, duration: 0.2, wave: "sine", gain: 0.12 }, this.sfxGain);
-    return { source: "synth" };
+    return this.playCaptureCue("throw");
+  }
+
+  async playCaptureCue(cue) {
+    if (!(await this.unlock())) return { source: "none", cue };
+    const key = CAPTURE_SAMPLE_KEYS[cue] || CAPTURE_SAMPLE_KEYS.throw;
+    const sample = await this.playSample(key, {
+      gain: cue === "success" ? 0.82 : 0.68,
+      playbackRate: cue === "shake" ? 1.08 : 1,
+    });
+    if (sample) return { source: "sample", cue, key };
+    this.playTone(CAPTURE_TONES[cue] || CAPTURE_TONES.throw, this.sfxGain);
+    return { source: "synth", cue, key };
   }
 
   async playCry(pokemon) {

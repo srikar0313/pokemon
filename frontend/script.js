@@ -52,6 +52,7 @@ let routeEncounterPending = false;
 let routeEncounterCooldownSteps = 0;
 const evolutionPresentationQueue = [];
 let evolutionPresentationActive = false;
+let evolutionPresentationHints = [];
 const processedEvolutionLineBatches = new WeakSet();
 const PARTY_LIMIT = 6;
 const STORAGE_PAGE_SIZE = 24;
@@ -4525,8 +4526,9 @@ async function useItem(
     return;
   }
   playerState = data.state;
+  if (Array.isArray(data.team)) teamCache = data.team.map(normalizePokemon);
+  if (Array.isArray(data.storage)) storageCache = data.storage.map(normalizePokemon);
   appendBattleLog([data.message]);
-  if (data.evolved) queueEvolutionPresentations([data.message]);
   await loadInventory();
   displayStats();
   displayCurrentPlayer();
@@ -4631,8 +4633,9 @@ async function resolvePendingEvolution(section, pokemonIndex, targetSpeciesId) {
     alert(data.error);
     return;
   }
+  if (Array.isArray(data.team)) teamCache = data.team.map(normalizePokemon);
+  if (Array.isArray(data.storage)) storageCache = data.storage.map(normalizePokemon);
   appendBattleLog([data.message]);
-  queueEvolutionPresentations([data.message]);
   await loadProfile();
   await loadInventory();
   showPokemonDetail(section, pokemonIndex);
@@ -5328,6 +5331,7 @@ async function attack(moveName) {
     opponentPokemon: opponentBefore,
     turnMetadata: data.turnMetadata,
   });
+  setEvolutionPresentationHints(data.xpResult);
   appendBattleLog(data.log);
   updateBattleDisplay();
   displayCurrentPlayer();
@@ -5459,6 +5463,7 @@ async function performWildUtilityAction(
     opponentPokemon: opponentBefore,
     turnMetadata: data.turnMetadata,
   });
+  setEvolutionPresentationHints(data.xpResult);
   appendBattleLog(data.log);
   updateBattleDisplay();
   displayStats();
@@ -5560,7 +5565,6 @@ async function throwBall(type) {
 
   const hpPercent = currentWildHP / wild.maxHp;
   setBattleActionBusy(true);
-  runBattlePresentation("playBall");
   let data;
   try {
     const response = await fetch("/api/catch", {
@@ -5578,15 +5582,23 @@ async function throwBall(type) {
     data = await response.json();
   } catch (error) {
     console.error("Catch failed:", error);
+    runBattlePresentation("restoreCaptureScene");
     setBattleActionBusy(false);
     alert("Catch attempt failed.");
     return;
   }
   if (data.error) {
+    runBattlePresentation("restoreCaptureScene");
     alert(data.error);
     setBattleActionBusy(false);
     return;
   }
+  await runBattlePresentation("playCaptureSequence", {
+    ballType: type,
+    caught: Boolean(data.success),
+    player: activePokemon,
+    opponent: wild,
+  });
   if (data.state) playerState = data.state;
   appendBattleLog([`${data.message} (${data.catchRate}% chance)`]);
   displayStats();
@@ -5599,7 +5611,7 @@ async function throwBall(type) {
     await loadInventory();
     await returnToRouteAfterWildBattle(
       "Great catch! You returned to the route.",
-      1200,
+      450,
     );
     return;
   }
@@ -5635,15 +5647,22 @@ function endEncounter() {
 }
 
 function appendBattleLog(lines) {
+  showRewardPopup(lines);
   const logDiv = document.getElementById("battle-log");
   if (!logDiv) return;
-  showRewardPopup(lines);
   lines.forEach((line) => {
     const p = document.createElement("p");
     p.textContent = line;
     logDiv.appendChild(p);
   });
   logDiv.scrollTop = logDiv.scrollHeight;
+}
+
+function setEvolutionPresentationHints(xpResult) {
+  evolutionPresentationHints = (xpResult?.results || [])
+    .map((result) => result?.pokemon)
+    .filter(Boolean)
+    .map(normalizePokemon);
 }
 
 function classifyRewardLine(line) {
@@ -5727,28 +5746,71 @@ function queueEvolutionPresentations(lines = []) {
   lines.forEach((line) => {
     const match = String(line || "").match(/^(.+?) evolved into (.+?)!$/i);
     if (!match) return;
-    const event = { from: match[1].trim(), to: match[2].trim() };
+    const event = resolveEvolutionPresentationEvent(
+      match[1].trim(),
+      match[2].trim(),
+    );
     evolutionPresentationQueue.push(event);
   });
+  evolutionPresentationHints = [];
   showNextEvolutionPresentation();
+}
+
+function resolveEvolutionPresentationEvent(from, to) {
+  const candidates = [
+    ...teamCache,
+    ...storageCache,
+    ...(gymBattle?.playerTeam || []),
+    ...(eliteBattle?.playerTeam || []),
+    ...(npcBattle?.playerTeam || []),
+    ...evolutionPresentationHints,
+    activePokemon,
+  ].filter(Boolean);
+  const evolved =
+    candidates.find(
+      (pokemon) => pokemon.name === to && pokemon.evolvedFrom === from,
+    ) || candidates.find((pokemon) => pokemon.name === to);
+  const sourceEntry = pokedexCache?.entries?.find(
+    (entry) => entry.name === from,
+  );
+  const sourceForm = evolved?.form
+    ? sourceEntry?.forms?.find((form) => form.id === evolved.form.id)
+    : null;
+  const after = normalizePokemon(evolved || { name: to });
+  const before = {
+    ...after,
+    id: sourceEntry?.id ?? pokemonImageIdByName.get(from),
+    speciesId: sourceEntry?.speciesId ?? null,
+    imageId:
+      sourceForm?.imageId ??
+      sourceEntry?.imageId ??
+      pokemonImageIdByName.get(from),
+    artwork: sourceEntry?.artwork || null,
+    name: from,
+    form: sourceForm
+      ? { ...sourceForm, artwork: sourceForm.artwork || null }
+      : evolved?.form
+        ? { ...evolved.form, artwork: null }
+        : null,
+    shiny: Boolean(evolved?.shiny),
+  };
+  return { from, to, before, after };
 }
 
 function showNextEvolutionPresentation() {
   if (evolutionPresentationActive || !evolutionPresentationQueue.length) return;
   evolutionPresentationActive = true;
   const event = evolutionPresentationQueue.shift();
-  runBattlePresentation("playEvolutionCue", {
-    speciesId: pokemonImageIdByName.get(event.to.toLowerCase()),
-  });
   const overlay = document.createElement("div");
   overlay.className = "evolution-overlay";
   overlay.innerHTML = `
     <div class="evolution-presentation" role="dialog" aria-modal="true" aria-label="Pokemon evolution">
       <p class="evolution-kicker">${event.from} is evolving...</p>
       <div class="evolution-sprite-stage">
-        <img class="evolution-old-sprite" src="${getPokemonImage({ name: event.from })}" alt="${event.from}" onerror="handleExternalImageError(event)">
-        <span>↓</span>
-        <img class="evolution-new-sprite" src="${getPokemonImage({ name: event.to })}" alt="${event.to}" onerror="handleExternalImageError(event)">
+        <span class="evolution-aura"></span>
+        <img class="evolution-old-sprite" src="${getPokemonImage(event.before)}" alt="${event.from}" onerror="handleExternalImageError(event)">
+        <img class="evolution-new-sprite" src="${getPokemonImage(event.after)}" alt="${event.to}" onerror="handleExternalImageError(event)">
+        <span class="evolution-particles">${"<i></i>".repeat(prefersReducedMotion() ? 5 : 16)}</span>
       </div>
       <div class="evolution-congratulations">
         <h2>Congratulations!</h2>
@@ -5758,11 +5820,12 @@ function showNextEvolutionPresentation() {
     </div>
   `;
   document.body.appendChild(overlay);
-  requestAnimationFrame(() => overlay.classList.add("active"));
-  setTimeout(
-    () => overlay.classList.add("complete"),
-    prefersReducedMotion() ? 0 : 1700,
-  );
+  runBattlePresentation("playEvolutionSequence", {
+    before: event.before,
+    after: event.after,
+    container: overlay,
+  });
+  setTimeout(() => overlay.classList.add("complete"), prefersReducedMotion() ? 120 : 2700);
 }
 
 function closeEvolutionPresentation() {

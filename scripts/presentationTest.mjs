@@ -20,6 +20,13 @@ import {
   resolveMoveSampleKeys,
   SAMPLE_FILES,
 } from "../frontend/js/battleAudio.mjs";
+import {
+  CAPTURE_BALL_TYPES,
+  SerialPresentationQueue,
+  createCaptureAnimationPlan,
+  createEvolutionAnimationPlan,
+  restoreCaptureScene,
+} from "../frontend/js/battleCinematics.mjs";
 
 const move = {
   name: "Body Slam",
@@ -72,6 +79,81 @@ const reduced = getMotionTiming(true, 800);
 assert.equal(reduced.camera, false, "reduced motion retained camera movement");
 assert.equal(reduced.shake, false, "reduced motion retained battle shake");
 assert(reduced.duration <= 120, "reduced motion duration remained aggressive");
+
+CAPTURE_BALL_TYPES.forEach((ballType) => {
+  const plan = createCaptureAnimationPlan({ ballType, caught: true, random: () => 0 });
+  assert.equal(plan.ballType, ballType, `${ballType} did not keep its visual identity`);
+  assert.equal(plan.caught, true, `${ballType} capture plan changed the server result`);
+  assert.equal(plan.shakeCount, 3, `${ballType} success plan omitted capture shakes`);
+  assert.equal(plan.steps.at(-1).id, "success", `${ballType} has no success ending`);
+});
+
+const failedCapture = createCaptureAnimationPlan({
+  ballType: "great",
+  caught: false,
+  random: () => 0.99,
+});
+assert.equal(failedCapture.shakeCount, 2, "failed capture exceeded 0-2 shakes");
+assert.equal(failedCapture.steps.at(-1).id, "breakout", "failed capture has no breakout");
+assert.equal(failedCapture.restoreOpponent, true, "failed capture did not restore opponent");
+assert.equal(failedCapture.caught, false, "presentation changed a failed capture result");
+
+const removedCaptureClasses = [];
+let captureLayerRemoved = false;
+restoreCaptureScene({
+  querySelectorAll: () => [{ remove: () => { captureLayerRemoved = true; } }],
+  querySelector: () => ({
+    classList: { remove: (...names) => removedCaptureClasses.push(...names) },
+  }),
+});
+assert.equal(captureLayerRemoved, true, "failed capture layer was not removed");
+assert.deepEqual(
+  removedCaptureClasses,
+  ["capture-absorbing", "capture-contained"],
+  "failed capture did not restore the opponent sprite",
+);
+
+const reducedCapture = createCaptureAnimationPlan({
+  ballType: "master",
+  caught: true,
+  reducedMotion: true,
+});
+assert.equal(reducedCapture.shakeCount, 1, "reduced motion retained full shaking");
+assert(
+  reducedCapture.steps.every((step) => step.duration <= 180),
+  "reduced capture motion remained too long",
+);
+
+const evolutionBefore = {
+  id: 37,
+  speciesId: 37,
+  name: "Vulpix",
+  shiny: true,
+  form: { id: "alolan", name: "Alolan Form", imageId: 10103 },
+};
+const evolutionAfter = {
+  id: 38,
+  speciesId: 38,
+  name: "Ninetales",
+  shiny: true,
+  form: { id: "alolan", name: "Alolan Form", imageId: 10104 },
+};
+const evolutionPlan = createEvolutionAnimationPlan({
+  before: evolutionBefore,
+  after: evolutionAfter,
+});
+assert.equal(evolutionPlan.before.name, "Vulpix", "evolution lost before identity");
+assert.equal(evolutionPlan.after.name, "Ninetales", "evolution lost after identity");
+assert.equal(evolutionPlan.before.shiny, true, "evolution visual lost shiny state");
+assert.equal(evolutionPlan.after.form.id, "alolan", "evolution visual lost form state");
+assert.deepEqual(evolutionBefore.form, { id: "alolan", name: "Alolan Form", imageId: 10103 });
+
+const evolutionQueue = new SerialPresentationQueue();
+evolutionQueue.enqueue({ from: "Bulbasaur", to: "Ivysaur", ownedSlot: 1 });
+evolutionQueue.enqueue({ from: "Bulbasaur", to: "Ivysaur", ownedSlot: 2 });
+assert.equal(evolutionQueue.next().ownedSlot, 1, "evolution queue did not start first event");
+assert.equal(evolutionQueue.next(), null, "evolution queue overlapped active events");
+assert.equal(evolutionQueue.complete().ownedSlot, 2, "evolution queue deduplicated a valid event");
 
 const memory = new Map();
 const storage = {
@@ -160,6 +242,11 @@ class TestAudioManager extends AudioManager {
 const sampleFirst = new TestAudioManager(true);
 assert.equal((await sampleFirst.playHit()).source, "sample", "sample was not preferred");
 assert.equal(sampleFirst.tonesPlayed, 0, "synth played over an available sample");
+assert.equal(
+  (await sampleFirst.playCaptureCue("success")).source,
+  "sample",
+  "capture cue did not prefer a local sample",
+);
 sampleFirst.cryManifest = cryManifest;
 assert.deepEqual(
   await sampleFirst.playCry({ speciesId: 25, form: { pokemonId: 10025 } }),
@@ -240,6 +327,14 @@ const generatedCryManifest = JSON.parse(
 );
 assert.equal(generatedCryManifest.version, 1, "cry manifest version is invalid");
 assert.equal(typeof generatedCryManifest.cries, "object", "cry manifest is invalid");
+
+const frontendSource = fs.readFileSync(path.join(rootDir, "frontend/script.js"), "utf8");
+const catchRequestCount = (frontendSource.match(/fetch\("\/api\/catch"/g) || []).length;
+assert.equal(catchRequestCount, 1, "capture UI can issue duplicate catch requests");
+assert(
+  frontendSource.includes('runBattlePresentation("restoreCaptureScene")'),
+  "capture request errors do not restore the opponent scene",
+);
 
 assert.equal(resolveBattlePresentationMode("wild", { rarity: "common" }), "wild");
 assert.equal(resolveBattlePresentationMode("npc", {}), "trainer");

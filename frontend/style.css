@@ -4771,3 +4771,314 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+/* Capture and evolution cinematics */
+.capture-cinematic-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.capture-ball {
+  position: absolute;
+  left: 18%;
+  bottom: 28%;
+  width: 42px;
+  aspect-ratio: 1;
+  border: 3px solid #172333;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #e94b4b 0 44%, #172333 45% 55%, #f8fbff 56%);
+  box-shadow: 0 5px 12px rgba(12, 24, 38, 0.35);
+  transform-origin: center bottom;
+}
+
+.capture-ball::before {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 11px;
+  height: 11px;
+  border: 3px solid #172333;
+  border-radius: 50%;
+  background: #ffffff;
+  transform: translate(-50%, -50%);
+}
+
+.capture-ball::after {
+  content: "";
+  position: absolute;
+  inset: 7px 8px auto;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.ball-great .capture-ball {
+  background: linear-gradient(160deg, #e74d55 0 18%, #3185d4 19% 44%, #172333 45% 55%, #f8fbff 56%);
+}
+
+.ball-ultra .capture-ball {
+  background: linear-gradient(135deg, #f4cf3f 0 18%, #252b35 19% 44%, #10151d 45% 55%, #f8fbff 56%);
+}
+
+.ball-master .capture-ball {
+  background: linear-gradient(150deg, #ef77b3 0 18%, #8d55c7 19% 44%, #222038 45% 55%, #f8fbff 56%);
+}
+
+.capture-cinematic-layer[data-phase="throw"] .capture-ball {
+  animation: capture-ball-flight 520ms cubic-bezier(0.25, 0.7, 0.35, 1) forwards;
+}
+
+.capture-cinematic-layer[data-phase="impact"] .capture-ball,
+.capture-cinematic-layer[data-phase="drop"] .capture-ball,
+.capture-cinematic-layer[data-phase="shake"] .capture-ball,
+.capture-cinematic-layer[data-phase="success"] .capture-ball,
+.capture-cinematic-layer[data-phase="breakout"] .capture-ball {
+  left: 75%;
+  bottom: 18%;
+}
+
+.capture-cinematic-layer[data-phase="impact"] .capture-ball {
+  bottom: 43%;
+  transform: rotate(540deg) scale(1.08);
+}
+
+.capture-cinematic-layer[data-phase="drop"] .capture-ball {
+  animation: capture-ball-drop 360ms ease-in forwards;
+}
+
+.capture-cinematic-layer.capture-shaking .capture-ball {
+  animation: capture-ball-shake 340ms ease-in-out;
+}
+
+.capture-impact-flash {
+  position: absolute;
+  left: 77%;
+  top: 36%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  opacity: 0;
+  background: #ffffff;
+  box-shadow: 0 0 20px 12px rgba(111, 210, 255, 0.8);
+}
+
+.capture-cinematic-layer[data-phase="impact"] .capture-impact-flash {
+  animation: capture-impact-flash 280ms ease-out;
+}
+
+.capture-success-stars {
+  position: absolute;
+  left: 77%;
+  bottom: 25%;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.capture-success-stars i {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: #ffe46a;
+  clip-path: polygon(50% 0, 62% 36%, 100% 50%, 62% 64%, 50% 100%, 38% 64%, 0 50%, 38% 36%);
+  transform: rotate(calc(var(--star-index, 0) * 40deg)) translateY(-42px);
+}
+
+.capture-success-stars i:nth-child(2n) { background: #9eeeff; }
+.capture-success-stars i:nth-child(3n) { background: #ffffff; }
+.capture-success-stars i:nth-child(1) { --star-index: 1; }
+.capture-success-stars i:nth-child(2) { --star-index: 2; }
+.capture-success-stars i:nth-child(3) { --star-index: 3; }
+.capture-success-stars i:nth-child(4) { --star-index: 4; }
+.capture-success-stars i:nth-child(5) { --star-index: 5; }
+.capture-success-stars i:nth-child(6) { --star-index: 6; }
+.capture-success-stars i:nth-child(7) { --star-index: 7; }
+.capture-success-stars i:nth-child(8) { --star-index: 8; }
+.capture-success-stars i:nth-child(9) { --star-index: 9; }
+
+.capture-cinematic-layer[data-phase="success"] .capture-success-stars {
+  animation: capture-success-stars 560ms ease-out;
+}
+
+.capture-cinematic-layer[data-phase="breakout"] .capture-ball {
+  animation: capture-breakout 420ms ease-out forwards;
+}
+
+.battle-pokemon.opponent-side.capture-absorbing .battle-sprite {
+  filter: brightness(2.4) saturate(0.4);
+  transform: scale(0.15);
+  opacity: 0;
+  transition: transform 260ms ease-in, opacity 220ms ease-in, filter 220ms ease-in;
+}
+
+.battle-pokemon.opponent-side.capture-contained .battle-sprite {
+  opacity: 0;
+  transform: scale(0.05);
+}
+
+@keyframes capture-ball-flight {
+  0% { left: 18%; bottom: 28%; transform: rotate(0deg) scale(0.82); }
+  48% { bottom: 78%; }
+  100% { left: 75%; bottom: 43%; transform: rotate(540deg) scale(1.08); }
+}
+
+@keyframes capture-ball-drop {
+  0% { bottom: 43%; transform: scale(1.08); }
+  62% { bottom: 16%; transform: scaleY(0.9); }
+  80% { bottom: 24%; transform: scaleY(1.04); }
+  100% { bottom: 18%; transform: scale(1); }
+}
+
+@keyframes capture-ball-shake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: translateX(-9px) rotate(-22deg); }
+  70% { transform: translateX(9px) rotate(22deg); }
+}
+
+@keyframes capture-impact-flash {
+  0% { opacity: 0; transform: scale(0.2); }
+  45% { opacity: 1; transform: scale(2.4); }
+  100% { opacity: 0; transform: scale(3.2); }
+}
+
+@keyframes capture-success-stars {
+  0% { opacity: 0; transform: scale(0.35); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.35) rotate(28deg); }
+}
+
+@keyframes capture-breakout {
+  0% { transform: scale(1); opacity: 1; }
+  35% { transform: scale(1.45); filter: brightness(2.3); }
+  100% { transform: scale(0.45); opacity: 0; }
+}
+
+.evolution-presentation {
+  background: radial-gradient(circle at 50% 42%, #244f7a 0, #101c31 58%, #080f1d 100%);
+  color: #ffffff;
+}
+
+.evolution-kicker { color: #d9edff; }
+
+.evolution-sprite-stage {
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+  overflow: visible;
+}
+
+.evolution-sprite-stage img,
+.evolution-aura {
+  grid-area: 1 / 1;
+}
+
+.evolution-sprite-stage > img {
+  z-index: 2;
+}
+
+.evolution-old-sprite,
+.evolution-new-sprite,
+.evolution-sprite-stage::after {
+  animation: none;
+}
+
+.evolution-old-sprite { opacity: 1; }
+.evolution-new-sprite { opacity: 0; }
+
+.evolution-aura {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: #c8f3ff;
+  box-shadow: 0 0 38px 18px rgba(122, 220, 255, 0.55);
+  opacity: 0;
+}
+
+.evolution-phase-pulse .evolution-aura {
+  animation: evolution-aura-pulse 900ms ease-in-out infinite;
+}
+
+.evolution-phase-pulse .evolution-old-sprite {
+  animation: evolution-silhouette-pulse 450ms ease-in-out infinite alternate;
+}
+
+.evolution-phase-transform .evolution-old-sprite,
+.evolution-phase-reveal .evolution-old-sprite {
+  opacity: 0;
+  transform: scale(1.2);
+  filter: brightness(5) contrast(0);
+}
+
+.evolution-phase-transform .evolution-new-sprite {
+  opacity: 1;
+  transform: scale(0.82);
+  filter: brightness(5) contrast(0);
+}
+
+.evolution-phase-reveal .evolution-new-sprite {
+  opacity: 1;
+  transform: scale(1);
+  filter: brightness(1);
+  transition: transform 500ms ease, filter 500ms ease;
+}
+
+.evolution-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.evolution-particles.active { opacity: 1; }
+
+.evolution-particles i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff2a3;
+  box-shadow: 0 0 8px #ffffff;
+  animation: evolution-particle-burst 800ms ease-out forwards;
+}
+
+.evolution-particles i:nth-child(2n) { --particle-x: 90px; --particle-y: -72px; }
+.evolution-particles i:nth-child(3n) { --particle-x: -104px; --particle-y: -45px; }
+.evolution-particles i:nth-child(4n) { --particle-x: 76px; --particle-y: 82px; }
+.evolution-particles i:nth-child(5n) { --particle-x: -84px; --particle-y: 76px; }
+.evolution-particles i:nth-child(7n) { --particle-x: 18px; --particle-y: -112px; }
+
+@keyframes evolution-aura-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.82); }
+  50% { opacity: 0.92; transform: scale(1.32); }
+}
+
+@keyframes evolution-silhouette-pulse {
+  from { transform: scale(0.94); filter: brightness(1.8) saturate(0); }
+  to { transform: scale(1.1); filter: brightness(4) saturate(0); }
+}
+
+@keyframes evolution-particle-burst {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(0.3); }
+  to { opacity: 0; transform: translate(var(--particle-x, 112px), var(--particle-y, 0)) scale(1.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capture-cinematic-layer .capture-ball,
+  .capture-cinematic-layer .capture-impact-flash,
+  .capture-cinematic-layer .capture-success-stars,
+  .evolution-aura,
+  .evolution-particles i {
+    animation-duration: 100ms !important;
+  }
+}
+
+.capture-cinematic-layer.reduced-motion .capture-ball,
+.capture-cinematic-layer.reduced-motion .capture-impact-flash,
+.capture-cinematic-layer.reduced-motion .capture-success-stars {
+  animation-duration: 100ms !important;
+}
