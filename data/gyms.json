@@ -82,16 +82,16 @@
     "badge": "Forest Badge",
     "team": [
       {
-        "name": "Bulbasaur",
-        "level": 24
+        "name": "Ivysaur",
+        "level": 28
       },
       {
-        "name": "Bellsprout",
-        "level": 25
+        "name": "Weepinbell",
+        "level": 30
       },
       {
-        "name": "Chikorita",
-        "level": 26
+        "name": "Meganium",
+        "level": 32
       }
     ]
   },
@@ -106,16 +106,16 @@
     "badge": "Storm Badge",
     "team": [
       {
-        "name": "Spearow",
-        "level": 28
+        "name": "Fearow",
+        "level": 34
       },
       {
         "name": "Scyther",
-        "level": 30
+        "level": 36
       },
       {
         "name": "Pidgeot",
-        "level": 32
+        "level": 38
       }
     ]
   },
@@ -130,16 +130,16 @@
     "badge": "Rock Badge",
     "team": [
       {
-        "name": "Geodude",
-        "level": 34
+        "name": "Graveler",
+        "level": 40
       },
       {
         "name": "Onix",
-        "level": 36
+        "level": 42
       },
       {
-        "name": "Cubone",
-        "level": 38
+        "name": "Tyranitar",
+        "level": 46
       }
     ]
   },
@@ -154,16 +154,16 @@
     "badge": "Psychic Badge",
     "team": [
       {
-        "name": "Girafarig",
-        "level": 40
+        "name": "Mr. Mime",
+        "level": 46
       },
       {
-        "name": "Clefairy",
-        "level": 42
+        "name": "Espeon",
+        "level": 49
       },
       {
-        "name": "Togepi",
-        "level": 44
+        "name": "Alakazam",
+        "level": 52
       }
     ]
   },
@@ -178,16 +178,16 @@
     "badge": "Ice Badge",
     "team": [
       {
-        "name": "Sneasel",
-        "level": 46
+        "name": "Weavile",
+        "level": 52
       },
       {
         "name": "Lapras",
-        "level": 48
+        "level": 55
       },
       {
-        "name": "Snorlax",
-        "level": 50
+        "name": "Mamoswine",
+        "level": 58
       }
     ]
   }

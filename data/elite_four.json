@@ -6,12 +6,20 @@
       "type": "Dark",
       "team": [
         {
-          "name": "Sneasel",
-          "level": 40
+          "name": "Gengar",
+          "level": 62
         },
         {
-          "name": "Gengar",
-          "level": 45
+          "name": "Sableye",
+          "level": 64
+        },
+        {
+          "name": "Spiritomb",
+          "level": 66
+        },
+        {
+          "name": "Darkrai",
+          "level": 68
         }
       ]
     },
@@ -21,12 +29,20 @@
       "type": "Fire",
       "team": [
         {
-          "name": "Growlithe",
-          "level": 45
+          "name": "Arcanine",
+          "level": 66
+        },
+        {
+          "name": "Magmortar",
+          "level": 68
         },
         {
           "name": "Charizard",
-          "level": 50
+          "level": 70
+        },
+        {
+          "name": "Moltres",
+          "level": 72
         }
       ]
     },
@@ -36,12 +52,20 @@
       "type": "Water",
       "team": [
         {
-          "name": "Lapras",
-          "level": 48
+          "name": "Blastoise",
+          "level": 70
         },
         {
-          "name": "Blastoise",
-          "level": 52
+          "name": "Lapras",
+          "level": 72
+        },
+        {
+          "name": "Gyarados",
+          "level": 74
+        },
+        {
+          "name": "Kyogre",
+          "level": 76
         }
       ]
     },
@@ -51,12 +75,20 @@
       "type": "Dragon",
       "team": [
         {
-          "name": "Dratini",
-          "level": 50
+          "name": "Dragonite",
+          "level": 74
         },
         {
-          "name": "Dragonite",
-          "level": 55
+          "name": "Flygon",
+          "level": 76
+        },
+        {
+          "name": "Zekrom",
+          "level": 78
+        },
+        {
+          "name": "Rayquaza",
+          "level": 80
         }
       ]
     }
@@ -70,15 +102,27 @@
     "team": [
       {
         "name": "Mewtwo",
-        "level": 60
+        "level": 82
       },
       {
-        "name": "Rayquaza",
-        "level": 62
+        "name": "Lugia",
+        "level": 84
       },
       {
-        "name": "Mew",
-        "level": 64
+        "name": "Ho-Oh",
+        "level": 84
+      },
+      {
+        "name": "Dialga",
+        "level": 86
+      },
+      {
+        "name": "Giratina",
+        "level": 86
+      },
+      {
+        "name": "Arceus",
+        "level": 90
       }
     ]
   }

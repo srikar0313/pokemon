@@ -189,6 +189,33 @@ function main() {
   assert(playerState.trainerName, "player state did not load");
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
+  const rarityByName = new Map(
+    pokemon.map((entry) => [entry.name, entry.rarity]),
+  );
+  assert(
+    gameData.eliteFour.every(
+      (trainer) =>
+        trainer.team.length === 4 &&
+        trainer.team.some((member) =>
+          ["legendary", "mythical"].includes(rarityByName.get(member.name)),
+        ),
+    ),
+    "Elite Four teams are missing their four-Pokemon legendary challenge structure",
+  );
+  assert(
+    gameData.champion.team.length === 6 &&
+      Math.min(...gameData.champion.team.map((member) => member.level)) >= 80,
+    "Champion team is not configured as the six-Pokemon final challenge",
+  );
+  assert(
+    gameData.gyms.every((gym) =>
+      gym.team.every(
+        (member) =>
+          !["legendary", "mythical"].includes(rarityByName.get(member.name)),
+      ),
+    ),
+    "a Gym team unexpectedly contains a legendary or mythical Pokemon",
+  );
   const randomPartySource = {
     team: Array.from({ length: 6 }, (_, index) => ({ name: `Team-${index}` })),
     storage: Array.from({ length: 4 }, (_, index) => ({ name: `Box-${index}` })),
