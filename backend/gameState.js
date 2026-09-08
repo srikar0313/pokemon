@@ -59,17 +59,6 @@ const defaultPlayerState = {
     formsSeen: [],
     formsCaught: [],
   },
-  questStats: {
-    pokemonCaught: 0,
-    wildBattlesWon: 0,
-    npcBattlesWon: 0,
-    gymBattlesWon: 0,
-    eliteWins: 0,
-    questsCompleted: 0,
-  },
-  quests: {
-    claimed: [],
-  },
   partyPresets: Array.from({ length: PARTY_PRESET_COUNT }, (_, index) => ({
     slot: index + 1,
     pokemonIds: [],
@@ -279,6 +268,9 @@ function createGameState({
   }
 
   function normalizePlayerState(state = {}) {
+    const normalizedInput = { ...state };
+    delete normalizedInput.questStats;
+    delete normalizedInput.quests;
     const coins = state.coins ?? state.money ?? defaultPlayerState.coins;
     const badges = uniqueStrings(
       (state.badges || []).map((badge) => legacyBadgeMap[badge] || badge),
@@ -301,7 +293,7 @@ function createGameState({
       state.pokedex?.identityVersion === POKEDEX_IDENTITY_VERSION;
     return {
       ...defaultPlayerState,
-      ...state,
+      ...normalizedInput,
       coins,
       money: coins,
       level: state.level || defaultPlayerState.level,
@@ -324,15 +316,6 @@ function createGameState({
         formsCaught: pokedexUsesSpeciesIdentity
           ? uniqueStrings(state.pokedex?.formsCaught || [])
           : migratePokedexVariantKeys(state.pokedex?.formsCaught || []),
-      },
-      questStats: {
-        ...defaultPlayerState.questStats,
-        ...(state.questStats || {}),
-      },
-      quests: {
-        ...defaultPlayerState.quests,
-        ...(state.quests || {}),
-        claimed: uniqueStrings(state.quests?.claimed || []),
       },
       partyPresets: normalizePartyPresets(state.partyPresets),
       defeatedNpcs: uniqueNumbers(state.defeatedNpcs || []),

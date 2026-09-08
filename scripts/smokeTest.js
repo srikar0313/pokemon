@@ -357,7 +357,6 @@ function main() {
     presetOwnedIds.length === 5 && new Set(presetOwnedIds).size === 5,
     "party preset load lost or duplicated owned Pokemon",
   );
-  assert(Array.isArray(gameData.quests), "quests did not load");
   assert(
     gameData.shinyRollChance === 0.03,
     `expected a 3% shiny chance, got ${gameData.shinyRollChance}`,
@@ -369,12 +368,20 @@ function main() {
   const normalizedLegacyAreas = gameState.normalizePlayerState({
     coins: 321,
     unlockedAreas: ["forest", "ocean"],
+    questStats: { pokemonCaught: 99 },
+    quests: { claimed: ["legacy-quest"] },
   });
   assert(
     normalizedLegacyAreas.coins === 321 &&
       normalizedLegacyAreas.unlockedAreas.includes("forest") &&
       !normalizedLegacyAreas.unlockedAreas.includes("ocean"),
     "legacy ocean unlock normalization reset or retained invalid save data",
+  );
+  assert(
+    !("questStats" in normalizedLegacyAreas) &&
+      !("quests" in normalizedLegacyAreas) &&
+      !("quests" in gameData),
+    "legacy Quest state or loaded Quest data remains active",
   );
   assert(
     gameData.obtainability.entries.length === pokemon.length &&

@@ -15,7 +15,6 @@ let activePartyPresetSlot = 1;
 let playerState = null;
 let shopCatalog = [];
 let pokedexCache = null;
-let questCache = null;
 let handbookCache = null;
 let handbookSection = "types";
 let handbookSearch = "";
@@ -201,7 +200,6 @@ async function init() {
     await loadPokedex();
     await loadInventory();
     await loadShop();
-    await loadQuests();
     setActiveScreen("explore");
   } catch (error) {
     console.error("Error:", error);
@@ -218,7 +216,6 @@ function setActiveScreen(screen) {
     button.classList.toggle("active", button.dataset.screen === screen);
   });
   if (screen === "pokedex") loadPokedex();
-  if (screen === "quests") loadQuests();
   if (screen === "handbook") loadHandbook();
   if (screen === "battle") focusBattlePresentation();
 }
@@ -2839,7 +2836,6 @@ async function gymMove(moveName) {
       await loadProfile();
       await loadGyms();
       await loadInventory();
-      if (questCache) await loadQuests();
     }
     return;
   }
@@ -2865,7 +2861,6 @@ async function gymMove(moveName) {
       await displayAreas();
       await loadGyms();
       await loadEliteFour();
-      if (questCache) await loadQuests();
     },
     afterContinue: async () => {
       showGymMoveButtons(normalizePokemon(gymBattle.playerPokemon));
@@ -2920,7 +2915,6 @@ async function gymSwitch(pokemonIndex) {
       await displayAreas();
       await loadGyms();
       await loadEliteFour();
-      if (questCache) await loadQuests();
     },
     afterContinue: async () => {
       showGymMoveButtons(normalizePokemon(gymBattle.playerPokemon));
@@ -3079,7 +3073,6 @@ async function eliteMove(moveName) {
       await loadEliteFour();
       await loadInventory();
       await loadProfile();
-      if (questCache) await loadQuests();
     }
     return;
   }
@@ -3104,7 +3097,6 @@ async function eliteMove(moveName) {
       await loadProfile();
       await loadEliteFour();
       await loadGyms();
-      if (questCache) await loadQuests();
     },
     afterContinue: async () => {
       showEliteMoveButtons(normalizePokemon(eliteBattle.playerPokemon));
@@ -3158,7 +3150,6 @@ async function eliteSwitch(pokemonIndex) {
       await loadProfile();
       await loadEliteFour();
       await loadGyms();
-      if (questCache) await loadQuests();
     },
     afterContinue: async () => {
       showEliteMoveButtons(normalizePokemon(eliteBattle.playerPokemon));
@@ -3294,7 +3285,6 @@ async function npcMove(moveName) {
       await loadAreaWorld(selectedArea);
       await loadProfile();
       await loadInventory();
-      if (questCache) await loadQuests();
     }
     return;
   }
@@ -3320,7 +3310,6 @@ async function npcMove(moveName) {
       await loadProfile();
       await loadInventory();
       await loadAreaWorld(selectedArea);
-      if (questCache) await loadQuests();
     },
     afterContinue: async () => {
       showNpcMoveButtons(normalizePokemon(npcBattle.playerPokemon));
@@ -3374,7 +3363,6 @@ async function npcSwitch(pokemonIndex) {
       await loadProfile();
       await loadInventory();
       await loadAreaWorld(selectedArea);
-      if (questCache) await loadQuests();
     },
     afterContinue: async () => {
       showNpcMoveButtons(normalizePokemon(npcBattle.playerPokemon));
@@ -3445,174 +3433,6 @@ function displayStats() {
       >Audio</button>
     </div>
   `;
-}
-
-async function loadQuests() {
-  const panel = document.getElementById("quests-panel");
-  if (panel && !questCache) {
-    panel.innerHTML = "<p>Loading quests...</p>";
-  }
-  const response = await fetch("/api/quests");
-  questCache = await response.json();
-  displayQuests();
-}
-
-function formatQuestType(type) {
-  const labels = {
-    pokemonCaught: "Catch",
-    catch: "Catch",
-    pokedexCaught: "Collection",
-    wildBattlesWon: "Battle",
-    npcBattlesWon: "Trainer",
-    gymBattlesWon: "Gym",
-    badges: "Badge",
-    eliteWins: "League",
-    championDefeated: "Champion",
-  };
-  return labels[type] || String(type || "Quest");
-}
-
-function getQuestItemMeta(itemId) {
-  return shopCatalog.find((item) => item.id === itemId) || {
-    id: itemId,
-    name: itemId,
-    icon: itemId,
-  };
-}
-
-function renderQuestReward(reward = {}) {
-  const itemEntries = Array.isArray(reward.items)
-    ? reward.items.map((item) => [item.id, item.quantity])
-    : Object.entries(reward.items || {});
-  const rewards = [];
-  if (reward.coins) rewards.push(`<span>${reward.coins} coins</span>`);
-  itemEntries.forEach(([itemId, quantity]) => {
-    const item = getQuestItemMeta(itemId);
-    rewards.push(
-      `<span>${renderIcon(item.icon, item.name)} ${quantity} ${item.name}</span>`,
-    );
-  });
-  return rewards.length ? rewards.join("") : "<span>No reward listed</span>";
-}
-
-function getQuestChainLabel(chain) {
-  const labels = {
-    catch: "Catching Path",
-    battle: "Battle Path",
-    trainer: "Trainer Path",
-    badge: "Badge Case Path",
-  };
-  return labels[chain] || "Adventure Path";
-}
-
-function groupQuestsByChain(quests = []) {
-  return quests.reduce((groups, quest) => {
-    const chain = quest.chain || "adventure";
-    if (!groups[chain]) groups[chain] = [];
-    groups[chain].push(quest);
-    return groups;
-  }, {});
-}
-
-function renderQuestCard(quest) {
-  const status = quest.claimed ? "Claimed" : quest.claimable ? "Ready" : "Active";
-  const tier = quest.tier ? `Tier ${quest.tier}` : formatQuestType(quest.type);
-  return `
-    <article class="quest-card ${quest.claimed ? "claimed" : ""} ${quest.claimable ? "claimable" : ""}">
-      <div class="quest-card-head">
-        <span>${tier}</span>
-        <em>${status}</em>
-      </div>
-      <h3>${quest.title}</h3>
-      <p>${quest.description}</p>
-      <div class="quest-progress-line">
-        <span>${quest.progress}/${quest.goal}</span>
-        <strong>${quest.percent}%</strong>
-      </div>
-      <div class="quest-progress-bar">
-        <div style="width: ${quest.percent}%"></div>
-      </div>
-      <div class="quest-rewards">
-        ${renderQuestReward(quest.reward)}
-      </div>
-      <button class="primary-action" onclick="claimQuest('${quest.id}')" ${quest.claimable ? "" : "disabled"}>
-        ${quest.claimed ? "Claimed" : quest.claimable ? "Claim Reward" : "In Progress"}
-      </button>
-    </article>
-  `;
-}
-
-function displayQuests() {
-  const panel = document.getElementById("quests-panel");
-  if (!panel) return;
-  if (!questCache?.quests) {
-    panel.innerHTML = "<p>No quests available yet.</p>";
-    return;
-  }
-
-  const summary = questCache.summary || {};
-  const quests = questCache.quests;
-  const questGroups = groupQuestsByChain(quests);
-  panel.innerHTML = `
-    <div class="quests-header">
-      <div>
-        <h2>Quests</h2>
-        <p>Complete missions as you explore, catch, battle, and earn badges.</p>
-      </div>
-      <button class="secondary-btn" onclick="loadQuests()">Refresh</button>
-    </div>
-    <div class="quest-summary">
-      <div><span>Available</span><strong>${summary.available ?? quests.length}</strong></div>
-      <div><span>Complete</span><strong>${summary.completed ?? 0}</strong></div>
-      <div><span>Claimable</span><strong>${summary.claimable ?? 0}</strong></div>
-      <div><span>Locked Next</span><strong>${summary.hidden ?? 0}</strong></div>
-    </div>
-    <p class="quest-chain-note">Completed quests reveal the next tier automatically, like Catch 1 -> Catch 5 -> Catch 15.</p>
-    <div class="quest-chain-list">
-      ${Object.entries(questGroups)
-        .map(([chain, chainQuests]) => `
-          <section class="quest-chain-section">
-            <div class="quest-chain-header">
-              <h3>${getQuestChainLabel(chain)}</h3>
-              <span>${chainQuests.filter((quest) => quest.completed).length}/${chainQuests.length} complete</span>
-            </div>
-            <div class="quest-grid">
-              ${chainQuests.map(renderQuestCard).join("")}
-            </div>
-          </section>
-        `)
-        .join("")}
-    </div>
-  `;
-}
-
-async function claimQuest(questId) {
-  const response = await fetch("/api/quests/claim", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ questId }),
-  });
-  const data = await response.json();
-  if (data.error) {
-    alert(data.error);
-    return;
-  }
-  if (data.state) playerState = data.state;
-  questCache = {
-    summary: data.summary,
-    quests: data.quests,
-    stats: data.state?.questStats || questCache?.stats || {},
-    claimed: data.state?.quests?.claimed || questCache?.claimed || [],
-  };
-  displayStats();
-  displayQuests();
-  displayBag();
-  const rewardLines = [data.message];
-  if (data.reward?.coins) rewardLines.push(`You earned ${data.reward.coins} coins.`);
-  (data.reward?.items || []).forEach((item) => {
-    rewardLines.push(`You received ${item.quantity} ${item.name}.`);
-  });
-  showRewardPopup(rewardLines);
 }
 
 async function loadPokedex() {
@@ -5771,7 +5591,6 @@ async function attack(moveName) {
     if (data.moneyReward) {
       await loadProfile();
     }
-    if (questCache) await loadQuests();
     appendBattleLog([
       `Wild ${wild.name} fainted. You cannot catch a fainted Pokemon.`,
     ]);
@@ -5902,7 +5721,6 @@ async function performWildUtilityAction(
 
   if (data.winner === "player") {
     if (data.moneyReward) await loadProfile();
-    if (questCache) await loadQuests();
     await returnToRouteAfterWildBattle(
       `You defeated wild ${wild.name} and returned to the route.`,
     );
@@ -6030,7 +5848,6 @@ async function throwBall(type) {
   appendBattleLog([`${data.message} (${data.catchRate}% chance)`]);
   displayStats();
   if (pokedexCache) await loadPokedex();
-  if (questCache) await loadQuests();
 
   if (data.success) {
     showMoveButtons(true);

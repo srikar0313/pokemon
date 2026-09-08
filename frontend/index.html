@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokemon Adventure</title>
-    <link rel="stylesheet" href="style.css?v=20260908-battle-handbook" />
+    <link rel="stylesheet" href="style.css?v=20260908-no-quests" />
   </head>
   <body>
     <div class="app-shell">
@@ -37,13 +37,6 @@
           onclick="setActiveScreen('pokedex')"
         >
           Pokédex
-        </button>
-        <button
-          class="nav-tab"
-          data-screen="quests"
-          onclick="setActiveScreen('quests')"
-        >
-          Quests
         </button>
         <button
           class="nav-tab"
@@ -130,12 +123,6 @@
         <section id="pokedex-screen" class="screen-panel">
           <div class="screen-card">
             <div id="pokedex-panel"></div>
-          </div>
-        </section>
-
-        <section id="quests-screen" class="screen-panel">
-          <div class="screen-card">
-            <div id="quests-panel"></div>
           </div>
         </section>
 
@@ -226,8 +213,8 @@
         <input id="reduce-battle-motion" type="checkbox" />
       </label>
     </aside>
-    <script type="module" src="js/battlePresentationBootstrap.mjs?v=20260908-battle-handbook"></script>
+    <script type="module" src="js/battlePresentationBootstrap.mjs?v=20260908-no-quests"></script>
     <script src="variantUtils.js?v=20260906-variants"></script>
-    <script src="script.js?v=20260908-battle-handbook"></script>
+    <script src="script.js?v=20260908-no-quests"></script>
   </body>
 </html>

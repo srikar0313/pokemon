@@ -802,7 +802,6 @@ function loadGameData(options = {}) {
     formEncounterChance: encounterData.formEncounterChance ?? 0.02,
     speciesEncounterBoosts: encounterData.speciesEncounterBoosts || {},
     weatherBoosts: encounterData.weatherBoosts || {},
-    quests: loadJson(path.join(dataDir, "quests.json"), []),
     obtainability: loadJson(path.join(dataDir, "obtainability.json"), {
       summary: {},
       entries: [],

@@ -459,6 +459,8 @@ const frontendIndex = fs.readFileSync(path.join(rootDir, "frontend/index.html"),
 const frontendStyles = fs.readFileSync(path.join(rootDir, "frontend/style.css"), "utf8");
 assert(frontendIndex.includes('data-screen="handbook"'), "Handbook navigation tab is missing");
 assert(frontendIndex.includes('id="handbook-screen"'), "Handbook screen is missing");
+assert(!frontendIndex.includes('data-screen="quests"'), "Quest navigation remains visible");
+assert(!frontendIndex.includes('id="quests-screen"'), "Quest screen remains in the UI");
 assert(frontendSource.includes('fetch("/api/handbook")'), "Handbook data is not loaded from the backend");
 assert(frontendSource.includes("renderBattleHandbookShortcut"), "Battle Handbook shortcut is missing");
 assert(

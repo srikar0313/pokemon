@@ -1,6 +1,6 @@
 # Pokémon Browser RPG
 
-A full-stack Pokémon-style RPG built with Node.js, Express, and plain HTML/CSS/JavaScript. Explore seven themed areas, catch and train a persistent party, battle trainers and Gym Leaders, complete quests, challenge the Elite Four, and track the full collection in the Pokédex.
+A full-stack Pokémon-style RPG built with Node.js, Express, and plain HTML/CSS/JavaScript. Explore seven themed areas, catch and train a persistent party, battle trainers and Gym Leaders, challenge the Elite Four, and track the full collection in the Pokédex.
 
 ## Gameplay
 
@@ -9,7 +9,7 @@ A full-stack Pokémon-style RPG built with Node.js, Express, and plain HTML/CSS/
 - Wild, NPC, Gym, Elite Four, and Champion battles
 - Six-Pokémon party with PC storage and persistent HP, PP, friendship, forms, and abilities
 - Canonical branching evolutions with level, item, friendship, time, move, gender, stat, and single-player trade equivalents
-- Shops, healing items, evolution items, coins, quests, badges, and progression
+- Shops, healing items, evolution items, coins, badges, and progression
 - Species-aware Pokédex with forms, evolution families, availability filters, and pagination
 
 ## Pokémon Architecture
