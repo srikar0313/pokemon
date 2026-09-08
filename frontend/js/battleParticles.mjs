@@ -112,6 +112,21 @@ export function showProtectShield(target, reducedMotion = false) {
   globalThis.setTimeout?.(() => shield.remove(), reducedMotion ? 180 : 700);
 }
 
+export async function playTransformEffect(target, intoName, reducedMotion = false) {
+  if (!target) return false;
+  target.classList.add("pokemon-transforming");
+  const effect = document.createElement("span");
+  effect.className = `transform-cinematic${reducedMotion ? " reduced" : ""}`;
+  effect.setAttribute("aria-hidden", "true");
+  effect.innerHTML = `<i></i><b></b><b></b><b></b><b></b>`;
+  target.appendChild(effect);
+  showBattleBanner(target, `TRANSFORMED INTO ${intoName || "THE TARGET"}!`, "transform", reducedMotion);
+  await wait(reducedMotion ? 110 : 430);
+  target.classList.remove("pokemon-transforming");
+  effect.remove();
+  return true;
+}
+
 export function syncWeatherVisual(container, weather = "clear", reducedMotion = false) {
   if (!container) return;
   const current = container.dataset.presentationWeather || "clear";
@@ -133,6 +148,6 @@ export function syncWeatherVisual(container, weather = "clear", reducedMotion = 
 
 export function clearPresentationLayers(container) {
   container?.querySelectorAll(
-    ".move-cinematic, .weather-cinematic, .presentation-banner, .protect-shield",
+    ".move-cinematic, .weather-cinematic, .presentation-banner, .protect-shield, .transform-cinematic",
   ).forEach((node) => node.remove());
 }

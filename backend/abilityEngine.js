@@ -6,6 +6,7 @@ const battleEffectAbilities = new Set([
   "heatproof",
   "huge-power",
   "immunity",
+  "imposter",
   "insomnia",
   "intimidate",
   "levitate",

@@ -21,6 +21,7 @@ import {
   clearPresentationLayers,
   flashBattlefield,
   playCssMoveEffect,
+  playTransformEffect,
   renderStatusParticles,
   showBattleBanner,
   showProtectShield,
@@ -35,6 +36,7 @@ export class BattlePresentationController {
     this.container = null;
     this.mode = null;
     this.rendererKind = "css";
+    this.imposterSignatures = { player: null, opponent: null };
     this.bindSettings();
   }
 
@@ -71,6 +73,18 @@ export class BattlePresentationController {
     this.setWeather(weather);
     this.setStatus("player", player?.status);
     this.setStatus("opponent", opponent?.status);
+    [["player", player], ["opponent", opponent]].forEach(([side, pokemon]) => {
+      const transform = pokemon?.battleState?.transform;
+      const signature = transform?.source === "imposter"
+        ? `${transform.originalName}:${transform.targetName}`
+        : null;
+      if (signature && this.imposterSignatures[side] !== signature) {
+        this.imposterSignatures[side] = signature;
+        this.playTransform(side, transform.targetName, true);
+      } else if (!signature) {
+        this.imposterSignatures[side] = null;
+      }
+    });
     if (shouldPlayIntro) this.playIntro(mode);
     return this.rendererKind;
   }
@@ -190,8 +204,15 @@ export class BattlePresentationController {
         showBattleBanner(target, `RECOIL -${effect.amount || 0}`, "recoil", this.reducedMotion);
       } else if (effect.type === "drain" || effect.type === "heal") {
         showBattleBanner(target, `+${effect.amount || 0} HP`, "heal", this.reducedMotion);
+      } else if (effect.type === "transform") {
+        this.playTransform(targetSide, effect.into, effect.source === "imposter");
       }
     });
+  }
+
+  playTransform(side, intoName, shortened = false) {
+    const reduced = this.reducedMotion || shortened;
+    return playTransformEffect(this.getSide(side), intoName, reduced);
   }
 
   announceAbility(side, text) {
@@ -233,6 +254,7 @@ export class BattlePresentationController {
     this.disposeScene();
     this.container = null;
     this.mode = null;
+    this.imposterSignatures = { player: null, opponent: null };
   }
 
   disposeScene() {

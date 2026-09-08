@@ -1,6 +1,7 @@
 const {
-  applyEntryAbility,
+  applyEntryAbility: applyStandardEntryAbility,
   canApplyStatus,
+  getAbilityName,
   getDamageModifier,
   getStatusPreventionMessage,
   resolveTypeImmunity,
@@ -176,6 +177,121 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
     return pokemon.battleState;
   }
 
+  const transformedFieldNames = [
+    "name",
+    "type",
+    "types",
+    "attack",
+    "defense",
+    "specialAttack",
+    "specialDefense",
+    "speed",
+    "ability",
+    "moves",
+    "imageId",
+    "artwork",
+    "form",
+  ];
+
+  function cloneBattleValue(value) {
+    return value === undefined ? null : JSON.parse(JSON.stringify(value));
+  }
+
+  function getTransformFields(pokemon) {
+    return Object.fromEntries(
+      transformedFieldNames.map((field) => [field, cloneBattleValue(pokemon?.[field])]),
+    );
+  }
+
+  function applyTransformFields(pokemon, fields = {}) {
+    transformedFieldNames.forEach((field) => {
+      if (fields[field] === null || fields[field] === undefined) {
+        delete pokemon[field];
+      } else {
+        pokemon[field] = cloneBattleValue(fields[field]);
+      }
+    });
+    return pokemon;
+  }
+
+  function syncTransformationState(pokemon) {
+    const transform = pokemon?.battleState?.transform;
+    if (!transform?.active) return pokemon;
+    transform.copied = getTransformFields(pokemon);
+    return pokemon;
+  }
+
+  function transformPokemon(pokemon, target, { source = "move" } = {}) {
+    if (!pokemon || !target || target.currentHp <= 0) {
+      return { transformed: false, reason: "no-target" };
+    }
+    const state = ensureBattleState(pokemon);
+    if (state.transform?.active) {
+      return { transformed: false, reason: "already-transformed" };
+    }
+
+    const original = getTransformFields(pokemon);
+    const copied = getTransformFields(target);
+    copied.moves = (target.moves || []).slice(0, 4).map((move) => ({
+      ...cloneBattleValue(move),
+      pp: 5,
+      maxPp: 5,
+      currentPp: 5,
+    }));
+    state.transform = {
+      active: true,
+      source,
+      original,
+      copied,
+      originalName: pokemon.name,
+      targetName: target.name,
+      targetSpeciesId: target.speciesId || target.id || null,
+    };
+    state.stages = {
+      ...ensureBattleState(target).stages,
+    };
+    applyTransformFields(pokemon, copied);
+    return {
+      transformed: true,
+      from: state.transform.originalName,
+      into: state.transform.targetName,
+      source,
+    };
+  }
+
+  function rehydrateTransformation(pokemon) {
+    const transform = pokemon?.battleState?.transform;
+    if (transform?.active && transform.copied) {
+      applyTransformFields(pokemon, transform.copied);
+    }
+    return pokemon;
+  }
+
+  function restoreTransformation(pokemon) {
+    const transform = pokemon?.battleState?.transform;
+    if (!transform?.active || !transform.original) return pokemon;
+    const currentHp = pokemon.currentHp;
+    const status = pokemon.status;
+    applyTransformFields(pokemon, transform.original);
+    pokemon.currentHp = currentHp;
+    pokemon.status = status;
+    delete pokemon.battleState.transform;
+    return pokemon;
+  }
+
+  function applyEntryAbility(entering, opponent, log = []) {
+    if (!entering || !opponent) return log;
+    if (getAbilityName(entering) === "imposter") {
+      const result = transformPokemon(entering, opponent, { source: "imposter" });
+      if (result.transformed) {
+        log.push(`${result.from}'s Imposter activated!`);
+        log.push(`${result.from} transformed into ${result.into}!`);
+      }
+      return log;
+    }
+    return applyStandardEntryAbility(entering, opponent, log);
+  }
+
   function getStageMultiplier(stage, accuracy = false) {
     const value = Math.max(-6, Math.min(6, Number(stage || 0)));
     if (accuracy) {
@@ -199,18 +315,23 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
   }
 
   function resetBattleState(pokemon) {
-    if (pokemon) delete pokemon.battleState;
+    if (pokemon) {
+      restoreTransformation(pokemon);
+      delete pokemon.battleState;
+    }
     return pokemon;
   }
 
   function resetSwitchState(pokemon) {
     if (!pokemon) return pokemon;
+    restoreTransformation(pokemon);
     const state = ensureBattleState(pokemon);
     const sleepTurns =
       pokemon.status === "asleep" ? state.volatile.sleepTurns : null;
     state.stages = Object.fromEntries(stageStats.map((stat) => [stat, 0]));
     state.volatile = sleepTurns ? { sleepTurns } : {};
     state.protected = false;
+    state.entryAbilityApplied = false;
     return pokemon;
   }
 
@@ -678,6 +799,7 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
     }
 
     move.currentPp -= 1;
+    syncTransformationState(attacker);
     log.push(`${attacker.name} used ${move.name}!`);
 
     if (!checkAccuracy(move, attacker, defender)) {
@@ -695,6 +817,28 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
     if (ensureBattleState(defender).protected) {
       log.push(`${defender.name} protected itself!`);
       return { move, log, metadata, protected: true };
+    }
+
+    if (String(move.canonicalName || move.name).toLowerCase() === "transform") {
+      const result = transformPokemon(attacker, defender, { source: "move" });
+      if (!result.transformed) {
+        log.push(
+          result.reason === "already-transformed"
+            ? `${attacker.name} is already transformed!`
+            : "But it failed!",
+        );
+        return { move, log, metadata, failed: true };
+      }
+      log.push(`${result.from} transformed into ${result.into}!`);
+      metadata.effects.push({
+        type: "transform",
+        target: "self",
+        from: result.from,
+        into: result.into,
+        source: result.source,
+      });
+      metadata.transformation = { ...result };
+      return { move, log, metadata, transformed: true };
     }
 
     let damage = 0;
@@ -1094,6 +1238,10 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
     getEffectiveStat,
     resetBattleState,
     resetSwitchState,
+    transformPokemon,
+    rehydrateTransformation,
+    restoreTransformation,
+    syncTransformationState,
     executeUtilityTurn,
     resolveForcedSwitch,
     resolveTurnOrder,

@@ -1753,6 +1753,131 @@ function main() {
     "Immunity did not prevent poison",
   );
 
+  const ditto = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Ditto"),
+    ownedId: "ditto-transform-test",
+    shiny: true,
+    ability: { name: "limber", slot: 1, hidden: false },
+  });
+  const transformTarget = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Charizard"),
+    ability: { name: "blaze", slot: 1, hidden: false },
+  });
+  battleEngine.ensureBattleState(transformTarget).stages.attack = 2;
+  battleEngine.ensureBattleState(transformTarget).stages.evasion = -1;
+  const dittoIdentity = {
+    id: ditto.id,
+    speciesId: ditto.speciesId,
+    maxHp: ditto.maxHp,
+    currentHp: ditto.currentHp,
+    transformPp: ditto.moves[0].currentPp,
+  };
+  const targetPpBefore = transformTarget.moves.map((move) => move.currentPp);
+  const transformResult = battleEngine.executeBattleMove(
+    ditto,
+    transformTarget,
+    "Transform",
+  );
+  assert(transformResult.transformed, "Transform did not activate");
+  assert(
+    ditto.id === dittoIdentity.id &&
+      ditto.speciesId === dittoIdentity.speciesId &&
+      ditto.maxHp === dittoIdentity.maxHp &&
+      ditto.currentHp === dittoIdentity.currentHp,
+    "Transform changed Ditto's permanent identity or HP",
+  );
+  assert(
+    ditto.name === transformTarget.name &&
+      ditto.types.join("/") === transformTarget.types.join("/") &&
+      ditto.attack === transformTarget.attack &&
+      ditto.specialDefense === transformTarget.specialDefense &&
+      ditto.speed === transformTarget.speed,
+    "Transform did not copy target presentation and combat stats",
+  );
+  assert(
+    ditto.ability?.name === transformTarget.ability?.name &&
+      battleEngine.ensureBattleState(ditto).stages.attack === 2 &&
+      battleEngine.ensureBattleState(ditto).stages.evasion === -1,
+    "Transform did not copy the target ability and battle stages",
+  );
+  assert(
+    ditto.moves.length === Math.min(4, transformTarget.moves.length) &&
+      ditto.moves.every((move) => move.currentPp === 5 && move.maxPp === 5),
+    "Transform did not create independent five-PP copied moves",
+  );
+  const copiedMove = ditto.moves[0];
+  battleEngine.executeBattleMove(ditto, transformTarget, copiedMove.name);
+  assert(copiedMove.currentPp === 4, "copied move PP did not decrease");
+  assert(
+    transformTarget.moves.every((move, index) => move.currentPp === targetPpBefore[index]),
+    "copied move usage changed the opponent's PP",
+  );
+  const sanitizedDitto = pokemonUtils.normalizePokemon(ditto);
+  assert(
+    sanitizedDitto.name === "Ditto" &&
+      sanitizedDitto.speciesId === 132 &&
+      sanitizedDitto.moves[0].name === "Transform" &&
+      sanitizedDitto.moves[0].currentPp === dittoIdentity.transformPp - 1 &&
+      !sanitizedDitto.battleState,
+    "temporary Transform state survived save normalization",
+  );
+  assert(
+    pokemonUtils.getPokemonSpeciesId(sanitizedDitto) === 132,
+    "transformed wild Ditto lost its catch/XP/Pokedex identity",
+  );
+  const roundTripDitto = pokemonUtils.normalizePokemon(ditto);
+  roundTripDitto.battleState = JSON.parse(JSON.stringify(ditto.battleState));
+  battleEngine.rehydrateTransformation(roundTripDitto);
+  assert(
+    roundTripDitto.name === transformTarget.name &&
+      roundTripDitto.moves[0].currentPp === 4 &&
+      roundTripDitto.speciesId === 132,
+    "stateless wild battle did not rehydrate temporary Transform state",
+  );
+  battleEngine.resetSwitchState(ditto);
+  assert(
+    ditto.name === "Ditto" &&
+      ditto.moves[0].name === "Transform" &&
+      ditto.moves[0].currentPp === dittoIdentity.transformPp - 1,
+    "switching did not restore Ditto and its consumed Transform PP",
+  );
+
+  const imposterDitto = {
+    ...pokemonUtils.normalizePokemon(pokemonUtils.getPokemonTemplateByName("Ditto")),
+    ability: { name: "imposter", slot: 3, hidden: true },
+  };
+  const imposterPp = imposterDitto.moves[0].currentPp;
+  const imposterLog = [];
+  battleEngine.applyEntryAbility(imposterDitto, transformTarget, imposterLog);
+  assert(
+    imposterDitto.name === transformTarget.name &&
+      imposterDitto.moves[0].currentPp === 5 &&
+      imposterLog.some((line) => line.includes("Imposter")) &&
+      imposterPp === imposterDitto.battleState.transform.original.moves[0].currentPp,
+    "Imposter did not transform without consuming Transform PP",
+  );
+  const sanitizedImposter = pokemonUtils.normalizePokemon(imposterDitto);
+  assert(
+    sanitizedImposter.name === "Ditto" &&
+      sanitizedImposter.ability?.name === "imposter" &&
+      sanitizedImposter.moves[0].currentPp === imposterPp,
+    "save normalization did not preserve Ditto's original Imposter state",
+  );
+  assert(
+    !battleEngine.transformPokemon(imposterDitto, transformTarget).transformed,
+    "an already transformed Pokemon transformed recursively",
+  );
+  assert(
+    battleEngine.chooseAiMove(imposterDitto, transformTarget),
+    "AI could not choose a copied move for transformed Ditto",
+  );
+  battleEngine.resetSwitchState(imposterDitto);
+  battleEngine.applyEntryAbility(imposterDitto, transformTarget, []);
+  assert(
+    imposterDitto.battleState.transform?.active,
+    "Imposter did not transform again after switching and re-entry",
+  );
+
   const mechanicsEngine = createBattleEngine({
     getRandomInt: (minimum) => minimum,
     random: () => 0.5,

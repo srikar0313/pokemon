@@ -189,6 +189,7 @@ const {
   chooseTrainerAction,
   applyEntryAbility,
   ensureBattleState,
+  rehydrateTransformation,
   resetSwitchState,
   executeUtilityTurn,
   resolveForcedSwitch,
@@ -199,6 +200,14 @@ function applyBattleEntryAbilities(playerPokemon, opponentPokemon, log = []) {
   applyEntryAbility(playerPokemon, opponentPokemon, log);
   applyEntryAbility(opponentPokemon, playerPokemon, log);
   return log;
+}
+
+function hasImposter(pokemon) {
+  return String(
+    typeof pokemon?.ability === "string"
+      ? pokemon.ability
+      : pokemon?.ability?.name || "",
+  ).toLowerCase() === "imposter";
 }
 
 const encounterEngine = createEncounterEngine({
@@ -2764,12 +2773,14 @@ app.post("/api/battle", (req, res) => {
     if (playerBattleState && typeof playerBattleState === "object") {
       playerPokemon.battleState = JSON.parse(JSON.stringify(playerBattleState));
       ensureBattleState(playerPokemon);
+      rehydrateTransformation(playerPokemon);
     }
     const incomingWildBattleState = wild?.battleState;
     const wildPokemon = normalizePokemon(wild || {});
     if (incomingWildBattleState && typeof incomingWildBattleState === "object") {
       wildPokemon.battleState = JSON.parse(JSON.stringify(incomingWildBattleState));
       ensureBattleState(wildPokemon);
+      rehydrateTransformation(wildPokemon);
     }
     if (!wildPokemon.id) {
       return res.status(400).json({ error: "Wild Pokémon is required" });
@@ -2782,6 +2793,29 @@ app.post("/api/battle", (req, res) => {
     let winner = null;
     const log = [];
     let itemState = null;
+
+    const playerState = ensureBattleState(playerPokemon);
+    const opponentState = ensureBattleState(wildPokemon);
+    const playerWasTransformed = Boolean(playerState.transform?.active);
+    if (action === "switch" || action === "forced-switch") {
+      resetSwitchState(playerPokemon);
+      if (hasImposter(playerPokemon)) {
+        applyEntryAbility(playerPokemon, wildPokemon, log);
+      }
+      playerPokemon.battleState.entryAbilityApplied = true;
+    } else if (!playerState.entryAbilityApplied || !opponentState.entryAbilityApplied) {
+      if (hasImposter(playerPokemon)) {
+        applyEntryAbility(playerPokemon, wildPokemon, log);
+      }
+      if (hasImposter(wildPokemon)) {
+        applyEntryAbility(wildPokemon, playerPokemon, log);
+      }
+      playerPokemon.battleState.entryAbilityApplied = true;
+      wildPokemon.battleState.entryAbilityApplied = true;
+    }
+    const playerAutoTransformed =
+      !playerWasTransformed &&
+      playerPokemon.battleState?.transform?.source === "imposter";
 
     const availableMoves = wildPokemon.moves.filter((m) => m.currentPp > 0);
     const wildMove =
@@ -2798,7 +2832,6 @@ app.post("/api/battle", (req, res) => {
       ) {
         resetSwitchState(inventory[previousIndex]);
       }
-      resetSwitchState(playerPokemon);
       log.push(`Go, ${playerPokemon.name}!`);
       orderedTurn = executeUtilityTurn({
         actionType: action,
@@ -2830,6 +2863,21 @@ app.post("/api/battle", (req, res) => {
           hpChange: playerPokemon.currentHp - hpBeforeItem,
         },
       });
+    } else if (
+      playerAutoTransformed &&
+      !getMoveByName(playerPokemon, moveName)
+    ) {
+      orderedTurn = {
+        metadata: {
+          order: [],
+          turns: [],
+          entryOnly: true,
+          transformation: {
+            side: "player",
+            ...playerPokemon.battleState.transform,
+          },
+        },
+      };
     } else {
       orderedTurn = executeOrderedMoveTurn({
         playerPokemon,
@@ -2875,7 +2923,7 @@ app.post("/api/battle", (req, res) => {
       log.push(`Wild ${wildPokemon.name} has no moves left!`);
     }
 
-    if (!winner && action !== "forced-switch") {
+    if (!winner && action !== "forced-switch" && !orderedTurn.metadata.entryOnly) {
       orderedTurn.metadata.endOfTurn = applyBattleEndOfTurnStatus(
         playerPokemon,
         wildPokemon,

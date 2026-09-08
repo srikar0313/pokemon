@@ -425,9 +425,10 @@ function createPokemonUtils({
     if (!available.length) return null;
     const savedName = typeof ability === "string" ? ability : ability?.name;
     const savedSlot = typeof ability === "object" ? ability?.slot : null;
-    const byName = available.find((candidate) => candidate.name === savedName);
+    const allAbilities = abilities.filter((candidate) => candidate?.name);
+    const byName = allAbilities.find((candidate) => candidate.name === savedName);
     if (byName) return { ...byName };
-    const bySlot = available.find((candidate) => candidate.slot === savedSlot);
+    const bySlot = allAbilities.find((candidate) => candidate.slot === savedSlot);
     return { ...(bySlot || getDeterministicAbility(available, pokemon)) };
   }
 
@@ -622,6 +623,22 @@ function createPokemonUtils({
   }
 
   function normalizePokemon(pokemon) {
+    const transformOriginal = pokemon?.battleState?.transform?.original;
+    if (transformOriginal) {
+      const currentHp = pokemon.currentHp;
+      const status = pokemon.status;
+      pokemon = {
+        ...pokemon,
+        ...Object.fromEntries(
+          Object.entries(transformOriginal).filter(([, value]) => value !== null),
+        ),
+        currentHp,
+        status,
+      };
+      Object.entries(transformOriginal).forEach(([field, value]) => {
+        if (value === null) delete pokemon[field];
+      });
+    }
     const template = getPokemonTemplateForOwnedPokemon(pokemon);
     const canonical = getCanonicalPokemon(template?.name ? template : pokemon);
     const migratedPokemon = migrateOwnedPokemonStats(pokemon);

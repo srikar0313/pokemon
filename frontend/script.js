@@ -250,8 +250,14 @@ function closeWildEncounterLayer() {
 
 function clearWildEncounterState() {
   endBattlePresentation();
-  teamCache.forEach((pokemon) => delete pokemon.battleState);
-  if (activePokemon) delete activePokemon.battleState;
+  teamCache.forEach((pokemon) => {
+    restorePokemonTransform(pokemon);
+    delete pokemon.battleState;
+  });
+  if (activePokemon) {
+    restorePokemonTransform(activePokemon);
+    delete activePokemon.battleState;
+  }
   wild = null;
   currentWildHP = 0;
   wildStatus = "none";
@@ -363,6 +369,21 @@ function normalizeMove(move) {
 }
 
 function normalizePokemon(pokemon) {
+  const transform = pokemon?.battleState?.transform;
+  if (transform?.active && transform.copied) {
+    pokemon = {
+      ...pokemon,
+      ...transform.copied,
+      id: pokemon.id,
+      speciesId: pokemon.speciesId,
+      ownedId: pokemon.ownedId,
+      currentHp: pokemon.currentHp,
+      maxHp: pokemon.maxHp,
+      status: pokemon.status,
+      shiny: pokemon.shiny,
+      battleState: pokemon.battleState,
+    };
+  }
   const resolvedImageId =
     pokemon.imageId || pokemonImageIdByName.get(pokemon.name) || pokemon.id;
   const types =
@@ -396,6 +417,16 @@ function normalizePokemon(pokemon) {
     form: pokemon.form?.id ? pokemon.form : null,
     moves: moves.map(normalizeMove),
   };
+}
+
+function restorePokemonTransform(pokemon) {
+  const transformOriginal = pokemon?.battleState?.transform?.original;
+  if (!transformOriginal) return pokemon;
+  Object.entries(transformOriginal).forEach(([field, value]) => {
+    if (value === null) delete pokemon[field];
+    else pokemon[field] = JSON.parse(JSON.stringify(value));
+  });
+  return pokemon;
 }
 
 function getPokemonDisplayName(pokemon) {
@@ -3799,7 +3830,12 @@ async function loadInventory() {
   const data = await response.json();
   teamCache = (data.team || []).map(normalizePokemon);
   battleStates.forEach((battleState, index) => {
-    if (battleState && teamCache[index]) teamCache[index].battleState = battleState;
+    if (battleState && teamCache[index]) {
+      teamCache[index] = normalizePokemon({
+        ...teamCache[index],
+        battleState,
+      });
+    }
   });
   storageCache = (data.storage || []).map(normalizePokemon);
   partyPresetCache = data.partyPresets || [];
@@ -4452,6 +4488,7 @@ function renderSwapPicker() {
 
 function resetPokemonForBattleSwitch(pokemon) {
   if (!pokemon) return;
+  restorePokemonTransform(pokemon);
   const sleepTurns =
     pokemon.status === "asleep"
       ? pokemon.battleState?.volatile?.sleepTurns
@@ -5358,6 +5395,7 @@ async function attack(moveName) {
   activePokemon.moves = data.playerMoves.map(normalizeMove);
   if (data.playerPokemon) {
     activePokemon = normalizePokemon(data.playerPokemon);
+    teamCache[activeInventoryIndex] = activePokemon;
     currentPlayerHP = activePokemon.currentHp;
     playerStatus = activePokemon.status || "none";
   }

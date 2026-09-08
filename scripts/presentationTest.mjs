@@ -12,6 +12,7 @@ import {
   resolveMoveAnimation,
 } from "../frontend/js/battleAnimationRegistry.mjs";
 import { getStatusVisual } from "../frontend/js/battleParticles.mjs";
+import { playTransformEffect } from "../frontend/js/battleParticles.mjs";
 import {
   isWebGLAvailable,
   selectBattleRenderer,
@@ -107,6 +108,11 @@ assert.equal(resolveHitReaction({ damage: 8, maxHp: 100 }).id, "light");
 assert.equal(normalizeWeatherVisual("sunny"), "sun");
 assert.equal(normalizeWeatherVisual("rain"), "rain");
 assert.equal(normalizeWeatherVisual("unsupported"), "clear");
+assert.equal(
+  await playTransformEffect(null, "Charizard", true),
+  false,
+  "Transform presentation did not fail safely without a mounted battle scene",
+);
 ["wild", "trainer", "gym", "elite", "champion", "legendary"].forEach((mode) => {
   assert(resolveBattleIntro(mode).label, `${mode} has no intro presentation`);
 });

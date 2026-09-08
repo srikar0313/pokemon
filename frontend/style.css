@@ -5490,6 +5490,51 @@ button:disabled {
 @keyframes weather-snow-fall { to { transform: translate(34px, 350px) rotate(180deg); } }
 @keyframes weather-sand-cross { to { transform: translateX(760px); } }
 
+.battle-pokemon.pokemon-transforming .battle-sprite {
+  animation: pokemon-transform-pulse 430ms ease-in-out;
+}
+
+.transform-cinematic {
+  position: absolute;
+  inset: 10% 12%;
+  z-index: 8;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.95) 0 12%, rgba(116,220,255,.7) 28%, transparent 68%);
+  animation: transform-glow 430ms ease-out forwards;
+}
+
+.transform-cinematic i,
+.transform-cinematic b {
+  position: absolute;
+  inset: 42%;
+  border: 2px solid rgba(255,255,255,.9);
+  border-radius: 50%;
+  animation: transform-ring 430ms ease-out forwards;
+}
+
+.transform-cinematic b:nth-of-type(2) { animation-delay: 55ms; }
+.transform-cinematic b:nth-of-type(3) { animation-delay: 110ms; }
+.transform-cinematic b:nth-of-type(4) { animation-delay: 165ms; }
+.transform-cinematic.reduced { animation-duration: 110ms; }
+
+@keyframes pokemon-transform-pulse {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  45% { opacity: .18; filter: brightness(4) saturate(0); }
+  70% { opacity: .72; filter: brightness(2); }
+}
+
+@keyframes transform-glow {
+  0% { opacity: 0; transform: scale(.4); }
+  40% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0; transform: scale(1.45); }
+}
+
+@keyframes transform-ring {
+  from { opacity: .9; transform: scale(.2); }
+  to { opacity: 0; transform: scale(5); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .move-cinematic *, .battle-pokemon.battle-reacting .battle-sprite,
   .presentation-banner, .protect-shield, .weather-cinematic i {
