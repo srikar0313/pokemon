@@ -1,6 +1,12 @@
 import { AudioManager } from "./battleAudio.mjs";
 import { isWebGLAvailable, selectBattleRenderer } from "./battleCapabilities.mjs";
-import { resolveBattlePresentationMode, resolveMoveAnimation } from "./battleAnimationRegistry.mjs";
+import {
+  normalizeWeatherVisual,
+  resolveBattleIntro,
+  resolveBattlePresentationMode,
+  resolveHitReaction,
+  resolveMoveAnimation,
+} from "./battleAnimationRegistry.mjs";
 import { BattleScene } from "./battleScene.mjs";
 import {
   createCaptureAnimationPlan,
@@ -11,8 +17,14 @@ import {
 } from "./battleCinematics.mjs";
 import {
   createAbilityAnnouncement,
+  applyCssHitReaction,
+  clearPresentationLayers,
   flashBattlefield,
+  playCssMoveEffect,
   renderStatusParticles,
+  showBattleBanner,
+  showProtectShield,
+  syncWeatherVisual,
 } from "./battleParticles.mjs";
 
 export class BattlePresentationController {
@@ -36,6 +48,7 @@ export class BattlePresentationController {
   mount({ container, kind = "wild", weather = "clear", player, opponent } = {}) {
     if (!container) return "css";
     const mode = resolveBattlePresentationMode(kind, opponent);
+    const shouldPlayIntro = this.mode !== mode;
     const containerChanged = this.container !== container;
     if (containerChanged) this.disposeScene();
     this.container = container;
@@ -55,9 +68,10 @@ export class BattlePresentationController {
       }
     }
     this.scene?.setReducedMotion(this.reducedMotion);
-    this.scene?.setWeather(weather);
+    this.setWeather(weather);
     this.setStatus("player", player?.status);
     this.setStatus("opponent", opponent?.status);
+    if (shouldPlayIntro) this.playIntro(mode);
     return this.rendererKind;
   }
 
@@ -68,18 +82,30 @@ export class BattlePresentationController {
       category: move.category || "Physical",
     };
     const animation = resolveMoveAnimation(resolvedMove);
-    await this.audio.playMove(resolvedMove);
-    if (!this.scene) return { rendered: false, animation };
-    await this.scene.playMove(side, resolvedMove);
-    return { rendered: true, animation };
+    const cameraClass = side === "player" ? "camera-push-player" : "camera-push-opponent";
+    if (!this.reducedMotion) this.container?.classList.add(cameraClass);
+    const results = await Promise.all([
+      this.audio.playMove(resolvedMove),
+      playCssMoveEffect(this.container, side, animation, this.reducedMotion),
+      this.scene?.playMove(side, resolvedMove),
+    ]);
+    this.container?.classList.remove(cameraClass);
+    return { rendered: Boolean(results[1] || this.scene), animation };
   }
 
-  async hit(side, { heavy = false, critical = false, effectiveness = 1 } = {}) {
-    await this.audio.playHit(heavy || effectiveness > 1, { critical });
-    this.scene?.pulseHit(side, critical);
-    const tone = critical ? "critical" : effectiveness > 1 ? "effective" : "hit";
-    flashBattlefield(this.container, tone, this.reducedMotion);
-    return Boolean(this.scene);
+  async hit(side, metadata = {}) {
+    const reaction = resolveHitReaction(metadata);
+    this.scene?.pulseHit(side, reaction);
+    flashBattlefield(this.container, reaction.flash, this.reducedMotion);
+    await Promise.all([
+      reaction.id === "immune"
+        ? Promise.resolve({ source: "none" })
+        : this.audio.playHit(["heavy", "effective", "critical"].includes(reaction.id), {
+            critical: reaction.id === "critical",
+          }),
+      applyCssHitReaction(this.getSide(side), reaction, this.reducedMotion),
+    ]);
+    return { rendered: Boolean(this.scene), reaction };
   }
 
   async faint(side) {
@@ -124,6 +150,50 @@ export class BattlePresentationController {
     renderStatusParticles(this.getSide(side), status, this.reducedMotion);
   }
 
+  setWeather(weather) {
+    const normalized = normalizeWeatherVisual(weather);
+    this.scene?.setWeather(normalized);
+    syncWeatherVisual(this.container, normalized, this.reducedMotion);
+  }
+
+  playIntro(mode = this.mode || "wild") {
+    const intro = resolveBattleIntro(mode);
+    const container = this.container;
+    container?.classList.add(`battle-intro-${mode}`);
+    showBattleBanner(container, intro.label, `intro-${mode}`, this.reducedMotion);
+    this.scene?.frameIntro(intro.intensity, this.reducedMotion ? 100 : intro.duration);
+    globalThis.setTimeout?.(
+      () => container?.classList.remove(`battle-intro-${mode}`),
+      this.reducedMotion ? 120 : intro.duration,
+    );
+    return intro;
+  }
+
+  showTurnMetadata(side, metadata = {}) {
+    const opposite = side === "player" ? "opponent" : "player";
+    (metadata.effects || []).forEach((effect) => {
+      const targetSide = effect.target === "self" ? side : opposite;
+      const target = this.getSide(targetSide);
+      if (effect.type === "statChange") {
+        const arrow = Number(effect.stages || 0) > 0 ? "UP" : "DOWN";
+        showBattleBanner(target, `${String(effect.stat || "Stat").replace(/([A-Z])/g, " $1")} ${arrow}`, arrow.toLowerCase(), this.reducedMotion);
+      } else if (effect.type === "allStatsUp") {
+        showBattleBanner(target, "ALL STATS UP", "up", this.reducedMotion);
+      } else if (["status", "volatileStatus"].includes(effect.type)) {
+        this.setStatus(targetSide, effect.status);
+      } else if (effect.type === "weather") {
+        this.setWeather(effect.weather);
+        showBattleBanner(this.container, `${normalizeWeatherVisual(effect.weather).toUpperCase()} WEATHER`, "weather", this.reducedMotion);
+      } else if (effect.type === "protect") {
+        showProtectShield(target, this.reducedMotion);
+      } else if (effect.type === "recoil") {
+        showBattleBanner(target, `RECOIL -${effect.amount || 0}`, "recoil", this.reducedMotion);
+      } else if (effect.type === "drain" || effect.type === "heal") {
+        showBattleBanner(target, `+${effect.amount || 0} HP`, "heal", this.reducedMotion);
+      }
+    });
+  }
+
   announceAbility(side, text) {
     createAbilityAnnouncement(this.getSide(side), text, this.reducedMotion);
   }
@@ -159,6 +229,7 @@ export class BattlePresentationController {
 
   endBattle() {
     this.audio.endBattle();
+    clearPresentationLayers(this.container);
     this.disposeScene();
     this.container = null;
     this.mode = null;

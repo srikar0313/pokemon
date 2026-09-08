@@ -62,14 +62,30 @@ const TYPE_COLORS = {
 };
 
 const SPECIAL_MOVE_ANIMATIONS = {
-  thunderbolt: { id: "thunderbolt", family: "lightning", intensity: 1.35 },
-  flamethrower: { id: "flamethrower", family: "flame", intensity: 1.35 },
-  surf: { id: "surf", family: "water", intensity: 1.5 },
-  earthquake: { id: "earthquake", family: "ground", intensity: 1.5 },
-  "shadow-ball": { id: "shadow-ball", family: "ghost", intensity: 1.35 },
-  "ice-beam": { id: "ice-beam", family: "ice", intensity: 1.35 },
-  "hyper-beam": { id: "hyper-beam", family: "beam", intensity: 1.65 },
+  thunderbolt: { id: "thunderbolt", family: "lightning", archetype: "beam", intensity: 1.35 },
+  flamethrower: { id: "flamethrower", family: "flame", archetype: "beam", intensity: 1.35 },
+  surf: { id: "surf", family: "water", archetype: "area", intensity: 1.5 },
+  earthquake: { id: "earthquake", family: "ground", archetype: "ground", intensity: 1.5 },
+  "shadow-ball": { id: "shadow-ball", family: "ghost", archetype: "mystic", intensity: 1.35 },
+  "ice-beam": { id: "ice-beam", family: "ice", archetype: "beam", intensity: 1.35 },
+  "hyper-beam": { id: "hyper-beam", family: "beam", archetype: "beam", intensity: 1.65 },
 };
+
+const BEAM_MOVES = new Set(["aurora-beam", "bubble-beam", "dragon-breath", "signal-beam", "solar-beam"]);
+const AREA_MOVES = new Set(["blizzard", "discharge", "eruption", "heat-wave", "razor-wind", "rock-slide"]);
+const GROUND_MOVES = new Set(["bulldoze", "magnitude", "mud-shot", "sand-attack"]);
+
+export const TYPE_EFFECT_LAYERS = Object.freeze({
+  Normal: ["ring", "impact"], Fire: ["trail", "sparks", "heat"],
+  Water: ["stream", "splash", "mist"], Electric: ["arcs", "flash"],
+  Grass: ["leaves", "pollen"], Ice: ["shards", "frost"],
+  Fighting: ["dash", "impact"], Poison: ["bubbles", "haze"],
+  Ground: ["debris", "shockwave", "dust"], Flying: ["gust", "feathers"],
+  Psychic: ["rings", "orbs", "distortion"], Bug: ["swarm", "slashes"],
+  Rock: ["fragments", "dust"], Ghost: ["wisps", "orb", "fade"],
+  Dragon: ["trail", "burst"], Dark: ["slashes", "shadow"],
+  Steel: ["sparks", "metal"], Fairy: ["rings", "sparkles"],
+});
 
 export function normalizeAnimationKey(value) {
   return String(value || "")
@@ -85,12 +101,27 @@ export function resolveMoveAnimation(move = {}) {
     ? move.category
     : "Physical";
   const special = SPECIAL_MOVE_ANIMATIONS[normalizeAnimationKey(move.name)];
+  const key = normalizeAnimationKey(move.name);
+  const archetype = special?.archetype ||
+    (category === "Status"
+      ? "setup"
+      : category === "Physical"
+        ? "contact"
+        : BEAM_MOVES.has(key)
+          ? "beam"
+          : AREA_MOVES.has(key)
+            ? "area"
+            : GROUND_MOVES.has(key) || type === "Ground"
+              ? "ground"
+              : ["Psychic", "Ghost", "Dark", "Fairy"].includes(type)
+                ? "mystic"
+                : "projectile");
   const motion =
-    category === "Physical"
+    archetype === "contact"
       ? "lunge"
-      : category === "Status"
+      : archetype === "setup"
         ? "aura"
-        : "projectile";
+        : archetype;
 
   return {
     id: special?.id || `${type.toLowerCase()}-${motion}`,
@@ -98,11 +129,42 @@ export function resolveMoveAnimation(move = {}) {
     type,
     category,
     motion,
+    archetype,
+    layers: TYPE_EFFECT_LAYERS[type],
     color: TYPE_COLORS[type],
     intensity: special?.intensity || (category === "Status" ? 0.75 : 1),
-    duration: special ? 520 : category === "Physical" ? 330 : 430,
+    duration: special ? 620 : archetype === "contact" ? 390 : archetype === "setup" ? 420 : 520,
+    phases: ["anticipation", "buildup", "travel", "impact", "recovery"],
     specific: Boolean(special),
   };
+}
+
+export function resolveHitReaction({ damage = 0, maxHp = 1, critical = false, effectiveness = 1 } = {}) {
+  if (effectiveness === 0) return { id: "immune", strength: 0, flash: "immune", shake: false };
+  const ratio = Math.max(0, Number(damage || 0)) / Math.max(1, Number(maxHp || 1));
+  if (critical) return { id: "critical", strength: 1.45, flash: "critical", shake: true };
+  if (effectiveness > 1) return { id: "effective", strength: 1.2, flash: "effective", shake: true };
+  if (effectiveness < 1) return { id: "resisted", strength: 0.45, flash: "weak", shake: false };
+  if (ratio >= 0.3 || damage >= 30) return { id: "heavy", strength: 1, flash: "heavy", shake: true };
+  return { id: "light", strength: 0.7, flash: "hit", shake: true };
+}
+
+export function resolveBattleIntro(mode = "wild") {
+  const intros = {
+    wild: { label: "Wild encounter", duration: 420, intensity: 0.55 },
+    trainer: { label: "Trainer battle", duration: 620, intensity: 0.75 },
+    gym: { label: "Gym challenge", duration: 760, intensity: 0.9 },
+    elite: { label: "Elite Four", duration: 820, intensity: 1 },
+    champion: { label: "Champion battle", duration: 900, intensity: 1.1 },
+    legendary: { label: "Legendary encounter", duration: 920, intensity: 1.15 },
+  };
+  return intros[mode] || intros.wild;
+}
+
+export function normalizeWeatherVisual(weather) {
+  const value = String(weather || "clear").toLowerCase();
+  if (["sun", "sunny"].includes(value)) return "sun";
+  return ["rain", "sandstorm", "snow"].includes(value) ? value : "clear";
 }
 
 export function resolveBattlePresentationMode(kind, opponent = {}) {

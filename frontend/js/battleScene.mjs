@@ -252,23 +252,39 @@ export class BattleScene {
     const endX = direction * 2.35;
     const effect = this.createEffect(animation, startX);
     const startTime = performance.now();
-    const originalCameraX = this.camera.position.x;
+    const originalCamera = this.camera.position.clone();
 
     await new Promise((resolve) => {
       const tick = (now) => {
         if (this.disposed) return resolve();
         const progress = Math.min(1, (now - startTime) / timing.duration);
-        const eased = easeOutCubic(progress);
+        const anticipation = Math.min(1, progress / 0.2);
+        const travel = Math.max(0, Math.min(1, (progress - 0.2) / 0.62));
+        const impact = Math.max(0, Math.min(1, (progress - 0.82) / 0.18));
+        effect.visible = progress > 0.08;
+        effect.scale.setScalar(0.25 + anticipation * 0.75);
         if (animation.id === "thunderbolt") {
           effect.position.x = endX;
-          effect.position.y = THREE.MathUtils.lerp(2.6, 0.1, eased);
+          effect.position.y = THREE.MathUtils.lerp(2.8, 0.1, easeOutCubic(travel));
         } else if (animation.family === "ground") {
           effect.position.x = endX;
           effect.position.y = -0.72 + Math.sin(progress * Math.PI * 5) * 0.12;
-          effect.scale.setScalar(0.7 + Math.sin(progress * Math.PI) * 2.2);
+          effect.scale.setScalar(0.35 + Math.sin(travel * Math.PI) * 2.45);
+        } else if (animation.archetype === "area") {
+          effect.position.x = THREE.MathUtils.lerp(0, endX * 0.45, travel);
+          effect.position.y = -0.15;
+          effect.scale.setScalar(0.4 + travel * 2.25);
+        } else if (animation.archetype === "setup") {
+          effect.position.x = startX;
+          effect.position.y = 0.15 + Math.sin(progress * Math.PI * 2) * 0.18;
+          effect.scale.setScalar(0.35 + Math.sin(progress * Math.PI) * 1.5);
+        } else if (animation.archetype === "mystic") {
+          effect.position.x = THREE.MathUtils.lerp(startX, endX, easeOutCubic(travel));
+          effect.position.y = 0.18 + Math.sin(progress * Math.PI * 3) * 0.3;
+          effect.scale.setScalar(0.45 + anticipation * 0.8 + impact * 0.35);
         } else {
-          effect.position.x = THREE.MathUtils.lerp(startX, endX, eased);
-          effect.position.y = 0.1 + Math.sin(progress * Math.PI) * 0.45;
+          effect.position.x = THREE.MathUtils.lerp(startX, endX, easeOutCubic(travel));
+          effect.position.y = 0.1 + Math.sin(travel * Math.PI) * 0.48;
         }
         effect.rotation.x += 0.14;
         effect.rotation.y += 0.18;
@@ -278,7 +294,8 @@ export class BattleScene {
               ? Math.sin(progress * Math.PI * 12) * 0.12
               : 0;
           this.camera.position.x =
-            originalCameraX + direction * Math.sin(progress * Math.PI) * 0.18 + groundShake;
+            originalCamera.x + direction * Math.sin(progress * Math.PI) * 0.2 + groundShake;
+          this.camera.position.z = originalCamera.z - Math.sin(progress * Math.PI) * 0.24;
           this.camera.lookAt(0, 0, 0);
         }
         if (progress < 1) globalThis.requestAnimationFrame?.(tick);
@@ -287,22 +304,56 @@ export class BattleScene {
       globalThis.requestAnimationFrame?.(tick);
     });
 
-    this.camera.position.x = originalCameraX;
+    this.camera.position.copy(originalCamera);
     this.camera.lookAt(0, 0, 0);
     this.disposeEffect(effect);
   }
 
-  pulseHit(side, critical = false) {
+  pulseHit(side, reaction = {}) {
     if (this.disposed) return;
     const x = side === "player" ? -2.35 : 2.35;
-    const color = critical ? 0xffdf61 : 0xffffff;
-    const light = new THREE.PointLight(color, critical ? 6 : 3.5, 5);
+    const critical = reaction.id === "critical";
+    const color = reaction.id === "immune" ? 0xa8c5df : critical ? 0xffdf61 : 0xffffff;
+    const light = new THREE.PointLight(color, (critical ? 6 : 3.5) * (reaction.strength || 0.6), 5);
     light.position.set(x, 0.5, 1.5);
     this.scene.add(light);
+    if (!this.reducedMotion && reaction.strength > 0) {
+      const push = Math.min(0.42, 0.16 * reaction.strength);
+      this.camera.position.z = this.baseCameraPosition.z - push;
+      this.camera.position.x += side === "player" ? -push * 0.35 : push * 0.35;
+      this.camera.lookAt(x * 0.12, 0, 0);
+    }
     globalThis.setTimeout?.(() => {
       this.scene?.remove(light);
       light.dispose?.();
+      if (!this.disposed) {
+        this.camera.position.copy(this.baseCameraPosition);
+        this.camera.lookAt(0, 0, 0);
+      }
     }, this.reducedMotion ? 80 : 220);
+  }
+
+  frameIntro(intensity = 0.7, duration = 600) {
+    if (this.disposed || this.reducedMotion) return Promise.resolve(false);
+    const start = performance.now();
+    const base = this.baseCameraPosition.clone();
+    this.camera.position.set(base.x, base.y + 0.45 * intensity, base.z + 0.9 * intensity);
+    return new Promise((resolve) => {
+      const tick = (now) => {
+        if (this.disposed) return resolve(false);
+        const progress = Math.min(1, (now - start) / duration);
+        const eased = easeOutCubic(progress);
+        this.camera.position.lerpVectors(
+          new THREE.Vector3(base.x, base.y + 0.45 * intensity, base.z + 0.9 * intensity),
+          base,
+          eased,
+        );
+        this.camera.lookAt(0, 0, 0);
+        if (progress < 1) globalThis.requestAnimationFrame?.(tick);
+        else resolve(true);
+      };
+      globalThis.requestAnimationFrame?.(tick);
+    });
   }
 
   disposeEffect(effect) {

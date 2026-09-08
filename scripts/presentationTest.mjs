@@ -5,9 +5,13 @@ import { fileURLToPath } from "node:url";
 import {
   BATTLE_TYPES,
   getMotionTiming,
+  normalizeWeatherVisual,
+  resolveBattleIntro,
   resolveBattlePresentationMode,
+  resolveHitReaction,
   resolveMoveAnimation,
 } from "../frontend/js/battleAnimationRegistry.mjs";
+import { getStatusVisual } from "../frontend/js/battleParticles.mjs";
 import {
   isWebGLAvailable,
   selectBattleRenderer,
@@ -41,12 +45,35 @@ const physical = resolveMoveAnimation(move);
 assert.deepEqual(move, originalMove, "presentation resolution mutated battle metadata");
 assert.equal(physical.motion, "lunge", "physical move did not use lunge fallback");
 assert.equal(physical.family, "impact", "Normal move did not use impact family");
+assert.equal(physical.archetype, "contact", "physical move did not use contact choreography");
+assert.deepEqual(
+  physical.phases,
+  ["anticipation", "buildup", "travel", "impact", "recovery"],
+  "move choreography phases are incomplete",
+);
 
 BATTLE_TYPES.forEach((type) => {
   const animation = resolveMoveAnimation({ name: "Test", type, category: "Special" });
   assert(animation.family, `${type} has no animation family`);
   assert.equal(animation.type, type, `${type} animation changed move type`);
+  assert(animation.layers.length >= 2, `${type} does not have layered effects`);
 });
+
+assert.equal(
+  resolveMoveAnimation({ name: "Solar Beam", type: "Grass", category: "Special" }).archetype,
+  "beam",
+  "beam move did not use beam choreography",
+);
+assert.equal(
+  resolveMoveAnimation({ name: "Blizzard", type: "Ice", category: "Special" }).archetype,
+  "area",
+  "area move did not use area choreography",
+);
+assert.equal(
+  resolveMoveAnimation({ name: "Hypnosis", type: "Psychic", category: "Status" }).archetype,
+  "setup",
+  "status move did not use setup choreography",
+);
 
 const signatureMoves = {
   Thunderbolt: "thunderbolt",
@@ -61,6 +88,27 @@ Object.entries(signatureMoves).forEach(([name, expectedId]) => {
   const animation = resolveMoveAnimation({ name, type: "Normal", category: "Special" });
   assert.equal(animation.id, expectedId, `${name} did not use its specific animation`);
   assert.equal(animation.specific, true, `${name} was not marked as a specific override`);
+});
+assert.equal(resolveMoveAnimation({ name: "Surf", type: "Water", category: "Special" }).archetype, "area");
+assert.equal(resolveMoveAnimation({ name: "Earthquake", type: "Ground", category: "Physical" }).archetype, "ground");
+assert.equal(resolveMoveAnimation({ name: "Shadow Ball", type: "Ghost", category: "Special" }).archetype, "mystic");
+
+assert.equal(resolveHitReaction({ damage: 0, effectiveness: 0 }).id, "immune");
+assert.equal(resolveHitReaction({ damage: 8, maxHp: 100, effectiveness: 0.5 }).id, "resisted");
+assert.equal(resolveHitReaction({ damage: 18, maxHp: 100, effectiveness: 2 }).id, "effective");
+assert.equal(resolveHitReaction({ damage: 18, maxHp: 100, critical: true }).id, "critical");
+assert.equal(resolveHitReaction({ damage: 38, maxHp: 100 }).id, "heavy");
+assert.equal(resolveHitReaction({ damage: 8, maxHp: 100 }).id, "light");
+
+["burned", "poisoned", "paralyzed", "asleep", "frozen", "confused"].forEach((status) => {
+  assert(getStatusVisual(status), `${status} has no persistent visual`);
+  assert(getStatusVisual(status, true).count <= 2, `${status} ignores reduced motion`);
+});
+assert.equal(normalizeWeatherVisual("sunny"), "sun");
+assert.equal(normalizeWeatherVisual("rain"), "rain");
+assert.equal(normalizeWeatherVisual("unsupported"), "clear");
+["wild", "trainer", "gym", "elite", "champion", "legendary"].forEach((mode) => {
+  assert(resolveBattleIntro(mode).label, `${mode} has no intro presentation`);
 });
 
 assert.equal(isWebGLAvailable(null), false, "missing DOM did not select WebGL fallback");

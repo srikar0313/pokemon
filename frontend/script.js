@@ -546,7 +546,9 @@ async function animateAttack(side, moveOrType = "Normal") {
   const presentation = runBattlePresentation("playMove", side, move);
   if (prefersReducedMotion()) {
     await presentation;
-    showTypeEffect(side === "player" ? "opponent" : "player", move.type);
+    if (move.category !== "Status") {
+      showTypeEffect(side === "player" ? "opponent" : "player", move.type);
+    }
     return;
   }
   const attacker = getBattleSide(side);
@@ -556,7 +558,7 @@ async function animateAttack(side, moveOrType = "Normal") {
   attacker.classList.add(side === "player" ? "attack-forward" : "attack-backward");
   await Promise.all([wait(190), presentation]);
   attacker.classList.remove("attack-forward", "attack-backward");
-  showTypeEffect(defenderSide, move.type);
+  if (move.category !== "Status") showTypeEffect(defenderSide, move.type);
 }
 
 async function animateHit(side, feedback = {}) {
@@ -570,8 +572,12 @@ async function animateHit(side, feedback = {}) {
     await presentation;
     return;
   }
+  if (typeof getBattlePresentation()?.hit === "function") {
+    await presentation;
+    return;
+  }
   defender.classList.add("hit-shake", "hit-flash");
-  await Promise.all([wait(230), presentation]);
+  await wait(230);
   defender.classList.remove("hit-shake", "hit-flash");
 }
 
@@ -592,7 +598,7 @@ async function animateFaint(side) {
     return;
   }
   target.classList.add("fainting");
-  await Promise.all([wait(420), presentation]);
+  await Promise.all([wait(560), presentation]);
 }
 
 async function animatePokemonSwitch(side, pokemon = {}) {
@@ -742,13 +748,43 @@ async function playBattleTurnAnimation({
   const events = getBattleLogEvents(lines, playerPokemon, opponentPokemon);
   const playerActed = events.some(({ side, line }) => side === "player" && / used /i.test(line));
   const opponentActed = events.some(({ side, line }) => side === "opponent" && / used /i.test(line));
+  const playerTurn = turnMetadata?.turns?.find((turn) => turn.side === "player");
+  const opponentTurn = turnMetadata?.turns?.find((turn) => turn.side === "opponent");
+  const playerLogFeedback = getAttackFeedback(lines, playerPokemon, opponentPokemon, "player");
+  const opponentLogFeedback = getAttackFeedback(lines, playerPokemon, opponentPokemon, "opponent");
   const playerFeedback = {
-    ...getAttackFeedback(lines, playerPokemon, opponentPokemon, "player"),
-    damage: opponentDamage,
+    critical: playerTurn?.critical ?? playerLogFeedback.critical,
+    effectiveness: playerTurn?.effectiveness ?? playerLogFeedback.effectiveness,
+    damage: playerTurn?.damage ?? opponentDamage,
+    maxHp: opponentMaxHp,
   };
   const opponentFeedback = {
-    ...getAttackFeedback(lines, playerPokemon, opponentPokemon, "opponent"),
-    damage: playerDamage,
+    critical: opponentTurn?.critical ?? opponentLogFeedback.critical,
+    effectiveness: opponentTurn?.effectiveness ?? opponentLogFeedback.effectiveness,
+    damage: opponentTurn?.damage ?? playerDamage,
+    maxHp: playerMaxHp,
+  };
+  const getVolatileStatusAfter = (targetSide, pokemonBefore) => {
+    const targetName = pokemonBefore?.name ? escapeRegExp(pokemonBefore.name) : "";
+    if (
+      targetName &&
+      lines.some((line) => new RegExp(`\\b${targetName}\\b.*snapped out of confusion`, "i").test(line))
+    ) {
+      return null;
+    }
+    for (const [actingSide, turn] of [["player", playerTurn], ["opponent", opponentTurn]]) {
+      const effect = (turn?.effects || []).find((entry) => {
+        if (entry.type !== "volatileStatus" || entry.status !== "confused") return false;
+        const affectedSide = entry.target === "self"
+          ? actingSide
+          : actingSide === "player" ? "opponent" : "player";
+        return affectedSide === targetSide;
+      });
+      if (effect) return effect.status;
+    }
+    return pokemonBefore?.battleState?.volatile?.confusionTurns > 0
+      ? "confused"
+      : null;
   };
 
   const animatePlayerAction = async () => {
@@ -758,11 +794,14 @@ async function playBattleTurnAnimation({
         playerMove || { name: "Attack", type: playerMoveType, category: "Physical" },
       );
     }
-    if (opponentDamage > 0) {
-      showFloatingBattleText("opponent", `-${opponentDamage}`, "damage");
-      animateHpChange("opponent", opponentBeforeHp, opponentAfterHp, opponentMaxHp);
+    if (opponentDamage > 0 || (playerActed && playerFeedback.effectiveness === 0)) {
+      if (opponentDamage > 0) {
+        showFloatingBattleText("opponent", `-${opponentDamage}`, "damage");
+        animateHpChange("opponent", opponentBeforeHp, opponentAfterHp, opponentMaxHp);
+      }
       await animateHit("opponent", playerFeedback);
     }
+    runBattlePresentation("showTurnMetadata", "player", playerTurn || {});
     showBattleLogFeedback(lines, playerPokemon, opponentPokemon, "player");
     const statusText = getStatusFeedback(opponentStatusBefore, opponentStatusAfter);
     if (statusText) {
@@ -778,11 +817,14 @@ async function playBattleTurnAnimation({
         opponentMove || { name: "Attack", type: opponentMoveType, category: "Physical" },
       );
     }
-    if (playerDamage > 0) {
-      showFloatingBattleText("player", `-${playerDamage}`, "damage");
-      animateHpChange("player", playerBeforeHp, playerAfterHp, playerMaxHp);
+    if (playerDamage > 0 || (opponentActed && opponentFeedback.effectiveness === 0)) {
+      if (playerDamage > 0) {
+        showFloatingBattleText("player", `-${playerDamage}`, "damage");
+        animateHpChange("player", playerBeforeHp, playerAfterHp, playerMaxHp);
+      }
       await animateHit("player", opponentFeedback);
     }
+    runBattlePresentation("showTurnMetadata", "opponent", opponentTurn || {});
     showBattleLogFeedback(lines, playerPokemon, opponentPokemon, "opponent");
     const statusText = getStatusFeedback(playerStatusBefore, playerStatusAfter);
     if (statusText) {
@@ -804,8 +846,20 @@ async function playBattleTurnAnimation({
   if (playerAfterHp > playerBeforeHp || opponentAfterHp > opponentBeforeHp) {
     runBattlePresentation("playHealing");
   }
-  runBattlePresentation("setStatus", "player", playerStatusAfter);
-  runBattlePresentation("setStatus", "opponent", opponentStatusAfter);
+  runBattlePresentation(
+    "setStatus",
+    "player",
+    playerStatusAfter !== "none"
+      ? playerStatusAfter
+      : getVolatileStatusAfter("player", playerPokemon) || "none",
+  );
+  runBattlePresentation(
+    "setStatus",
+    "opponent",
+    opponentStatusAfter !== "none"
+      ? opponentStatusAfter
+      : getVolatileStatusAfter("opponent", opponentPokemon) || "none",
+  );
 
   if ((opponentAfterHp || 0) <= 0 && opponentBeforeHp > 0) await animateFaint("opponent");
   if ((playerAfterHp || 0) <= 0 && playerBeforeHp > 0) await animateFaint("player");
