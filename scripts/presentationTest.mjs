@@ -40,6 +40,29 @@ import {
   getStageBadges,
   getWeatherDisplay,
 } from "../frontend/js/battleTacticalUi.mjs";
+import {
+  buildTypeGuide,
+  filterHandbookEntries,
+  getTypeMultiplier,
+} from "../frontend/js/handbookUi.mjs";
+
+const handbookChart = {
+  Fire: { Grass: 2, Water: 0.5 },
+  Water: { Fire: 2 },
+  Grass: { Water: 2 },
+  Ghost: { Normal: 0 },
+  Normal: { Ghost: 0 },
+};
+const fireGuide = buildTypeGuide(handbookChart).find((entry) => entry.name === "Fire");
+assert(fireGuide.strongAgainst.includes("Grass"));
+assert(fireGuide.resistedBy.includes("Water"));
+assert(fireGuide.weakAgainst.includes("Water"));
+assert.equal(getTypeMultiplier(handbookChart, "Ghost", "Normal"), 0);
+assert.equal(
+  filterHandbookEntries([{ name: "Levitate" }, { name: "Intimidate" }], "levi").length,
+  1,
+  "Handbook search did not filter ability names",
+);
 
 assert.equal(getEffectivenessDisplay(2).label, "SUPER EFFECTIVE");
 assert.equal(getEffectivenessDisplay(1).label, "EFFECTIVE");
@@ -432,6 +455,17 @@ assert.equal(generatedCryManifest.version, 1, "cry manifest version is invalid")
 assert.equal(typeof generatedCryManifest.cries, "object", "cry manifest is invalid");
 
 const frontendSource = fs.readFileSync(path.join(rootDir, "frontend/script.js"), "utf8");
+const frontendIndex = fs.readFileSync(path.join(rootDir, "frontend/index.html"), "utf8");
+const frontendStyles = fs.readFileSync(path.join(rootDir, "frontend/style.css"), "utf8");
+assert(frontendIndex.includes('data-screen="handbook"'), "Handbook navigation tab is missing");
+assert(frontendIndex.includes('id="handbook-screen"'), "Handbook screen is missing");
+assert(frontendSource.includes('fetch("/api/handbook")'), "Handbook data is not loaded from the backend");
+assert(frontendSource.includes("renderBattleHandbookShortcut"), "Battle Handbook shortcut is missing");
+assert(
+  frontendStyles.includes(".handbook-type-grid") &&
+    frontendStyles.includes("@media (max-width: 760px)"),
+  "Handbook responsive styles are missing",
+);
 const catchRequestCount = (frontendSource.match(/fetch\("\/api\/catch"/g) || []).length;
 assert.equal(catchRequestCount, 1, "capture UI can issue duplicate catch requests");
 assert(

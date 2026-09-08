@@ -12,6 +12,7 @@ const { createRewardEngine } = require("../backend/rewardEngine");
 const { createEvolutionEngine } = require("../backend/evolutionEngine");
 const { createEncounterEngine } = require("../backend/encounterEngine");
 const { createBattleEngine } = require("../backend/battleEngine");
+const { createHandbookData } = require("../backend/handbookData");
 const variantUtils = require("../frontend/variantUtils");
 
 const rootDir = path.join(__dirname, "..");
@@ -74,6 +75,21 @@ function createMemoryGameState(pokemonUtils) {
 
 function main() {
   const gameData = loadGameData();
+  const handbook = createHandbookData(gameData.moves);
+  assert(
+    Object.keys(handbook.typeChart).length === 18,
+    "Battle Handbook does not expose all 18 supported types",
+  );
+  assert(
+    handbook.moveCategories.every((entry) => entry.example?.name),
+    "Battle Handbook move examples do not resolve from current move data",
+  );
+  assert(
+    handbook.abilities.some((entry) => entry.key === "levitate") &&
+      handbook.abilities.some((entry) => entry.key === "imposter") &&
+      handbook.abilities.every((entry) => ["active", "partial"].includes(entry.support)),
+    "Battle Handbook ability support does not match the implemented guide",
+  );
   const pokemonUtils = createPokemonUtils({
     pokemonPath: path.join(rootDir, "pokemon.json"),
     readJsonFile: loadJson,

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokemon Adventure</title>
-    <link rel="stylesheet" href="style.css?v=20260908-tactical-battle" />
+    <link rel="stylesheet" href="style.css?v=20260908-battle-handbook" />
   </head>
   <body>
     <div class="app-shell">
@@ -51,6 +51,13 @@
           onclick="setActiveScreen('gym')"
         >
           Gym
+        </button>
+        <button
+          class="nav-tab"
+          data-screen="handbook"
+          onclick="openHandbook()"
+        >
+          Handbook
         </button>
       </div>
 
@@ -142,6 +149,12 @@
             </div>
           </div>
         </section>
+
+        <section id="handbook-screen" class="screen-panel">
+          <div class="screen-card handbook-screen-card">
+            <div id="handbook-panel"></div>
+          </div>
+        </section>
       </div>
 
       <div
@@ -213,8 +226,8 @@
         <input id="reduce-battle-motion" type="checkbox" />
       </label>
     </aside>
-    <script type="module" src="js/battlePresentationBootstrap.mjs?v=20260908-tactical-battle"></script>
+    <script type="module" src="js/battlePresentationBootstrap.mjs?v=20260908-battle-handbook"></script>
     <script src="variantUtils.js?v=20260906-variants"></script>
-    <script src="script.js?v=20260908-tactical-battle"></script>
+    <script src="script.js?v=20260908-battle-handbook"></script>
   </body>
 </html>

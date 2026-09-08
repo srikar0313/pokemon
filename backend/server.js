@@ -7,6 +7,7 @@ const { createBattleEngine } = require("./battleEngine");
 const { createEncounterEngine } = require("./encounterEngine");
 const { createRewardEngine } = require("./rewardEngine");
 const { createEvolutionEngine } = require("./evolutionEngine");
+const { createHandbookData } = require("./handbookData");
 const app = express();
 const port = process.env.PORT || 3000;
 const rootDir = path.join(__dirname, "..");
@@ -1190,6 +1191,10 @@ app.get("/api/profile", (req, res) => {
 
 app.get("/api/player", (req, res) => {
   res.json(loadPlayerState());
+});
+
+app.get("/api/handbook", (req, res) => {
+  res.json(createHandbookData(gameData.moves));
 });
 
 app.post("/api/reward", (req, res) => {

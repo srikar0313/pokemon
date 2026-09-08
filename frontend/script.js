@@ -16,6 +16,11 @@ let playerState = null;
 let shopCatalog = [];
 let pokedexCache = null;
 let questCache = null;
+let handbookCache = null;
+let handbookSection = "types";
+let handbookSearch = "";
+let handbookReturnScreen = "explore";
+let handbookRequest = null;
 const pokemonImageIdByName = new Map();
 let pokedexFilters = {
   status: "all",
@@ -214,7 +219,222 @@ function setActiveScreen(screen) {
   });
   if (screen === "pokedex") loadPokedex();
   if (screen === "quests") loadQuests();
+  if (screen === "handbook") loadHandbook();
   if (screen === "battle") focusBattlePresentation();
+}
+
+const handbookSections = [
+  ["types", "Type Guide"],
+  ["moves", "Move Categories"],
+  ["status", "Status Effects"],
+  ["abilities", "Abilities"],
+  ["weather", "Weather"],
+  ["catching", "Catching"],
+  ["evolution", "Evolution"],
+  ["glossary", "Glossary"],
+];
+
+async function loadHandbook() {
+  const panel = document.getElementById("handbook-panel");
+  if (!panel) return;
+  if (!handbookCache) {
+    panel.innerHTML = '<div class="handbook-empty">Loading Battle Handbook...</div>';
+    handbookRequest ||= fetch("/api/handbook")
+      .then((response) => {
+        if (!response.ok) throw new Error("Could not load Battle Handbook");
+        return response.json();
+      })
+      .then((data) => {
+        handbookCache = data;
+        return data;
+      })
+      .finally(() => {
+        handbookRequest = null;
+      });
+    try {
+      await handbookRequest;
+    } catch (error) {
+      panel.innerHTML = `<div class="handbook-empty">${escapeHtml(error.message)}</div>`;
+      return;
+    }
+  }
+  renderHandbook();
+}
+
+function openHandbook(section = "types") {
+  if (activeScreen !== "handbook") handbookReturnScreen = activeScreen;
+  if (activeOverlay) closeOverlay();
+  handbookSection = handbookSections.some(([id]) => id === section)
+    ? section
+    : "types";
+  handbookSearch = "";
+  setActiveScreen("handbook");
+}
+
+function returnFromHandbook() {
+  if (handbookReturnScreen === "battle") {
+    if (wild && isInBattle) return showBattle();
+    if (gymBattle?.playerPokemon) return showGymBattle();
+    if (eliteBattle?.playerPokemon) return showEliteBattle();
+    if (npcBattle?.playerPokemon) return showNpcBattle();
+  }
+  setActiveScreen(handbookReturnScreen || "explore");
+}
+
+function selectHandbookSection(section) {
+  handbookSection = section;
+  handbookSearch = "";
+  renderHandbook();
+}
+
+function updateHandbookSearch(value) {
+  handbookSearch = value;
+  renderHandbookContent();
+}
+
+function getFilteredHandbookEntries(entries) {
+  return window.HandbookUI?.filterHandbookEntries
+    ? window.HandbookUI.filterHandbookEntries(entries, handbookSearch)
+    : entries.filter((entry) =>
+        JSON.stringify(entry).toLowerCase().includes(handbookSearch.trim().toLowerCase()),
+      );
+}
+
+function renderHandbookTagList(items, emptyLabel = "None") {
+  if (!items?.length) return `<span class="handbook-none">${emptyLabel}</span>`;
+  return items.map((item) => `<span class="handbook-tag">${escapeHtml(item)}</span>`).join("");
+}
+
+function renderHandbookTypeGuide() {
+  const typeChart = handbookCache.typeChart || {};
+  const entries = window.HandbookUI?.buildTypeGuide
+    ? window.HandbookUI.buildTypeGuide(typeChart)
+    : Object.keys(typeChart).map((name) => ({ name }));
+  const filtered = getFilteredHandbookEntries(entries);
+  const allTypes = Object.keys(typeChart);
+  return `
+    <div class="handbook-type-grid">
+      ${filtered.map((entry) => `
+        <article class="handbook-type-card" style="--type-color:${getTypeColor(entry.name)}">
+          <h3>${escapeHtml(entry.name)}</h3>
+          <dl>
+            <dt>Strong against</dt><dd>${renderHandbookTagList(entry.strongAgainst)}</dd>
+            <dt>Weak against</dt><dd>${renderHandbookTagList(entry.weakAgainst)}</dd>
+            <dt>Resisted by</dt><dd>${renderHandbookTagList(entry.resistedBy)}</dd>
+            <dt>No effect against</dt><dd>${renderHandbookTagList(entry.noEffectAgainst)}</dd>
+          </dl>
+        </article>
+      `).join("")}
+    </div>
+    ${filtered.length ? `
+      <details class="handbook-chart-wrap">
+        <summary>Simplified attack chart</summary>
+        <p>Rows attack columns. Blank cells deal normal damage.</p>
+        <div class="handbook-chart-scroll">
+          <table class="handbook-type-chart">
+            <thead><tr><th>ATK</th>${allTypes.map((type) => `<th title="${type}">${type.slice(0, 3)}</th>`).join("")}</tr></thead>
+            <tbody>${allTypes.map((attacker) => `<tr><th>${attacker}</th>${allTypes.map((defender) => {
+              const value = window.HandbookUI?.getTypeMultiplier
+                ? window.HandbookUI.getTypeMultiplier(typeChart, attacker, defender)
+                : typeChart[attacker]?.[defender] ?? 1;
+              const label = value === 0 ? "0" : value > 1 ? "2x" : value < 1 ? "1/2" : "";
+              return `<td class="chart-${value === 0 ? "immune" : value > 1 ? "strong" : value < 1 ? "weak" : "normal"}" title="${attacker} into ${defender}: ${value}x">${label}</td>`;
+            }).join("")}</tr>`).join("")}</tbody>
+          </table>
+        </div>
+      </details>` : '<div class="handbook-empty">No matching types.</div>'}
+  `;
+}
+
+function renderHandbookMoveCategories() {
+  const entries = getFilteredHandbookEntries(handbookCache.moveCategories || []);
+  return `<div class="handbook-card-grid">${entries.map((entry) => `
+    <article class="handbook-info-card handbook-category-${entry.name.toLowerCase()}">
+      <span class="handbook-kicker">${escapeHtml(entry.formula)}</span>
+      <h3>${escapeHtml(entry.name)}</h3>
+      <p>${escapeHtml(entry.description)}</p>
+      ${entry.example ? `<div class="handbook-example"><strong>${escapeHtml(entry.example.name)}</strong><span>${escapeHtml(entry.example.type)} | Power ${entry.example.power ?? "--"} | Accuracy ${entry.example.accuracy ?? 100}</span></div>` : ""}
+    </article>`).join("")}</div>${entries.length ? "" : '<div class="handbook-empty">No matching move categories.</div>'}`;
+}
+
+function renderHandbookStatuses() {
+  const entries = getFilteredHandbookEntries(handbookCache.statuses || []);
+  return `<div class="handbook-card-grid">${entries.map((entry) => `
+    <article class="handbook-info-card status-${entry.key}">
+      <h3>${escapeHtml(entry.name)}</h3><p>${escapeHtml(entry.effect)}</p>
+      <div class="handbook-facts"><span>Turn loss: <strong>${escapeHtml(entry.turnLoss)}</strong></span><span>HP loss: <strong>${escapeHtml(entry.hpLoss)}</strong></span><span>Stat effect: <strong>${escapeHtml(entry.statEffect)}</strong></span></div>
+    </article>`).join("")}</div>${entries.length ? "" : '<div class="handbook-empty">No matching status effects.</div>'}`;
+}
+
+function renderHandbookAbilities() {
+  const entries = getFilteredHandbookEntries(handbookCache.abilities || []);
+  const groups = [["active", "Active / implemented"], ["partial", "Partially supported"]];
+  return `${groups.map(([support, label]) => {
+    const group = entries.filter((entry) => entry.support === support);
+    return group.length ? `<section class="handbook-group"><h3>${label}</h3><div class="handbook-card-grid compact">${group.map((entry) => `<article class="handbook-info-card"><h4>${escapeHtml(entry.name)}</h4><p>${escapeHtml(entry.description)}</p></article>`).join("")}</div></section>` : "";
+  }).join("")}
+  ${entries.length ? `<p class="handbook-note"><strong>Display-only:</strong> ${escapeHtml(handbookCache.abilitySummary?.displayOnly || "")}</p>` : '<div class="handbook-empty">No matching abilities.</div>'}`;
+}
+
+function renderHandbookWeather() {
+  const entries = getFilteredHandbookEntries(handbookCache.weather || []);
+  return `<div class="handbook-card-grid">${entries.map((entry) => `<article class="handbook-info-card handbook-weather-${entry.key}"><h3>${escapeHtml(entry.name)}</h3><p>${escapeHtml(entry.effect)}</p><div class="handbook-facts"><span>Boost: <strong>${escapeHtml(entry.boosted.join(", ") || "None")}</strong></span><span>Reduce: <strong>${escapeHtml(entry.reduced.join(", ") || "None")}</strong></span><span>${escapeHtml(entry.passive)}</span></div></article>`).join("")}</div>${entries.length ? "" : '<div class="handbook-empty">No matching weather.</div>'}`;
+}
+
+function renderHandbookList(items, heading, note = "") {
+  const entries = getFilteredHandbookEntries((items || []).map((text) => ({ text })));
+  return `<section class="handbook-list-panel"><h3>${escapeHtml(heading)}</h3><ol>${entries.map((entry) => `<li>${escapeHtml(entry.text)}</li>`).join("")}</ol>${note ? `<p class="handbook-note">${escapeHtml(note)}</p>` : ""}</section>${entries.length ? "" : '<div class="handbook-empty">No matching guidance.</div>'}`;
+}
+
+function renderHandbookEvolution() {
+  const evolution = handbookCache.evolution || {};
+  return renderHandbookList(
+    evolution.supportedText,
+    "Evolution methods supported by this game",
+    evolution.unsupportedText,
+  );
+}
+
+function renderHandbookGlossary() {
+  const entries = getFilteredHandbookEntries(handbookCache.glossary || []);
+  return `<div class="handbook-glossary">${entries.map((entry) => `<article><h3>${escapeHtml(entry.term)}</h3><p>${escapeHtml(entry.definition)}</p></article>`).join("")}</div>${entries.length ? "" : '<div class="handbook-empty">No matching battle terms.</div>'}`;
+}
+
+function renderHandbookContent() {
+  const content = document.getElementById("handbook-content");
+  const count = document.getElementById("handbook-search-count");
+  if (!content || !handbookCache) return;
+  const renderers = {
+    types: renderHandbookTypeGuide,
+    moves: renderHandbookMoveCategories,
+    status: renderHandbookStatuses,
+    abilities: renderHandbookAbilities,
+    weather: renderHandbookWeather,
+    catching: () => renderHandbookList(handbookCache.catching, "Catching tips"),
+    evolution: renderHandbookEvolution,
+    glossary: renderHandbookGlossary,
+  };
+  content.innerHTML = (renderers[handbookSection] || renderers.types)();
+  if (count) count.textContent = handbookSearch ? `Filtered by "${handbookSearch}"` : "Showing all";
+}
+
+function renderHandbook() {
+  const panel = document.getElementById("handbook-panel");
+  if (!panel || !handbookCache) return;
+  panel.innerHTML = `
+    <div class="handbook-header">
+      <div><span class="handbook-eyebrow">Trainer reference</span><h2>Battle Handbook</h2><p>Quick answers based on this game's current mechanics.</p></div>
+      ${handbookReturnScreen === "battle" ? '<button class="secondary-btn" onclick="returnFromHandbook()">Back to Battle</button>' : ""}
+    </div>
+    <nav class="handbook-tabs" aria-label="Battle Handbook sections">${handbookSections.map(([id, label]) => `<button class="handbook-tab${id === handbookSection ? " active" : ""}" onclick="selectHandbookSection('${id}')">${label}</button>`).join("")}</nav>
+    <div class="handbook-tools"><label for="handbook-search">Search this section</label><input id="handbook-search" type="search" value="${escapeHtml(handbookSearch)}" placeholder="Search type, status, ability, or term" oninput="updateHandbookSearch(this.value)"><small id="handbook-search-count">Showing all</small></div>
+    <div id="handbook-content" class="handbook-content"></div>
+  `;
+  renderHandbookContent();
+}
+
+function renderBattleHandbookShortcut(section = "moves") {
+  return `<button type="button" class="handbook-help-button" onclick="openHandbook('${section}')" title="Open Battle Handbook" aria-label="Open Battle Handbook">?</button>`;
 }
 
 function focusBattlePresentation() {
@@ -489,7 +709,7 @@ function setBattleActionBusy(isBusy) {
   battleActionBusy = isBusy;
   document
     .querySelectorAll(
-      ".move-btn, .battle-action-row button, .battle-bag button, .gym-switch-buttons button, .wild-switch-panel button, .catch-options button",
+      ".move-btn, .battle-action-row button, .battle-bag button, .gym-switch-buttons button, .wild-switch-panel button, .catch-options button, .handbook-help-button",
     )
     .forEach((button) => {
       button.disabled = isBusy || button.dataset.locked === "true";
@@ -1393,6 +1613,9 @@ function renderPokemonDetailCard(
         ${renderMoveDetails(pokemon)}
         ${renderLearnsetDetails(pokemon)}
         ${renderPendingMovePanel(pokemon, section, index)}
+        <div class="pokemon-detail-help">
+          <button class="secondary-btn" onclick="openHandbook('evolution')">Learn more in Handbook</button>
+        </div>
         <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(pokemon.currentHp, pokemon.maxHp)}%"></div></div>
       </div>
     </div>
@@ -2510,6 +2733,7 @@ function showGymBattle(lines = []) {
           <span>${gymBattle.gym.badge}</span>
         </div>
       </div>
+      <div class="battle-help-row">${renderBattleHandbookShortcut("moves")}</div>
       ${renderBattleWeatherHud(gymBattle.weather || "clear")}
       <div class="battle-container gym-battle-container">
         <div class="battle-pokemon player-side status-${player.status || "none"}${getHpPercent(player.currentHp, player.maxHp) <= 25 ? " low-hp" : ""}">
@@ -2744,6 +2968,7 @@ function showEliteBattle(lines = []) {
           <span>${theme.badge}</span>
         </div>
       </div>
+      <div class="battle-help-row">${renderBattleHandbookShortcut("moves")}</div>
       ${renderBattleWeatherHud(eliteBattle.weather || "clear")}
       <div class="battle-container elite-battle-container">
         <div class="battle-pokemon player-side status-${player.status || "none"}${getHpPercent(player.currentHp, player.maxHp) <= 25 ? " low-hp" : ""}">
@@ -2966,6 +3191,7 @@ function showNpcBattle(lines = []) {
           <span>${npc.defeated ? "Rematch Blocked" : `${npc.rewardCoins} coins`}</span>
         </div>
       </div>
+      <div class="battle-help-row">${renderBattleHandbookShortcut("moves")}</div>
       ${renderBattleWeatherHud(npcBattle.weather || "clear")}
       <div class="battle-container npc-battle-container">
         <div class="battle-pokemon player-side status-${player.status || "none"}${getHpPercent(player.currentHp, player.maxHp) <= 25 ? " low-hp" : ""}">
@@ -5240,6 +5466,7 @@ function showBattle() {
       </div>
       <p class="weather-info">${formatAreaName(wild.area)} | Weather: ${wild.weather}${wild.shiny ? " | Shiny encounter!" : ""}</p>
     </div>
+    <div class="battle-help-row">${renderBattleHandbookShortcut("moves")}</div>
     ${renderBattleWeatherHud(wild.weather || "clear")}
     <div class="battle-container">
       <div class="battle-pokemon player-side status-${playerStatus || "none"}${getHpPercent(currentPlayerHP, activePokemon.maxHp) <= 25 ? " low-hp" : ""}">

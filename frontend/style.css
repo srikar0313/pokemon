@@ -34,7 +34,7 @@ h3 {
 
 .main-nav {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -92,6 +92,320 @@ h3 {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 14px;
+}
+
+.handbook-screen-card {
+  overflow-y: auto;
+}
+
+.handbook-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.handbook-header h2 {
+  margin: 2px 0 4px;
+}
+
+.handbook-header p {
+  color: #536476;
+}
+
+.handbook-eyebrow {
+  color: #9a5b16;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.handbook-tabs {
+  display: flex;
+  gap: 6px;
+  padding-bottom: 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.handbook-tab {
+  flex: 0 0 auto;
+  min-height: 36px;
+  margin: 0;
+  padding: 7px 10px;
+  border: 1px solid #bccbda;
+  border-radius: 5px;
+  background: #f5f8fb;
+  color: #31465c;
+  font-size: 12px;
+}
+
+.handbook-tab.active {
+  border-color: #263f5d;
+  background: #263f5d;
+  color: #fff;
+}
+
+.handbook-tools {
+  display: grid;
+  grid-template-columns: auto minmax(180px, 360px) 1fr;
+  align-items: center;
+  gap: 9px;
+  margin: 4px 0 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid #dce4ec;
+}
+
+.handbook-tools label {
+  color: #3c5065;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.handbook-tools input {
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 9px;
+  border: 1px solid #aebdca;
+  border-radius: 5px;
+  font: inherit;
+}
+
+.handbook-tools input:focus-visible,
+.handbook-tab:focus-visible,
+.handbook-help-button:focus-visible {
+  outline: 3px solid rgba(25, 118, 210, 0.3);
+  outline-offset: 2px;
+}
+
+.handbook-tools small {
+  color: #68798a;
+  font-size: 11px;
+}
+
+.handbook-content {
+  min-height: 220px;
+}
+
+.handbook-type-grid,
+.handbook-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+  gap: 10px;
+}
+
+.handbook-card-grid.compact {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+.handbook-type-card,
+.handbook-info-card,
+.handbook-glossary article {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid #d4dee8;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.handbook-type-card {
+  border-top: 5px solid var(--type-color, #607d8b);
+}
+
+.handbook-type-card h3,
+.handbook-info-card h3,
+.handbook-info-card h4,
+.handbook-glossary h3 {
+  margin: 0 0 7px;
+  color: #26394d;
+}
+
+.handbook-type-card dl {
+  display: grid;
+  grid-template-columns: 105px minmax(0, 1fr);
+  gap: 7px;
+  font-size: 11px;
+}
+
+.handbook-type-card dt {
+  color: #596c7f;
+  font-weight: 800;
+}
+
+.handbook-type-card dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.handbook-tag {
+  display: inline-flex;
+  padding: 2px 5px;
+  border-radius: 3px;
+  background: #e8eef4;
+  color: #33485d;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.handbook-none {
+  color: #8b98a5;
+  font-size: 10px;
+}
+
+.handbook-chart-wrap,
+.handbook-list-panel,
+.handbook-note {
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid #d5dfe8;
+  border-radius: 7px;
+  background: #f7fafc;
+}
+
+.handbook-chart-wrap summary {
+  cursor: pointer;
+  color: #2d4660;
+  font-weight: 900;
+}
+
+.handbook-chart-wrap p,
+.handbook-info-card p,
+.handbook-glossary p {
+  margin: 5px 0;
+  color: #536476;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.handbook-chart-scroll {
+  margin-top: 9px;
+  overflow-x: auto;
+}
+
+.handbook-type-chart {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+
+.handbook-type-chart th,
+.handbook-type-chart td {
+  width: 36px;
+  height: 28px;
+  padding: 3px;
+  border: 1px solid #ced9e3;
+  text-align: center;
+}
+
+.handbook-type-chart th {
+  background: #e7edf3;
+  color: #334b62;
+}
+
+.handbook-type-chart tbody th {
+  width: 72px;
+  text-align: left;
+}
+
+.chart-strong { background: #d9f1df; color: #176334; font-weight: 900; }
+.chart-weak { background: #fff0c9; color: #785100; font-weight: 900; }
+.chart-immune { background: #424b55; color: #fff; font-weight: 900; }
+
+.handbook-kicker {
+  display: block;
+  margin-bottom: 5px;
+  color: #8c5d1e;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.handbook-category-physical { border-left: 4px solid #a84a2f; }
+.handbook-category-special { border-left: 4px solid #3478ad; }
+.handbook-category-status { border-left: 4px solid #6e7781; }
+
+.handbook-example {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 9px;
+  padding-top: 7px;
+  border-top: 1px solid #e1e7ed;
+  color: #536476;
+  font-size: 11px;
+}
+
+.handbook-facts {
+  display: grid;
+  gap: 4px;
+  margin-top: 8px;
+  color: #526577;
+  font-size: 11px;
+}
+
+.handbook-group + .handbook-group {
+  margin-top: 16px;
+}
+
+.handbook-group > h3 {
+  margin: 0 0 8px;
+  color: #314a62;
+}
+
+.handbook-weather-rain { border-top: 4px solid #4d91c8; }
+.handbook-weather-sun { border-top: 4px solid #e1a124; }
+.handbook-weather-sandstorm { border-top: 4px solid #9d7a45; }
+.handbook-weather-snow { border-top: 4px solid #78bfd2; }
+
+.handbook-list-panel ol {
+  display: grid;
+  gap: 8px;
+  padding-left: 22px;
+  color: #3f5264;
+  line-height: 1.45;
+}
+
+.handbook-glossary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 9px;
+}
+
+.handbook-empty {
+  padding: 30px 12px;
+  color: #66798b;
+  text-align: center;
+}
+
+.battle-help-row {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 0;
+}
+
+.handbook-help-button {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: 5px 0 -4px;
+  padding: 0;
+  border: 2px solid #8ea3b7;
+  border-radius: 50%;
+  background: #fff;
+  color: #2b4865;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.pokemon-detail-help {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .screen-header p {
@@ -5861,6 +6175,27 @@ button:disabled {
   .battle-weather-hud:focus-visible small,
   .battle-weather-hud.expanded small {
     max-width: 210px;
+  }
+
+  .handbook-header,
+  .handbook-example {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .handbook-tools {
+    grid-template-columns: 1fr;
+  }
+
+  .handbook-type-grid,
+  .handbook-card-grid,
+  .handbook-card-grid.compact,
+  .handbook-glossary {
+    grid-template-columns: 1fr;
+  }
+
+  .handbook-type-card dl {
+    grid-template-columns: 96px minmax(0, 1fr);
   }
 }
 
