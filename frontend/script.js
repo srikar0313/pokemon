@@ -3520,9 +3520,14 @@ function renderPokedexCard(entry) {
 
 function renderPokedexForms(entry, canShowSpecies) {
   if (!Array.isArray(entry.forms) || !entry.forms.length) return "";
+  const discoveredCount = entry.forms.filter(
+    (form) =>
+      canShowSpecies &&
+      (form.seen || form.caught || form.shinySeen || form.shinyCaught),
+  ).length;
   return `
     <div class="pokedex-forms">
-      <strong>Discovered forms</strong>
+      <strong>Forms discovered: ${discoveredCount}/${entry.forms.length}</strong>
       ${entry.forms
         .map((form) => {
           const discovered = Boolean(
@@ -3533,7 +3538,7 @@ function renderPokedexForms(entry, canShowSpecies) {
             return `
               <div class="pokedex-form-row undiscovered">
                 <span class="pokedex-form-silhouette">?</span>
-                <span><b>Undiscovered form</b><small>Encounter this form to reveal it.</small></span>
+                <span><b>Alternate form not discovered</b><small>Your caught form is already registered. Encounter this separate form to reveal it.</small></span>
               </div>
             `;
           }

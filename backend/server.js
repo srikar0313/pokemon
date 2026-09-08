@@ -211,7 +211,10 @@ const encounterEngine = createEncounterEngine({
   speciesEncounterBoosts,
 });
 const { selectEncounter, getTimeOfDay } = encounterEngine;
-const SHINY_RATE = shinyRollChance;
+const shinyRateOverride = Number(process.env.SHINY_RATE_OVERRIDE);
+const SHINY_RATE = Number.isFinite(shinyRateOverride)
+  ? Math.max(0, Math.min(1, shinyRateOverride))
+  : shinyRollChance;
 
 const evolutionEngine = createEvolutionEngine({
   evolutionData: gameData.evolutions,
