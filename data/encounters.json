@@ -7,7 +7,7 @@
     "mythical": 1
   },
   "legendaryRollChance": 0.15,
-  "shinyRollChance": 0.01,
+  "shinyRollChance": 0.03,
   "formEncounterChance": 0.02,
   "speciesEncounterBoosts": {
     "Eevee": 4

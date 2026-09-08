@@ -2989,11 +2989,20 @@ app.post("/api/catch", (req, res) => {
     }
     const isLegendary =
       target.rarity === "legendary" || target.rarity === "mythical";
-    const ownedIds = getAllOwnedPokemon().map((pokemon) => pokemon.id);
-    if (isLegendary && ownedIds.includes(target.id)) {
+    const targetVariant = {
+      ...target,
+      shiny: Boolean(req.body.shiny ?? target.shiny),
+    };
+    const alreadyOwnsVariant = getAllOwnedPokemon().some(
+      (ownedPokemon) =>
+        getPokemonVariantKey(ownedPokemon) ===
+        getPokemonVariantKey(targetVariant),
+    );
+    if (isLegendary && alreadyOwnsVariant) {
+      const variantLabel = targetVariant.shiny ? `shiny ${target.name}` : target.name;
       return res
         .status(400)
-        .json({ error: `You already caught ${target.name}.` });
+        .json({ error: `You already caught this ${variantLabel} variant.` });
     }
 
     const currentHP = Math.max(
@@ -3020,7 +3029,7 @@ app.post("/api/catch", (req, res) => {
         currentHp: currentHP,
         level: target.level || 1,
         xp: target.xp || 0,
-        shiny: Boolean(req.body.shiny ?? target.shiny),
+        shiny: targetVariant.shiny,
         status: "none",
         moves: target.moves.map((m) => ({
           ...m,

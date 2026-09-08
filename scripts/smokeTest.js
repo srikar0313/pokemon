@@ -281,8 +281,8 @@ function main() {
   );
   assert(Array.isArray(gameData.quests), "quests did not load");
   assert(
-    gameData.shinyRollChance === 0.01,
-    `expected a 1% shiny chance, got ${gameData.shinyRollChance}`,
+    gameData.shinyRollChance === 0.03,
+    `expected a 3% shiny chance, got ${gameData.shinyRollChance}`,
   );
   assert(
     gameData.speciesEncounterBoosts.Eevee === 4,
