@@ -4,6 +4,8 @@ function createRewardEngine({
   getAvailableEvolutions,
   getPokemonTemplateByName,
   getPokemonFormDefinition,
+  reconcileEvolutionMoves,
+  getTargetEvolutionMoves,
   getTimeOfDay,
   updateAchievements,
 }) {
@@ -155,7 +157,11 @@ function createRewardEngine({
       );
       evolvedPokemon[stat] = Math.max(1, targetBase + accumulatedGrowth);
     });
-    if (knownMoves.length) evolvedPokemon.moves = knownMoves;
+    evolvedPokemon.moves = reconcileEvolutionMoves(
+      knownMoves,
+      getTargetEvolutionMoves(evolvedPokemon),
+    );
+    evolvedPokemon.evolutionMovesVersion = "target-v1";
     if (pokemon.statBaseVersion) {
       evolvedPokemon.statBaseVersion = pokemon.statBaseVersion;
     }

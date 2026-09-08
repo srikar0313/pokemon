@@ -133,6 +133,8 @@ function main() {
     getAvailableEvolutions: evolutionEngine.getAvailableEvolutions,
     getPokemonTemplateByName: pokemonUtils.getPokemonTemplateByName,
     getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
+    reconcileEvolutionMoves: pokemonUtils.reconcileEvolutionMoves,
+    getTargetEvolutionMoves: pokemonUtils.getTargetEvolutionMoves,
     getTimeOfDay: () => evolutionTimeOfDay,
     updateAchievements: () => {},
   });
@@ -151,7 +153,14 @@ function main() {
     return { pokemon: current, result };
   };
 
-  const sharedXpTeam = ["Pikachu", "Snorlax", "Mew"].map((name, index) =>
+  const sharedXpTeam = [
+    "Pikachu",
+    "Snorlax",
+    "Mew",
+    "Squirtle",
+    "Gastly",
+    "Geodude",
+  ].map((name, index) =>
     pokemonUtils.normalizePokemon({
       ...pokemonUtils.getPokemonTemplateByName(name),
       level: 20,
@@ -162,14 +171,14 @@ function main() {
           : pokemonUtils.getPokemonTemplateByName(name).maxHp,
     }),
   );
-  const sharedXpResult = rewardEngine.applyXpToParty(sharedXpTeam, 90);
+  const sharedXpResult = rewardEngine.applyXpToParty(sharedXpTeam, 120);
   assert(
     sharedXpResult.results.length === sharedXpTeam.length &&
-      sharedXpResult.results.every((result) => result.xpAward === 30),
+      sharedXpResult.results.every((result) => result.xpAward === 20),
     "battle XP was not shared across every active-party Pokemon",
   );
   assert(
-    sharedXpResult.team.every((pokemon) => pokemon.xp === 30),
+    sharedXpResult.team.every((pokemon) => pokemon.xp === 20),
     "one or more active-party Pokemon did not gain shared XP",
   );
   assert(
@@ -745,12 +754,103 @@ function main() {
   );
   assert(
     firstEvolution.pokemon.moves[0].name === evolutionBulbasaur.moves[0].name,
-    "evolution replaced known moves",
+    "evolution lost a move shared with the target species",
   );
   assert(
     firstEvolution.pokemon.moves[0].currentPp === 3,
-    "evolution reset move PP",
+    "evolution reset PP for a shared move",
   );
+
+  const evolutionEevee = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Eevee"),
+    level: 20,
+  });
+  evolutionEevee.moves.find((move) => move.name === "Bite").currentPp = 4;
+  const vaporeonEvolution = rewardEngine.performEvolution(evolutionEevee, {
+    trigger: "use-item",
+    item: "water-stone",
+  });
+  const expectedVaporeonMoves = pokemonUtils
+    .normalizePokemon(pokemonUtils.getPokemonTemplateByName("Vaporeon"))
+    .moves.map((move) => move.name);
+  assert(vaporeonEvolution.evolved, "Water Stone did not evolve Eevee");
+  assert(vaporeonEvolution.pokemon.name === "Vaporeon", "Eevee evolved incorrectly");
+  assert(
+    vaporeonEvolution.pokemon.moves
+      .map((move) => move.name)
+      .join(",") === expectedVaporeonMoves.join(","),
+    "Vaporeon did not receive its species move set",
+  );
+  assert(
+    vaporeonEvolution.pokemon.moves.some(
+      (move) => move.type === "Water" && move.category !== "Status",
+    ),
+    "Vaporeon evolved without a usable Water attack",
+  );
+  assert(
+    vaporeonEvolution.pokemon.moves.find((move) => move.name === "Bite")
+      .currentPp === 4,
+    "Eevee to Vaporeon did not preserve PP for a shared move",
+  );
+  const legacyVaporeon = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Vaporeon"),
+    evolvedFrom: "Eevee",
+    level: 20,
+    moves: evolutionEevee.moves,
+  });
+  assert(
+    legacyVaporeon.evolutionMovesVersion === "target-v1",
+    "legacy evolved move migration was not marked complete",
+  );
+  assert(
+    legacyVaporeon.moves.some(
+      (move) => move.type === "Water" && (move.power || 0) > 0,
+    ),
+    "legacy Vaporeon retained Eevee's unchanged move set",
+  );
+  assert(
+    pokemonUtils.normalizePokemon(legacyVaporeon).moves
+      .map((move) => move.name)
+      .join(",") === legacyVaporeon.moves.map((move) => move.name).join(","),
+    "evolved move migration was not idempotent",
+  );
+  const customizedVaporeon = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplateByName("Vaporeon"),
+    evolvedFrom: "Eevee",
+    level: 20,
+    moves: vaporeonEvolution.pokemon.moves,
+  });
+  assert(
+    customizedVaporeon.moves.map((move) => move.name).join(",") ===
+      vaporeonEvolution.pokemon.moves.map((move) => move.name).join(","),
+    "legacy migration replaced a valid evolved move set",
+  );
+  [
+    "Jolteon",
+    "Flareon",
+    "Espeon",
+    "Umbreon",
+    "Leafeon",
+    "Glaceon",
+    "Sylveon",
+  ].forEach((targetName) => {
+    const result = rewardEngine.evolvePokemonFromTemplate(evolutionEevee, {
+      targetName,
+    });
+    assert(
+      result.evolved && result.pokemon.name === targetName,
+      `Eevee did not become ${targetName}`,
+    );
+    assert(
+      result.pokemon.moves.some(
+        (move) =>
+          result.pokemon.types.includes(move.type) &&
+          move.category !== "Status" &&
+          (move.power || 0) > 0,
+      ),
+      `${targetName} evolved without a usable same-type attack`,
+    );
+  });
   assert(
     Math.abs(
       firstEvolution.pokemon.currentHp / firstEvolution.pokemon.maxHp -
@@ -887,7 +987,7 @@ function main() {
 
   const ivysaurAt31 = levelPokemonTo(ivysaurAfterXp, 31).pokemon;
   ivysaurAt31.currentHp = Math.round(ivysaurAt31.maxHp * 0.4);
-  ivysaurAt31.moves[0].currentPp = 1;
+  ivysaurAt31.moves.find((move) => move.name === "Razor Leaf").currentPp = 1;
   const ivysaurHpBeforeLevel = ivysaurAt31.currentHp;
   const ivysaurMaxHpBeforeLevel = ivysaurAt31.maxHp;
   const integratedVenusaur = rewardEngine.applyXpToPokemon(
@@ -909,8 +1009,9 @@ function main() {
     },
   );
   assert(
-    integratedVenusaur.pokemon.moves[0].currentPp === 1,
-    "Ivysaur -> Venusaur reset move PP",
+    integratedVenusaur.pokemon.moves.find((move) => move.name === "Razor Leaf")
+      .currentPp === 1,
+    "Ivysaur -> Venusaur reset PP for a shared move",
   );
   const expectedVenusaurRatio =
     (ivysaurHpBeforeLevel + 6) / (ivysaurMaxHpBeforeLevel + 6);

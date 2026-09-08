@@ -342,6 +342,8 @@ const rewardEngine = createRewardEngine({
   getAvailableEvolutions,
   getPokemonTemplateByName,
   getPokemonFormDefinition: pokemonUtils.getPokemonFormDefinition,
+  reconcileEvolutionMoves: pokemonUtils.reconcileEvolutionMoves,
+  getTargetEvolutionMoves: pokemonUtils.getTargetEvolutionMoves,
   getTimeOfDay,
   updateAchievements,
 });

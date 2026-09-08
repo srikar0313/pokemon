@@ -558,6 +558,69 @@ function createPokemonUtils({
       }));
   }
 
+  function reconcileEvolutionMoves(knownMoves = [], targetMoves = []) {
+    const knownByName = new Map(
+      knownMoves.map((move) => [getMoveName(move), normalizeMove(move)]),
+    );
+    const normalizedTargets = targetMoves
+      .slice(0, 4)
+      .map((move) => normalizeMove(move));
+    if (!normalizedTargets.length) return [...knownByName.values()].slice(0, 4);
+    return normalizedTargets.map((targetMove) => {
+      const knownMove = knownByName.get(targetMove.name);
+      if (!knownMove) return targetMove;
+      return {
+        ...targetMove,
+        currentPp: Math.max(
+          0,
+          Math.min(
+            targetMove.maxPp ?? targetMove.pp ?? 10,
+            knownMove.currentPp ?? targetMove.maxPp ?? targetMove.pp ?? 10,
+          ),
+        ),
+      };
+    });
+  }
+
+  function getTargetEvolutionMoves(
+    pokemon,
+    templateMoves = pokemon.moves || [],
+  ) {
+    const normalizedTemplates = templateMoves.map((move) => normalizeMove(move));
+    if (pokemon.movesetPolicy !== "canonical-level-up") return normalizedTemplates;
+    const learnedByLevel = (pokemon.learnset || [])
+      .filter(
+        (entry) =>
+          Number(entry?.level) <= Number(pokemon.level || 1) &&
+          entry?.move,
+      )
+      .sort((left, right) => Number(left.level) - Number(right.level))
+      .map((entry) => normalizeMove(entry.move));
+    if (!learnedByLevel.length) return normalizedTemplates;
+
+    const uniqueMoves = [...new Map(
+      learnedByLevel.map((move) => [move.name, move]),
+    ).values()];
+    const selected = uniqueMoves.slice(-4);
+    const targetTypes = new Set(pokemon.types || [pokemon.type]);
+    if (
+      !selected.some(
+        (move) => targetTypes.has(move.type) && (move.power || 0) > 0,
+      )
+    ) {
+      const stabMove = [...uniqueMoves]
+        .reverse()
+        .find((move) => targetTypes.has(move.type) && (move.power || 0) > 0);
+      if (stabMove) {
+        const replaceIndex = selected.findIndex(
+          (move) => move.category === "Status" || !targetTypes.has(move.type),
+        );
+        selected.splice(replaceIndex >= 0 ? replaceIndex : 0, 1, stabMove);
+      }
+    }
+    return selected;
+  }
+
   function normalizePokemon(pokemon) {
     const template = getPokemonTemplateForOwnedPokemon(pokemon);
     const canonical = getCanonicalPokemon(template?.name ? template : pokemon);
@@ -730,6 +793,24 @@ function createPokemonUtils({
     } else {
       delete normalized.pendingMove;
     }
+    if (normalized.evolvedFrom && merged.evolutionMovesVersion !== "target-v1") {
+      const sourceTemplate = getPokemonTemplateByName(normalized.evolvedFrom);
+      const sourceMoveNames = (sourceTemplate?.moves || []).map(getMoveName);
+      const savedMoveNames = savedMoves.map(getMoveName);
+      const hasUnchangedSourceMoves =
+        sourceMoveNames.length === savedMoveNames.length &&
+        sourceMoveNames.every((name, index) => name === savedMoveNames[index]);
+      if (hasUnchangedSourceMoves) {
+        normalized.moves = reconcileEvolutionMoves(
+          moves,
+          getTargetEvolutionMoves(
+            normalized,
+            (template.moves || []).map((move) => normalizeMove(move)),
+          ),
+        );
+      }
+      normalized.evolutionMovesVersion = "target-v1";
+    }
     delete normalized.battleModifiers;
     delete normalized.battleState;
     return normalized;
@@ -875,6 +956,8 @@ function createPokemonUtils({
     getPokedexEvolutionGraph,
     applyPokemonForm,
     normalizeMove,
+    reconcileEvolutionMoves,
+    getTargetEvolutionMoves,
     normalizePokemon,
     restorePokemon,
     getEvolutionChain,
