@@ -4186,6 +4186,259 @@ button:disabled {
   opacity: 0.9;
 }
 
+.tactical-move-card {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 112px;
+  padding: 10px 12px 9px 15px;
+  overflow: visible;
+  border: 1px solid #c8d4df;
+  border-left: 5px solid var(--move-color, #607d8b);
+  border-radius: 6px;
+  background: #fff;
+  color: #1d2a38;
+  box-shadow: 0 2px 5px rgba(25, 45, 65, 0.1);
+  text-align: left;
+}
+
+.tactical-move-card:hover:not(:disabled),
+.tactical-move-card:focus-visible {
+  border-color: var(--move-color, #607d8b);
+  background: #f8fbfe;
+  box-shadow: 0 4px 12px rgba(25, 45, 65, 0.16);
+  transform: translateY(-1px);
+}
+
+.tactical-move-card:focus-visible {
+  outline: 3px solid rgba(25, 118, 210, 0.35);
+  outline-offset: 2px;
+}
+
+.tactical-move-card:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  filter: grayscale(0.45);
+}
+
+.tactical-move-card span,
+.battle-tactical-hud span,
+.battle-weather-hud span {
+  margin: 0;
+}
+
+.move-card-head,
+.move-card-meta,
+.move-card-stats {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.move-card-head strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.move-type-chip,
+.move-category,
+.move-priority,
+.move-effectiveness {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px !important;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.move-type-chip {
+  flex: 0 0 auto;
+  background: var(--move-color, #607d8b);
+  color: #fff;
+}
+
+.move-card-meta,
+.move-card-stats {
+  color: #536476;
+  font-size: 11px;
+}
+
+.move-category {
+  background: #e8eef4;
+  color: #34485c;
+}
+
+.move-category.category-physical { background: #f5e2d9; color: #8b351f; }
+.move-category.category-special { background: #dce9f7; color: #235b90; }
+.move-category.category-status { background: #e7e8eb; color: #515964; }
+.move-priority { background: #fff1bd; color: #735600; }
+
+.move-effectiveness {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.effect-super { background: #d7f4df; color: #166534; }
+.effect-effective { background: #e8eef4; color: #40566c; }
+.effect-resisted { background: #fff0cf; color: #7a4b00; }
+.effect-immune { background: #e4e6e9; color: #444b54; }
+
+.move-detail-tooltip {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: calc(100% + 6px);
+  z-index: 20;
+  display: none !important;
+  padding: 7px 9px;
+  border-radius: 4px;
+  background: #172536;
+  color: #fff;
+  font-size: 11px !important;
+  font-weight: 600;
+  line-height: 1.35;
+  box-shadow: 0 5px 16px rgba(8, 18, 28, 0.25);
+}
+
+.tactical-move-card:hover .move-detail-tooltip,
+.tactical-move-card:focus-visible .move-detail-tooltip {
+  display: block !important;
+}
+
+.battle-tactical-hud {
+  display: grid;
+  gap: 5px;
+  margin-top: 7px;
+}
+
+.battle-ability {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  min-width: 0;
+  font-size: 11px;
+}
+
+.battle-ability > span {
+  color: #607286;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.battle-ability strong {
+  overflow: hidden;
+  color: #1d344a;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.battle-ability small {
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: #dff4ff;
+  color: #145c7d;
+  font-weight: 800;
+}
+
+.battle-condition-row,
+.battle-stage-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.battle-condition,
+.battle-stage {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px !important;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.battle-condition { background: #f0e7f5; color: #633579; }
+.condition-burned { background: #ffe0d7; color: #9b2f13; }
+.condition-poisoned,
+.condition-badpoison { background: #efdff7; color: #6f2c91; }
+.condition-paralyzed { background: #fff3bf; color: #755800; }
+.condition-asleep,
+.condition-frozen { background: #dff3fa; color: #21627b; }
+.condition-protected { background: #dff2e5; color: #26623b; }
+.condition-transformed { flex-basis: 100%; }
+.stage-up { background: #dff2e5; color: #24633a; }
+.stage-down { background: #ffe0de; color: #8f3029; }
+
+.battle-weather-hud {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 10px auto -8px;
+  padding: 5px 8px;
+  border: 1px solid #9fb1c2;
+  border-radius: 5px;
+  background: rgba(248, 251, 254, 0.94);
+  color: #26394d;
+  font-size: 11px;
+}
+
+.battle-weather-hud > span {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #dce8f3;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.battle-weather-hud small {
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  white-space: nowrap;
+  transition: max-width 180ms ease, opacity 180ms ease;
+}
+
+.battle-weather-hud:hover small,
+.battle-weather-hud:focus-visible small,
+.battle-weather-hud.expanded small {
+  max-width: 420px;
+  opacity: 1;
+}
+
+.weather-rain > span { background: #d8ecff; color: #17639b; }
+.weather-sun > span { background: #fff0bd; color: #8c5900; }
+.weather-sandstorm > span { background: #eee1c8; color: #684d27; }
+.weather-snow > span { background: #e3f5fa; color: #286878; }
+
+.battle-pokemon.low-hp .hp-fill {
+  background: linear-gradient(90deg, #d9342b, #f26a4f);
+}
+
+.battle-pokemon.low-hp .hp-line {
+  color: #a5231d;
+  font-weight: 800;
+}
+
 .wild-switch-panel {
   margin: 12px 0;
   padding: 12px;
@@ -5551,4 +5804,75 @@ button:disabled {
 .presentation-banner.reduced, .protect-shield.reduced {
   animation-duration: 100ms !important;
   animation-iteration-count: 1 !important;
+}
+
+@media (max-width: 760px) {
+  .battle-screen-card,
+  .arena-log {
+    padding: 9px;
+  }
+
+  .battle-container {
+    gap: 8px;
+    margin: 10px 0;
+    padding: 10px;
+  }
+
+  .battle-container .vs {
+    font-size: 13px;
+  }
+
+  .battle-container .battle-pokemon {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 9px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .battle-container .battle-pokemon > img {
+    width: 82px;
+    height: 82px;
+  }
+
+  .battle-container.presentation-webgl .battle-info {
+    min-width: 0;
+    padding: 7px;
+  }
+
+  .move-buttons {
+    gap: 7px;
+    margin: 10px 0;
+  }
+
+  .tactical-move-card {
+    min-height: 106px;
+  }
+
+  .battle-weather-hud {
+    margin-bottom: 3px;
+  }
+
+  .battle-weather-hud small {
+    white-space: normal;
+  }
+
+  .battle-weather-hud:hover small,
+  .battle-weather-hud:focus-visible small,
+  .battle-weather-hud.expanded small {
+    max-width: 210px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tactical-move-card,
+  .battle-weather-hud small,
+  .battle-pokemon .hp-fill {
+    transition-duration: 0.01ms !important;
+  }
+
+  .tactical-move-card:hover:not(:disabled),
+  .tactical-move-card:focus-visible {
+    transform: none;
+  }
 }

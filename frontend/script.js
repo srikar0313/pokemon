@@ -749,6 +749,9 @@ function showBattleLogFeedback(
     if (/not very effective/i.test(line)) showFloatingBattleText(target, "Not very effective...", "weak");
     if (/no effect/i.test(line)) showFloatingBattleText(target, "No effect!", "immune");
     if (/critical hit/i.test(line)) showFloatingBattleText(target, "CRITICAL HIT!", "critical");
+    if (/attack missed|but it missed/i.test(line)) showFloatingBattleText(target, "MISS", "weak");
+    if (/protected itself|was protected/i.test(line)) showFloatingBattleText(target, "PROTECTED", "immune");
+    if (/flinched(?: and could not move)?/i.test(line)) showFloatingBattleText(side, "FLINCHED", "weak");
   });
 }
 
@@ -1078,6 +1081,119 @@ function formatAbilityName(ability) {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function getMovePreviewEffectiveness(move, opponent) {
+  if (!opponent || move.category === "Status" || Number(move.power || 0) <= 0) {
+    return 1;
+  }
+  const ability = String(
+    typeof opponent.ability === "string"
+      ? opponent.ability
+      : opponent.ability?.name || "",
+  ).toLowerCase();
+  const immunityTypes = {
+    levitate: "Ground",
+    "water-absorb": "Water",
+    "volt-absorb": "Electric",
+    "dry-skin": "Water",
+    "flash-fire": "Fire",
+    "lightning-rod": "Electric",
+    "motor-drive": "Electric",
+    "sap-sipper": "Grass",
+  };
+  if (immunityTypes[ability] === move.type) return 0;
+  return getCombinedTypeEffectiveness(move.type, opponent.types || [opponent.type]);
+}
+
+function getTacticalMoveData(move, opponent) {
+  const effectiveness = getMovePreviewEffectiveness(move, opponent);
+  if (window.BattleTacticalUI?.getMoveDisplayData) {
+    return window.BattleTacticalUI.getMoveDisplayData(move, effectiveness);
+  }
+  const maxPp = move.maxPp ?? move.pp ?? 0;
+  return {
+    ...move,
+    currentPp: move.currentPp ?? maxPp,
+    maxPp,
+    priority: Number(move.priority || 0),
+    categoryKey: String(move.category || "Physical").toLowerCase(),
+    effectiveness: null,
+    effectDescription: "No additional effect.",
+  };
+}
+
+function createBattleMoveButton(move, opponent, onUse, disabled = false) {
+  const data = getTacticalMoveData(move, opponent);
+  const button = document.createElement("button");
+  button.className = `move-btn tactical-move-card move-type-${String(data.type).toLowerCase()} category-${data.categoryKey}`;
+  button.style.setProperty("--move-color", getTypeColor(data.type));
+  const priority = data.priority
+    ? `<span class="move-priority">Priority ${data.priority > 0 ? "+" : ""}${data.priority}</span>`
+    : "";
+  const effectiveness = data.effectiveness
+    ? `<span class="move-effectiveness effect-${data.effectiveness.key}">${data.effectiveness.label}</span>`
+    : "";
+  const power = data.category === "Status" ? "--" : data.power;
+  const tooltip = `${data.name}. ${data.type} ${data.category}. Power ${power}. Accuracy ${data.accuracy}. PP ${data.currentPp} of ${data.maxPp}. Priority ${data.priority}. ${data.effectDescription}`;
+  button.setAttribute("aria-label", tooltip);
+  button.title = tooltip;
+  button.innerHTML = `
+    <span class="move-card-head">
+      <strong>${escapeHtml(data.name)}</strong>
+      <span class="move-type-chip">${escapeHtml(data.type)}</span>
+    </span>
+    <span class="move-card-meta">
+      <span class="move-category category-${data.categoryKey}">${escapeHtml(data.category)}</span>
+      <span>PP <strong>${data.currentPp}/${data.maxPp}</strong></span>
+    </span>
+    <span class="move-card-stats">
+      <span>POW <strong>${power}</strong></span>
+      <span>ACC <strong>${data.accuracy}</strong></span>
+      ${priority}
+    </span>
+    ${effectiveness}
+    <span class="move-detail-tooltip" role="tooltip">${escapeHtml(data.effectDescription)}</span>
+  `;
+  button.disabled = battleActionBusy || disabled || data.currentPp <= 0;
+  button.onclick = () => onUse(move.name);
+  return button;
+}
+
+function renderBattleTacticalHud(pokemon) {
+  const tactical = window.BattleTacticalUI;
+  const ability = tactical?.getCurrentBattleAbility
+    ? tactical.getCurrentBattleAbility(pokemon)
+    : { label: formatAbilityName(pokemon.ability), copied: false };
+  const stages = tactical?.getStageBadges
+    ? tactical.getStageBadges(pokemon)
+    : [];
+  const conditions = tactical?.getBattleConditions
+    ? tactical.getBattleConditions(pokemon)
+    : [];
+  return `
+    <div class="battle-tactical-hud">
+      <div class="battle-ability" title="Current battle ability">
+        <span>Ability</span>
+        <strong>${escapeHtml(ability.label)}</strong>
+        ${ability.copied ? '<small>Copied</small>' : ""}
+      </div>
+      ${conditions.length ? `<div class="battle-condition-row">${conditions.map((condition) => `<span class="battle-condition condition-${condition.key}">${escapeHtml(condition.label)}</span>`).join("")}</div>` : ""}
+      ${stages.length ? `<div class="battle-stage-row" aria-label="Temporary stat stages">${stages.map((stage) => `<span class="battle-stage stage-${stage.direction}">${stage.text}</span>`).join("")}</div>` : ""}
+    </div>
+  `;
+}
+
+function renderBattleWeatherHud(weather = "clear") {
+  const data = window.BattleTacticalUI?.getWeatherDisplay
+    ? window.BattleTacticalUI.getWeatherDisplay(weather)
+    : { key: weather, icon: "--", label: formatStatus(weather), description: "Current battle weather." };
+  if (data.key === "clear") return "";
+  return `
+    <button type="button" class="battle-weather-hud weather-${data.key}" title="${escapeHtml(data.description)}" onclick="this.classList.toggle('expanded')" aria-label="${escapeHtml(`${data.label}: ${data.description}`)}">
+      <span aria-hidden="true">${data.icon}</span><strong>${data.label}</strong><small>${escapeHtml(data.description)}</small>
+    </button>
+  `;
 }
 
 function renderLearnsetDetails(pokemon) {
@@ -2394,26 +2510,27 @@ function showGymBattle(lines = []) {
           <span>${gymBattle.gym.badge}</span>
         </div>
       </div>
+      ${renderBattleWeatherHud(gymBattle.weather || "clear")}
       <div class="battle-container gym-battle-container">
-        <div class="battle-pokemon player-side status-${player.status || "none"}">
+        <div class="battle-pokemon player-side status-${player.status || "none"}${getHpPercent(player.currentHp, player.maxHp) <= 25 ? " low-hp" : ""}">
           <img class="battle-sprite" src="${getPokemonImage(player)}" alt="${player.name}">
           <div class="battle-info">
             <h3>${player.name} Lv${player.level}</h3>
             ${renderTypeBadges(player.types)}
             <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(player.currentHp, player.maxHp)}%"></div></div>
             <p class="hp-line">${renderIcon("heart", "HP")} ${player.currentHp}/${player.maxHp} HP</p>
-            <p class="status-line">${renderStatus(player.status)}</p>
+            ${renderBattleTacticalHud(player)}
           </div>
         </div>
         <div class="vs">VS</div>
-        <div class="battle-pokemon opponent-side status-${opponent.status || "none"}">
+        <div class="battle-pokemon opponent-side status-${opponent.status || "none"}${getHpPercent(opponent.currentHp, opponent.maxHp) <= 25 ? " low-hp" : ""}">
           <img class="battle-sprite" src="${getPokemonImage(opponent)}" alt="${opponent.name}">
           <div class="battle-info">
             <h3>Gym ${opponent.name} Lv${opponent.level}</h3>
             ${renderTypeBadges(opponent.types)}
             <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(opponent.currentHp, opponent.maxHp)}%"></div></div>
             <p class="hp-line">${renderIcon("heart", "HP")} ${opponent.currentHp}/${opponent.maxHp} HP</p>
-            <p class="status-line">${renderStatus(opponent.status)}</p>
+            ${renderBattleTacticalHud(opponent)}
           </div>
         </div>
       </div>
@@ -2447,12 +2564,9 @@ function showGymMoveButtons(player) {
   if (!moveButtonsDiv) return;
   moveButtonsDiv.innerHTML = "";
   player.moves.forEach((move) => {
-    const btn = document.createElement("button");
-    btn.className = "move-btn";
-    btn.innerHTML = `<strong>${move.name}</strong><span>${move.type} | ${move.category} | ${move.currentPp}/${move.maxPp ?? move.pp}</span>`;
-    btn.disabled = battleActionBusy || move.currentPp <= 0 || player.currentHp <= 0;
-    btn.onclick = () => gymMove(move.name);
-    moveButtonsDiv.appendChild(btn);
+    moveButtonsDiv.appendChild(
+      createBattleMoveButton(move, gymBattle?.gymPokemon, gymMove, player.currentHp <= 0),
+    );
   });
 }
 
@@ -2630,26 +2744,27 @@ function showEliteBattle(lines = []) {
           <span>${theme.badge}</span>
         </div>
       </div>
+      ${renderBattleWeatherHud(eliteBattle.weather || "clear")}
       <div class="battle-container elite-battle-container">
-        <div class="battle-pokemon player-side status-${player.status || "none"}">
+        <div class="battle-pokemon player-side status-${player.status || "none"}${getHpPercent(player.currentHp, player.maxHp) <= 25 ? " low-hp" : ""}">
           <img class="battle-sprite" src="${getPokemonImage(player)}" alt="${player.name}">
           <div class="battle-info">
             <h3>${player.name} Lv${player.level}</h3>
             ${renderTypeBadges(player.types)}
             <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(player.currentHp, player.maxHp)}%"></div></div>
             <p class="hp-line">${renderIcon("heart", "HP")} ${player.currentHp}/${player.maxHp} HP</p>
-            <p class="status-line">${renderStatus(player.status)}</p>
+            ${renderBattleTacticalHud(player)}
           </div>
         </div>
         <div class="vs">VS</div>
-        <div class="battle-pokemon opponent-side status-${opponent.status || "none"}">
+        <div class="battle-pokemon opponent-side status-${opponent.status || "none"}${getHpPercent(opponent.currentHp, opponent.maxHp) <= 25 ? " low-hp" : ""}">
           <img class="battle-sprite" src="${getPokemonImage(opponent)}" alt="${opponent.name}">
           <div class="battle-info">
             <h3>${eliteBattle.isChampion ? opponent.name : `${eliteBattle.trainer.name}'s ${opponent.name}`} Lv${opponent.level}</h3>
             ${renderTypeBadges(opponent.types)}
             <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(opponent.currentHp, opponent.maxHp)}%"></div></div>
             <p class="hp-line">${renderIcon("heart", "HP")} ${opponent.currentHp}/${opponent.maxHp} HP</p>
-            <p class="status-line">${renderStatus(opponent.status)}</p>
+            ${renderBattleTacticalHud(opponent)}
           </div>
         </div>
       </div>
@@ -2691,12 +2806,9 @@ function showEliteMoveButtons(player) {
   if (!moveButtonsDiv) return;
   moveButtonsDiv.innerHTML = "";
   player.moves.forEach((move) => {
-    const btn = document.createElement("button");
-    btn.className = "move-btn";
-    btn.innerHTML = `<strong>${move.name}</strong><span>${move.type} | ${move.category} | ${move.currentPp}/${move.maxPp ?? move.pp}</span>`;
-    btn.disabled = battleActionBusy || move.currentPp <= 0 || player.currentHp <= 0;
-    btn.onclick = () => eliteMove(move.name);
-    moveButtonsDiv.appendChild(btn);
+    moveButtonsDiv.appendChild(
+      createBattleMoveButton(move, eliteBattle?.opponentPokemon, eliteMove, player.currentHp <= 0),
+    );
   });
 }
 
@@ -2854,26 +2966,27 @@ function showNpcBattle(lines = []) {
           <span>${npc.defeated ? "Rematch Blocked" : `${npc.rewardCoins} coins`}</span>
         </div>
       </div>
+      ${renderBattleWeatherHud(npcBattle.weather || "clear")}
       <div class="battle-container npc-battle-container">
-        <div class="battle-pokemon player-side status-${player.status || "none"}">
+        <div class="battle-pokemon player-side status-${player.status || "none"}${getHpPercent(player.currentHp, player.maxHp) <= 25 ? " low-hp" : ""}">
           <img class="battle-sprite" src="${getPokemonImage(player)}" alt="${player.name}">
           <div class="battle-info">
             <h3>${player.name} Lv${player.level}</h3>
             ${renderTypeBadges(player.types)}
             <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(player.currentHp, player.maxHp)}%"></div></div>
             <p class="hp-line">${renderIcon("heart", "HP")} ${player.currentHp}/${player.maxHp} HP</p>
-            <p class="status-line">${renderStatus(player.status)}</p>
+            ${renderBattleTacticalHud(player)}
           </div>
         </div>
         <div class="vs">VS</div>
-        <div class="battle-pokemon opponent-side status-${opponent.status || "none"}">
+        <div class="battle-pokemon opponent-side status-${opponent.status || "none"}${getHpPercent(opponent.currentHp, opponent.maxHp) <= 25 ? " low-hp" : ""}">
           <img class="battle-sprite" src="${getPokemonImage(opponent)}" alt="${opponent.name}">
           <div class="battle-info">
             <h3>${npc.name}'s ${opponent.name} Lv${opponent.level}</h3>
             ${renderTypeBadges(opponent.types)}
             <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(opponent.currentHp, opponent.maxHp)}%"></div></div>
             <p class="hp-line">${renderIcon("heart", "HP")} ${opponent.currentHp}/${opponent.maxHp} HP</p>
-            <p class="status-line">${renderStatus(opponent.status)}</p>
+            ${renderBattleTacticalHud(opponent)}
           </div>
         </div>
       </div>
@@ -2907,12 +3020,9 @@ function showNpcMoveButtons(player) {
   if (!moveButtonsDiv) return;
   moveButtonsDiv.innerHTML = "";
   player.moves.forEach((move) => {
-    const btn = document.createElement("button");
-    btn.className = "move-btn";
-    btn.innerHTML = `<strong>${move.name}</strong><span>${move.type} | ${move.category} | ${move.currentPp}/${move.maxPp ?? move.pp}</span>`;
-    btn.disabled = battleActionBusy || move.currentPp <= 0 || player.currentHp <= 0;
-    btn.onclick = () => npcMove(move.name);
-    moveButtonsDiv.appendChild(btn);
+    moveButtonsDiv.appendChild(
+      createBattleMoveButton(move, npcBattle?.opponentPokemon, npcMove, player.currentHp <= 0),
+    );
   });
 }
 
@@ -5130,19 +5240,20 @@ function showBattle() {
       </div>
       <p class="weather-info">${formatAreaName(wild.area)} | Weather: ${wild.weather}${wild.shiny ? " | Shiny encounter!" : ""}</p>
     </div>
+    ${renderBattleWeatherHud(wild.weather || "clear")}
     <div class="battle-container">
-      <div class="battle-pokemon player-side status-${playerStatus || "none"}">
+      <div class="battle-pokemon player-side status-${playerStatus || "none"}${getHpPercent(currentPlayerHP, activePokemon.maxHp) <= 25 ? " low-hp" : ""}">
         <img class="battle-sprite" src="${getPokemonImage(activePokemon)}" alt="${activePokemon.name}">
         <div class="battle-info">
           <h3>${activePokemon.name} Lv${activePokemon.level}</h3>
           ${renderTypeBadges(activePokemon.types)}
           <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(currentPlayerHP, activePokemon.maxHp)}%"></div></div>
           <p class="hp-line">${renderIcon("heart", "HP")} ${currentPlayerHP}/${activePokemon.maxHp} HP</p>
-          <p class="status-line">${renderStatus(playerStatus)}</p>
+          ${renderBattleTacticalHud({ ...activePokemon, status: playerStatus, currentHp: currentPlayerHP })}
         </div>
       </div>
       <div class="vs">VS</div>
-      <div class="battle-pokemon opponent-side status-${wildStatus || "none"}${wild.shiny ? " shiny-encounter" : ""}">
+      <div class="battle-pokemon opponent-side status-${wildStatus || "none"}${wild.shiny ? " shiny-encounter" : ""}${getHpPercent(currentWildHP, wild.maxHp) <= 25 ? " low-hp" : ""}">
         <img class="battle-sprite" src="${getPokemonImage(wild)}" alt="${wild.name}">
         <div class="battle-info">
           <h3>${escapeHtml(getPokemonDisplayName(wild))} Lv${wild.level}</h3>
@@ -5150,7 +5261,7 @@ function showBattle() {
           ${renderTypeBadges(wild.types)}
           <div class="hp-bar"><div class="hp-fill" style="width: ${getHpPercent(currentWildHP, wild.maxHp)}%"></div></div>
           <p class="hp-line">${renderIcon("heart", "HP")} ${currentWildHP}/${wild.maxHp} HP</p>
-          <p class="status-line">${renderStatus(wildStatus)}</p>
+          ${renderBattleTacticalHud({ ...wild, status: wildStatus, currentHp: currentWildHP })}
         </div>
       </div>
     </div>
@@ -5178,12 +5289,9 @@ function showMoveButtons(disabled = false) {
 
   moveButtonsDiv.innerHTML = "";
   activePokemon.moves.forEach((move) => {
-    const btn = document.createElement("button");
-    btn.className = "move-btn";
-    btn.innerHTML = `<strong>${move.name}</strong><span>${move.type} | ${move.category} | ${move.currentPp}/${move.maxPp ?? move.pp}</span>`;
-    btn.disabled = battleActionBusy || disabled || move.currentPp <= 0 || currentPlayerHP <= 0;
-    btn.onclick = () => attack(move.name);
-    moveButtonsDiv.appendChild(btn);
+    moveButtonsDiv.appendChild(
+      createBattleMoveButton(move, wild, attack, disabled || currentPlayerHP <= 0),
+    );
   });
 }
 

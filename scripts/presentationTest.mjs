@@ -32,6 +32,55 @@ import {
   createEvolutionAnimationPlan,
   restoreCaptureScene,
 } from "../frontend/js/battleCinematics.mjs";
+import {
+  getBattleConditions,
+  getCurrentBattleAbility,
+  getEffectivenessDisplay,
+  getMoveDisplayData,
+  getStageBadges,
+  getWeatherDisplay,
+} from "../frontend/js/battleTacticalUi.mjs";
+
+assert.equal(getEffectivenessDisplay(2).label, "SUPER EFFECTIVE");
+assert.equal(getEffectivenessDisplay(1).label, "EFFECTIVE");
+assert.equal(getEffectivenessDisplay(0.5).label, "NOT VERY EFFECTIVE");
+assert.equal(getEffectivenessDisplay(0).label, "NO EFFECT");
+const tacticalMove = getMoveDisplayData({
+  name: "Quick Attack",
+  type: "Normal",
+  category: "Physical",
+  power: 40,
+  accuracy: 100,
+  pp: 30,
+  maxPp: 30,
+  currentPp: 12,
+  priority: 1,
+});
+assert.equal(tacticalMove.power, 40);
+assert.equal(tacticalMove.accuracy, 100);
+assert.equal(tacticalMove.currentPp, 12);
+assert.equal(tacticalMove.maxPp, 30);
+assert.equal(tacticalMove.priority, 1);
+const tacticalPokemon = {
+  name: "Charizard",
+  status: "burned",
+  ability: { name: "blaze" },
+  battleState: {
+    stages: { attack: 2, defense: 0, accuracy: -1 },
+    volatile: { confusionTurns: 2 },
+    protected: true,
+    transform: { active: true, originalName: "Ditto", targetName: "Charizard" },
+  },
+};
+assert.deepEqual(getStageBadges(tacticalPokemon).map((entry) => entry.text), ["ATK +2", "ACC -1"]);
+assert(getBattleConditions(tacticalPokemon).some((entry) => entry.label === "Burn"));
+assert(getBattleConditions(tacticalPokemon).some((entry) => entry.label === "Confused"));
+assert(getBattleConditions(tacticalPokemon).some((entry) => entry.label === "Protected"));
+assert(getBattleConditions(tacticalPokemon).some((entry) => entry.label === "Ditto transformed into Charizard"));
+assert.equal(getCurrentBattleAbility(tacticalPokemon).label, "Blaze");
+assert.equal(getCurrentBattleAbility(tacticalPokemon).copied, true);
+assert.equal(getWeatherDisplay("rain").label, "Rain");
+assert(getWeatherDisplay("sandstorm").description.includes("Rock"));
 
 const move = {
   name: "Body Slam",
