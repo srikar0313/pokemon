@@ -37,6 +37,7 @@ let npcBattle = null;
 let npcInteractionPending = false;
 let isInBattle = false;
 let isSwitching = false;
+let wildSwitchForced = false;
 let activeScreen = "explore";
 let activeOverlay = null;
 let pendingSwapStorageIndex = null;
@@ -248,6 +249,7 @@ function closeWildEncounterLayer() {
 
 function clearWildEncounterState() {
   endBattlePresentation();
+  teamCache.forEach((pokemon) => delete pokemon.battleState);
   if (activePokemon) delete activePokemon.battleState;
   wild = null;
   currentWildHP = 0;
@@ -255,6 +257,7 @@ function clearWildEncounterState() {
   wildParticipantIndexes = new Set();
   isInBattle = false;
   isSwitching = false;
+  wildSwitchForced = false;
   battleBagOpen = false;
   closeWildEncounterLayer();
 }
@@ -861,6 +864,8 @@ async function playTrainerBattleTransition({
   nextState,
   lines = [],
   moveName,
+  action = "move",
+  pokemonIndex = null,
   opponentField,
   opponentTeamField,
   opponentIndexField,
@@ -872,11 +877,29 @@ async function playTrainerBattleTransition({
   afterFinal,
   afterContinue,
 }) {
-  const playerBefore = normalizePokemon(previousState.playerPokemon);
+  const isVoluntarySwitch =
+    action === "switch" && Number.isInteger(Number(pokemonIndex));
+  const previousPlayerIndex = isVoluntarySwitch
+    ? Number(pokemonIndex)
+    : (previousState.playerIndex ?? 0);
+  const playerBefore = normalizePokemon(
+    isVoluntarySwitch
+      ? previousState.playerTeam?.[previousPlayerIndex]
+      : previousState.playerPokemon,
+  );
   const opponentBefore = normalizePokemon(previousState[opponentField]);
   const playerMove = getMoveFromPokemon(playerBefore, moveName);
-  const previousPlayerIndex = previousState.playerIndex || 0;
-  const previousOpponentIndex = previousState[opponentIndexField] || 0;
+  const previousOpponentIndex = previousState[opponentIndexField] ?? 0;
+
+  if (isVoluntarySwitch) {
+    assignState({
+      ...previousState,
+      playerIndex: previousPlayerIndex,
+      playerPokemon: playerBefore,
+    });
+    renderBattle([]);
+    await animatePokemonSwitch("player", playerBefore);
+  }
 
   const oldPlayerAfter = getPreviousPokemonAfterTurn(
     nextState.playerTeam,
@@ -924,7 +947,7 @@ async function playTrainerBattleTransition({
     return;
   }
 
-  const playerIndexChanged = nextState.playerIndex !== previousState.playerIndex;
+  const playerIndexChanged = nextState.playerIndex !== previousPlayerIndex;
   const opponentIndexChanged =
     nextState[opponentIndexField] !== previousState[opponentIndexField] ||
     hasBattlePokemonChanged(opponentBefore, nextState[opponentField]);
@@ -2429,25 +2452,57 @@ async function gymMove(moveName) {
 
 async function gymSwitch(pokemonIndex) {
   if (battleActionBusy) return;
+  const previousState = { ...gymBattle };
   setBattleActionBusy(true);
-  const response = await fetch("/api/gym/move", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "switch", pokemonIndex }),
-  });
-  const data = await response.json();
+  let data;
+  try {
+    const response = await fetch("/api/gym/move", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "switch", pokemonIndex }),
+    });
+    data = await response.json();
+  } catch (error) {
+    console.error("Gym switch failed:", error);
+    setBattleActionBusy(false);
+    alert("Gym switch failed.");
+    return;
+  }
   if (data.error) {
     alert(data.error);
     setBattleActionBusy(false);
     return;
   }
-  gymBattle = data.session;
-  showGymBattle([]);
-  await animatePokemonSwitch("player", gymBattle.playerPokemon);
-  appendBattleLog(data.log);
-  setBattleActionBusy(false);
-  showGymMoveButtons(normalizePokemon(gymBattle.playerPokemon));
-  showGymSwitchButtons();
+  await loadInventory();
+  await playTrainerBattleTransition({
+    previousState,
+    nextState: data.session,
+    lines: data.log,
+    action: "switch",
+    pokemonIndex,
+    opponentField: "gymPokemon",
+    opponentTeamField: "gymTeam",
+    opponentIndexField: "gymIndex",
+    renderBattle: showGymBattle,
+    renderResult: showGymResult,
+    assignState: (session) => {
+      gymBattle = session;
+    },
+    won: data.won,
+    lost: data.lost,
+    afterFinal: async () => {
+      gymBattle = null;
+      await loadProfile();
+      await displayAreas();
+      await loadGyms();
+      await loadEliteFour();
+      if (questCache) await loadQuests();
+    },
+    afterContinue: async () => {
+      showGymMoveButtons(normalizePokemon(gymBattle.playerPokemon));
+      showGymSwitchButtons();
+    },
+  });
 }
 
 async function startEliteRun() {
@@ -2637,25 +2692,56 @@ async function eliteMove(moveName) {
 
 async function eliteSwitch(pokemonIndex) {
   if (battleActionBusy) return;
+  const previousState = { ...eliteBattle };
   setBattleActionBusy(true);
-  const response = await fetch("/api/elite/move", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "switch", pokemonIndex }),
-  });
-  const data = await response.json();
+  let data;
+  try {
+    const response = await fetch("/api/elite/move", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "switch", pokemonIndex }),
+    });
+    data = await response.json();
+  } catch (error) {
+    console.error("Elite switch failed:", error);
+    setBattleActionBusy(false);
+    alert("Elite Four switch failed.");
+    return;
+  }
   if (data.error) {
     alert(data.error);
     setBattleActionBusy(false);
     return;
   }
-  eliteBattle = data.session;
-  showEliteBattle([]);
-  await animatePokemonSwitch("player", eliteBattle.playerPokemon);
-  appendBattleLog(data.log);
-  setBattleActionBusy(false);
-  showEliteMoveButtons(normalizePokemon(eliteBattle.playerPokemon));
-  showEliteSwitchButtons();
+  await loadInventory();
+  await playTrainerBattleTransition({
+    previousState,
+    nextState: data.session,
+    lines: data.log,
+    action: "switch",
+    pokemonIndex,
+    opponentField: "opponentPokemon",
+    opponentTeamField: "opponentTeam",
+    opponentIndexField: "opponentIndex",
+    renderBattle: showEliteBattle,
+    renderResult: showEliteResult,
+    assignState: (session) => {
+      eliteBattle = session;
+    },
+    won: data.won,
+    lost: data.lost,
+    afterFinal: async () => {
+      eliteBattle = null;
+      await loadProfile();
+      await loadEliteFour();
+      await loadGyms();
+      if (questCache) await loadQuests();
+    },
+    afterContinue: async () => {
+      showEliteMoveButtons(normalizePokemon(eliteBattle.playerPokemon));
+      showEliteSwitchButtons();
+    },
+  });
 }
 
 function showNpcBattle(lines = []) {
@@ -2823,25 +2909,56 @@ async function npcMove(moveName) {
 
 async function npcSwitch(pokemonIndex) {
   if (battleActionBusy) return;
+  const previousState = { ...npcBattle };
   setBattleActionBusy(true);
-  const response = await fetch("/api/npc/move", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "switch", pokemonIndex }),
-  });
-  const data = await response.json();
+  let data;
+  try {
+    const response = await fetch("/api/npc/move", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "switch", pokemonIndex }),
+    });
+    data = await response.json();
+  } catch (error) {
+    console.error("NPC switch failed:", error);
+    setBattleActionBusy(false);
+    alert("Trainer switch failed.");
+    return;
+  }
   if (data.error) {
     alert(data.error);
     setBattleActionBusy(false);
     return;
   }
-  npcBattle = data.session;
-  showNpcBattle([]);
-  await animatePokemonSwitch("player", npcBattle.playerPokemon);
-  appendBattleLog(data.log);
-  setBattleActionBusy(false);
-  showNpcMoveButtons(normalizePokemon(npcBattle.playerPokemon));
-  showNpcSwitchButtons();
+  await loadInventory();
+  await playTrainerBattleTransition({
+    previousState,
+    nextState: data.session,
+    lines: data.log,
+    action: "switch",
+    pokemonIndex,
+    opponentField: "opponentPokemon",
+    opponentTeamField: "opponentTeam",
+    opponentIndexField: "opponentIndex",
+    renderBattle: showNpcBattle,
+    renderResult: showNpcResult,
+    assignState: (session) => {
+      npcBattle = session;
+    },
+    won: data.won,
+    lost: data.lost,
+    afterFinal: async () => {
+      npcBattle = null;
+      await loadProfile();
+      await loadInventory();
+      await loadAreaWorld(selectedArea);
+      if (questCache) await loadQuests();
+    },
+    afterContinue: async () => {
+      showNpcMoveButtons(normalizePokemon(npcBattle.playerPokemon));
+      showNpcSwitchButtons();
+    },
+  });
 }
 
 async function loadProfile() {
@@ -3610,20 +3727,26 @@ async function buyItem(itemId) {
 }
 
 async function loadInventory() {
-  const activeBattleState =
-    wild && isInBattle && activePokemon?.battleState
-      ? JSON.parse(JSON.stringify(activePokemon.battleState))
-      : null;
+  const battleStates =
+    wild && isInBattle
+      ? teamCache.map((pokemon) =>
+          pokemon.battleState
+            ? JSON.parse(JSON.stringify(pokemon.battleState))
+            : null,
+        )
+      : [];
   const response = await fetch("/api/inventory");
   const data = await response.json();
   teamCache = (data.team || []).map(normalizePokemon);
+  battleStates.forEach((battleState, index) => {
+    if (battleState && teamCache[index]) teamCache[index].battleState = battleState;
+  });
   storageCache = (data.storage || []).map(normalizePokemon);
   partyPresetCache = data.partyPresets || [];
 
   if (teamCache.length > 0) {
     if (activeInventoryIndex >= teamCache.length) activeInventoryIndex = 0;
     activePokemon = teamCache[activeInventoryIndex];
-    if (activeBattleState) activePokemon.battleState = activeBattleState;
   } else {
     activeInventoryIndex = 0;
     activePokemon = null;
@@ -4267,7 +4390,28 @@ function renderSwapPicker() {
   `;
 }
 
-function selectPokemon(index) {
+function resetPokemonForBattleSwitch(pokemon) {
+  if (!pokemon) return;
+  const sleepTurns =
+    pokemon.status === "asleep"
+      ? pokemon.battleState?.volatile?.sleepTurns
+      : null;
+  pokemon.battleState = {
+    stages: {
+      attack: 0,
+      defense: 0,
+      specialAttack: 0,
+      specialDefense: 0,
+      speed: 0,
+      accuracy: 0,
+      evasion: 0,
+    },
+    volatile: sleepTurns ? { sleepTurns } : {},
+    protected: false,
+  };
+}
+
+async function selectPokemon(index) {
   const selected = teamCache[index];
   if (!selected) {
     alert("Could not select that Pokemon.");
@@ -4279,17 +4423,37 @@ function selectPokemon(index) {
       alert("Cannot switch to a fainted Pokémon.");
       return;
     }
-    if (activePokemon) delete activePokemon.battleState;
-    delete selected.battleState;
+    const forcedSwitch = Boolean(wild && isInBattle && wildSwitchForced);
+    const consumesTurn = Boolean(wild && isInBattle && !forcedSwitch);
+    const outgoingPokemonIndex = activeInventoryIndex;
+    const playerBefore = normalizePokemon(selected);
+    const opponentBefore = wild ? normalizePokemon(wild) : null;
+    if (activePokemon) resetPokemonForBattleSwitch(activePokemon);
+    resetPokemonForBattleSwitch(selected);
     activeInventoryIndex = index;
     activePokemon = normalizePokemon(selected);
     if (wild && isInBattle) wildParticipantIndexes.add(index);
     currentPlayerHP = activePokemon.currentHp;
     playerStatus = activePokemon.status || "none";
+    if (consumesTurn) setBattleActionBusy(true);
+    isSwitching = false;
+    wildSwitchForced = false;
     displayCurrentPlayer();
     showBattle();
-    animatePokemonSwitch("player", activePokemon);
-    isSwitching = false;
+    await animatePokemonSwitch("player", activePokemon);
+    if (consumesTurn) {
+      await performWildUtilityAction("switch", {
+        playerBefore,
+        opponentBefore,
+        outgoingPokemonIndex,
+      });
+    } else if (forcedSwitch) {
+      await performWildUtilityAction("forced-switch", {
+        playerBefore,
+        opponentBefore,
+        outgoingPokemonIndex,
+      });
+    }
     return;
   }
 
@@ -5009,6 +5173,7 @@ function switchPokemon() {
   battleBagOpen = false;
   showBattleItemPanel();
   isSwitching = true;
+  wildSwitchForced = false;
   if (wild && isInBattle) {
     showWildSwitchPanel();
     return;
@@ -5047,6 +5212,7 @@ function showWildSwitchPanel() {
 
 function cancelWildSwitch() {
   isSwitching = false;
+  wildSwitchForced = false;
   const panel = document.getElementById("wild-switch-panel");
   if (panel) panel.innerHTML = "";
 }
@@ -5187,9 +5353,133 @@ async function attack(moveName) {
       ]);
       setBattleActionBusy(false);
       isSwitching = true;
+      wildSwitchForced = true;
       showWildSwitchPanel();
     } else {
       appendBattleLog(["Your full party has fainted. Heal up and try again."]);
+      await returnToRouteAfterWildBattle(
+        "Your full party fainted. You returned to the route.",
+      );
+    }
+  } else {
+    setBattleActionBusy(false);
+  }
+}
+
+async function performWildUtilityAction(
+  action,
+  {
+    itemId = null,
+    outgoingPokemonIndex = null,
+    playerBefore = normalizePokemon(activePokemon),
+    opponentBefore = normalizePokemon(wild),
+  } = {},
+) {
+  if (!wild || !isInBattle) return;
+  setBattleActionBusy(true);
+  let data;
+  try {
+    const response = await fetch("/api/battle", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action,
+        itemId,
+        pokemonIndex: activeInventoryIndex,
+        outgoingPokemonIndex,
+        playerId: activePokemon.id,
+        wild,
+        playerHP: currentPlayerHP,
+        wildHP: currentWildHP,
+        playerStatus,
+        wildStatus,
+        playerBattleState: activePokemon.battleState || null,
+      }),
+    });
+    data = await response.json();
+  } catch (error) {
+    console.error("Battle utility action failed:", error);
+    setBattleActionBusy(false);
+    alert("Battle action failed.");
+    return;
+  }
+  if (data.error) {
+    alert(data.error);
+    setBattleActionBusy(false);
+    showMoveButtons();
+    showBattleItemPanel();
+    showCatchOptions();
+    return;
+  }
+
+  if (data.state) playerState = data.state;
+  const itemTurn = data.turnMetadata?.turns?.find(
+    (turn) => turn.side === "player" && turn.action === "item",
+  );
+  const healedHp = Math.min(
+    activePokemon.maxHp,
+    playerBefore.currentHp + Math.max(0, itemTurn?.hpChange || 0),
+  );
+  if (itemTurn?.hpChange > 0) {
+    animateHpChange("player", playerBefore.currentHp, healedHp, activePokemon.maxHp);
+    showFloatingBattleText("player", `+${itemTurn.hpChange}`, "status");
+    runBattlePresentation("playHealing");
+  }
+
+  currentPlayerHP = data.playerHP;
+  currentWildHP = data.wildHP;
+  playerStatus = data.playerStatus;
+  wildStatus = data.wildStatus;
+  activePokemon = normalizePokemon(data.playerPokemon || activePokemon);
+  teamCache[activeInventoryIndex] = activePokemon;
+  currentPlayerHP = activePokemon.currentHp;
+  playerStatus = activePokemon.status || "none";
+  wild = normalizePokemon(data.wild);
+  const opponentMove = getMoveFromLog(opponentBefore, data.log);
+  await playBattleTurnAnimation({
+    lines: data.log,
+    playerBeforeHp: itemTurn?.hpChange > 0 ? healedHp : playerBefore.currentHp,
+    playerAfterHp: currentPlayerHP,
+    playerMaxHp: activePokemon.maxHp,
+    opponentBeforeHp: opponentBefore.currentHp,
+    opponentAfterHp: currentWildHP,
+    opponentMaxHp: wild.maxHp,
+    playerStatusBefore: playerBefore.status || "none",
+    playerStatusAfter: playerStatus,
+    opponentStatusBefore: opponentBefore.status || "none",
+    opponentStatusAfter: wildStatus,
+    opponentMoveType: getMoveTypeFromLog(opponentBefore, data.log),
+    opponentMove,
+    playerPokemon: playerBefore,
+    opponentPokemon: opponentBefore,
+    turnMetadata: data.turnMetadata,
+  });
+  appendBattleLog(data.log);
+  updateBattleDisplay();
+  displayStats();
+  displayCurrentPlayer();
+  showMoveButtons(!!data.winner);
+  showBattleItemPanel(!!data.winner);
+  showCatchOptions(!!data.winner);
+  await loadInventory();
+
+  if (data.winner === "player") {
+    if (data.moneyReward) await loadProfile();
+    if (questCache) await loadQuests();
+    await returnToRouteAfterWildBattle(
+      `You defeated wild ${wild.name} and returned to the route.`,
+    );
+  } else if (data.winner === "wild") {
+    const hasHealthyReplacement = teamCache.some(
+      (pokemon, index) =>
+        index !== activeInventoryIndex && (pokemon.currentHp || 0) > 0,
+    );
+    if (hasHealthyReplacement) {
+      setBattleActionBusy(false);
+      isSwitching = true;
+      wildSwitchForced = true;
+      showWildSwitchPanel();
+    } else {
       await returnToRouteAfterWildBattle(
         "Your full party fainted. You returned to the route.",
       );
@@ -5211,55 +5501,8 @@ async function useBattleItem(itemId) {
     return;
   }
 
-  const beforeHp = currentPlayerHP;
   battleBagOpen = false;
-  setBattleActionBusy(true);
-  let data;
-  try {
-    const response = await fetch("/api/use-item", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ itemId, pokemonIndex: activeInventoryIndex }),
-    });
-    data = await response.json();
-  } catch (error) {
-    console.error("Battle item failed:", error);
-    setBattleActionBusy(false);
-    alert("Item use failed.");
-    return;
-  }
-  if (data.error) {
-    alert(data.error);
-    setBattleActionBusy(false);
-    return;
-  }
-
-  if (data.state) playerState = data.state;
-  teamCache = (data.team || data.inventory || teamCache).map(normalizePokemon);
-  storageCache = (data.storage || storageCache).map(normalizePokemon);
-  activePokemon = normalizePokemon(teamCache[activeInventoryIndex]);
-  currentPlayerHP = activePokemon.currentHp;
-  playerStatus = activePokemon.status || "none";
-  const healedAmount = Math.max(0, currentPlayerHP - beforeHp);
-  animateHpChange("player", beforeHp, currentPlayerHP, activePokemon.maxHp);
-  showFloatingBattleText(
-    "player",
-    item.category === "healing" && healedAmount > 0 ? `+${healedAmount}` : "CURED",
-    "status",
-  );
-  runBattlePresentation("setStatus", "player", playerStatus);
-  runBattlePresentation("playHealing");
-  appendBattleLog([data.message]);
-  updateBattleDisplay();
-  displayStats();
-  displayCurrentPlayer();
-  displayParty(teamCache);
-  displayStorage(storageCache);
-  displayBag();
-  setBattleActionBusy(false);
-  showMoveButtons();
-  showBattleItemPanel();
-  showCatchOptions();
+  await performWildUtilityAction("item", { itemId });
 }
 
 function updateBattleDisplay() {

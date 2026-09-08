@@ -206,11 +206,60 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
   function resetSwitchState(pokemon) {
     if (!pokemon) return pokemon;
     const state = ensureBattleState(pokemon);
+    const sleepTurns =
+      pokemon.status === "asleep" ? state.volatile.sleepTurns : null;
     state.stages = Object.fromEntries(stageStats.map((stat) => [stat, 0]));
-    state.volatile = {};
+    state.volatile = sleepTurns ? { sleepTurns } : {};
     state.protected = false;
     return pokemon;
   }
+
+  function executeUtilityTurn({
+    actionType,
+    playerPokemon,
+    opponentPokemon,
+    opponentMove,
+    opponentLabel = "Opponent",
+    battle,
+    log = [],
+    playerActionMetadata = {},
+  }) {
+    const metadata = {
+      order: ["player"],
+      turns: [{ side: "player", action: actionType, ...playerActionMetadata }],
+    };
+    if (
+      !opponentMove ||
+      playerPokemon.currentHp <= 0 ||
+      opponentPokemon.currentHp <= 0
+    ) {
+      return { metadata };
+    }
+
+    metadata.order.push("opponent");
+    log.push(`${opponentLabel}'s turn:`);
+    const result = executeBattleMove(
+      opponentPokemon,
+      playerPokemon,
+      opponentMove.name,
+      "",
+      { battle },
+    );
+    log.push(...result.log);
+    metadata.turns.push({
+      side: "opponent",
+      move: opponentMove.name,
+      ...result.metadata,
+    });
+    return { metadata };
+  }
+
+  function resolveForcedSwitch(team = []) {
+    const nextIndex = team.findIndex((pokemon) => pokemon?.currentHp > 0);
+    if (nextIndex >= 0) resetSwitchState(team[nextIndex]);
+    return nextIndex;
+  }
+
   function getTypeEffectiveness(attackerType, defenderType) {
     if (!attackerType || !defenderType) return 1;
     return typeChart[attackerType]?.[defenderType] ?? 1;
@@ -1045,6 +1094,8 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
     getEffectiveStat,
     resetBattleState,
     resetSwitchState,
+    executeUtilityTurn,
+    resolveForcedSwitch,
     resolveTurnOrder,
     calculateMoveDamage,
     executeBattleMove,

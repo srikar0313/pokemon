@@ -1703,6 +1703,93 @@ function main() {
     ]).slice(0, 2).every((action) => ["switch", "item"].includes(action.type)),
     "switch/item actions did not resolve before attacks",
   );
+  assert(
+    mechanicsEngine.resolveTurnOrder([
+      { side: "player", type: "move", pokemon: fast, move: priorityMove },
+      { side: "opponent", type: "switch", pokemon: slow },
+    ])[0].side === "opponent",
+    "AI switch did not resolve before the player move",
+  );
+
+  for (const mode of ["wild", "npc", "gym", "elite"]) {
+    const incoming = makeBattler({ name: `${mode} incoming` });
+    const opponentMove = {
+      ...gameData.moves.Tackle,
+      currentPp: gameData.moves.Tackle.maxPp,
+    };
+    const opponent = makeBattler({
+      name: `${mode} opponent`,
+      moves: [opponentMove],
+    });
+    const hpBefore = incoming.currentHp;
+    const turn = mechanicsEngine.executeUtilityTurn({
+      actionType: "switch",
+      playerPokemon: incoming,
+      opponentPokemon: opponent,
+      opponentMove,
+      opponentLabel: mode,
+      battle: { weather: "clear" },
+      log: [],
+      playerActionMetadata: { mode },
+    });
+    assert(
+      turn.metadata.order.join(",") === "player,opponent" &&
+        turn.metadata.turns.length === 2 &&
+        turn.metadata.turns[0].action === "switch" &&
+        turn.metadata.turns[1].side === "opponent" &&
+        incoming.currentHp < hpBefore &&
+        opponentMove.currentPp === gameData.moves.Tackle.maxPp - 1,
+      `${mode} voluntary switch did not consume exactly one opponent action`,
+    );
+  }
+
+  const itemTarget = makeBattler();
+  const itemOpponentMove = {
+    ...gameData.moves.Tackle,
+    currentPp: gameData.moves.Tackle.maxPp,
+  };
+  const itemTurn = mechanicsEngine.executeUtilityTurn({
+    actionType: "item",
+    playerPokemon: itemTarget,
+    opponentPokemon: makeBattler({ moves: [itemOpponentMove] }),
+    opponentMove: itemOpponentMove,
+    log: [],
+    playerActionMetadata: { itemId: "potion", hpChange: 20 },
+  });
+  assert(
+    itemTurn.metadata.order.join(",") === "player,opponent" &&
+      itemTurn.metadata.turns.length === 2 &&
+      itemTurn.metadata.turns[0].itemId === "potion" &&
+      itemOpponentMove.currentPp === gameData.moves.Tackle.maxPp - 1,
+    "battle item did not resolve before exactly one opponent action",
+  );
+
+  const forcedReplacement = makeBattler({ name: "Replacement" });
+  const forcedOpponentMove = {
+    ...gameData.moves.Tackle,
+    currentPp: gameData.moves.Tackle.maxPp,
+  };
+  assert(
+    mechanicsEngine.resolveForcedSwitch([
+      makeBattler({ name: "Fainted", currentHp: 0 }),
+      forcedReplacement,
+    ]) === 1 &&
+      forcedReplacement.currentHp === forcedReplacement.maxHp &&
+      forcedOpponentMove.currentPp === gameData.moves.Tackle.maxPp,
+    "forced faint replacement incorrectly received an extra opponent action",
+  );
+  const forcedTurn = mechanicsEngine.executeUtilityTurn({
+    actionType: "forced-switch",
+    playerPokemon: forcedReplacement,
+    opponentPokemon: makeBattler(),
+    opponentMove: null,
+    log: [],
+  });
+  assert(
+    forcedTurn.metadata.order.join(",") === "player" &&
+      forcedTurn.metadata.turns.length === 1,
+    "forced switch produced an opponent action",
+  );
   fast.status = "paralyzed";
   assert(
     mechanicsEngine.getEffectiveStat(fast, "speed") === 50,
@@ -1805,6 +1892,19 @@ function main() {
     mechanicsEngine.executeBattleMove(sleeping, makeBattler(), "Tackle").skipped === "sleep" &&
       mechanicsEngine.ensureBattleState(sleeping).volatile.sleepTurns === 1,
     "sleep counter did not decrement",
+  );
+  mechanicsEngine.changeStat(sleeping, "attack", 2);
+  sleeping.battleState.volatile.confusionTurns = 3;
+  sleeping.battleState.volatile.flinched = true;
+  sleeping.battleState.protected = true;
+  mechanicsEngine.resetSwitchState(sleeping);
+  assert(
+    sleeping.battleState.volatile.sleepTurns === 1 &&
+      sleeping.battleState.volatile.confusionTurns == null &&
+      sleeping.battleState.volatile.flinched == null &&
+      sleeping.battleState.stages.attack === 0 &&
+      sleeping.battleState.protected === false,
+    "switching did not preserve sleep while clearing battle volatiles/stages",
   );
   const confusionEngine = createBattleEngine({
     getRandomInt: (minimum) => minimum,

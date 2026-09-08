@@ -185,11 +185,14 @@ const {
   executeBattleMove,
   applyEndOfTurnStatus,
   chooseBestMove,
+  chooseGymMove,
   chooseGymAction,
   chooseTrainerAction,
   applyEntryAbility,
   ensureBattleState,
   resetSwitchState,
+  executeUtilityTurn,
+  resolveForcedSwitch,
   resolveTurnOrder,
 } = battleEngine;
 
@@ -295,6 +298,39 @@ function executeOrderedMoveTurn({
     }
   }
   return { metadata };
+}
+
+function consumeBattleItem(itemId, pokemon) {
+  const item = itemCatalog[itemId];
+  if (!item || !["healing", "status"].includes(item.category)) {
+    return { error: "That item cannot be used during battle" };
+  }
+  const state = loadPlayerState();
+  if ((state.items[itemId] || 0) <= 0) {
+    return { error: "You do not have that item" };
+  }
+
+  let message;
+  if (item.category === "healing") {
+    if (pokemon.currentHp >= pokemon.maxHp) {
+      return { error: `${pokemon.name} is already healthy` };
+    }
+    const healed = Math.min(item.healAmount, pokemon.maxHp - pokemon.currentHp);
+    pokemon.currentHp += healed;
+    message = `${pokemon.name} recovered ${healed} HP.`;
+  } else {
+    if (!item.cures.includes(pokemon.status)) {
+      return { error: `${item.name} does not help ${pokemon.name} right now` };
+    }
+    pokemon.status = "none";
+    if (pokemon.battleState?.volatile) {
+      delete pokemon.battleState.volatile.sleepTurns;
+    }
+    message = `${pokemon.name}'s status was cured.`;
+  }
+
+  state.items[itemId] -= 1;
+  return { item, message, state: savePlayerState(state) };
 }
 
 const rewardEngine = createRewardEngine({
@@ -894,6 +930,19 @@ function completeGymSession(session, log = []) {
   };
 }
 
+function finishGymLoss(session, log = []) {
+  session.status = "lost";
+  persistGymPlayerTeam(session);
+  activeGymSessions.delete("player");
+  log.push("You lost the gym battle. Heal up and try again.");
+  return {
+    success: false,
+    lost: true,
+    log,
+    session: getGymSessionView(session),
+  };
+}
+
 function buildEliteTrainer(stageIndex) {
   if (stageIndex < eliteFour.length) {
     return {
@@ -951,6 +1000,154 @@ function finishEliteLoss(session, log = []) {
     lost: true,
     log,
     session: getEliteSessionView(session),
+  };
+}
+
+function replaceFaintedPlayer(session, log) {
+  const faintedPokemon = session.playerTeam[session.playerIndex];
+  if (!faintedPokemon || faintedPokemon.currentHp > 0) return { replaced: false };
+  log.push(`${faintedPokemon.name} fainted!`);
+  const nextIndex = resolveForcedSwitch(session.playerTeam);
+  if (nextIndex < 0) return { replaced: false, lost: true };
+  session.playerIndex = nextIndex;
+  session.participantIndexes = [
+    ...new Set([...(session.participantIndexes || []), nextIndex]),
+  ];
+  log.push(`Go, ${session.playerTeam[nextIndex].name}!`);
+  return { replaced: true, nextIndex };
+}
+
+function advanceGymOpponent(session, faintedPokemon, log) {
+  if (!faintedPokemon || faintedPokemon.currentHp > 0) return null;
+  const xpAward = calculateBattleXp(faintedPokemon, 3.25);
+  const xpResult = applyBattleXpToParty(session.playerTeam, xpAward);
+  session.playerTeam = xpResult.team;
+  log.push(`Gym ${faintedPokemon.name} fainted!`);
+  appendXpLog(log, xpResult.results);
+  session.participantIndexes = [session.playerIndex];
+  session.gymIndex += 1;
+  if (session.gymIndex >= session.gymTeam.length) {
+    return completeGymSession(session, log);
+  }
+  const nextOpponent = session.gymTeam[session.gymIndex];
+  resetSwitchState(nextOpponent);
+  log.push(`${session.gym.name} sent out ${nextOpponent.name}!`);
+  applyEntryAbility(nextOpponent, session.playerTeam[session.playerIndex], log);
+  persistGymPlayerTeam(session);
+  return {
+    success: true,
+    log,
+    session: getGymSessionView(session),
+  };
+}
+
+function advanceNpcOpponent(session, faintedPokemon, log) {
+  if (!faintedPokemon || faintedPokemon.currentHp > 0) return null;
+  const xpAward = calculateBattleXp(faintedPokemon, 2.75);
+  const xpResult = applyBattleXpToParty(session.playerTeam, xpAward);
+  session.playerTeam = xpResult.team;
+  log.push(`${session.npc.name}'s ${faintedPokemon.name} fainted!`);
+  appendXpLog(log, xpResult.results);
+  session.participantIndexes = [session.playerIndex];
+  session.opponentIndex = getFirstHealthyPokemonIndex(session.opponentTeam);
+  if (session.opponentIndex < 0) return completeNpcBattle(session, log);
+  const nextOpponent = session.opponentTeam[session.opponentIndex];
+  resetSwitchState(nextOpponent);
+  log.push(`${session.npc.name} sent out ${nextOpponent.name}!`);
+  applyEntryAbility(nextOpponent, session.playerTeam[session.playerIndex], log);
+  persistBattlePlayerTeam(session);
+  return {
+    success: true,
+    log,
+    session: getNpcSessionView(session),
+  };
+}
+
+function advanceEliteOpponent(session, faintedPokemon, log) {
+  if (!faintedPokemon || faintedPokemon.currentHp > 0) return null;
+  const xpAward = calculateBattleXp(
+    faintedPokemon,
+    session.isChampion ? 4.5 : 4,
+  );
+  const xpResult = applyBattleXpToParty(session.playerTeam, xpAward);
+  session.playerTeam = xpResult.team;
+  log.push(`${faintedPokemon.name} fainted!`);
+  appendXpLog(log, xpResult.results);
+  session.participantIndexes = [session.playerIndex];
+  session.opponentIndex = getFirstHealthyPokemonIndex(session.opponentTeam);
+  if (session.opponentIndex < 0) {
+    if (session.isChampion) {
+      log.push(`${champion.name} has been defeated!`);
+      return completeEliteSession(session, log);
+    }
+    session.stageIndex += 1;
+    refreshEliteStage(session);
+    log.push(`${session.currentTrainer.name} entered the arena!`);
+    if (session.isChampion) {
+      log.push(`${champion.name} awaits as the final battle!`);
+    } else {
+      log.push(`Elite Four progress: ${session.stageIndex}/${eliteFour.length}`);
+    }
+    const nextOpponent = session.opponentTeam[session.opponentIndex];
+    resetSwitchState(nextOpponent);
+    log.push(`${session.currentTrainer.name} sent out ${nextOpponent.name}!`);
+    applyEntryAbility(nextOpponent, session.playerTeam[session.playerIndex], log);
+    persistBattlePlayerTeam(session);
+    return {
+      success: true,
+      stageCleared: true,
+      log,
+      session: getEliteSessionView(session),
+    };
+  }
+  const nextOpponent = session.opponentTeam[session.opponentIndex];
+  resetSwitchState(nextOpponent);
+  log.push(`${session.currentTrainer.name} sent out ${nextOpponent.name}!`);
+  applyEntryAbility(nextOpponent, session.playerTeam[session.playerIndex], log);
+  persistBattlePlayerTeam(session);
+  return {
+    success: true,
+    log,
+    session: getEliteSessionView(session),
+  };
+}
+
+function finishTrainerUtilityTurn({
+  session,
+  playerPokemon,
+  opponentPokemon,
+  log,
+  battleMultiplier,
+  advanceOpponent,
+  finishLoss,
+  persist,
+  getSessionView,
+}) {
+  session.lastTurn.endOfTurn = applyBattleEndOfTurnStatus(
+    playerPokemon,
+    opponentPokemon,
+    log,
+    session.weather,
+  );
+
+  const replacement = replaceFaintedPlayer(session, log);
+  if (replacement.lost) return finishLoss(session, log);
+
+  const opponentResult = advanceOpponent(session, opponentPokemon, log);
+  if (opponentResult) return opponentResult;
+
+  const effortResult = applyBattleEffortXp(
+    session.playerTeam,
+    opponentPokemon,
+    battleMultiplier,
+    log,
+  );
+  session.playerTeam = effortResult.team;
+  persist(session);
+  return {
+    success: true,
+    log,
+    session: getSessionView(session),
   };
 }
 
@@ -1314,12 +1511,35 @@ app.post("/api/gym/move", (req, res) => {
       session.gymTeam[session.gymIndex],
       log,
     );
-    persistGymPlayerTeam(session);
-    return res.json({
-      success: true,
+    const playerPokemon = session.playerTeam[nextIndex];
+    const gymPokemon = session.gymTeam[session.gymIndex];
+    const gymMove = chooseGymMove(
+      gymPokemon,
+      playerPokemon,
+      session.weather,
+    );
+    session.lastTurn = executeUtilityTurn({
+      actionType: "switch",
+      playerPokemon,
+      opponentPokemon: gymPokemon,
+      opponentMove: gymMove,
+      opponentLabel: session.gym.leaderName,
+      battle: session,
       log,
-      session: getGymSessionView(session),
-    });
+    }).metadata;
+    return res.json(
+      finishTrainerUtilityTurn({
+        session,
+        playerPokemon,
+        opponentPokemon: gymPokemon,
+        log,
+        battleMultiplier: 3.25,
+        advanceOpponent: advanceGymOpponent,
+        finishLoss: finishGymLoss,
+        persist: persistGymPlayerTeam,
+        getSessionView: getGymSessionView,
+      }),
+    );
   }
 
   const playerPokemon = session.playerTeam[session.playerIndex];
@@ -1329,6 +1549,44 @@ app.post("/api/gym/move", (req, res) => {
   }
   if (!gymPokemon) {
     return res.json(completeGymSession(session, ["Gym battle complete."]));
+  }
+
+  if (action === "item") {
+    const hpBeforeItem = playerPokemon.currentHp;
+    const itemResult = consumeBattleItem(req.body.itemId, playerPokemon);
+    if (itemResult.error) return res.status(400).json({ error: itemResult.error });
+    log.push(itemResult.message);
+    const gymMove = chooseGymMove(
+      gymPokemon,
+      playerPokemon,
+      session.weather,
+    );
+    session.lastTurn = executeUtilityTurn({
+      actionType: "item",
+      playerPokemon,
+      opponentPokemon: gymPokemon,
+      opponentMove: gymMove,
+      opponentLabel: session.gym.leaderName,
+      battle: session,
+      log,
+      playerActionMetadata: {
+        itemId: req.body.itemId,
+        hpChange: playerPokemon.currentHp - hpBeforeItem,
+      },
+    }).metadata;
+    const payload = finishTrainerUtilityTurn({
+      session,
+      playerPokemon,
+      opponentPokemon: gymPokemon,
+      log,
+      battleMultiplier: 3.25,
+      advanceOpponent: advanceGymOpponent,
+      finishLoss: finishGymLoss,
+      persist: persistGymPlayerTeam,
+      getSessionView: getGymSessionView,
+    });
+    payload.state = itemResult.state;
+    return res.json(payload);
   }
 
   const selectedMove = getMoveByName(playerPokemon, moveName);
@@ -1455,32 +1713,8 @@ app.post("/api/gym/move", (req, res) => {
   );
   session.playerTeam = effortResult.team;
 
-  if (playerPokemon.currentHp <= 0) {
-    log.push(`${playerPokemon.name} fainted!`);
-    const nextIndex = getFirstHealthyPokemonIndex(session.playerTeam);
-    if (nextIndex < 0) {
-      session.status = "lost";
-      persistGymPlayerTeam(session);
-      activeGymSessions.delete("player");
-      log.push("You lost the gym battle. Heal up and try again.");
-      return res.json({
-        success: false,
-        lost: true,
-        log,
-        session: getGymSessionView(session),
-      });
-    }
-    resetSwitchState(session.playerTeam[nextIndex]);
-    session.playerIndex = nextIndex;
-    session.lastTurn = {
-      order: ["player"],
-      turns: [{ side: "player", action: "switch" }],
-    };
-    session.participantIndexes = [
-      ...new Set([...(session.participantIndexes || []), nextIndex]),
-    ];
-    log.push("Choose another Pokemon to continue.");
-  }
+  const replacement = replaceFaintedPlayer(session, log);
+  if (replacement.lost) return res.json(finishGymLoss(session, log));
 
   persistGymPlayerTeam(session);
   res.json({
@@ -1527,12 +1761,35 @@ app.post("/api/elite/move", (req, res) => {
       session.opponentTeam[session.opponentIndex],
       log,
     );
-    persistBattlePlayerTeam(session);
-    return res.json({
-      success: true,
+    const playerPokemon = session.playerTeam[nextIndex];
+    const opponentPokemon = session.opponentTeam[session.opponentIndex];
+    const opponentMove = chooseGymMove(
+      opponentPokemon,
+      playerPokemon,
+      session.weather,
+    );
+    session.lastTurn = executeUtilityTurn({
+      actionType: "switch",
+      playerPokemon,
+      opponentPokemon,
+      opponentMove,
+      opponentLabel: session.currentTrainer.name,
+      battle: session,
       log,
-      session: getEliteSessionView(session),
-    });
+    }).metadata;
+    return res.json(
+      finishTrainerUtilityTurn({
+        session,
+        playerPokemon,
+        opponentPokemon,
+        log,
+        battleMultiplier: session.isChampion ? 4.5 : 4,
+        advanceOpponent: advanceEliteOpponent,
+        finishLoss: finishEliteLoss,
+        persist: persistBattlePlayerTeam,
+        getSessionView: getEliteSessionView,
+      }),
+    );
   }
 
   const playerPokemon = session.playerTeam[session.playerIndex];
@@ -1542,6 +1799,44 @@ app.post("/api/elite/move", (req, res) => {
   }
   if (!opponentPokemon) {
     return res.status(400).json({ error: "Elite battle is already finished" });
+  }
+
+  if (action === "item") {
+    const hpBeforeItem = playerPokemon.currentHp;
+    const itemResult = consumeBattleItem(req.body.itemId, playerPokemon);
+    if (itemResult.error) return res.status(400).json({ error: itemResult.error });
+    log.push(itemResult.message);
+    const opponentMove = chooseGymMove(
+      opponentPokemon,
+      playerPokemon,
+      session.weather,
+    );
+    session.lastTurn = executeUtilityTurn({
+      actionType: "item",
+      playerPokemon,
+      opponentPokemon,
+      opponentMove,
+      opponentLabel: session.currentTrainer.name,
+      battle: session,
+      log,
+      playerActionMetadata: {
+        itemId: req.body.itemId,
+        hpChange: playerPokemon.currentHp - hpBeforeItem,
+      },
+    }).metadata;
+    const payload = finishTrainerUtilityTurn({
+      session,
+      playerPokemon,
+      opponentPokemon,
+      log,
+      battleMultiplier: session.isChampion ? 4.5 : 4,
+      advanceOpponent: advanceEliteOpponent,
+      finishLoss: finishEliteLoss,
+      persist: persistBattlePlayerTeam,
+      getSessionView: getEliteSessionView,
+    });
+    payload.state = itemResult.state;
+    return res.json(payload);
   }
 
   const selectedMove = getMoveByName(playerPokemon, moveName);
@@ -1744,16 +2039,8 @@ app.post("/api/elite/move", (req, res) => {
   );
   session.playerTeam = eliteEffortResult.team;
 
-  if (playerPokemon.currentHp <= 0) {
-    log.push(`${playerPokemon.name} fainted!`);
-    const nextIndex = getFirstHealthyPokemonIndex(session.playerTeam);
-    if (nextIndex < 0) {
-      return res.json(finishEliteLoss(session, log));
-    }
-    resetSwitchState(session.playerTeam[nextIndex]);
-    session.playerIndex = nextIndex;
-    log.push("Choose another Pokemon to continue.");
-  }
+  const replacement = replaceFaintedPlayer(session, log);
+  if (replacement.lost) return res.json(finishEliteLoss(session, log));
 
   persistBattlePlayerTeam(session);
   res.json({
@@ -2131,18 +2418,41 @@ app.post("/api/npc/move", (req, res) => {
     session.participantIndexes = [
       ...new Set([...(session.participantIndexes || []), nextIndex]),
     ];
-    persistBattlePlayerTeam(session);
     log.push(`Go, ${session.playerTeam[nextIndex].name}!`);
     applyEntryAbility(
       session.playerTeam[nextIndex],
       session.opponentTeam[session.opponentIndex],
       log,
     );
-    return res.json({
-      success: true,
+    const playerPokemon = session.playerTeam[nextIndex];
+    const opponentPokemon = session.opponentTeam[session.opponentIndex];
+    const opponentMove = chooseBestMove(
+      opponentPokemon,
+      playerPokemon,
+      session.weather,
+    );
+    session.lastTurn = executeUtilityTurn({
+      actionType: "switch",
+      playerPokemon,
+      opponentPokemon,
+      opponentMove,
+      opponentLabel: session.npc.name,
+      battle: session,
       log,
-      session: getNpcSessionView(session),
-    });
+    }).metadata;
+    return res.json(
+      finishTrainerUtilityTurn({
+        session,
+        playerPokemon,
+        opponentPokemon,
+        log,
+        battleMultiplier: 2.75,
+        advanceOpponent: advanceNpcOpponent,
+        finishLoss: finishNpcLoss,
+        persist: persistBattlePlayerTeam,
+        getSessionView: getNpcSessionView,
+      }),
+    );
   }
 
   const playerPokemon = session.playerTeam[session.playerIndex];
@@ -2152,6 +2462,44 @@ app.post("/api/npc/move", (req, res) => {
   }
   if (!opponentPokemon) {
     return res.status(400).json({ error: "NPC battle is already finished" });
+  }
+
+  if (action === "item") {
+    const hpBeforeItem = playerPokemon.currentHp;
+    const itemResult = consumeBattleItem(req.body.itemId, playerPokemon);
+    if (itemResult.error) return res.status(400).json({ error: itemResult.error });
+    log.push(itemResult.message);
+    const opponentMove = chooseBestMove(
+      opponentPokemon,
+      playerPokemon,
+      session.weather,
+    );
+    session.lastTurn = executeUtilityTurn({
+      actionType: "item",
+      playerPokemon,
+      opponentPokemon,
+      opponentMove,
+      opponentLabel: session.npc.name,
+      battle: session,
+      log,
+      playerActionMetadata: {
+        itemId: req.body.itemId,
+        hpChange: playerPokemon.currentHp - hpBeforeItem,
+      },
+    }).metadata;
+    const payload = finishTrainerUtilityTurn({
+      session,
+      playerPokemon,
+      opponentPokemon,
+      log,
+      battleMultiplier: 2.75,
+      advanceOpponent: advanceNpcOpponent,
+      finishLoss: finishNpcLoss,
+      persist: persistBattlePlayerTeam,
+      getSessionView: getNpcSessionView,
+    });
+    payload.state = itemResult.state;
+    return res.json(payload);
   }
 
   const selectedMove = getMoveByName(playerPokemon, moveName);
@@ -2293,16 +2641,8 @@ app.post("/api/npc/move", (req, res) => {
   );
   session.playerTeam = npcEffortResult.team;
 
-  if (playerPokemon.currentHp <= 0) {
-    log.push(`${playerPokemon.name} fainted!`);
-    const nextIndex = getFirstHealthyPokemonIndex(session.playerTeam);
-    if (nextIndex < 0) {
-      return res.json(finishNpcLoss(session, log));
-    }
-    resetSwitchState(session.playerTeam[nextIndex]);
-    session.playerIndex = nextIndex;
-    log.push("Choose another Pokemon to continue.");
-  }
+  const replacement = replaceFaintedPlayer(session, log);
+  if (replacement.lost) return res.json(finishNpcLoss(session, log));
 
   persistBattlePlayerTeam(session);
   return res.json({
@@ -2400,6 +2740,9 @@ app.post("/api/battle", (req, res) => {
     playerStatus = "none",
     wildStatus = "none",
     playerBattleState = null,
+    action = "move",
+    itemId = null,
+    outgoingPokemonIndex = null,
   } = req.body;
 
   try {
@@ -2434,23 +2777,90 @@ app.post("/api/battle", (req, res) => {
     wildPokemon.status = wildStatus;
     let winner = null;
     const log = [];
+    let itemState = null;
 
     const availableMoves = wildPokemon.moves.filter((m) => m.currentPp > 0);
     const wildMove =
       chooseBestMove(wildPokemon, playerPokemon, wildPokemon.weather) ||
       availableMoves[Math.floor(Math.random() * availableMoves.length)];
-    const orderedTurn = executeOrderedMoveTurn({
-      playerPokemon,
-      opponentPokemon: wildPokemon,
-      playerMoveName: moveName,
-      opponentMove: wildMove,
-      opponentLabel: `Wild ${wildPokemon.name}`,
-      opponentPrefix: "Wild ",
-      battle: wildPokemon,
-      log,
-    });
+    let orderedTurn;
+    if (action === "switch" || action === "forced-switch") {
+      const previousIndex = Number(outgoingPokemonIndex);
+      if (
+        Number.isInteger(previousIndex) &&
+        previousIndex >= 0 &&
+        previousIndex < inventory.length &&
+        previousIndex !== playerIndex
+      ) {
+        resetSwitchState(inventory[previousIndex]);
+      }
+      resetSwitchState(playerPokemon);
+      log.push(`Go, ${playerPokemon.name}!`);
+      orderedTurn = executeUtilityTurn({
+        actionType: action,
+        playerPokemon,
+        opponentPokemon: wildPokemon,
+        opponentMove: action === "forced-switch" ? null : wildMove,
+        opponentLabel: `Wild ${wildPokemon.name}`,
+        battle: wildPokemon,
+        log,
+      });
+    } else if (action === "item") {
+      const hpBeforeItem = playerPokemon.currentHp;
+      const itemResult = consumeBattleItem(itemId, playerPokemon);
+      if (itemResult.error) {
+        return res.status(400).json({ error: itemResult.error, log });
+      }
+      itemState = itemResult.state;
+      log.push(itemResult.message);
+      orderedTurn = executeUtilityTurn({
+        actionType: "item",
+        playerPokemon,
+        opponentPokemon: wildPokemon,
+        opponentMove: wildMove,
+        opponentLabel: `Wild ${wildPokemon.name}`,
+        battle: wildPokemon,
+        log,
+        playerActionMetadata: {
+          itemId,
+          hpChange: playerPokemon.currentHp - hpBeforeItem,
+        },
+      });
+    } else {
+      orderedTurn = executeOrderedMoveTurn({
+        playerPokemon,
+        opponentPokemon: wildPokemon,
+        playerMoveName: moveName,
+        opponentMove: wildMove,
+        opponentLabel: `Wild ${wildPokemon.name}`,
+        opponentPrefix: "Wild ",
+        battle: wildPokemon,
+        log,
+      });
+    }
     if (orderedTurn.error) {
       return res.status(400).json({ error: orderedTurn.error, log });
+    }
+
+    if (action === "forced-switch") {
+      inventory[playerIndex] = playerPokemon;
+      saveTeamAndStorage(inventory, storage);
+      return res.json({
+        playerHP: playerPokemon.currentHp,
+        wildHP: wildPokemon.currentHp,
+        winner: null,
+        log,
+        playerStatus: playerPokemon.status,
+        wildStatus: wildPokemon.status,
+        moneyReward: 0,
+        xpAward: 0,
+        xpResult: null,
+        playerMoves: playerPokemon.moves,
+        playerPokemon,
+        wild: wildPokemon,
+        turnMetadata: orderedTurn.metadata,
+        state: null,
+      });
     }
 
     if (wildPokemon.currentHp <= 0) {
@@ -2461,7 +2871,7 @@ app.post("/api/battle", (req, res) => {
       log.push(`Wild ${wildPokemon.name} has no moves left!`);
     }
 
-    if (!winner) {
+    if (!winner && action !== "forced-switch") {
       orderedTurn.metadata.endOfTurn = applyBattleEndOfTurnStatus(
         playerPokemon,
         wildPokemon,
@@ -2533,6 +2943,7 @@ app.post("/api/battle", (req, res) => {
       playerPokemon: inventory[playerIndex],
       wild: wildPokemon,
       turnMetadata: orderedTurn.metadata,
+      state: itemState,
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to process battle" });
