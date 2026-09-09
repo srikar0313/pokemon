@@ -24,6 +24,7 @@ h3 {
 }
 
 .app-shell {
+  min-width: 0;
   max-width: 1380px;
   margin: 0 auto;
   height: calc(100vh - 32px);
@@ -55,11 +56,13 @@ h3 {
 }
 
 .screen-stack {
+  min-width: 0;
   min-height: 0;
 }
 
 .screen-panel {
   display: none;
+  min-width: 0;
   min-height: 0;
   height: 100%;
 }
@@ -69,6 +72,7 @@ h3 {
 }
 
 .screen-card {
+  min-width: 0;
   background: #ffffff;
   border: 2px solid #d8e3ef;
   border-radius: 16px;
@@ -5931,6 +5935,608 @@ button:disabled {
 .presentation-banner.reduced, .protect-shield.reduced {
   animation-duration: 100ms !important;
   animation-iteration-count: 1 !important;
+}
+
+/* Premium overworld presentation */
+.premium-route {
+  isolation: isolate;
+  min-height: 520px;
+  border-color: var(--route-edge, #8ab47d);
+  background: var(--route-sky, linear-gradient(180deg, #dff3d8, #f7fbf1));
+  box-shadow: 0 16px 34px rgba(31, 54, 58, 0.16);
+}
+
+.premium-route > :not(.route-atmosphere) {
+  position: relative;
+  z-index: 2;
+}
+
+.route-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.atmosphere-backdrop,
+.atmosphere-foreground,
+.route-atmosphere::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+.atmosphere-backdrop {
+  transform: translate3d(
+    calc(var(--parallax-x, 0px) * -0.35),
+    calc(var(--parallax-y, 0px) * -0.35),
+    0
+  );
+  transition: transform 260ms ease-out;
+}
+
+.atmosphere-foreground {
+  inset: auto -3% -8px;
+  height: 82px;
+  transform: translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0);
+  transition: transform 180ms ease-out;
+}
+
+.route-theme-forest {
+  --route-edge: #4f8f54;
+  --route-sky: linear-gradient(180deg, #b8dca4, #eff8d8 48%, #c6e3a6);
+}
+
+.atmosphere-forest .atmosphere-backdrop {
+  background:
+    linear-gradient(105deg, transparent 5%, rgba(255, 248, 185, 0.3) 19%, transparent 32%),
+    linear-gradient(75deg, transparent 56%, rgba(255, 250, 200, 0.22) 69%, transparent 82%),
+    repeating-linear-gradient(90deg, rgba(40, 100, 52, 0.18) 0 12px, transparent 12px 74px);
+}
+
+.atmosphere-forest .atmosphere-foreground {
+  background:
+    linear-gradient(160deg, transparent 0 24%, #315f34 25% 36%, transparent 37%) 0 100% / 84px 64px repeat-x,
+    linear-gradient(200deg, transparent 0 28%, #477f43 29% 42%, transparent 43%) 42px 100% / 92px 58px repeat-x;
+  opacity: 0.5;
+}
+
+.route-theme-cave {
+  --route-edge: #626b7c;
+  --route-sky: linear-gradient(180deg, #323a49, #596273 52%, #313844);
+  color: #f2f5fa;
+}
+
+.atmosphere-cave .atmosphere-backdrop {
+  background:
+    linear-gradient(125deg, transparent 10%, rgba(99, 215, 232, 0.2) 11% 13%, transparent 14%),
+    linear-gradient(55deg, transparent 70%, rgba(183, 112, 239, 0.18) 71% 73%, transparent 74%);
+  box-shadow: inset 0 0 90px 28px rgba(9, 13, 21, 0.7);
+}
+
+.atmosphere-cave .atmosphere-foreground {
+  background: linear-gradient(170deg, transparent 0 45%, #1d2430 46% 100%);
+  opacity: 0.72;
+}
+
+.route-theme-volcano {
+  --route-edge: #a8462e;
+  --route-sky: linear-gradient(180deg, #3b2930, #7c3d2f 46%, #dc6837);
+  color: #fff6ec;
+}
+
+.atmosphere-volcano .atmosphere-backdrop {
+  background:
+    linear-gradient(180deg, rgba(35, 27, 32, 0.35), transparent 55%),
+    repeating-linear-gradient(110deg, transparent 0 70px, rgba(255, 122, 54, 0.14) 72px 75px);
+  filter: contrast(1.05);
+}
+
+.atmosphere-volcano .atmosphere-foreground {
+  background: linear-gradient(176deg, transparent 0 55%, rgba(82, 24, 17, 0.9) 56% 70%, #f4682d 71% 78%, #441a18 79%);
+  animation: lava-edge-glow 2.4s ease-in-out infinite;
+}
+
+.route-theme-lake {
+  --route-edge: #4c92ad;
+  --route-sky: linear-gradient(180deg, #b8e4ef, #e8f8f7 44%, #82c7dc);
+}
+
+.atmosphere-lake .atmosphere-backdrop {
+  background:
+    repeating-linear-gradient(170deg, transparent 0 18px, rgba(255, 255, 255, 0.24) 20px 22px, transparent 24px 38px),
+    linear-gradient(180deg, transparent 20%, rgba(255, 255, 255, 0.34) 52%, transparent 70%);
+  animation: lake-shimmer 7s linear infinite;
+}
+
+.atmosphere-lake .atmosphere-foreground {
+  background: repeating-radial-gradient(ellipse at 50% 100%, transparent 0 14px, rgba(238, 255, 255, 0.42) 15px 17px, transparent 18px 36px);
+}
+
+.route-theme-mountain {
+  --route-edge: #778ca0;
+  --route-sky: linear-gradient(180deg, #9fc9df, #e7f0f2 48%, #b8c4c5);
+}
+
+.atmosphere-mountain .atmosphere-backdrop {
+  background:
+    linear-gradient(155deg, transparent 48%, rgba(62, 81, 96, 0.28) 49% 58%, transparent 59%) 0 100% / 210px 140px repeat-x,
+    linear-gradient(195deg, transparent 45%, rgba(255, 255, 255, 0.42) 46% 54%, transparent 55%) 70px 20px / 240px 90px repeat-x;
+  animation: mountain-clouds 12s ease-in-out infinite alternate;
+}
+
+.atmosphere-mountain .atmosphere-foreground {
+  background: linear-gradient(170deg, transparent 0 46%, rgba(77, 93, 101, 0.6) 47%);
+}
+
+.route-theme-desert {
+  --route-edge: #b18444;
+  --route-sky: linear-gradient(180deg, #efc86f, #fff0bc 46%, #dca94e);
+}
+
+.atmosphere-desert .atmosphere-backdrop {
+  background: repeating-linear-gradient(104deg, transparent 0 84px, rgba(255, 255, 227, 0.18) 86px 91px, transparent 93px 160px);
+  animation: desert-haze 3.2s ease-in-out infinite alternate;
+}
+
+.atmosphere-desert .atmosphere-foreground {
+  background: repeating-radial-gradient(ellipse at 50% 100%, #bf873a 0 20px, #ddac5e 21px 46px, transparent 47px 90px);
+  opacity: 0.5;
+}
+
+.route-theme-graveyard {
+  --route-edge: #6b6288;
+  --route-sky: linear-gradient(180deg, #25283a, #4b4c68 48%, #777796);
+  color: #f3f0ff;
+}
+
+.atmosphere-graveyard .atmosphere-backdrop {
+  background:
+    linear-gradient(180deg, rgba(14, 19, 39, 0.44), transparent),
+    repeating-linear-gradient(90deg, transparent 0 75px, rgba(194, 208, 255, 0.09) 77px 80px);
+  box-shadow: inset 0 0 82px rgba(18, 15, 36, 0.62);
+}
+
+.atmosphere-graveyard .atmosphere-foreground {
+  background: linear-gradient(180deg, transparent, rgba(218, 224, 240, 0.38));
+  filter: blur(5px);
+  animation: graveyard-ground-fog 6s ease-in-out infinite alternate;
+}
+
+.ambient-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.ambient-particle {
+  position: absolute;
+  left: calc(2% + var(--particle-index) * 5.25%);
+  top: calc(-8px + var(--particle-index) * 13px);
+  display: block;
+  opacity: 0;
+  animation-delay: calc(var(--particle-index) * -310ms) !important;
+}
+
+.particle-leaf {
+  width: 9px;
+  height: 5px;
+  border-radius: 8px 1px 8px 1px;
+  background: #4a964d;
+  animation: forest-leaf-fall 5.8s linear infinite;
+}
+
+.particle-mote {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #dffaff;
+  box-shadow: 0 0 7px #8ceafb;
+  animation: cave-mote-float 4.8s ease-in-out infinite;
+}
+
+.particle-ember {
+  width: 4px;
+  height: 7px;
+  border-radius: 50% 50% 35% 35%;
+  background: #ffd55e;
+  box-shadow: 0 0 8px #ff5a21;
+  animation: volcano-ember-rise 3.4s ease-out infinite;
+}
+
+.particle-droplet {
+  width: 14px;
+  height: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  animation: lake-ripple-spread 4.2s ease-out infinite;
+}
+
+.particle-wind {
+  width: 34px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.68));
+  animation: mountain-wind-pass 3.3s ease-in-out infinite;
+}
+
+.particle-sand {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff0af;
+  animation: desert-sand-pass 3.8s linear infinite;
+}
+
+.particle-wisp {
+  width: 13px;
+  height: 22px;
+  border: 2px solid rgba(194, 174, 255, 0.68);
+  border-radius: 50% 50% 45% 45%;
+  filter: blur(1px);
+  animation: graveyard-wisp-float 5.2s ease-in-out infinite;
+}
+
+.route-weather-rain .route-atmosphere::after {
+  background: repeating-linear-gradient(105deg, transparent 0 24px, rgba(197, 235, 255, 0.34) 25px 27px, transparent 28px 52px);
+  animation: world-rain 700ms linear infinite;
+}
+
+.route-weather-sunny .route-atmosphere::after {
+  background: linear-gradient(118deg, transparent 7%, rgba(255, 247, 182, 0.3) 21%, transparent 35%);
+  animation: world-sun-breathe 4s ease-in-out infinite;
+}
+
+.route-weather-sandstorm .route-atmosphere::after {
+  background: repeating-linear-gradient(8deg, transparent 0 28px, rgba(224, 179, 91, 0.24) 30px 36px, transparent 38px 65px);
+  animation: world-sandstorm 3.2s linear infinite;
+}
+
+.route-weather-snow .route-atmosphere::after {
+  background-image: radial-gradient(circle, rgba(255,255,255,.8) 0 2px, transparent 3px);
+  background-size: 42px 42px;
+  animation: world-snow 6s linear infinite;
+}
+
+.route-time-evening::after,
+.route-time-night::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  content: "";
+  pointer-events: none;
+}
+
+.route-time-evening::after {
+  background: linear-gradient(180deg, rgba(244, 126, 76, 0.16), rgba(72, 61, 103, 0.14));
+}
+
+.route-time-night::after {
+  background: rgba(19, 30, 62, 0.2);
+  box-shadow: inset 0 0 72px rgba(9, 16, 39, 0.25);
+}
+
+.premium-route .route-map-head,
+.premium-route .route-progress,
+.premium-route .route-atmosphere-status {
+  color: #21364c;
+  text-shadow: 0 1px rgba(255, 255, 255, 0.36);
+}
+
+.route-theme-cave .route-map-head,
+.route-theme-cave .route-map-head p,
+.route-theme-volcano .route-map-head,
+.route-theme-volcano .route-map-head p,
+.route-theme-graveyard .route-map-head,
+.route-theme-graveyard .route-map-head p {
+  color: #f4f2fb;
+}
+
+.route-atmosphere-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: -4px 0 10px;
+  padding: 6px 9px;
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 8px;
+  background: rgba(255,255,255,.48);
+  backdrop-filter: blur(5px);
+  font-size: 11px;
+  text-transform: capitalize;
+}
+
+.premium-route .route-grid {
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(255,255,255,.48);
+  background: rgba(237, 247, 229, 0.7);
+  box-shadow: 0 14px 28px rgba(28, 48, 44, 0.2), inset 0 0 0 2px rgba(255,255,255,.2);
+  transform: perspective(800px) rotateX(1deg) translate3d(calc(var(--parallax-x, 0px) * .16), calc(var(--parallax-y, 0px) * .12), 0);
+  transition: transform 220ms ease-out;
+}
+
+.route-theme-cave .route-grid { background: rgba(45, 51, 62, 0.74); }
+.route-theme-volcano .route-grid { background: rgba(69, 39, 34, 0.72); }
+.route-theme-lake .route-grid { background: rgba(207, 241, 245, 0.7); }
+.route-theme-mountain .route-grid { background: rgba(226, 233, 232, 0.72); }
+.route-theme-desert .route-grid { background: rgba(242, 215, 157, 0.72); }
+.route-theme-graveyard .route-grid { background: rgba(49, 49, 68, 0.72); }
+
+.premium-route .route-tile {
+  box-shadow: inset 0 -5px 0 rgba(37, 62, 46, 0.08), 0 2px 4px rgba(20, 42, 38, 0.12);
+}
+
+.premium-route .route-tile.tile-grass::before {
+  position: absolute;
+  inset: auto 8% 5px;
+  height: 16px;
+  background: repeating-linear-gradient(72deg, transparent 0 5px, rgba(35, 114, 48, 0.55) 6px 8px, transparent 9px 13px);
+  content: "";
+  transform-origin: bottom;
+  animation: grass-soft-wind 2.6s ease-in-out infinite alternate;
+}
+
+.premium-route .route-tile.player.tile-grass::before {
+  animation: grass-player-reaction 420ms ease-out;
+}
+
+.premium-route .route-tile.tile-blocked::after {
+  position: absolute;
+  inset: auto 10% 4px;
+  height: 12px;
+  border-radius: 50% 50% 3px 3px;
+  background: rgba(59, 69, 78, 0.28);
+  content: "";
+}
+
+.premium-route .route-tile.player {
+  box-shadow: 0 0 0 3px rgba(255,255,255,.62), 0 0 18px var(--route-edge, #4f8f54);
+}
+
+.premium-route .route-npc-map-sprite {
+  transform-origin: bottom center;
+  animation: npc-idle-breathe 2.8s ease-in-out infinite;
+}
+
+.premium-route .route-tile.nearby .route-npc-map-sprite {
+  animation: npc-attention 520ms ease-out, npc-idle-breathe 2.8s 520ms ease-in-out infinite;
+}
+
+.premium-route .route-prompt {
+  border: 2px solid #fff;
+  color: #fff;
+  background: #e88b22;
+  box-shadow: 0 4px 10px rgba(86, 50, 11, 0.28);
+}
+
+.premium-route + .route-side-panel,
+.route-layout .route-side-panel {
+  box-shadow: 0 12px 26px rgba(31, 54, 75, 0.1);
+}
+
+.route-npc-card .route-npc-header {
+  animation: npc-card-arrive 260ms ease-out both;
+}
+
+.dialogue-box {
+  box-shadow: 0 12px 26px rgba(31, 54, 75, 0.12);
+  animation: premium-dialogue-arrive 240ms ease-out;
+}
+
+.area-entry-cinematic,
+.world-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 10020;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.area-entry-cinematic {
+  color: #fff;
+  background: linear-gradient(110deg, rgba(10, 25, 35, 0.84), rgba(12, 44, 42, 0.66), transparent);
+  animation: area-entry-stage 1.05s ease both;
+}
+
+.area-entry-cinematic > div {
+  width: min(680px, 86vw);
+  padding: 22px 0;
+  border-top: 1px solid rgba(255,255,255,.65);
+  border-bottom: 1px solid rgba(255,255,255,.65);
+  text-shadow: 0 3px 15px rgba(0,0,0,.6);
+  animation: area-entry-copy 1.05s ease both;
+}
+
+.area-entry-cinematic span,
+.area-entry-cinematic strong,
+.area-entry-cinematic small {
+  display: block;
+}
+
+.area-entry-cinematic span { font-size: 11px; font-weight: 900; }
+.area-entry-cinematic strong { font-size: clamp(34px, 7vw, 76px); line-height: 1; }
+.area-entry-cinematic small { margin-top: 6px; font-size: clamp(16px, 2.5vw, 24px); }
+.entry-cave { background-color: rgba(19, 23, 32, .68); }
+.entry-volcano { background-color: rgba(98, 31, 22, .62); }
+.entry-lake { background-color: rgba(23, 96, 125, .54); }
+.entry-mountain { background-color: rgba(59, 84, 100, .56); }
+.entry-desert { background-color: rgba(132, 82, 24, .52); }
+.entry-graveyard { background-color: rgba(42, 30, 66, .68); }
+
+.world-transition {
+  color: #fff;
+  background: rgba(10, 20, 31, .46);
+  animation: world-transition-stage 360ms ease both;
+}
+
+.transition-sweep {
+  position: absolute;
+  inset: 42% -10%;
+  background: #f4f8ff;
+  transform: rotate(-7deg) scaleX(0);
+  animation: encounter-sweep 360ms ease-in-out both;
+}
+
+.transition-copy {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  text-shadow: 0 3px 14px rgba(0,0,0,.7);
+}
+
+.transition-copy span { font-size: 11px; font-weight: 950; }
+.transition-copy strong { font-size: clamp(25px, 5vw, 54px); }
+.transition-rare { background: rgba(49, 29, 79, .64); animation-duration: 560ms; }
+.transition-shiny { background: rgba(20, 58, 71, .68); animation-duration: 680ms; }
+.transition-legendary { background: rgba(12, 12, 28, .86); animation: legendary-transition 920ms ease both; }
+.transition-trainer,
+.trainer-transition { background: linear-gradient(110deg, rgba(112, 25, 25, .86), rgba(21, 31, 49, .9)); }
+
+.transition-particles {
+  position: absolute;
+  inset: 0;
+}
+
+.transition-particles .particle-sparkle,
+.transition-particles .particle-energy {
+  width: 7px;
+  height: 7px;
+  border: 2px solid #fff4a5;
+  transform: rotate(45deg);
+  animation: encounter-sparkle 680ms ease-out infinite;
+}
+
+.transition-particles .particle-energy {
+  border-color: #ae9cff;
+}
+
+.trainer-alert {
+  display: grid;
+  width: 76px;
+  height: 76px;
+  margin-bottom: 90px;
+  place-items: center;
+  border: 5px solid #fff;
+  border-radius: 50%;
+  color: #963322;
+  background: #ffe061;
+  font-size: 50px;
+  font-weight: 950;
+  box-shadow: 0 0 0 9px rgba(255,255,255,.18);
+  animation: trainer-alert-pop 620ms ease both;
+}
+
+@keyframes forest-leaf-fall { 0% { opacity: 0; transform: translate(-8px, -30px) rotate(0); } 15% { opacity: .75; } 100% { opacity: 0; transform: translate(42px, 430px) rotate(420deg); } }
+@keyframes cave-mote-float { 0%, 100% { opacity: .15; transform: translateY(25px); } 50% { opacity: .85; transform: translate(10px, -22px); } }
+@keyframes volcano-ember-rise { 0% { opacity: 0; transform: translateY(380px) scale(.6); } 25% { opacity: .9; } 100% { opacity: 0; transform: translate(24px, -50px) scale(1.2); } }
+@keyframes lake-ripple-spread { 0% { opacity: 0; transform: translateY(300px) scale(.2); } 20% { opacity: .7; } 100% { opacity: 0; transform: translateY(260px) scale(4); } }
+@keyframes mountain-wind-pass { 0% { opacity: 0; transform: translate(-70px, 20px); } 25% { opacity: .72; } 100% { opacity: 0; transform: translate(180px, -45px); } }
+@keyframes desert-sand-pass { 0% { opacity: 0; transform: translate(-80px, 80px); } 22% { opacity: .7; } 100% { opacity: 0; transform: translate(210px, 20px); } }
+@keyframes graveyard-wisp-float { 0%, 100% { opacity: 0; transform: translateY(330px) scale(.6); } 40% { opacity: .56; } 75% { opacity: .22; transform: translate(26px, 90px) scale(1); } }
+@keyframes lake-shimmer { to { transform: translateX(42px); } }
+@keyframes mountain-clouds { to { transform: translateX(22px); } }
+@keyframes desert-haze { to { filter: blur(2px); transform: skewX(-1deg) scaleY(1.02); } }
+@keyframes graveyard-ground-fog { to { transform: translateX(28px) scaleY(1.14); opacity: .72; } }
+@keyframes lava-edge-glow { 50% { filter: brightness(1.35); } }
+@keyframes world-rain { to { transform: translate(35px, 30px); } }
+@keyframes world-sun-breathe { 50% { opacity: .52; } }
+@keyframes world-sandstorm { to { transform: translateX(65px); } }
+@keyframes world-snow { to { transform: translate(20px, 42px); } }
+@keyframes grass-soft-wind { to { transform: skewX(-8deg); } }
+@keyframes grass-player-reaction { 45% { transform: scaleX(1.18) skewX(14deg); } }
+@keyframes npc-idle-breathe { 50% { transform: translateY(-2px) scale(1.015); } }
+@keyframes npc-attention { 35% { transform: translateY(-8px) scale(1.06); } }
+@keyframes npc-card-arrive { from { opacity: 0; transform: translateX(7px); } }
+@keyframes premium-dialogue-arrive { from { opacity: 0; transform: translateY(8px); } }
+@keyframes area-entry-stage { 0%, 100% { opacity: 0; } 18%, 78% { opacity: 1; } }
+@keyframes area-entry-copy { 0% { opacity: 0; transform: translateX(-28px); } 25%, 76% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateX(18px); } }
+@keyframes world-transition-stage { 0%, 100% { opacity: 0; } 24%, 76% { opacity: 1; } }
+@keyframes encounter-sweep { 45% { transform: rotate(-7deg) scaleX(1.2); } 100% { transform: rotate(-7deg) scaleX(0); } }
+@keyframes encounter-sparkle { 0% { opacity: 0; transform: rotate(45deg) scale(.2); } 45% { opacity: 1; } 100% { opacity: 0; transform: rotate(225deg) scale(1.5); } }
+@keyframes legendary-transition { 0%, 100% { opacity: 0; } 22% { opacity: 1; filter: brightness(.35); } 52% { opacity: 1; filter: brightness(1.55); } 82% { opacity: 1; } }
+@keyframes trainer-alert-pop { 0% { opacity: 0; transform: scale(.3); } 32% { opacity: 1; transform: scale(1.14); } 62% { transform: scale(1); } 100% { opacity: 0; transform: translateY(-18px); } }
+
+@media (max-width: 760px) {
+  html,
+  body,
+  .app-shell,
+  .screen-stack,
+  .screen-panel,
+  .screen-card {
+    max-width: 100%;
+  }
+
+  .premium-route { min-height: 0; }
+  .route-atmosphere-status { align-items: flex-start; flex-direction: column; }
+  .premium-route .route-grid { transform: none; }
+  .area-entry-cinematic > div { padding: 16px 0; }
+
+  #explore-screen .screen-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #explore-screen .screen-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  #explore-screen .screen-actions button {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .badge-collection.compact {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-atmosphere .ambient-particle,
+  .route-atmosphere::after,
+  .atmosphere-backdrop,
+  .atmosphere-foreground,
+  .premium-route .route-npc-map-sprite,
+  .premium-route .route-tile::before {
+    animation: none !important;
+    transition: none !important;
+  }
+  .premium-route .route-grid { transform: none; transition: none; }
+  .area-entry-cinematic,
+  .world-transition { animation-duration: 180ms !important; }
+}
+
+.route-motion-reduced .ambient-particle,
+.route-motion-reduced .route-atmosphere::after,
+.route-motion-reduced .atmosphere-backdrop,
+.route-motion-reduced .atmosphere-foreground,
+.route-motion-reduced .route-npc-map-sprite,
+.route-motion-reduced .route-tile::before {
+  animation: none !important;
+  transition: none !important;
+}
+
+.route-motion-reduced .route-grid {
+  transform: none;
+  transition: none;
+}
+
+.area-entry-cinematic.reduced,
+.world-transition.reduced {
+  animation-duration: 180ms !important;
+}
+
+.area-entry-cinematic.reduced *,
+.world-transition.reduced * {
+  animation: none !important;
 }
 
 /* Battle Academy handbook */

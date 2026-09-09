@@ -19,10 +19,12 @@ import {
 } from "../frontend/js/battleCapabilities.mjs";
 import {
   AudioManager,
+  AMBIENT_PROFILES,
   AUDIO_SETTINGS_KEY,
   deterministicCryProfile,
   resolveCrySampleCandidates,
   resolveMoveSampleKeys,
+  resolveAmbientProfile,
   SAMPLE_FILES,
 } from "../frontend/js/battleAudio.mjs";
 import {
@@ -46,6 +48,48 @@ import {
   getMatchupResult,
   getTypeMultiplier,
 } from "../frontend/js/handbookUi.mjs";
+import {
+  BIOME_PRESENTATIONS,
+  createAreaEntryPlan,
+  createEncounterTransitionPlan,
+  createNpcPresentation,
+  getBiomePresentation,
+  getTimePresentation,
+  normalizeWorldWeather,
+  resolveEncounterTransition,
+} from "../frontend/js/overworldPresentation.mjs";
+
+assert.deepEqual(Object.keys(BIOME_PRESENTATIONS).sort(), [
+  "cave",
+  "desert",
+  "forest",
+  "graveyard",
+  "lake",
+  "mountain",
+  "volcano",
+]);
+assert.equal(Object.keys(AMBIENT_PROFILES).length, 7, "Every biome needs ambience");
+assert.equal(getBiomePresentation("forest").subtitle, "Dense Woodland");
+assert.equal(getBiomePresentation("graveyard").particle, "wisp");
+assert.equal(resolveAmbientProfile("lake").wave, "sine");
+assert.equal(normalizeWorldWeather("sun"), "sunny");
+assert.equal(normalizeWorldWeather("unknown"), "clear");
+const daytime = new Date(2026, 0, 1, 10);
+const evening = new Date(2026, 0, 1, 18);
+const nighttime = new Date(2026, 0, 1, 23);
+assert.equal(getTimePresentation(daytime), "day");
+assert.equal(getTimePresentation(evening), "evening");
+assert.equal(getTimePresentation(nighttime), "night");
+assert.equal(resolveEncounterTransition({ rarity: "common" }), "normal");
+assert.equal(resolveEncounterTransition({ rarity: "rare" }), "rare");
+assert.equal(resolveEncounterTransition({ shiny: true, rarity: "rare" }), "shiny");
+assert.equal(resolveEncounterTransition({ rarity: "legendary" }), "legendary");
+assert.equal(resolveEncounterTransition({}, { trainer: true }), "trainer");
+assert(createEncounterTransitionPlan({ rarity: "legendary" }).duration > 600);
+assert(createEncounterTransitionPlan({ rarity: "legendary" }, { reducedMotion: true }).duration <= 180);
+assert(createAreaEntryPlan("forest").duration > createAreaEntryPlan("forest", { reducedMotion: true }).duration);
+assert.equal(createNpcPresentation({ type: "trainer" }).attention, "challenge");
+assert.equal(createNpcPresentation({ type: "guide" }).attention, "interaction");
 
 const handbookChart = {
   Fire: { Grass: 2, Water: 0.5 },
@@ -306,6 +350,13 @@ assert.equal(secondAudio.settings.sfxVolume, 0.71, "SFX volume did not reload");
 assert.equal(secondAudio.settings.cryVolume, 0.33, "cry volume did not reload");
 assert.equal(secondAudio.settings.muted, true, "mute setting did not reload");
 assert.equal(secondAudio.settings.reduceMotion, true, "motion setting did not reload");
+const ambientAudio = new AudioManager({ storage, AudioContextClass: null });
+assert.equal(ambientAudio.setAmbientArea("forest"), "forest");
+assert.equal(ambientAudio.pendingAmbientArea, "forest");
+assert.equal(ambientAudio.setAmbientArea("lake"), "lake");
+assert.equal(ambientAudio.pendingAmbientArea, "lake", "ambience did not switch areas");
+assert.equal(ambientAudio.setAmbientArea("not-an-area"), null);
+assert.equal(ambientAudio.pendingAmbientArea, null, "invalid ambience did not stop safely");
 
 assert.deepEqual(
   deterministicCryProfile(25),
@@ -462,6 +513,16 @@ assert.equal(typeof generatedCryManifest.cries, "object", "cry manifest is inval
 const frontendSource = fs.readFileSync(path.join(rootDir, "frontend/script.js"), "utf8");
 const frontendIndex = fs.readFileSync(path.join(rootDir, "frontend/index.html"), "utf8");
 const frontendStyles = fs.readFileSync(path.join(rootDir, "frontend/style.css"), "utf8");
+const encounterRules = JSON.parse(
+  fs.readFileSync(path.join(rootDir, "data/encounters.json"), "utf8"),
+);
+assert.equal(encounterRules.legendaryRollChance, 0.15, "presentation changed legendary odds");
+assert.equal(encounterRules.shinyRollChance, 0.03, "presentation changed shiny odds");
+assert.deepEqual(
+  encounterRules.rarityWeights,
+  { common: 60, uncommon: 25, rare: 10, legendary: 3, mythical: 1 },
+  "presentation changed rarity weights",
+);
 assert(frontendIndex.includes('data-screen="handbook"'), "Handbook navigation tab is missing");
 assert(frontendIndex.includes('id="handbook-screen"'), "Handbook screen is missing");
 assert(!frontendIndex.includes('data-screen="quests"'), "Quest navigation remains visible");
@@ -471,12 +532,22 @@ assert(frontendSource.includes("renderBattleHandbookShortcut"), "Battle Handbook
 assert(frontendSource.includes("renderTypeMatchupExplorer"), "Battle Academy Type Explorer is missing");
 assert(frontendSource.includes("Advanced battle notes"), "Advanced type chart disclosure is missing");
 assert(frontendSource.includes("renderBattleTips"), "Trainer coaching cards are missing");
+assert(frontendSource.includes("syncOverworldPresentation"), "Overworld lifecycle is not integrated");
+assert(frontendSource.includes('playEncounterTransition'), "Encounter transition is not integrated");
+assert(frontendSource.includes('playTrainerTransition'), "Trainer transition is not integrated");
 assert(
   frontendStyles.includes(".handbook-type-grid") &&
     frontendStyles.includes(".type-matchup-explorer") &&
     frontendStyles.includes(".battle-tips-block") &&
     frontendStyles.includes("@media (max-width: 760px)"),
   "Handbook responsive styles are missing",
+);
+assert(
+  frontendStyles.includes(".route-atmosphere") &&
+    frontendStyles.includes(".area-entry-cinematic") &&
+    frontendStyles.includes(".transition-legendary") &&
+    frontendStyles.includes("@media (prefers-reduced-motion: reduce)"),
+  "Premium overworld presentation styles are missing",
 );
 const catchRequestCount = (frontendSource.match(/fetch\("\/api\/catch"/g) || []).length;
 assert.equal(catchRequestCount, 1, "capture UI can issue duplicate catch requests");

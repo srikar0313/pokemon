@@ -81,6 +81,20 @@ const MUSIC_PATTERNS = {
   legendary: [110, 165, 220, 330, 247, 370, 277, 415],
 };
 
+export const AMBIENT_PROFILES = Object.freeze({
+  forest: { notes: [196, 294, 392], interval: 2400, wave: "sine", gain: 0.018 },
+  cave: { notes: [73, 110, 147], interval: 3200, wave: "triangle", gain: 0.022 },
+  volcano: { notes: [48, 62, 82], interval: 1900, wave: "sawtooth", gain: 0.024 },
+  lake: { notes: [220, 330, 440], interval: 2800, wave: "sine", gain: 0.016 },
+  mountain: { notes: [147, 220, 330], interval: 2600, wave: "triangle", gain: 0.015 },
+  desert: { notes: [82, 123, 165], interval: 2300, wave: "sine", gain: 0.018 },
+  graveyard: { notes: [98, 131, 196], interval: 3400, wave: "sine", gain: 0.02 },
+});
+
+export function resolveAmbientProfile(area) {
+  return AMBIENT_PROFILES[String(area || "").toLowerCase()] || null;
+}
+
 const TYPE_AUDIO = {
   Fire: { frequency: 150, end: 72, wave: "sawtooth" },
   Water: { frequency: 520, end: 190, wave: "sine" },
@@ -175,6 +189,8 @@ export class AudioManager {
     this.musicTimeouts = new Set();
     this.musicOscillators = new Set();
     this.pendingMode = null;
+    this.pendingAmbientArea = null;
+    this.ambientTrack = null;
     this.preloadStarted = false;
     this.settings = this.loadSettings();
   }
@@ -223,6 +239,9 @@ export class AudioManager {
       this.loadCryManifest().catch(() => {});
     }
     if (this.pendingMode && !this.musicTimer) this.startMusic(this.pendingMode);
+    else if (this.pendingAmbientArea && !this.ambientTrack) {
+      this.startAmbience(this.pendingAmbientArea);
+    }
     return true;
   }
 
@@ -234,6 +253,13 @@ export class AudioManager {
     this.musicGain.gain.setTargetAtTime(this.settings.musicVolume, now, 0.02);
     this.sfxGain.gain.setTargetAtTime(this.settings.sfxVolume, now, 0.02);
     this.cryGain.gain.setTargetAtTime(this.settings.cryVolume, now, 0.02);
+    if (this.ambientTrack?.gain) {
+      this.ambientTrack.gain.gain.setTargetAtTime(
+        this.settings.musicVolume * 0.42,
+        now,
+        0.05,
+      );
+    }
   }
 
   resolveSamplePath(keyOrPath) {
@@ -420,7 +446,90 @@ export class AudioManager {
 
   setBattleMode(mode) {
     this.pendingMode = MUSIC_PATTERNS[mode] ? mode : "wild";
+    this.stopAmbience(0.18, false);
     if (this.context?.state === "running") this.startMusic(this.pendingMode);
+  }
+
+  setAmbientArea(area) {
+    const normalized = resolveAmbientProfile(area)
+      ? String(area).toLowerCase()
+      : null;
+    this.pendingAmbientArea = normalized;
+    if (!normalized) {
+      this.stopAmbience(0.3, false);
+      return null;
+    }
+    if (!this.pendingMode && this.context?.state === "running") {
+      this.startAmbience(normalized);
+    }
+    return normalized;
+  }
+
+  startAmbience(area) {
+    const context = this.ensureContext();
+    const profile = resolveAmbientProfile(area);
+    if (!context || !profile || this.pendingMode) return null;
+    if (this.ambientTrack?.area === area) return this.ambientTrack;
+
+    const previousTrack = this.ambientTrack;
+    const gain = context.createGain();
+    gain.gain.setValueAtTime(0.0001, context.currentTime);
+    gain.gain.linearRampToValueAtTime(
+      this.settings.musicVolume * 0.42,
+      context.currentTime + 0.38,
+    );
+    gain.connect(this.masterGain);
+    const track = {
+      area,
+      gain,
+      interval: null,
+      timers: new Set(),
+    };
+    const schedule = () => {
+      if (!this.context || this.settings.muted || this.pendingMode) return;
+      profile.notes.forEach((frequency, index) => {
+        const timer = globalThis.setTimeout?.(() => {
+          track.timers.delete(timer);
+          this.playTone(
+            {
+              frequency,
+              end: frequency * (area === "graveyard" ? 0.82 : 1.04),
+              duration: 0.55,
+              wave: profile.wave,
+              gain: profile.gain,
+            },
+            gain,
+          );
+        }, index * 240);
+        if (timer != null) track.timers.add(timer);
+      });
+    };
+    schedule();
+    track.interval = globalThis.setInterval?.(schedule, profile.interval);
+    this.ambientTrack = track;
+    if (previousTrack) this.stopAmbientTrack(previousTrack, 0.38);
+    return track;
+  }
+
+  stopAmbientTrack(track, fadeSeconds = 0.3) {
+    if (!track) return;
+    if (track.interval != null) globalThis.clearInterval?.(track.interval);
+    track.timers.forEach((timer) => globalThis.clearTimeout?.(timer));
+    track.timers.clear();
+    if (this.context && track.gain) {
+      const now = this.context.currentTime;
+      track.gain.gain.cancelScheduledValues(now);
+      track.gain.gain.setValueAtTime(Math.max(0.0001, track.gain.gain.value), now);
+      track.gain.gain.linearRampToValueAtTime(0.0001, now + fadeSeconds);
+    }
+    globalThis.setTimeout?.(() => track.gain?.disconnect?.(), fadeSeconds * 1000 + 30);
+  }
+
+  stopAmbience(fadeSeconds = 0.3, clearPending = true) {
+    const track = this.ambientTrack;
+    if (track) this.stopAmbientTrack(track, fadeSeconds);
+    if (this.ambientTrack === track) this.ambientTrack = null;
+    if (clearPending) this.pendingAmbientArea = null;
   }
 
   startMusic(mode) {
@@ -468,5 +577,8 @@ export class AudioManager {
   endBattle() {
     this.pendingMode = null;
     this.stopMusic();
+    if (this.pendingAmbientArea) {
+      globalThis.setTimeout?.(() => this.startAmbience(this.pendingAmbientArea), 240);
+    }
   }
 }

@@ -56,6 +56,7 @@ let battleActionBusy = false;
 let battleBagOpen = false;
 let routeEncounterPending = false;
 let routeEncounterCooldownSteps = 0;
+let presentedRouteArea = null;
 const evolutionPresentationQueue = [];
 let evolutionPresentationActive = false;
 let evolutionPresentationHints = [];
@@ -220,6 +221,11 @@ function setActiveScreen(screen) {
   if (screen === "pokedex") loadPokedex();
   if (screen === "handbook") loadHandbook();
   if (screen === "battle") focusBattlePresentation();
+  const overworld = window.OverworldPresentation;
+  overworld?.setActive?.(screen === "explore" && !isInBattle);
+  if (screen === "explore") {
+    window.requestAnimationFrame(() => syncOverworldPresentation());
+  }
 }
 
 const handbookSections = [
@@ -828,6 +834,28 @@ function runBattlePresentation(method, ...args) {
     console.warn(`Battle presentation ${method} failed; continuing with CSS.`, error);
     return Promise.resolve(null);
   }
+}
+
+function runOverworldPresentation(method, ...args) {
+  const presentation = window.OverworldPresentation;
+  if (typeof presentation?.[method] !== "function") return Promise.resolve(null);
+  try {
+    return Promise.resolve(presentation[method](...args)).catch((error) => {
+      console.warn(`Overworld presentation ${method} failed; continuing.`, error);
+      return null;
+    });
+  } catch (error) {
+    console.warn(`Overworld presentation ${method} failed; continuing.`, error);
+    return Promise.resolve(null);
+  }
+}
+
+function syncOverworldPresentation({ playEntry = false } = {}) {
+  if (!selectedArea || !npcMap || activeScreen !== "explore" || isInBattle) return;
+  runOverworldPresentation("mount", {
+    area: selectedArea,
+    playEntry,
+  });
 }
 
 function mountBattlePresentation(kind, player, opponent, weather = "clear") {
@@ -1850,6 +1878,7 @@ async function loadAreaWorld(area) {
     return;
   }
 
+  const areaChanged = presentedRouteArea !== area;
   npcCache = data.npcs || [];
   npcMap = data.map || { width: 8, height: 6, theme: area };
   if (
@@ -1867,6 +1896,8 @@ async function loadAreaWorld(area) {
     focusedNpcId = npcCache[0]?.id || null;
   }
   renderRouteWorld();
+  presentedRouteArea = area;
+  syncOverworldPresentation({ playEntry: areaChanged });
 }
 
 function getDefaultPlayerPosition(area, map) {
@@ -2231,6 +2262,7 @@ function renderRouteWorld() {
   const focusedNpc = getFocusedNpc();
   const displayNpc = nearbyNpc || focusedNpc;
   const stats = getExplorationStats();
+  const biomePresentation = window.OverworldPresentation?.getBiome?.(selectedArea);
   const interactable = Boolean(
     nearbyNpc &&
     activeScreen === "explore" &&
@@ -2252,6 +2284,11 @@ function renderRouteWorld() {
           </div>
           <div class="route-map-hint">WASD / Arrows / E</div>
         </div>
+        ${
+          biomePresentation
+            ? `<div class="route-atmosphere-status"><span>${escapeHtml(biomePresentation.subtitle)}</span><strong>${escapeHtml(biomePresentation.timeOfDay)} · ${escapeHtml(biomePresentation.weather)}</strong></div>`
+            : ""
+        }
         <div class="route-progress">
           <span>${stats.discovered}/${stats.total} tiles discovered</span>
           <strong>${stats.percent}% explored${stats.cleared ? " - Area cleared" : ""}</strong>
@@ -2319,6 +2356,7 @@ function renderRouteWorld() {
   `;
 
   renderRouteDialogue();
+  syncOverworldPresentation();
 }
 
 function renderRouteTiles(playerPosition, nearbyNpc) {
@@ -2616,6 +2654,7 @@ async function interactNearbyNpc() {
   if (data.action === "battle") {
     npcBattle = data.session;
     setRouteDialogue(data.npc, data.dialogue, "battle");
+    await runOverworldPresentation("playTrainerTransition", { npc: data.npc });
     showNpcBattle(data.log || []);
     animatePokemonSwitch("opponent", npcBattle.opponentPokemon);
     return;
@@ -5294,6 +5333,10 @@ async function startWildEncounter(area = selectedArea) {
     wildStatus = wild.status || "none";
     wildParticipantIndexes = new Set([activeInventoryIndex]);
     if (pokedexCache) await loadPokedex();
+    await runOverworldPresentation("playEncounterTransition", {
+      pokemon: wild,
+      area: encounterArea,
+    });
     showBattle();
     animatePokemonSwitch("opponent", wild);
     return true;
@@ -6547,6 +6590,9 @@ function handleExploreKeydown(event) {
 
 document.addEventListener("keydown", handleExploreKeydown);
 document.addEventListener("error", handleExternalImageError, true);
-window.addEventListener("battle-presentation-ready", refreshCurrentBattlePresentation);
+window.addEventListener("battle-presentation-ready", () => {
+  refreshCurrentBattlePresentation();
+  syncOverworldPresentation();
+});
 
 init();
