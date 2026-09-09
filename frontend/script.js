@@ -4826,19 +4826,26 @@ async function selectPokemon(index) {
     wildSwitchForced = false;
     displayCurrentPlayer();
     showBattle();
-    await animatePokemonSwitch("player", activePokemon);
-    if (consumesTurn) {
-      await performWildUtilityAction("switch", {
-        playerBefore,
-        opponentBefore,
-        outgoingPokemonIndex,
-      });
-    } else if (forcedSwitch) {
-      await performWildUtilityAction("forced-switch", {
-        playerBefore,
-        opponentBefore,
-        outgoingPokemonIndex,
-      });
+    try {
+      await animatePokemonSwitch("player", activePokemon);
+      if (consumesTurn) {
+        await performWildUtilityAction("switch", {
+          playerBefore,
+          opponentBefore,
+          outgoingPokemonIndex,
+        });
+      } else if (forcedSwitch) {
+        await performWildUtilityAction("forced-switch", {
+          playerBefore,
+          opponentBefore,
+          outgoingPokemonIndex,
+        });
+      }
+    } catch (error) {
+      console.error("Battle switch display failed:", error);
+      setBattleActionBusy(false);
+      showBattle();
+      alert("The Pokemon switched, but part of the battle display could not finish.");
     }
     return;
   }
@@ -5907,14 +5914,33 @@ function updateBattleDisplay() {
 
   const battlePokemons = document.querySelectorAll(".battle-pokemon");
   if (battlePokemons.length >= 2) {
-    battlePokemons[0].querySelector(".hp-line").innerHTML =
-      `${renderIcon("heart", "HP")} ${currentPlayerHP}/${activePokemon.maxHp} HP`;
-    battlePokemons[0].querySelector(".status-line").innerHTML =
-      renderStatus(playerStatus);
-    battlePokemons[1].querySelector(".hp-line").innerHTML =
-      `${renderIcon("heart", "HP")} ${currentWildHP}/${wild.maxHp} HP`;
-    battlePokemons[1].querySelector(".status-line").innerHTML =
-      renderStatus(wildStatus);
+    const playerHpLine = battlePokemons[0].querySelector(".hp-line");
+    const opponentHpLine = battlePokemons[1].querySelector(".hp-line");
+    if (playerHpLine) {
+      playerHpLine.innerHTML =
+        `${renderIcon("heart", "HP")} ${currentPlayerHP}/${activePokemon.maxHp} HP`;
+    }
+    if (opponentHpLine) {
+      opponentHpLine.innerHTML =
+        `${renderIcon("heart", "HP")} ${currentWildHP}/${wild.maxHp} HP`;
+    }
+
+    const playerHud = battlePokemons[0].querySelector(".battle-tactical-hud");
+    const opponentHud = battlePokemons[1].querySelector(".battle-tactical-hud");
+    if (playerHud) {
+      playerHud.outerHTML = renderBattleTacticalHud({
+        ...activePokemon,
+        status: playerStatus,
+        currentHp: currentPlayerHP,
+      });
+    }
+    if (opponentHud) {
+      opponentHud.outerHTML = renderBattleTacticalHud({
+        ...wild,
+        status: wildStatus,
+        currentHp: currentWildHP,
+      });
+    }
   }
 }
 

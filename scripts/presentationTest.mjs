@@ -25,6 +25,7 @@ import {
   resolveCrySampleCandidates,
   resolveMoveSampleKeys,
   resolveAmbientProfile,
+  resumeAudioContext,
   SAMPLE_FILES,
 } from "../frontend/js/battleAudio.mjs";
 import {
@@ -357,6 +358,20 @@ assert.equal(ambientAudio.setAmbientArea("lake"), "lake");
 assert.equal(ambientAudio.pendingAmbientArea, "lake", "ambience did not switch areas");
 assert.equal(ambientAudio.setAmbientArea("not-an-area"), null);
 assert.equal(ambientAudio.pendingAmbientArea, null, "invalid ambience did not stop safely");
+const blockedAudioContext = {
+  state: "suspended",
+  resume: () => new Promise(() => {}),
+};
+const blockedAudioStartedAt = Date.now();
+assert.equal(
+  await resumeAudioContext(blockedAudioContext, 10),
+  false,
+  "blocked audio context incorrectly reported as available",
+);
+assert(
+  Date.now() - blockedAudioStartedAt < 250,
+  "blocked audio context can freeze presentation actions",
+);
 
 assert.deepEqual(
   deterministicCryProfile(25),
@@ -535,6 +550,10 @@ assert(frontendSource.includes("renderBattleTips"), "Trainer coaching cards are 
 assert(frontendSource.includes("syncOverworldPresentation"), "Overworld lifecycle is not integrated");
 assert(frontendSource.includes('playEncounterTransition'), "Encounter transition is not integrated");
 assert(frontendSource.includes('playTrainerTransition'), "Trainer transition is not integrated");
+assert(
+  !frontendSource.includes('querySelector(".status-line").innerHTML'),
+  "Wild battle refresh still assumes the removed legacy status line exists",
+);
 assert(
   frontendStyles.includes(".handbook-type-grid") &&
     frontendStyles.includes(".type-matchup-explorer") &&

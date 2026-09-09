@@ -95,6 +95,21 @@ export function resolveAmbientProfile(area) {
   return AMBIENT_PROFILES[String(area || "").toLowerCase()] || null;
 }
 
+export async function resumeAudioContext(context, timeoutMs = 450) {
+  if (!context || context.state !== "suspended") return Boolean(context);
+  let timeoutId;
+  const timeout = new Promise((resolve) => {
+    timeoutId = globalThis.setTimeout?.(() => resolve(false), timeoutMs);
+  });
+  const resumed = Promise.resolve()
+    .then(() => context.resume())
+    .then(() => context.state !== "suspended")
+    .catch(() => false);
+  const result = await Promise.race([resumed, timeout]);
+  if (timeoutId != null) globalThis.clearTimeout?.(timeoutId);
+  return Boolean(result);
+}
+
 const TYPE_AUDIO = {
   Fire: { frequency: 150, end: 72, wave: "sawtooth" },
   Water: { frequency: 520, end: 190, wave: "sine" },
@@ -232,7 +247,7 @@ export class AudioManager {
   async unlock() {
     const context = this.ensureContext();
     if (!context) return false;
-    if (context.state === "suspended") await context.resume();
+    if (!(await resumeAudioContext(context))) return false;
     if (!this.preloadStarted) {
       this.preloadStarted = true;
       this.preload().catch(() => {});
