@@ -36,6 +36,7 @@ let pokedexFilters = {
 let pokedexPage = 1;
 let pokedexSelectedSpeciesId = null;
 let pokedexLayout = "grid";
+const pokedexDisplayVariants = new Map();
 const POKEDEX_PAGE_SIZE = 48;
 let gymCache = [];
 let eliteCache = null;
@@ -3888,6 +3889,14 @@ function renderPokedexCard(entry) {
     hasAlternateForms: (entry.forms || []).some((form) => form.id !== "normal"),
   };
   const selected = Number(pokedexSelectedSpeciesId) === Number(speciesId);
+  const displayVariants = window.PokedexUI?.getPokedexDisplayVariants?.(entry) || [];
+  const featuredVariant = window.PokedexUI?.selectPokedexDisplayVariant?.(
+    entry,
+    null,
+    pokedexFilters.shiny !== "all" || !displayVariants.some((variant) => !variant.shiny),
+  );
+  const featuredPokemon = getPokedexVariantPokemon(entry, featuredVariant);
+  const shinyPreview = displayVariants.find((variant) => variant.shiny);
   const cardClass = `pokedex-card ${entry.caught ? "caught" : entry.seen ? "seen" : "unknown"}${selected ? " selected" : ""}${variants.shinySeen ? " has-shiny" : ""}`;
   const displayName = canShowDetails ? entry.name : "???";
   return `
@@ -3895,7 +3904,8 @@ function renderPokedexCard(entry) {
       <div class="pokedex-card-art">
         ${
           canShowDetails
-            ? `<img src="${getPokemonImage(entry)}" alt="${escapeHtml(entry.name)}" onerror="handleExternalImageError(event)">`
+            ? `<img src="${getPokemonImage(featuredPokemon)}" alt="${escapeHtml(featuredVariant?.label || entry.name)}" onerror="handleExternalImageError(event)">
+              ${shinyPreview && !featuredVariant?.shiny ? `<span class="pokedex-card-shiny-preview" title="Shiny form registered"><img src="${getPokemonImage(getPokedexVariantPokemon(entry, shinyPreview))}" alt="Shiny ${escapeHtml(entry.name)}" onerror="handleExternalImageError(event)"></span>` : ""}`
             : `<div class="pokedex-silhouette" aria-label="Unseen Pokemon"><img src="${getPokemonImage(entry)}" alt="" onerror="handleExternalImageError(event)"></div>`
         }
         <span class="pokedex-card-number">#${String(speciesId).padStart(3, "0")}</span>
@@ -3918,6 +3928,41 @@ function renderPokedexCard(entry) {
       </div>
     </article>
   `;
+}
+
+function getPokedexVariantPokemon(entry, variant) {
+  if (!variant) return entry;
+  const form = variant.formId === "normal"
+    ? null
+    : {
+        id: variant.formId,
+        name: variant.form?.name,
+        imageId: variant.form?.imageId,
+        artwork: variant.form?.artwork,
+      };
+  return {
+    ...entry,
+    imageId: variant.form?.imageId || entry.imageId,
+    form,
+    shiny: variant.shiny,
+  };
+}
+
+function getOwnedPokedexVariant(matches, variant) {
+  if (!variant) return null;
+  return matches.find(({ pokemon }) => {
+    const formId = pokemon.form?.id || "normal";
+    return formId === variant.formId && Boolean(pokemon.shiny) === variant.shiny;
+  })?.pokemon || null;
+}
+
+function setPokedexDisplayVariant(speciesId, variantKey) {
+  pokedexDisplayVariants.set(Number(speciesId), variantKey);
+  const entry = pokedexCache?.entries?.find(
+    (candidate) => Number(candidate.speciesId ?? candidate.id) === Number(speciesId),
+  );
+  const detail = document.getElementById("pokedex-detail-panel");
+  if (entry && detail) detail.innerHTML = renderPokedexDetail(entry);
 }
 
 function getPokedexOwnedMatches(entry) {
@@ -3988,12 +4033,21 @@ function renderPokedexDetail(entry) {
   const canIdentify = entry.seen || entry.caught;
   const canShowCombat = entry.caught;
   const matches = canShowCombat ? getPokedexOwnedMatches(entry) : [];
-  const owned = matches[0]?.pokemon ? normalizePokemon(matches[0].pokemon) : null;
-  const displayPokemon = owned || entry;
+  const speciesId = entry.speciesId ?? entry.id;
+  const displayVariants = window.PokedexUI?.getPokedexDisplayVariants?.(entry) || [];
+  const selectedVariant = window.PokedexUI?.selectPokedexDisplayVariant?.(
+    entry,
+    pokedexDisplayVariants.get(Number(speciesId)),
+    pokedexFilters.shiny !== "all" || !displayVariants.some((variant) => !variant.shiny),
+  );
+  const matchingOwnedPokemon = getOwnedPokedexVariant(matches, selectedVariant);
+  const owned = matchingOwnedPokemon
+    ? normalizePokemon(matchingOwnedPokemon)
+    : null;
+  const displayPokemon = owned || getPokedexVariantPokemon(entry, selectedVariant);
   const ability = getPokedexAbilityInfo(
     owned?.ability || (entry.abilities || []).find((item) => !item.hidden) || entry.abilities?.[0],
   );
-  const speciesId = entry.speciesId ?? entry.id;
   const variants = window.PokedexUI?.getPokedexVariantSummary?.(entry) || {};
   const displayName = canIdentify ? entry.name : "Unknown Pokémon";
   return `
@@ -4007,6 +4061,9 @@ function renderPokedexDetail(entry) {
           <h2>${escapeHtml(displayName)}</h2>
           <div class="variant-badges">${canIdentify ? renderVariantBadges(displayPokemon) : ""}${variants.shinySeen ? `<span class="variant-badge shiny-variant">Shiny ${variants.shinyCaught ? "caught" : "seen"}</span>` : ""}</div>
           <div class="pokedex-detail-types">${canIdentify ? renderTypeBadges(entry.types || []) : '<span class="unknown-type">Type unknown</span>'}</div>
+          ${canIdentify && displayVariants.length > 1 ? `<div class="pokedex-variant-selector" aria-label="Artwork variant">
+            ${displayVariants.map((variant) => `<button class="${selectedVariant?.key === variant.key ? "active" : ""}" onclick="setPokedexDisplayVariant(${speciesId}, '${variant.key}')">${escapeHtml(variant.label)}</button>`).join("")}
+          </div>` : ""}
           <strong class="pokedex-discovery-label">${entry.caught ? "Research complete · Caught" : entry.seen ? "Observed · Not caught" : "Undiscovered entry"}</strong>
         </div>
       </header>

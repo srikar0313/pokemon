@@ -26,6 +26,53 @@ export function getPokedexVariantSummary(entry = {}) {
   };
 }
 
+export function getPokedexDisplayVariants(entry = {}) {
+  const forms = Array.isArray(entry.forms) && entry.forms.length
+    ? entry.forms
+    : [{ id: "normal", name: "Normal Form", seen: entry.seen, caught: entry.caught }];
+  return forms.flatMap((form) => {
+    const formId = form.id || "normal";
+    const formName = form.name || (formId === "normal" ? "Normal Form" : `${formId} Form`);
+    const variants = [];
+    if (form.seen || form.caught) {
+      variants.push({
+        key: `${formId}:normal`,
+        form,
+        formId,
+        shiny: false,
+        caught: Boolean(form.caught),
+        label: formName,
+      });
+    }
+    if (form.shinySeen || form.shinyCaught) {
+      variants.push({
+        key: `${formId}:shiny`,
+        form,
+        formId,
+        shiny: true,
+        caught: Boolean(form.shinyCaught),
+        label: `Shiny ${formName}`,
+      });
+    }
+    return variants;
+  });
+}
+
+export function selectPokedexDisplayVariant(
+  entry = {},
+  preferredKey = null,
+  preferShiny = false,
+) {
+  const variants = getPokedexDisplayVariants(entry);
+  return (
+    variants.find((variant) => variant.key === preferredKey) ||
+    (preferShiny ? variants.find((variant) => variant.shiny) : null) ||
+    variants.find((variant) => !variant.shiny) ||
+    variants[0] ||
+    null
+  );
+}
+
 export function matchesPokedexFilters(entry = {}, filters = {}) {
   const state = getPokedexDiscoveryState(entry);
   const variants = getPokedexVariantSummary(entry);

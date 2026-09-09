@@ -64,8 +64,10 @@ import {
   getEntrySpeciesId,
   getOwnedPokemonMatches,
   getPokedexDiscoveryState,
+  getPokedexDisplayVariants,
   getPokedexVariantSummary,
   matchesPokedexFilters,
+  selectPokedexDisplayVariant,
 } from "../frontend/js/pokedexUi.mjs";
 
 assert.deepEqual(Object.keys(BIOME_PRESENTATIONS).sort(), [
@@ -121,6 +123,30 @@ assert.equal(getPokedexDiscoveryState({ seen: true }), "seen");
 assert.equal(getPokedexDiscoveryState({}), "unseen");
 assert.equal(getPokedexVariantSummary(pokedexEntry).shinySeen, true);
 assert.equal(getPokedexVariantSummary(pokedexEntry).discoveredAlternateForms, 1);
+const displayVariants = getPokedexDisplayVariants(pokedexEntry);
+assert.deepEqual(displayVariants.map((variant) => variant.key), [
+  "normal:normal",
+  "normal:shiny",
+  "cosplay:normal",
+]);
+assert.equal(selectPokedexDisplayVariant(pokedexEntry, null, true).key, "normal:shiny");
+assert.equal(
+  selectPokedexDisplayVariant(pokedexEntry, "cosplay:normal", true).key,
+  "cosplay:normal",
+  "explicit form selection was not preserved",
+);
+const shinyOnlyEntry = {
+  seen: true,
+  caught: true,
+  forms: [
+    { id: "normal", seen: false, caught: false, shinySeen: true, shinyCaught: true },
+  ],
+};
+assert.equal(
+  selectPokedexDisplayVariant(shinyOnlyEntry)?.key,
+  "normal:shiny",
+  "a shiny-only collection entry did not default to its owned shiny artwork",
+);
 assert(matchesPokedexFilters(pokedexEntry, { search: "#025" }));
 assert(matchesPokedexFilters(pokedexEntry, { search: "electric" }));
 assert(matchesPokedexFilters(pokedexEntry, { search: "forest" }));

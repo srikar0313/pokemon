@@ -6728,6 +6728,28 @@ button:disabled {
   transition: transform 180ms ease;
 }
 
+.pokedex-card-shiny-preview {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  z-index: 3;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  place-items: center;
+  border: 2px solid #f4cf48;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 3px 10px rgba(115, 82, 9, 0.25);
+}
+
+.pokedex-card-shiny-preview img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
 .pokedex-card:hover .pokedex-card-art > img,
 .pokedex-card:focus-visible .pokedex-card-art > img {
   transform: translateY(-3px) scale(1.035);
@@ -6939,6 +6961,28 @@ button:disabled {
 
 .pokedex-detail-types {
   margin: 7px 0;
+}
+
+.pokedex-variant-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 7px 0;
+}
+
+.pokedex-variant-selector button {
+  margin: 0;
+  padding: 5px 8px;
+  border: 1px solid rgba(40, 67, 92, 0.24);
+  background: rgba(255, 255, 255, 0.72);
+  color: #334c65;
+  font-size: 9px;
+}
+
+.pokedex-variant-selector button.active {
+  border-color: #b58409;
+  background: #f3cf4f;
+  color: #3d310d;
 }
 
 .pokedex-discovery-label {
