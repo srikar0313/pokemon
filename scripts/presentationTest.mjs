@@ -43,6 +43,7 @@ import {
 import {
   buildTypeGuide,
   filterHandbookEntries,
+  getMatchupResult,
   getTypeMultiplier,
 } from "../frontend/js/handbookUi.mjs";
 
@@ -58,6 +59,10 @@ assert(fireGuide.strongAgainst.includes("Grass"));
 assert(fireGuide.resistedBy.includes("Water"));
 assert(fireGuide.weakAgainst.includes("Water"));
 assert.equal(getTypeMultiplier(handbookChart, "Ghost", "Normal"), 0);
+assert.equal(getMatchupResult(2).label, "Super Effective");
+assert.equal(getMatchupResult(0.5).key, "resisted");
+assert.equal(getMatchupResult(0).key, "immune");
+assert.equal(getMatchupResult(1).key, "normal");
 assert.equal(
   filterHandbookEntries([{ name: "Levitate" }, { name: "Intimidate" }], "levi").length,
   1,
@@ -463,8 +468,13 @@ assert(!frontendIndex.includes('data-screen="quests"'), "Quest navigation remain
 assert(!frontendIndex.includes('id="quests-screen"'), "Quest screen remains in the UI");
 assert(frontendSource.includes('fetch("/api/handbook")'), "Handbook data is not loaded from the backend");
 assert(frontendSource.includes("renderBattleHandbookShortcut"), "Battle Handbook shortcut is missing");
+assert(frontendSource.includes("renderTypeMatchupExplorer"), "Battle Academy Type Explorer is missing");
+assert(frontendSource.includes("Advanced battle notes"), "Advanced type chart disclosure is missing");
+assert(frontendSource.includes("renderBattleTips"), "Trainer coaching cards are missing");
 assert(
   frontendStyles.includes(".handbook-type-grid") &&
+    frontendStyles.includes(".type-matchup-explorer") &&
+    frontendStyles.includes(".battle-tips-block") &&
     frontendStyles.includes("@media (max-width: 760px)"),
   "Handbook responsive styles are missing",
 );

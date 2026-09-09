@@ -20,6 +20,8 @@ let handbookSection = "types";
 let handbookSearch = "";
 let handbookReturnScreen = "explore";
 let handbookRequest = null;
+let handbookAttackerType = "Electric";
+let handbookDefenderType = "Water";
 const pokemonImageIdByName = new Map();
 let pokedexFilters = {
   status: "all",
@@ -221,9 +223,9 @@ function setActiveScreen(screen) {
 }
 
 const handbookSections = [
-  ["types", "Type Guide"],
-  ["moves", "Move Categories"],
-  ["status", "Status Effects"],
+  ["types", "Types"],
+  ["moves", "Moves"],
+  ["status", "Status"],
   ["abilities", "Abilities"],
   ["weather", "Weather"],
   ["catching", "Catching"],
@@ -299,7 +301,90 @@ function getFilteredHandbookEntries(entries) {
 
 function renderHandbookTagList(items, emptyLabel = "None") {
   if (!items?.length) return `<span class="handbook-none">${emptyLabel}</span>`;
-  return items.map((item) => `<span class="handbook-tag">${escapeHtml(item)}</span>`).join("");
+  return items
+    .map(
+      (item) => `<span class="handbook-tag" style="--tag-color:${getTypeColor(item)}">${escapeHtml(item)}</span>`,
+    )
+    .join("");
+}
+
+function updateHandbookMatchup(side, type) {
+  if (side === "attacker") handbookAttackerType = type;
+  if (side === "defender") handbookDefenderType = type;
+  const explorer = document.getElementById("type-matchup-explorer");
+  if (explorer) explorer.outerHTML = renderTypeMatchupExplorer(handbookCache.typeChart || {});
+}
+
+function renderTypeMatchupExplorer(typeChart) {
+  const types = Object.keys(typeChart);
+  if (!types.includes(handbookAttackerType)) handbookAttackerType = types[0];
+  if (!types.includes(handbookDefenderType)) handbookDefenderType = types[0];
+  const multiplier = window.HandbookUI?.getTypeMultiplier
+    ? window.HandbookUI.getTypeMultiplier(typeChart, handbookAttackerType, handbookDefenderType)
+    : typeChart[handbookAttackerType]?.[handbookDefenderType] ?? 1;
+  const result = window.HandbookUI?.getMatchupResult
+    ? window.HandbookUI.getMatchupResult(multiplier)
+    : { key: "normal", label: "Normal Damage", summary: "No type advantage or resistance." };
+  const options = (selected) => types
+    .map((type) => `<option value="${type}" ${type === selected ? "selected" : ""}>${type}</option>`)
+    .join("");
+  return `
+    <section id="type-matchup-explorer" class="type-matchup-explorer" aria-label="Type matchup explorer">
+      <div class="academy-section-heading">
+        <span class="academy-step">Master matchups</span>
+        <h3>Type Explorer</h3>
+        <p>Choose an attacking type and a defending type for an instant result.</p>
+      </div>
+      <div class="matchup-controls">
+        <label><span>Attacking type</span><select onchange="updateHandbookMatchup('attacker', this.value)" style="--select-color:${getTypeColor(handbookAttackerType)}">${options(handbookAttackerType)}</select></label>
+        <span class="matchup-arrow" aria-hidden="true">VS</span>
+        <label><span>Defending type</span><select onchange="updateHandbookMatchup('defender', this.value)" style="--select-color:${getTypeColor(handbookDefenderType)}">${options(handbookDefenderType)}</select></label>
+      </div>
+      <div class="matchup-result matchup-result-${result.key}" aria-live="polite">
+        <div class="matchup-multiplier">${multiplier}x</div>
+        <div class="matchup-copy"><strong>${result.label}</strong><span>${handbookAttackerType} into ${handbookDefenderType}. ${result.summary}</span></div>
+      </div>
+    </section>
+  `;
+}
+
+function renderAcademyIntro(eyebrow, title, description) {
+  return `<div class="academy-section-heading"><span class="academy-step">${escapeHtml(eyebrow)}</span><h3>${escapeHtml(title)}</h3><p>${escapeHtml(description)}</p></div>`;
+}
+
+function renderBattleTips(section) {
+  const tips = {
+    types: [
+      ["Quick advantage", "Electric attacks are strong against Water."],
+      ["Know immunities", "Ground-type defenders completely ignore Electric attacks."],
+      ["Check both types", "A dual-type Pokemon can multiply weaknesses and resistances."],
+    ],
+    moves: [
+      ["Match your stats", "Use Physical moves with high Attack and Special moves with high Sp. Attack."],
+      ["Control the fight", "Status moves can be more valuable than damage in long battles."],
+    ],
+    status: [
+      ["Slow fast threats", "Paralysis cuts Speed and can prevent a move."],
+      ["Plan your catch", "Sleep and Freeze give the strongest status catch bonus."],
+    ],
+    abilities: [
+      ["Read the ability", "Levitate can turn a normally strong Ground move into no damage."],
+      ["Watch entry effects", "Intimidate lowers Attack as soon as its user enters battle."],
+    ],
+    weather: [
+      ["Use the forecast", "Rain boosts Water but weakens Fire; Sun does the opposite."],
+      ["Build for sand", "Rock, Ground, and Steel Pokemon avoid Sandstorm chip damage."],
+    ],
+    catching: [["Prepare first", "Lower HP, apply status, then choose the best ball you can afford."]],
+    evolution: [["Check Pokemon details", "The Evolution panel shows exact requirements and compatible items."]],
+    glossary: [["Learn one term at a time", "Move cards show PP, priority, category, and effectiveness during battle."]],
+  };
+  return `
+    <aside class="battle-tips-block">
+      <div class="battle-tips-title"><span>TIP</span><div><strong>Trainer coaching</strong><small>Try this in your next battle</small></div></div>
+      <div class="battle-tip-grid">${(tips[section] || []).map(([title, text]) => `<article><strong>${escapeHtml(title)}</strong><p>${escapeHtml(text)}</p></article>`).join("")}</div>
+    </aside>
+  `;
 }
 
 function renderHandbookTypeGuide() {
@@ -310,10 +395,12 @@ function renderHandbookTypeGuide() {
   const filtered = getFilteredHandbookEntries(entries);
   const allTypes = Object.keys(typeChart);
   return `
+    ${renderTypeMatchupExplorer(typeChart)}
+    ${renderAcademyIntro("Learn the field", "Type cards", "Scan strengths, weaknesses, resistances, and immunities for every supported type.")}
     <div class="handbook-type-grid">
       ${filtered.map((entry) => `
         <article class="handbook-type-card" style="--type-color:${getTypeColor(entry.name)}">
-          <h3>${escapeHtml(entry.name)}</h3>
+          <header><span class="type-card-mark">${entry.name.slice(0, 2).toUpperCase()}</span><h3>${escapeHtml(entry.name)}</h3></header>
           <dl>
             <dt>Strong against</dt><dd>${renderHandbookTagList(entry.strongAgainst)}</dd>
             <dt>Weak against</dt><dd>${renderHandbookTagList(entry.weakAgainst)}</dd>
@@ -325,7 +412,7 @@ function renderHandbookTypeGuide() {
     </div>
     ${filtered.length ? `
       <details class="handbook-chart-wrap">
-        <summary>Simplified attack chart</summary>
+        <summary><span>Advanced battle notes</span> Full type chart</summary>
         <p>Rows attack columns. Blank cells deal normal damage.</p>
         <div class="handbook-chart-scroll">
           <table class="handbook-type-chart">
@@ -345,8 +432,10 @@ function renderHandbookTypeGuide() {
 
 function renderHandbookMoveCategories() {
   const entries = getFilteredHandbookEntries(handbookCache.moveCategories || []);
-  return `<div class="handbook-card-grid">${entries.map((entry) => `
-    <article class="handbook-info-card handbook-category-${entry.name.toLowerCase()}">
+  const icons = { Physical: "ATK", Special: "SP", Status: "FX" };
+  return `${renderAcademyIntro("Learn the basics", "Choose the right move", "Move category decides which stats are used and whether the move deals direct damage.")}<div class="handbook-card-grid academy-feature-grid">${entries.map((entry) => `
+    <article class="handbook-info-card academy-feature-card handbook-category-${entry.name.toLowerCase()}">
+      <span class="academy-card-icon" aria-hidden="true">${icons[entry.name] || "MV"}</span>
       <span class="handbook-kicker">${escapeHtml(entry.formula)}</span>
       <h3>${escapeHtml(entry.name)}</h3>
       <p>${escapeHtml(entry.description)}</p>
@@ -356,8 +445,9 @@ function renderHandbookMoveCategories() {
 
 function renderHandbookStatuses() {
   const entries = getFilteredHandbookEntries(handbookCache.statuses || []);
-  return `<div class="handbook-card-grid">${entries.map((entry) => `
-    <article class="handbook-info-card status-${entry.key}">
+  return `${renderAcademyIntro("Control the battle", "Status effects", "Major and temporary conditions change the rhythm of a fight.")}<div class="handbook-card-grid status-academy-grid">${entries.map((entry) => `
+    <article class="handbook-info-card status-academy-card status-${entry.key}">
+      <span class="status-card-icon" aria-hidden="true">${entry.name.slice(0, 2).toUpperCase()}</span>
       <h3>${escapeHtml(entry.name)}</h3><p>${escapeHtml(entry.effect)}</p>
       <div class="handbook-facts"><span>Turn loss: <strong>${escapeHtml(entry.turnLoss)}</strong></span><span>HP loss: <strong>${escapeHtml(entry.hpLoss)}</strong></span><span>Stat effect: <strong>${escapeHtml(entry.statEffect)}</strong></span></div>
     </article>`).join("")}</div>${entries.length ? "" : '<div class="handbook-empty">No matching status effects.</div>'}`;
@@ -366,21 +456,22 @@ function renderHandbookStatuses() {
 function renderHandbookAbilities() {
   const entries = getFilteredHandbookEntries(handbookCache.abilities || []);
   const groups = [["active", "Active / implemented"], ["partial", "Partially supported"]];
-  return `${groups.map(([support, label]) => {
+  return `${renderAcademyIntro("Advanced battle notes", "Ability Lab", "These descriptions reflect the ability hooks that this game currently runs.")}${groups.map(([support, label]) => {
     const group = entries.filter((entry) => entry.support === support);
-    return group.length ? `<section class="handbook-group"><h3>${label}</h3><div class="handbook-card-grid compact">${group.map((entry) => `<article class="handbook-info-card"><h4>${escapeHtml(entry.name)}</h4><p>${escapeHtml(entry.description)}</p></article>`).join("")}</div></section>` : "";
+    return group.length ? `<section class="handbook-group support-${support}"><div class="handbook-group-title"><h3>${label}</h3><span>${group.length} documented</span></div><div class="handbook-card-grid compact">${group.map((entry) => `<article class="handbook-info-card ability-academy-card"><span class="ability-support-badge support-${entry.support}">${entry.support === "active" ? "Implemented" : "Partial"}</span><h4>${escapeHtml(entry.name)}</h4><p>${escapeHtml(entry.description)}</p></article>`).join("")}</div></section>` : "";
   }).join("")}
   ${entries.length ? `<p class="handbook-note"><strong>Display-only:</strong> ${escapeHtml(handbookCache.abilitySummary?.displayOnly || "")}</p>` : '<div class="handbook-empty">No matching abilities.</div>'}`;
 }
 
 function renderHandbookWeather() {
   const entries = getFilteredHandbookEntries(handbookCache.weather || []);
-  return `<div class="handbook-card-grid">${entries.map((entry) => `<article class="handbook-info-card handbook-weather-${entry.key}"><h3>${escapeHtml(entry.name)}</h3><p>${escapeHtml(entry.effect)}</p><div class="handbook-facts"><span>Boost: <strong>${escapeHtml(entry.boosted.join(", ") || "None")}</strong></span><span>Reduce: <strong>${escapeHtml(entry.reduced.join(", ") || "None")}</strong></span><span>${escapeHtml(entry.passive)}</span></div></article>`).join("")}</div>${entries.length ? "" : '<div class="handbook-empty">No matching weather.</div>'}`;
+  const icons = { rain: "RAIN", sun: "SUN", sandstorm: "SAND", snow: "SNOW" };
+  return `${renderAcademyIntro("Read the arena", "Weather tactics", "Weather changes type damage and can reshape the whole battle.")}<div class="handbook-card-grid weather-academy-grid">${entries.map((entry) => `<article class="handbook-info-card weather-academy-card handbook-weather-${entry.key}"><span class="weather-card-icon" aria-hidden="true">${icons[entry.key] || "WX"}</span><h3>${escapeHtml(entry.name)}</h3><p>${escapeHtml(entry.effect)}</p><div class="handbook-facts"><span>Boost: <strong>${escapeHtml(entry.boosted.join(", ") || "None")}</strong></span><span>Reduce: <strong>${escapeHtml(entry.reduced.join(", ") || "None")}</strong></span><span>${escapeHtml(entry.passive)}</span></div></article>`).join("")}</div>${entries.length ? "" : '<div class="handbook-empty">No matching weather.</div>'}`;
 }
 
 function renderHandbookList(items, heading, note = "") {
   const entries = getFilteredHandbookEntries((items || []).map((text) => ({ text })));
-  return `<section class="handbook-list-panel"><h3>${escapeHtml(heading)}</h3><ol>${entries.map((entry) => `<li>${escapeHtml(entry.text)}</li>`).join("")}</ol>${note ? `<p class="handbook-note">${escapeHtml(note)}</p>` : ""}</section>${entries.length ? "" : '<div class="handbook-empty">No matching guidance.</div>'}`;
+  return `<section class="handbook-list-panel"><div class="academy-section-heading"><span class="academy-step">Trainer learning</span><h3>${escapeHtml(heading)}</h3></div><ol class="academy-step-list">${entries.map((entry, index) => `<li><span>${index + 1}</span><p>${escapeHtml(entry.text)}</p></li>`).join("")}</ol>${note ? `<p class="handbook-note"><strong>Currently unavailable:</strong> ${escapeHtml(note)}</p>` : ""}</section>${entries.length ? "" : '<div class="handbook-empty">No matching guidance.</div>'}`;
 }
 
 function renderHandbookEvolution() {
@@ -394,7 +485,7 @@ function renderHandbookEvolution() {
 
 function renderHandbookGlossary() {
   const entries = getFilteredHandbookEntries(handbookCache.glossary || []);
-  return `<div class="handbook-glossary">${entries.map((entry) => `<article><h3>${escapeHtml(entry.term)}</h3><p>${escapeHtml(entry.definition)}</p></article>`).join("")}</div>${entries.length ? "" : '<div class="handbook-empty">No matching battle terms.</div>'}`;
+  return `${renderAcademyIntro("Build your vocabulary", "Battle glossary", "Short definitions for the information shown throughout the battle interface.")}<div class="handbook-glossary">${entries.map((entry) => `<article><span class="glossary-mark" aria-hidden="true">?</span><h3>${escapeHtml(entry.term)}</h3><p>${escapeHtml(entry.definition)}</p></article>`).join("")}</div>${entries.length ? "" : '<div class="handbook-empty">No matching battle terms.</div>'}`;
 }
 
 function renderHandbookContent() {
@@ -411,16 +502,19 @@ function renderHandbookContent() {
     evolution: renderHandbookEvolution,
     glossary: renderHandbookGlossary,
   };
-  content.innerHTML = (renderers[handbookSection] || renderers.types)();
+  content.classList.remove("handbook-content-enter");
+  content.innerHTML = `${(renderers[handbookSection] || renderers.types)()}${renderBattleTips(handbookSection)}`;
+  window.requestAnimationFrame(() => content.classList.add("handbook-content-enter"));
   if (count) count.textContent = handbookSearch ? `Filtered by "${handbookSearch}"` : "Showing all";
 }
 
 function renderHandbook() {
   const panel = document.getElementById("handbook-panel");
   if (!panel || !handbookCache) return;
+  const activeIndex = Math.max(0, handbookSections.findIndex(([id]) => id === handbookSection));
   panel.innerHTML = `
-    <div class="handbook-header">
-      <div><span class="handbook-eyebrow">Trainer reference</span><h2>Battle Handbook</h2><p>Quick answers based on this game's current mechanics.</p></div>
+    <div class="handbook-header academy-hero">
+      <div><span class="handbook-eyebrow">Battle Academy</span><h2>Trainer Guide</h2><p>Train smarter, master matchups, and read every battle at a glance.</p><div class="academy-progress"><span style="width:${((activeIndex + 1) / handbookSections.length) * 100}%"></span></div><small>Module ${activeIndex + 1} of ${handbookSections.length}</small></div>
       ${handbookReturnScreen === "battle" ? '<button class="secondary-btn" onclick="returnFromHandbook()">Back to Battle</button>' : ""}
     </div>
     <nav class="handbook-tabs" aria-label="Battle Handbook sections">${handbookSections.map(([id, label]) => `<button class="handbook-tab${id === handbookSection ? " active" : ""}" onclick="selectHandbookSection('${id}')">${label}</button>`).join("")}</nav>

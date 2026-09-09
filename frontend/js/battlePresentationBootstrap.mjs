@@ -1,6 +1,6 @@
 import { BattlePresentationController } from "./battlePresentation.mjs";
 import * as BattleTacticalUI from "./battleTacticalUi.mjs";
-import * as HandbookUI from "./handbookUi.mjs";
+import * as HandbookUI from "./handbookUi.mjs?v=20260908-battle-academy";
 
 const controller = new BattlePresentationController();
 

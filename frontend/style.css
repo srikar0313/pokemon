@@ -5933,6 +5933,566 @@ button:disabled {
   animation-iteration-count: 1 !important;
 }
 
+/* Battle Academy handbook */
+.handbook-screen-card {
+  background: #f2f6fb;
+}
+
+#handbook-panel {
+  width: min(1220px, 100%);
+  margin: 0 auto;
+}
+
+.academy-hero {
+  position: relative;
+  min-height: 148px;
+  overflow: hidden;
+  padding: 24px 28px;
+  border: 1px solid #213b60;
+  border-radius: 8px;
+  color: #fff;
+  background:
+    linear-gradient(115deg, rgba(12, 28, 52, 0.96), rgba(30, 80, 112, 0.92) 58%, rgba(18, 139, 126, 0.9)),
+    #17304e;
+  box-shadow: 0 14px 30px rgba(20, 43, 70, 0.18);
+}
+
+.academy-hero::after {
+  position: absolute;
+  right: 7%;
+  top: 50%;
+  width: 124px;
+  height: 124px;
+  border: 18px solid rgba(255, 255, 255, 0.09);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 7px rgba(255, 255, 255, 0.05);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.academy-hero > div {
+  position: relative;
+  z-index: 1;
+  max-width: 670px;
+}
+
+.academy-hero h2 {
+  margin: 4px 0 6px;
+  color: #fff;
+  font-size: clamp(27px, 4vw, 40px);
+  letter-spacing: 0;
+}
+
+.academy-hero p,
+.academy-hero small {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.handbook-eyebrow,
+.academy-step {
+  display: inline-flex;
+  align-items: center;
+  color: #0f736c;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.academy-hero .handbook-eyebrow {
+  color: #72f3dc;
+}
+
+.academy-progress {
+  width: min(360px, 80%);
+  height: 7px;
+  margin: 16px 0 5px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.academy-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #60e4cf, #ffe06b);
+  transition: width 220ms ease;
+}
+
+.handbook-tabs {
+  gap: 5px;
+  margin: 12px 0;
+  padding: 5px;
+  border: 1px solid #d5e0ec;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 5px 16px rgba(28, 51, 78, 0.08);
+}
+
+.handbook-tab {
+  min-height: 38px;
+  border-radius: 6px;
+  color: #40536c;
+  transition: color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.handbook-tab:hover,
+.handbook-tab:focus-visible {
+  color: #0b665f;
+  background: #e9faf6;
+}
+
+.handbook-tab.active {
+  color: #fff;
+  background: linear-gradient(120deg, #183759, #16877d);
+  box-shadow: 0 4px 10px rgba(21, 112, 103, 0.22);
+}
+
+.handbook-tools {
+  padding: 10px;
+  border: 1px solid #d5e0ec;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.handbook-content-enter {
+  animation: academy-content-in 230ms ease both;
+}
+
+.academy-section-heading {
+  margin: 18px 0 10px;
+}
+
+.academy-section-heading h3 {
+  margin: 2px 0 3px;
+  color: #172c46;
+  font-size: 22px;
+}
+
+.academy-section-heading p {
+  margin: 0;
+  color: #617086;
+}
+
+.type-matchup-explorer {
+  padding: 18px;
+  border: 1px solid #bddbd8;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #eefbf8, #f7f5ff 54%, #fff8e4);
+  box-shadow: 0 9px 22px rgba(31, 75, 91, 0.1);
+}
+
+.type-matchup-explorer .academy-section-heading {
+  margin-top: 0;
+}
+
+.matchup-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr);
+  gap: 12px;
+  align-items: end;
+}
+
+.matchup-controls label {
+  display: grid;
+  gap: 5px;
+  color: #384b63;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.matchup-controls select {
+  width: 100%;
+  min-height: 42px;
+  border: 2px solid var(--select-color, #16877d);
+  border-radius: 6px;
+  background: #fff;
+  color: #192e48;
+  font: inherit;
+  font-weight: 800;
+}
+
+.matchup-arrow {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  color: #34746f;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.matchup-result {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 13px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.83);
+  animation: matchup-result-pulse 260ms ease;
+}
+
+.matchup-multiplier {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 950;
+}
+
+.matchup-copy strong,
+.matchup-copy span {
+  display: block;
+}
+
+.matchup-copy strong {
+  margin-bottom: 2px;
+  font-size: 18px;
+}
+
+.matchup-copy span {
+  color: #526178;
+}
+
+.matchup-result-super { color: #08845c; }
+.matchup-result-resisted { color: #9a6900; }
+.matchup-result-immune { color: #79518d; }
+.matchup-result-normal { color: #40566f; }
+
+.handbook-type-grid,
+.handbook-card-grid,
+.handbook-glossary {
+  gap: 10px;
+}
+
+.handbook-type-card,
+.handbook-info-card,
+.handbook-weather-card,
+.handbook-glossary article {
+  border-radius: 8px;
+  box-shadow: 0 5px 13px rgba(31, 51, 76, 0.08);
+  transition: transform 170ms ease, box-shadow 170ms ease, border-color 170ms ease;
+}
+
+.handbook-type-card:hover,
+.handbook-info-card:hover,
+.handbook-weather-card:hover,
+.handbook-glossary article:hover {
+  z-index: 1;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 21px rgba(31, 51, 76, 0.15);
+}
+
+.handbook-type-card {
+  position: relative;
+  overflow: hidden;
+  border-top: 4px solid var(--type-color, #718096);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--type-color, #718096) 15%, white), #fff 58%);
+}
+
+.handbook-type-title {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+
+.handbook-type-card header {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  margin-bottom: 9px;
+}
+
+.type-card-mark {
+  display: grid;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--type-color, #718096);
+  font-size: 12px;
+  font-weight: 950;
+  box-shadow: 0 4px 9px color-mix(in srgb, var(--type-color, #718096) 38%, transparent);
+}
+
+.handbook-tag {
+  border-left: 3px solid var(--tag-color, #718096);
+  background: #fff;
+}
+
+.handbook-advanced-chart,
+.handbook-chart-wrap {
+  margin-top: 16px;
+  border: 1px solid #ccd8e5;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.handbook-advanced-chart summary,
+.handbook-chart-wrap summary {
+  padding: 13px 15px;
+  color: #1d3b59;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.handbook-advanced-chart .handbook-chart-wrap {
+  margin: 0 10px 10px;
+}
+
+.academy-feature-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.academy-feature-card,
+.status-academy-card,
+.weather-academy-card,
+.ability-academy-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.academy-feature-card {
+  min-height: 210px;
+  padding-top: 64px;
+  border-top: 4px solid #395c8c;
+  background: linear-gradient(145deg, #edf3ff, #fff 68%);
+}
+
+.handbook-category-special {
+  border-top-color: #7b51bd;
+  background: linear-gradient(145deg, #f3edff, #fff 68%);
+}
+
+.handbook-category-status {
+  border-top-color: #16877d;
+  background: linear-gradient(145deg, #e9faf6, #fff 68%);
+}
+
+.academy-card-icon,
+.status-card-icon,
+.weather-card-icon,
+.glossary-mark {
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 950;
+}
+
+.academy-card-icon {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #395c8c;
+}
+
+.handbook-category-special .academy-card-icon { background: #7b51bd; }
+.handbook-category-status .academy-card-icon { background: #16877d; }
+
+.status-academy-card {
+  border-left: 4px solid #6d7f92;
+  background: #fff;
+}
+
+.status-card-icon,
+.weather-card-icon {
+  width: 45px;
+  height: 45px;
+  margin-bottom: 9px;
+  border-radius: 50%;
+  background: #435a74;
+}
+
+.status-academy-card.status-burned { border-color: #e85a32; }
+.status-academy-card.status-burned .status-card-icon { background: #e85a32; }
+.status-academy-card.status-poisoned,
+.status-academy-card.status-badpoison { border-color: #9853a8; }
+.status-academy-card.status-poisoned .status-card-icon,
+.status-academy-card.status-badpoison .status-card-icon { background: #9853a8; }
+.status-academy-card.status-paralyzed { border-color: #e2af13; }
+.status-academy-card.status-paralyzed .status-card-icon { color: #27364a; background: #f2c84b; }
+.status-academy-card.status-asleep { border-color: #7c86a4; }
+.status-academy-card.status-frozen { border-color: #4fb6ce; }
+.status-academy-card.status-confused { border-color: #de7198; }
+
+.handbook-group-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.handbook-group-title span {
+  color: #718096;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.ability-support-badge {
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  color: #0b665f;
+  background: #dff7f1;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.ability-support-badge.support-partial {
+  color: #805d00;
+  background: #fff1bd;
+}
+
+.weather-academy-card {
+  min-height: 205px;
+  border-top: 4px solid #4a7da3;
+}
+
+.handbook-weather-rain { background: linear-gradient(150deg, #e8f5ff, #fff 64%); }
+.handbook-weather-sun { background: linear-gradient(150deg, #fff2cc, #fff 64%); border-top-color: #e89527; }
+.handbook-weather-sandstorm { background: linear-gradient(150deg, #f5ead3, #fff 64%); border-top-color: #9f7c42; }
+.handbook-weather-snow { background: linear-gradient(150deg, #e8f9fb, #fff 64%); border-top-color: #6ebdcb; }
+.handbook-weather-sun .weather-card-icon { background: #e89527; }
+.handbook-weather-sandstorm .weather-card-icon { background: #9f7c42; }
+.handbook-weather-snow .weather-card-icon { background: #6ebdcb; }
+
+.handbook-list-panel {
+  padding: 16px;
+  border: 1px solid #d4dfeb;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.academy-step-list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.academy-step-list li {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 7px;
+  background: #f4f8fc;
+}
+
+.academy-step-list li > span,
+.glossary-mark {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #16877d;
+  font-weight: 950;
+}
+
+.academy-step-list p {
+  margin: 0;
+}
+
+.glossary-mark {
+  float: right;
+}
+
+.battle-tips-block {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid #efcf73;
+  border-radius: 8px;
+  background: linear-gradient(110deg, #fff5ca, #fffdf4);
+}
+
+.battle-tips-heading,
+.battle-tips-title {
+  color: #725000;
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.battle-tips-title {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+}
+
+.battle-tips-title > span {
+  display: grid;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #d49b00;
+  font-size: 10px;
+}
+
+.battle-tips-title strong,
+.battle-tips-title small {
+  display: block;
+}
+
+.battle-tips-title small {
+  margin-top: 2px;
+  color: #7a6b40;
+  font-size: 10px;
+}
+
+.battle-tips-list,
+.battle-tip-grid {
+  display: grid;
+  gap: 6px;
+}
+
+.battle-tip-card,
+.battle-tip-grid article {
+  margin: 0;
+  padding: 7px 9px;
+  border-left: 3px solid #e5b733;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #51482c;
+}
+
+.battle-tip-grid article strong,
+.battle-tip-grid article p {
+  display: block;
+  margin: 0;
+}
+
+.battle-tip-grid article p {
+  margin-top: 2px;
+  font-size: 11px;
+}
+
+@keyframes academy-content-in {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes matchup-result-pulse {
+  50% { transform: scale(1.012); box-shadow: 0 0 0 4px rgba(22, 135, 125, 0.08); }
+}
+
 @media (max-width: 760px) {
   .battle-screen-card,
   .arena-log {
@@ -6010,6 +6570,30 @@ button:disabled {
   .handbook-type-card dl {
     grid-template-columns: 96px minmax(0, 1fr);
   }
+
+  .academy-hero {
+    min-height: 0;
+    padding: 18px;
+  }
+
+  .academy-hero::after {
+    right: -42px;
+  }
+
+  .matchup-controls,
+  .matchup-result,
+  .academy-feature-grid,
+  .battle-tips-block {
+    grid-template-columns: 1fr;
+  }
+
+  .matchup-arrow {
+    min-height: 18px;
+  }
+
+  .matchup-result {
+    text-align: center;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -6021,6 +6605,26 @@ button:disabled {
 
   .tactical-move-card:hover:not(:disabled),
   .tactical-move-card:focus-visible {
+    transform: none;
+  }
+
+  .handbook-content-enter,
+  .matchup-result {
+    animation: none !important;
+  }
+
+  .handbook-type-card,
+  .handbook-info-card,
+  .handbook-weather-card,
+  .handbook-tab,
+  .academy-progress span {
+    transition: none !important;
+  }
+
+  .handbook-type-card:hover,
+  .handbook-info-card:hover,
+  .handbook-weather-card:hover,
+  .handbook-glossary article:hover {
     transform: none;
   }
 }

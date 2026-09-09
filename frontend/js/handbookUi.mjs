@@ -25,3 +25,17 @@ export function filterHandbookEntries(entries = [], query = "") {
 export function getTypeMultiplier(typeChart = {}, attacker, defender) {
   return typeChart[attacker]?.[defender] ?? 1;
 }
+
+export function getMatchupResult(multiplier) {
+  const value = Number(multiplier);
+  if (value === 0) {
+    return { key: "immune", label: "No Effect", summary: "The defender is immune." };
+  }
+  if (value > 1) {
+    return { key: "super", label: "Super Effective", summary: "A strong matchup for the attacker." };
+  }
+  if (value > 0 && value < 1) {
+    return { key: "resisted", label: "Not Very Effective", summary: "The defender resists this attack." };
+  }
+  return { key: "normal", label: "Normal Damage", summary: "No type advantage or resistance." };
+}
