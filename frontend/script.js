@@ -29,9 +29,13 @@ let pokedexFilters = {
   type: "all",
   rarity: "all",
   availability: "all",
+  shiny: "all",
+  forms: "all",
   search: "",
 };
 let pokedexPage = 1;
+let pokedexSelectedSpeciesId = null;
+let pokedexLayout = "grid";
 const POKEDEX_PAGE_SIZE = 48;
 let gymCache = [];
 let eliteCache = null;
@@ -239,11 +243,8 @@ const handbookSections = [
   ["glossary", "Glossary"],
 ];
 
-async function loadHandbook() {
-  const panel = document.getElementById("handbook-panel");
-  if (!panel) return;
+async function ensureHandbookData() {
   if (!handbookCache) {
-    panel.innerHTML = '<div class="handbook-empty">Loading Battle Handbook...</div>';
     handbookRequest ||= fetch("/api/handbook")
       .then((response) => {
         if (!response.ok) throw new Error("Could not load Battle Handbook");
@@ -256,8 +257,18 @@ async function loadHandbook() {
       .finally(() => {
         handbookRequest = null;
       });
+    await handbookRequest;
+  }
+  return handbookCache;
+}
+
+async function loadHandbook() {
+  const panel = document.getElementById("handbook-panel");
+  if (!panel) return;
+  if (!handbookCache) {
+    panel.innerHTML = '<div class="handbook-empty">Loading Battle Handbook...</div>';
     try {
-      await handbookRequest;
+      await ensureHandbookData();
     } catch (error) {
       panel.innerHTML = `<div class="handbook-empty">${escapeHtml(error.message)}</div>`;
       return;
@@ -3575,6 +3586,7 @@ async function loadPokedex() {
   }
   const response = await fetch("/api/pokedex");
   pokedexCache = await response.json();
+  await ensureHandbookData().catch(() => null);
   (pokedexCache.entries || []).forEach((entry) => {
     if (entry.name && entry.imageId) {
       pokemonImageIdByName.set(entry.name, entry.imageId);
@@ -3634,6 +3646,8 @@ function resetPokedexFilters() {
     type: "all",
     rarity: "all",
     availability: "all",
+    shiny: "all",
+    forms: "all",
     search: "",
   };
   pokedexPage = 1;
@@ -3642,11 +3656,17 @@ function resetPokedexFilters() {
 
 function getFilteredPokedexEntries() {
   if (!pokedexCache?.entries) return [];
+  if (window.PokedexUI?.matchesPokedexFilters) {
+    return pokedexCache.entries.filter((entry) =>
+      window.PokedexUI.matchesPokedexFilters(entry, pokedexFilters),
+    );
+  }
   const searchTerm = (pokedexFilters.search || "").trim().toLowerCase();
   return pokedexCache.entries.filter((entry) => {
     if (pokedexFilters.status === "seen" && !entry.seen) return false;
     if (pokedexFilters.status === "caught" && !entry.caught) return false;
     if (pokedexFilters.status === "uncaught" && entry.caught) return false;
+    if (pokedexFilters.status === "unseen" && entry.seen) return false;
     if (
       pokedexFilters.status === "legendary" &&
       !["legendary", "mythical"].includes(entry.rarity)
@@ -3677,9 +3697,31 @@ function getFilteredPokedexEntries() {
     ) {
       return false;
     }
+    const forms = entry.forms || [];
+    if (
+      pokedexFilters.shiny === "seen" &&
+      !forms.some((form) => form.shinySeen || form.shinyCaught)
+    ) return false;
+    if (
+      pokedexFilters.shiny === "caught" &&
+      !forms.some((form) => form.shinyCaught)
+    ) return false;
+    if (
+      pokedexFilters.forms === "available" &&
+      !forms.some((form) => form.id !== "normal")
+    ) return false;
+    if (
+      pokedexFilters.forms === "discovered" &&
+      !forms.some(
+        (form) =>
+          form.id !== "normal" &&
+          (form.seen || form.caught || form.shinySeen || form.shinyCaught),
+      )
+    ) return false;
     if (searchTerm) {
       const searchable = [
         entry.name,
+        entry.speciesId,
         entry.rarity,
         ...(entry.types || []),
         ...(entry.habitats || []),
@@ -3725,36 +3767,29 @@ function renderEvolutionChain(entry, canShowDetails) {
   if (stages.length <= 1) {
     return `<div class="pokedex-evolution"><p>${canShowDetails ? "No further evolution" : "Evolution: unknown"}</p></div>`;
   }
-  const targetSpeciesIds = new Set(edges.map((edge) => edge.toSpeciesId));
-  const roots = stages.filter(
-    (stage) => !targetSpeciesIds.has(stage.speciesId),
-  );
-  const depthBySpeciesId = new Map(
-    (roots.length ? roots : stages.slice(0, 1)).map((stage) => [
-      stage.speciesId,
-      0,
-    ]),
-  );
-  let changed = true;
-  while (changed) {
-    changed = false;
-    edges.forEach((edge) => {
-      const parentDepth = depthBySpeciesId.get(edge.fromSpeciesId);
-      if (parentDepth === undefined) return;
-      const nextDepth = parentDepth + 1;
-      if ((depthBySpeciesId.get(edge.toSpeciesId) ?? -1) < nextDepth) {
-        depthBySpeciesId.set(edge.toSpeciesId, nextDepth);
-        changed = true;
-      }
-    });
-  }
-  const layers = [...new Set(stages.map((stage) => depthBySpeciesId.get(stage.speciesId) || 0))]
-    .sort((left, right) => left - right)
-    .map((depth) =>
-      stages.filter(
-        (stage) => (depthBySpeciesId.get(stage.speciesId) || 0) === depth,
-      ),
+  const evolutionLayers = window.PokedexUI?.buildEvolutionLayers?.(entry);
+  const fallbackLayers = (() => {
+    const targets = new Set(edges.map((edge) => edge.toSpeciesId));
+    const roots = stages.filter((stage) => !targets.has(stage.speciesId));
+    const depths = new Map(
+      (roots.length ? roots : stages.slice(0, 1)).map((stage) => [stage.speciesId, 0]),
     );
+    for (let pass = 0; pass < stages.length; pass += 1) {
+      edges.forEach((edge) => {
+        if (!depths.has(edge.fromSpeciesId)) return;
+        depths.set(
+          edge.toSpeciesId,
+          Math.max(depths.get(edge.toSpeciesId) ?? 0, depths.get(edge.fromSpeciesId) + 1),
+        );
+      });
+    }
+    return [...new Set(stages.map((stage) => depths.get(stage.speciesId) || 0))]
+      .sort((left, right) => left - right)
+      .map((depth) => stages.filter((stage) => (depths.get(stage.speciesId) || 0) === depth));
+  })();
+  const layers = evolutionLayers?.length
+    ? evolutionLayers.map((layer) => layer.stages)
+    : fallbackLayers;
   const edgeLabel = (edge) => {
     return (edge?.conditionLabels || []).join(" / ") || "Evolve";
   };
@@ -3774,7 +3809,7 @@ function renderEvolutionChain(entry, canShowDetails) {
       <div class="evolution-branch-node">
         ${
           depth > 0
-            ? `<div class="evolution-chain-arrow"><span>${visible && knownParent ? incoming.map(edgeLabel).join(" / ") : "???"}</span><b>↓</b></div>`
+            ? `<div class="evolution-chain-arrow"><span>${visible && knownParent ? incoming.map(edgeLabel).join(" / ") : "???"}</span><b>→</b></div>`
             : ""
         }
         <div class="evolution-chain-stage ${visible ? "known" : "hidden-stage"}">
@@ -3845,52 +3880,182 @@ function renderAvailability(entry, canShowDetails) {
 
 function renderPokedexCard(entry) {
   const canShowDetails = entry.seen || entry.caught;
-  const status = entry.caught ? "Caught" : entry.seen ? "Seen" : "Unknown";
-  const cardClass = `pokedex-card ${entry.caught ? "caught" : entry.seen ? "seen" : "unknown"}`;
-  const habitats = formatList(entry.habitats, formatAreaName);
-  const times = formatList(entry.times);
+  const status = entry.caught ? "Caught" : entry.seen ? "Seen" : "Unseen";
+  const speciesId = entry.speciesId ?? entry.id;
+  const variants = window.PokedexUI?.getPokedexVariantSummary?.(entry) || {
+    shinySeen: (entry.forms || []).some((form) => form.shinySeen || form.shinyCaught),
+    shinyCaught: (entry.forms || []).some((form) => form.shinyCaught),
+    hasAlternateForms: (entry.forms || []).some((form) => form.id !== "normal"),
+  };
+  const selected = Number(pokedexSelectedSpeciesId) === Number(speciesId);
+  const cardClass = `pokedex-card ${entry.caught ? "caught" : entry.seen ? "seen" : "unknown"}${selected ? " selected" : ""}${variants.shinySeen ? " has-shiny" : ""}`;
   const displayName = canShowDetails ? entry.name : "???";
   return `
-    <article class="${cardClass}">
+    <article class="${cardClass}" data-species-id="${speciesId}" style="--pokedex-type-color:${canShowDetails ? getTypeColor(entry.types?.[0] || entry.type) : "#526173"}" onclick="selectPokedexEntry(${speciesId})" tabindex="0" role="button" aria-pressed="${selected}" onkeydown="if(event.key === 'Enter' || event.key === ' '){event.preventDefault();selectPokedexEntry(${speciesId});}">
       <div class="pokedex-card-art">
         ${
           canShowDetails
-            ? `<img src="${getPokemonImage(entry)}" alt="${entry.name}">`
-            : `<div class="pokedex-silhouette">?</div>`
+            ? `<img src="${getPokemonImage(entry)}" alt="${escapeHtml(entry.name)}" onerror="handleExternalImageError(event)">`
+            : `<div class="pokedex-silhouette" aria-label="Unseen Pokemon"><img src="${getPokemonImage(entry)}" alt="" onerror="handleExternalImageError(event)"></div>`
         }
+        <span class="pokedex-card-number">#${String(speciesId).padStart(3, "0")}</span>
       </div>
       <div class="pokedex-card-body">
         <div class="pokedex-card-head">
-          <span>#${String(entry.speciesId ?? entry.id).padStart(3, "0")}</span>
           <strong>${displayName}</strong>
-          <em>${status}</em>
+          <em class="discovery-${status.toLowerCase()}">${status}</em>
         </div>
         <div class="pokedex-tags">
           <span class="rarity-pill rarity-${entry.rarity}">${entry.rarity}</span>
           ${canShowDetails ? renderTypeBadges(entry.types || []) : ""}
         </div>
-        ${renderAvailability(entry, canShowDetails)}
-        ${
-          canShowDetails
-            ? `
-              <p>Habitats: ${habitats}</p>
-              <p>Availability: ${times}</p>
-              <p>Base catch rate: ${entry.baseCatchRate ?? "Unknown"}</p>
-              <p>Abilities: ${escapeHtml((entry.abilities || []).map(formatAbilityName).join(", ") || "Unknown")}</p>
-              <p>Level-up moves: ${(entry.learnset || []).length}${entry.learnsetVersionGroup ? ` (${escapeHtml(entry.learnsetVersionGroup)})` : ""}</p>
-              ${renderEvolutionChain(entry, true)}
-            `
-            : `
-              <p>Habitat clue: ${habitats || "Unknown"}</p>
-              <p>Not encountered yet. Details unlock after you see it.</p>
-              ${renderEvolutionChain(entry, false)}
-            `
-        }
-        ${renderLegendaryHint(entry, canShowDetails)}
-        ${renderPokedexForms(entry, canShowDetails)}
+        <div class="pokedex-card-signals">
+          <span>${getAvailabilityLabel(entry.availability?.status)}</span>
+          ${variants.shinySeen ? `<span class="signal-shiny">${variants.shinyCaught ? "Shiny caught" : "Shiny seen"}</span>` : ""}
+          ${variants.hasAlternateForms ? '<span class="signal-form">Forms</span>' : ""}
+        </div>
+        <small>${canShowDetails ? formatList(entry.habitats, formatAreaName) || "Evolution or special encounter" : `${formatList(entry.habitats, formatAreaName) || "Unknown area"} clue`}</small>
       </div>
     </article>
   `;
+}
+
+function getPokedexOwnedMatches(entry) {
+  if (window.PokedexUI?.getOwnedPokemonMatches) {
+    return window.PokedexUI.getOwnedPokemonMatches(entry, teamCache, storageCache);
+  }
+  const speciesId = Number(entry.speciesId ?? entry.id);
+  return [
+    ...teamCache.map((pokemon, index) => ({ pokemon, section: "team", index })),
+    ...storageCache.map((pokemon, index) => ({ pokemon, section: "storage", index })),
+  ].filter(({ pokemon }) => Number(pokemon.speciesId ?? pokemon.id) === speciesId);
+}
+
+function getPokedexAbilityInfo(ability) {
+  const key = String(typeof ability === "string" ? ability : ability?.name || "")
+    .toLowerCase();
+  const guide = (handbookCache?.abilities || []).find((entry) => entry.key === key);
+  return guide || {
+    name: formatAbilityName(ability),
+    support: "display",
+    description: "This canonical ability is displayed, but it has no dedicated battle effect in this game.",
+  };
+}
+
+function renderPokedexMoves(pokemon, owned = false) {
+  const moves = (pokemon?.moves || []).slice(0, 4);
+  if (!moves.length) return '<p class="pokedex-detail-note">No move data available.</p>';
+  return `
+    <div class="pokedex-detail-moves">
+      ${moves.map((move) => {
+        const data = getTacticalMoveData(normalizeMove(move), null);
+        return `<div class="pokedex-detail-move" style="--move-color:${getTypeColor(data.type)}">
+          <div><strong>${escapeHtml(data.name)}</strong><span>${escapeHtml(data.type)} · ${escapeHtml(data.category)}</span></div>
+          <dl><div><dt>Power</dt><dd>${data.category === "Status" ? "--" : data.power ?? "--"}</dd></div><div><dt>Accuracy</dt><dd>${data.accuracy ?? "--"}</dd></div><div><dt>PP</dt><dd>${owned ? data.currentPp : data.maxPp}/${data.maxPp}</dd></div></dl>
+        </div>`;
+      }).join("")}
+    </div>
+  `;
+}
+
+function openOwnedPokemonFromPokedex(section, index) {
+  if (section === "storage") {
+    openOverlay("storage");
+    storageUiState.detailIndex = index;
+    renderStorageBrowser();
+    return;
+  }
+  setActiveScreen("party");
+  setActivePokemonByIndex(null, index);
+  showPokemonDetail("team", index);
+}
+
+function renderPokedexOwnedActions(matches) {
+  if (!matches.length) return '<p class="pokedex-detail-note">No owned copy is currently in your Party or PC.</p>';
+  const teamCount = matches.filter((match) => match.section === "team").length;
+  const storageCount = matches.length - teamCount;
+  return `
+    <div class="pokedex-owned-summary"><strong>${matches.length} owned</strong><span>${teamCount} Party · ${storageCount} PC</span></div>
+    <div class="pokedex-owned-actions">
+      ${matches.slice(0, 4).map(({ pokemon, section, index }) => `<button class="secondary-btn" onclick="openOwnedPokemonFromPokedex('${section}', ${index})">${section === "team" ? `Party ${index + 1}` : "Open in PC"}: ${escapeHtml(getPokemonDisplayName(pokemon))} Lv${pokemon.level || 1}</button>`).join("")}
+    </div>
+    <small>Open an owned Pokémon to manage moves, friendship, and available evolutions.</small>
+  `;
+}
+
+function renderPokedexDetail(entry) {
+  if (!entry) return '<div class="pokedex-detail-empty">Select a Pokémon to open its research dossier.</div>';
+  const canIdentify = entry.seen || entry.caught;
+  const canShowCombat = entry.caught;
+  const matches = canShowCombat ? getPokedexOwnedMatches(entry) : [];
+  const owned = matches[0]?.pokemon ? normalizePokemon(matches[0].pokemon) : null;
+  const displayPokemon = owned || entry;
+  const ability = getPokedexAbilityInfo(
+    owned?.ability || (entry.abilities || []).find((item) => !item.hidden) || entry.abilities?.[0],
+  );
+  const speciesId = entry.speciesId ?? entry.id;
+  const variants = window.PokedexUI?.getPokedexVariantSummary?.(entry) || {};
+  const displayName = canIdentify ? entry.name : "Unknown Pokémon";
+  return `
+    <article class="pokedex-detail-card discovery-${entry.caught ? "caught" : entry.seen ? "seen" : "unseen"}" style="--pokedex-type-color:${canIdentify ? getTypeColor(entry.types?.[0] || entry.type) : "#526173"}">
+      <header class="pokedex-detail-hero">
+        <div class="pokedex-detail-art${variants.shinySeen ? " shiny-registered" : ""}">
+          ${canIdentify ? `<img src="${getPokemonImage(displayPokemon)}" alt="${escapeHtml(displayName)}" onerror="handleExternalImageError(event)">` : `<div class="pokedex-detail-silhouette"><img src="${getPokemonImage(entry)}" alt="Unknown Pokemon silhouette" onerror="handleExternalImageError(event)"></div>`}
+        </div>
+        <div class="pokedex-detail-title">
+          <span>National Pokédex #${String(speciesId).padStart(3, "0")}</span>
+          <h2>${escapeHtml(displayName)}</h2>
+          <div class="variant-badges">${canIdentify ? renderVariantBadges(displayPokemon) : ""}${variants.shinySeen ? `<span class="variant-badge shiny-variant">Shiny ${variants.shinyCaught ? "caught" : "seen"}</span>` : ""}</div>
+          <div class="pokedex-detail-types">${canIdentify ? renderTypeBadges(entry.types || []) : '<span class="unknown-type">Type unknown</span>'}</div>
+          <strong class="pokedex-discovery-label">${entry.caught ? "Research complete · Caught" : entry.seen ? "Observed · Not caught" : "Undiscovered entry"}</strong>
+        </div>
+      </header>
+      <div class="pokedex-detail-tabs">
+        <button onclick="openHandbook('types')">Type guide</button>
+        <button onclick="openHandbook('abilities')" ${canShowCombat ? "" : "disabled"}>Ability guide</button>
+        <button onclick="openHandbook('evolution')">Evolution guide</button>
+      </div>
+      <section class="pokedex-research-strip">
+        ${renderAvailability(entry, canIdentify)}
+        <div><span>Habitat</span><strong>${formatList(entry.habitats, formatAreaName) || "Unknown"}</strong></div>
+        <div><span>Active time</span><strong>${formatList(entry.times) || "Unknown"}</strong></div>
+        <div><span>Catch rate</span><strong>${canShowCombat ? entry.baseCatchRate ?? "Unknown" : "Research needed"}</strong></div>
+      </section>
+      ${renderLegendaryHint(entry, canIdentify)}
+      ${canShowCombat ? `
+        <div class="pokedex-detail-section-grid">
+          <section><div class="pokedex-detail-heading"><span>Combat profile</span><strong>${owned ? `Lv${owned.level}` : "Species base"}</strong></div>${renderPokemonStatBars(displayPokemon)}</section>
+          <section class="pokedex-ability-panel"><div class="pokedex-detail-heading"><span>Ability</span><button onclick="openHandbook('abilities')">Learn</button></div><strong>${escapeHtml(ability.name || formatAbilityName(owned?.ability))}</strong><em class="ability-support-${ability.support}">${ability.support === "active" ? "Implemented" : ability.support === "partial" ? "Partially supported" : "Display only"}</em><p>${escapeHtml(ability.description)}</p></section>
+        </div>
+        <section class="pokedex-detail-section"><div class="pokedex-detail-heading"><span>${owned ? "Known moves" : "Species moves"}</span><strong>${(displayPokemon.moves || []).length}/4</strong></div>${renderPokedexMoves(displayPokemon, Boolean(owned))}</section>
+        <section class="pokedex-detail-section owned-integration"><div class="pokedex-detail-heading"><span>Your collection</span><strong>Party / PC</strong></div>${renderPokedexOwnedActions(matches)}</section>
+      ` : `<section class="pokedex-locked-dossier"><strong>${entry.seen ? "Catch this Pokémon to complete its combat dossier." : "Encounter this Pokémon to reveal its identity."}</strong><p>Habitat and obtainability clues remain visible so exploration is never blocked.</p></section>`}
+      <section class="pokedex-detail-section evolution-dossier">${renderEvolutionChain(entry, canIdentify)}</section>
+      ${renderPokedexForms(entry, canIdentify)}
+    </article>
+  `;
+}
+
+function selectPokedexEntry(speciesId) {
+  pokedexSelectedSpeciesId = Number(speciesId);
+  document.querySelectorAll(".pokedex-card").forEach((card) => {
+    const selected = Number(card.dataset.speciesId) === pokedexSelectedSpeciesId;
+    card.classList.toggle("selected", selected);
+    card.setAttribute("aria-pressed", String(selected));
+  });
+  const detail = document.getElementById("pokedex-detail-panel");
+  const entry = pokedexCache?.entries?.find(
+    (candidate) => Number(candidate.speciesId ?? candidate.id) === pokedexSelectedSpeciesId,
+  );
+  if (detail) detail.innerHTML = renderPokedexDetail(entry);
+  if (window.matchMedia?.("(max-width: 900px)")?.matches) {
+    detail?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+  }
+}
+
+function setPokedexLayout(layout) {
+  pokedexLayout = layout === "list" ? "list" : "grid";
+  displayPokedex();
 }
 
 function renderPokedexForms(entry, canShowSpecies) {
@@ -3959,14 +4124,30 @@ function displayPokedex() {
   pokedexPage = Math.min(pokedexPage, pageCount);
   const pageStart = (pokedexPage - 1) * POKEDEX_PAGE_SIZE;
   const pageEntries = entries.slice(pageStart, pageStart + POKEDEX_PAGE_SIZE);
+  if (
+    !pokedexSelectedSpeciesId ||
+    !pageEntries.some(
+      (entry) => Number(entry.speciesId ?? entry.id) === Number(pokedexSelectedSpeciesId),
+    )
+  ) {
+    pokedexSelectedSpeciesId = pageEntries[0]?.speciesId ?? pageEntries[0]?.id ?? null;
+  }
+  const selectedEntry = pokedexCache.entries.find(
+    (entry) => Number(entry.speciesId ?? entry.id) === Number(pokedexSelectedSpeciesId),
+  );
 
   panel.innerHTML = `
     <div class="screen-header pokedex-header">
       <div>
+        <span class="pokedex-eyebrow">Regional Research Archive</span>
         <h2>Pokédex</h2>
-        <p>Track every Pokémon you have seen, caught, and still need to discover.</p>
+        <p>Browse your discoveries, forms, habitats, and battle research.</p>
       </div>
-      <button class="secondary-btn" onclick="loadPokedex()">Refresh</button>
+      <div class="pokedex-header-actions">
+        <button class="pokedex-layout-button ${pokedexLayout === "grid" ? "active" : ""}" onclick="setPokedexLayout('grid')" aria-label="Grid view" title="Grid view">Grid</button>
+        <button class="pokedex-layout-button ${pokedexLayout === "list" ? "active" : ""}" onclick="setPokedexLayout('list')" aria-label="List view" title="List view">List</button>
+        <button class="secondary-btn" onclick="loadPokedex()">Refresh</button>
+      </div>
     </div>
     <div class="pokedex-summary">
       <div><span>Total</span><strong>${pokedexCache.total}</strong></div>
@@ -3984,7 +4165,7 @@ function displayPokedex() {
     </div>
     <div class="pokedex-filters">
       <div class="pokedex-filter-buttons">
-        ${["all", "seen", "caught", "uncaught", "legendary"]
+        ${["all", "seen", "caught", "uncaught", "unseen", "legendary"]
           .map(
             (status) => `
               <button class="mini-btn ${pokedexFilters.status === status ? "active" : ""}" onclick="setPokedexStatusFilter('${status}')">
@@ -3999,7 +4180,7 @@ function displayPokedex() {
         <input
           type="search"
           value="${escapePokedexSearchValue(pokedexFilters.search)}"
-          placeholder="Name, type, biome, rarity"
+          placeholder="Name, #Dex, type, biome, rarity"
           oninput="updatePokedexSearch(this.value)"
         >
       </label>
@@ -4013,16 +4194,26 @@ function displayPokedex() {
           ["wild", "evolution", "special", "unavailable"],
           getAvailabilityLabel,
         )}
+        ${renderPokedexSelect("shiny", "Shiny", ["seen", "caught"], (value) => value === "seen" ? "Seen or caught" : "Caught")}
+        ${renderPokedexSelect("forms", "Forms", ["available", "discovered"], (value) => value === "available" ? "Has alternate forms" : "Forms discovered")}
         <button class="secondary-btn" onclick="resetPokedexFilters()">Clear</button>
       </div>
     </div>
     <p class="pokedex-note">Legendary Pokémon are extremely rare and usually appear only in specific biomes.</p>
-    <div class="pokedex-grid">
-      ${
-        entries.length
-          ? pageEntries.map(renderPokedexCard).join("")
-          : "<p>No Pokémon match these filters.</p>"
-      }
+    <div class="pokedex-browser">
+      <div class="pokedex-collection-column">
+        <div class="pokedex-collection-heading"><strong>Collection</strong><span>${pageEntries.length} entries on this page</span></div>
+        <div class="pokedex-grid layout-${pokedexLayout}">
+          ${
+            entries.length
+              ? pageEntries.map(renderPokedexCard).join("")
+              : "<p>No Pokémon match these filters.</p>"
+          }
+        </div>
+      </div>
+      <aside id="pokedex-detail-panel" class="pokedex-detail-panel" aria-live="polite">
+        ${renderPokedexDetail(selectedEntry)}
+      </aside>
     </div>
     ${
       entries.length

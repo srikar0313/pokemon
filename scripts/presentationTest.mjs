@@ -59,6 +59,14 @@ import {
   normalizeWorldWeather,
   resolveEncounterTransition,
 } from "../frontend/js/overworldPresentation.mjs";
+import {
+  buildEvolutionLayers,
+  getEntrySpeciesId,
+  getOwnedPokemonMatches,
+  getPokedexDiscoveryState,
+  getPokedexVariantSummary,
+  matchesPokedexFilters,
+} from "../frontend/js/pokedexUi.mjs";
 
 assert.deepEqual(Object.keys(BIOME_PRESENTATIONS).sort(), [
   "cave",
@@ -91,6 +99,65 @@ assert(createEncounterTransitionPlan({ rarity: "legendary" }, { reducedMotion: t
 assert(createAreaEntryPlan("forest").duration > createAreaEntryPlan("forest", { reducedMotion: true }).duration);
 assert.equal(createNpcPresentation({ type: "trainer" }).attention, "challenge");
 assert.equal(createNpcPresentation({ type: "guide" }).attention, "interaction");
+
+const pokedexEntry = {
+  id: 25,
+  speciesId: 25,
+  name: "Pikachu",
+  types: ["Electric"],
+  habitats: ["forest"],
+  rarity: "uncommon",
+  availability: { status: "wild", areas: ["forest"] },
+  seen: true,
+  caught: true,
+  forms: [
+    { id: "normal", seen: true, caught: true, shinySeen: true, shinyCaught: false },
+    { id: "cosplay", seen: true, caught: false, shinySeen: false, shinyCaught: false },
+  ],
+};
+assert.equal(getEntrySpeciesId(pokedexEntry), 25);
+assert.equal(getPokedexDiscoveryState(pokedexEntry), "caught");
+assert.equal(getPokedexDiscoveryState({ seen: true }), "seen");
+assert.equal(getPokedexDiscoveryState({}), "unseen");
+assert.equal(getPokedexVariantSummary(pokedexEntry).shinySeen, true);
+assert.equal(getPokedexVariantSummary(pokedexEntry).discoveredAlternateForms, 1);
+assert(matchesPokedexFilters(pokedexEntry, { search: "#025" }));
+assert(matchesPokedexFilters(pokedexEntry, { search: "electric" }));
+assert(matchesPokedexFilters(pokedexEntry, { search: "forest" }));
+assert(matchesPokedexFilters(pokedexEntry, { search: "uncommon" }));
+assert(matchesPokedexFilters(pokedexEntry, { type: "Electric" }));
+assert(matchesPokedexFilters(pokedexEntry, { habitat: "forest" }));
+assert(matchesPokedexFilters(pokedexEntry, { availability: "wild" }));
+assert(matchesPokedexFilters(pokedexEntry, { shiny: "seen" }));
+assert(matchesPokedexFilters(pokedexEntry, { forms: "discovered" }));
+assert(!matchesPokedexFilters(pokedexEntry, { status: "unseen" }));
+assert(matchesPokedexFilters({ ...pokedexEntry, seen: false, caught: false }, { status: "unseen" }));
+const ownedPidgeot = { id: 16, speciesId: 18, name: "Pidgeot" };
+const ownedPidgey = { id: 237, speciesId: 16, name: "Pidgey" };
+assert.deepEqual(
+  getOwnedPokemonMatches({ id: 16, speciesId: 18 }, [ownedPidgeot], [ownedPidgey])
+    .map(({ pokemon }) => pokemon.name),
+  ["Pidgeot"],
+  "Pokédex ownership matching regressed to legacy local IDs",
+);
+const branchingEvolution = {
+  evolutionGraph: {
+    stages: [
+      { speciesId: 133, name: "Eevee" },
+      { speciesId: 134, name: "Vaporeon" },
+      { speciesId: 135, name: "Jolteon" },
+      { speciesId: 136, name: "Flareon" },
+    ],
+    edges: [
+      { fromSpeciesId: 133, toSpeciesId: 134 },
+      { fromSpeciesId: 133, toSpeciesId: 135 },
+      { fromSpeciesId: 133, toSpeciesId: 136 },
+    ],
+  },
+};
+const evolutionLayers = buildEvolutionLayers(branchingEvolution);
+assert.equal(evolutionLayers.length, 2);
+assert.deepEqual(evolutionLayers[1].stages.map((stage) => stage.name), ["Vaporeon", "Jolteon", "Flareon"]);
 
 const handbookChart = {
   Fire: { Grass: 2, Water: 0.5 },
