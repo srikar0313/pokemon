@@ -54,10 +54,11 @@
     const explicitArtwork = resolvePokemonArtwork(pokemon);
     if (explicitArtwork) return explicitArtwork;
 
+    const canonicalImageId = pokemon.speciesId || fallbackImageId || pokemon.id;
     const imageId = pokemon.shiny
       ? pokemon.form?.shinyImageId || pokemon.shinyImageId ||
-        pokemon.form?.imageId || pokemon.imageId || fallbackImageId || pokemon.id
-      : pokemon.form?.imageId || pokemon.imageId || fallbackImageId || pokemon.id;
+        pokemon.form?.imageId || pokemon.imageId || canonicalImageId
+      : pokemon.form?.imageId || pokemon.imageId || canonicalImageId;
     const shinyFolder = pokemon.shiny ? "/shiny" : "";
     return `${artworkRoot}${shinyFolder}/${imageId}.png`;
   }

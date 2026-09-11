@@ -707,6 +707,7 @@ assert(frontendSource.includes("handleStoryKeydown"), "Story keyboard controls a
 assert(frontendStyles.includes(".story-dialogue-panel"), "Story dialogue styling is missing");
 assert(frontendStyles.includes(".story-rival-scene"), "Rival cinematic styling is missing");
 assert(frontendSource.includes("startRivalBattle"), "Rival battle handoff is missing");
+assert(frontendSource.includes("evolution-target-card"), "Evolution target artwork card is missing");
 assert(frontendSource.includes('fetch("/api/handbook")'), "Handbook data is not loaded from the backend");
 assert(frontendSource.includes("renderBattleHandbookShortcut"), "Battle Handbook shortcut is missing");
 assert(frontendSource.includes("renderTypeMatchupExplorer"), "Battle Academy Type Explorer is missing");

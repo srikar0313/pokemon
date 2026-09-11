@@ -546,6 +546,7 @@ function getPokedexEntries(state) {
 }
 
 function getEvolutionOptionView(option) {
+  const target = option.target || null;
   return {
     targetSpeciesId: option.targetSpeciesId,
     targetName: option.targetName,
@@ -561,6 +562,21 @@ function getEvolutionOptionView(option) {
           .filter(Boolean),
       ),
     ],
+    targetPokemon: target
+      ? {
+          id: target.id,
+          speciesId: target.speciesId || option.targetSpeciesId,
+          imageId: target.imageId || target.speciesId || option.targetSpeciesId,
+          name: target.name || option.targetName,
+          type: target.type,
+          types: getPokemonTypes(target),
+          artwork: target.artwork || null,
+        }
+      : {
+          speciesId: option.targetSpeciesId,
+          imageId: option.targetSpeciesId,
+          name: option.targetName,
+        },
   };
 }
 

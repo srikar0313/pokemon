@@ -693,6 +693,33 @@ textarea {
   background: #fff;
 }
 
+.evolution-target-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.evolution-target-card > img {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+  object-fit: contain;
+}
+
+.evolution-target-card > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.evolution-target-card > div > span:first-child {
+  width: 100%;
+  color: #66768a;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .evolution-option small,
 .evolution-option em {
   color: #526b86;

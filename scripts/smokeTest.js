@@ -156,6 +156,34 @@ function main() {
   );
   const starterTemplate = pokemonUtils.getPokemonTemplateByName("Pikachu");
   const starter = pokemonUtils.getStarterPokemon();
+  const aronEvolutionStages = pokemonUtils
+    .getPokedexEvolutionGraph(pokemonUtils.getPokemonTemplateByName("Aron"))
+    .stages;
+  const togepiEvolutionStages = pokemonUtils
+    .getPokedexEvolutionGraph(pokemonUtils.getPokemonTemplateByName("Togepi"))
+    .stages;
+  assert(
+    aronEvolutionStages.map((stage) => stage.speciesId).join(",") ===
+      "304,305,306" &&
+      aronEvolutionStages.every(
+        (stage) => Number(stage.imageId) === Number(stage.speciesId),
+      ),
+    "Aron evolution cards do not preserve canonical artwork identity",
+  );
+  assert(
+    togepiEvolutionStages.map((stage) => stage.speciesId).join(",") ===
+      "175,176,468" &&
+      togepiEvolutionStages.every(
+        (stage) => Number(stage.imageId) === Number(stage.speciesId),
+      ),
+    "Togepi evolution cards do not preserve canonical artwork identity",
+  );
+  assert(
+    variantUtils
+      .getArtworkUrl({ id: 273, speciesId: 304 }, 273)
+      .endsWith("/304.png"),
+    "artwork fallback preferred Aron's legacy local ID over speciesId",
+  );
   const evolutionEngine = createEvolutionEngine({
     evolutionData: gameData.evolutions,
     getPokemonSpeciesId: pokemonUtils.getPokemonSpeciesId,

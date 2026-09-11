@@ -910,7 +910,10 @@ function normalizePokemon(pokemon) {
     };
   }
   const resolvedImageId =
-    pokemon.imageId || pokemonImageIdByName.get(pokemon.name) || pokemon.id;
+    pokemon.imageId ||
+    pokemonImageIdByName.get(pokemon.name) ||
+    pokemon.speciesId ||
+    pokemon.id;
   const types =
     Array.isArray(pokemon.types) && pokemon.types.length > 0
       ? pokemon.types
@@ -1856,8 +1859,16 @@ function renderEvolutionPanel(
                       return `<button class="secondary-btn evolution-item-button" onclick="useItem(event, '${item.id}', ${index}, '${section}', ${option.targetSpeciesId})" ${quantity > 0 && option.supported ? "" : "disabled"}>Use ${escapeHtml(item.name)} (${quantity})</button>`;
                     })
                     .join("");
+                  const targetPokemon = option.targetPokemon || {
+                    speciesId: option.targetSpeciesId,
+                    imageId: option.targetSpeciesId,
+                    name: option.targetName,
+                  };
                   return `<div class="evolution-option${option.supported ? "" : " unsupported"}">
-                    <strong>${escapeHtml(option.targetName)}</strong>
+                    <div class="evolution-target-card">
+                      <img src="${getPokemonImage(targetPokemon)}" alt="${escapeHtml(option.targetName)}">
+                      <div><span>Evolves into</span><strong>${escapeHtml(option.targetName)}</strong>${targetPokemon.types?.length ? renderTypeBadges(targetPokemon.types) : ""}</div>
+                    </div>
                     ${(option.requirementOptions || [])
                       .map(renderEvolutionRequirementOption)
                       .join('<span class="evolution-or">or</span>')}
@@ -7061,7 +7072,9 @@ function getPokemonImage(pokemonOrId) {
   if (window.PokemonVariantUtils) {
     const fallbackImageId =
       typeof pokemonOrId === "object"
-        ? pokemonImageIdByName.get(pokemonOrId.name) || pokemonOrId.id
+        ? pokemonImageIdByName.get(pokemonOrId.name) ||
+          pokemonOrId.speciesId ||
+          pokemonOrId.id
         : pokemonOrId;
     return window.PokemonVariantUtils.getArtworkUrl(
       pokemonOrId,
@@ -7072,6 +7085,7 @@ function getPokemonImage(pokemonOrId) {
     typeof pokemonOrId === "object"
       ? pokemonOrId.imageId ||
         pokemonImageIdByName.get(pokemonOrId.name) ||
+        pokemonOrId.speciesId ||
         pokemonOrId.id
       : pokemonOrId;
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${imageId}.png`;
