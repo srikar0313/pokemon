@@ -3098,7 +3098,7 @@ h3 {
 
 .storage-browser-head p {
   color: #61758f;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .storage-browser-actions {
@@ -3131,7 +3131,7 @@ h3 {
 
 .party-presets-title span {
   color: #61758f;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -3160,6 +3160,7 @@ h3 {
   border-radius: 6px;
   background: #eaf1f7;
   color: #314863;
+  font-size: 14px;
   font-weight: 900;
 }
 
@@ -3173,7 +3174,7 @@ h3 {
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.72);
   padding: 2px 7px;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .party-deck-builder {
@@ -3231,12 +3232,15 @@ h3 {
   white-space: nowrap;
 }
 
+.party-deck-card strong { font-size: 13px; }
+.party-deck-card small { font-size: 12px; }
+
 .party-deck-number {
   position: absolute;
   top: 4px;
   left: 5px;
   color: #75889c;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 900;
 }
 
@@ -3247,7 +3251,7 @@ h3 {
   color: #ffffff;
   opacity: 0;
   padding: 3px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 900;
 }
 
@@ -3279,6 +3283,7 @@ h3 {
   border-radius: 5px;
   background: #ffffff;
   color: #314863;
+  font-size: 13px;
   padding: 3px 7px;
 }
 
@@ -3298,6 +3303,7 @@ h3 {
   flex: 1;
   min-width: 0;
   margin: 0;
+  font-size: 13px;
 }
 
 .party-preset-actions .random-slot-btn {
@@ -3323,7 +3329,7 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
 }
 
@@ -5170,14 +5176,14 @@ button:disabled {
 .premium-party-head p {
   margin-top: 3px;
   color: #61758f;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .party-kicker,
 .storage-location-label {
   display: block;
   color: #53708e;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 950;
   text-transform: uppercase;
 }
@@ -5201,7 +5207,7 @@ button:disabled {
   border-radius: 5px;
   background: #e8f7ef;
   color: #236444;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 800;
   animation: party-transfer-arrive 260ms ease both;
 }
@@ -5210,7 +5216,7 @@ button:disabled {
   position: relative;
   display: grid;
   grid-template-columns: 112px minmax(190px, 1fr) minmax(230px, 1.2fr) auto;
-  min-height: 132px;
+  min-height: 152px;
   align-items: center;
   gap: 14px;
   margin-bottom: 14px;
@@ -5238,7 +5244,7 @@ button:disabled {
   top: 8px;
   right: 10px;
   color: #4b6681;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 950;
   text-transform: uppercase;
 }
@@ -5246,12 +5252,13 @@ button:disabled {
 .party-active-copy h3 {
   margin: 0 0 4px;
   color: #233d59;
+  font-size: 20px;
 }
 
 .party-active-copy h3 span,
 .party-active-copy p {
   color: #60748a;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .party-active-moves {
@@ -5277,8 +5284,8 @@ button:disabled {
   white-space: nowrap;
 }
 
-.party-active-moves strong { color: #2f485f; font-size: 10px; }
-.party-active-moves small { color: #687c90; font-size: 8px; }
+.party-active-moves strong { color: #2f485f; font-size: 13px; }
+.party-active-moves small { color: #687c90; font-size: 11px; }
 .party-active-summary > button { margin: 0; }
 
 .party-grid {
@@ -5290,7 +5297,7 @@ button:disabled {
   position: relative;
   display: flex;
   min-width: 0;
-  min-height: 260px;
+  min-height: 286px;
   overflow: hidden;
   flex-direction: column;
   padding: 10px;
@@ -5378,7 +5385,7 @@ button:disabled {
   border-radius: 4px;
   background: #f4cf4d;
   color: #594000;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -5396,7 +5403,7 @@ button:disabled {
 .party-slot-copy .inventory-top strong {
   overflow: hidden;
   color: #253e58;
-  font-size: 14px;
+  font-size: 17px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -5405,7 +5412,7 @@ button:disabled {
 .party-hp-line,
 .party-status-line {
   color: #60758c;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .party-types { margin: 4px 0; }
@@ -5424,7 +5431,7 @@ button:disabled {
   min-height: 36px;
   margin: 0;
   padding: 6px;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .party-order-btn {
@@ -5495,7 +5502,7 @@ button:disabled {
   width: fit-content;
   cursor: pointer;
   color: #365a7d;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 900;
 }
 
@@ -5536,7 +5543,7 @@ button:disabled {
   border-radius: 3px;
   background: #f4cf4d;
   color: #5e4500;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 900;
 }
 
@@ -5550,13 +5557,13 @@ button:disabled {
 
 .storage-card-copy > strong {
   color: #243e58;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .storage-card-copy > span,
 .storage-card-copy > small,
 .storage-location-label {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.35;
 }
 
@@ -5571,7 +5578,7 @@ button:disabled {
   min-height: 36px;
   margin: 0;
   padding: 7px 10px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 900;
 }
 
@@ -5582,7 +5589,7 @@ button:disabled {
   border-radius: 6px;
   background: #2f74b5;
   color: #ffffff;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .storage-card-actions .storage-party-btn:hover,
@@ -5645,7 +5652,7 @@ button:disabled {
 
 .swap-slot-identity small {
   color: #6c7e90;
-  font-size: 10px;
+  font-size: 12px;
   text-transform: uppercase;
 }
 
@@ -5661,7 +5668,7 @@ button:disabled {
   grid-template-columns: 1fr 46px 1fr;
   gap: 3px;
   color: #64768a;
-  font-size: 10px;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -5677,7 +5684,7 @@ button:disabled {
   background: #2f74b5;
   color: #ffffff !important;
   padding: 8px;
-  font-size: 12px !important;
+  font-size: 14px !important;
   font-weight: 900;
   text-align: center;
 }
@@ -5714,7 +5721,7 @@ button:disabled {
   .swap-slot-btn { grid-template-columns: 1fr; }
   .swap-comparison { border-top: 1px solid #dbe4ec; border-left: 0; padding-top: 7px; padding-left: 0; }
   .storage-card-actions button,
-  .storage-card-actions .storage-party-btn { min-height: 44px; font-size: 13px; }
+  .storage-card-actions .storage-party-btn { min-height: 44px; font-size: 14px; }
   .storage-filter-panel > summary {
     width: 100%;
     min-height: 42px;
