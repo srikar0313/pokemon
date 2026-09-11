@@ -9,6 +9,7 @@ const { createRewardEngine } = require("./rewardEngine");
 const { createEvolutionEngine } = require("./evolutionEngine");
 const { createHandbookData } = require("./handbookData");
 const { createStoryEngine } = require("./storyEngine");
+const { createRecurringCharacterEngine } = require("./recurringCharacterEngine");
 const {
   reorderParty,
   sendPartyPokemonToStorage,
@@ -55,9 +56,14 @@ const shinyRollChance = gameData.shinyRollChance;
 const formEncounterChance = gameData.formEncounterChance;
 const speciesEncounterBoosts = gameData.speciesEncounterBoosts;
 const weatherBoosts = gameData.weatherBoosts;
+const recurringCharacterEngine = createRecurringCharacterEngine({
+  characterData: gameData.characters,
+  itemCatalog,
+});
 const storyEngine = createStoryEngine({
   storyData: gameData.story,
   itemCatalog,
+  normalizeCharacters: recurringCharacterEngine.normalizeCharacterState,
 });
 const pokemonUtils = createPokemonUtils({
   pokemonPath,
@@ -595,8 +601,11 @@ function getGymById(gymId) {
   return gyms.find((gym) => gym.id === normalizedId);
 }
 
-function getNpcById(npcId) {
-  return npcs.find((npc) => npc.id === Number(npcId));
+function getNpcById(npcId, state = loadPlayerState()) {
+  return (
+    npcs.find((npc) => npc.id === Number(npcId)) ||
+    recurringCharacterEngine.getNpcById(state, npcId)
+  );
 }
 
 function isTrainerDefeated(state, npcId) {
@@ -630,6 +639,11 @@ function getNpcView(npc, state) {
     rewardCoins: npc.type === "trainer" ? getNpcRewardCoins(npc) : 0,
     itemReward: npc.itemReward || null,
     team: npc.type === "trainer" ? npc.team || [] : [],
+    role: npc.role || null,
+    title: npc.title || null,
+    characterId: npc.characterId || null,
+    encounterId: npc.encounterId || null,
+    recurringCharacter: Boolean(npc.recurringCharacter),
   };
 }
 
@@ -764,7 +778,21 @@ function persistBattlePlayerTeam(session) {
 
 function completeNpcBattle(session, log = []) {
   const state = loadPlayerState();
-  if (!isTrainerDefeated(state, session.npc.id)) {
+  let recurringResult = null;
+  if (session.npc.recurringCharacter) {
+    recurringResult = recurringCharacterEngine.recordBattleResult(
+      state,
+      session.npc.encounterId,
+      "won",
+    );
+    log.push(`You defeated rival ${session.npc.name}!`);
+    if (recurringResult.reward?.coins) {
+      log.push(`You earned ${recurringResult.reward.coins} coins.`);
+    }
+    (recurringResult.reward?.items || []).forEach((item) => {
+      log.push(`${session.npc.name} gave you ${item.name} x${item.quantity}.`);
+    });
+  } else if (!isTrainerDefeated(state, session.npc.id)) {
     state.defeatedNpcs = [...(state.defeatedNpcs || []), session.npc.id];
     const rewardCoins = getNpcRewardCoins(session.npc);
     awardCoins(state, rewardCoins);
@@ -797,6 +825,7 @@ function completeNpcBattle(session, log = []) {
     state: savedState,
     npc: getNpcView(session.npc, savedState),
     session: getNpcSessionView(session),
+    storyEvents: recurringResult?.storyEvents || [],
   };
 }
 
@@ -805,12 +834,23 @@ function finishNpcLoss(session, log = []) {
   persistBattlePlayerTeam(session);
   activeNpcSessions.delete("player");
   log.push(`${session.npc.name} won the battle. Come back after you heal up.`);
+  const state = loadPlayerState();
+  const recurringResult = session.npc.recurringCharacter
+    ? recurringCharacterEngine.recordBattleResult(
+        state,
+        session.npc.encounterId,
+        "lost",
+      )
+    : null;
+  const savedState = recurringResult ? savePlayerState(state) : state;
   return {
     success: false,
     lost: true,
     log,
-    npc: getNpcView(session.npc, loadPlayerState()),
+    state: savedState,
+    npc: getNpcView(session.npc, savedState),
     session: getNpcSessionView(session),
+    storyEvents: recurringResult?.storyEvents || [],
   };
 }
 
@@ -1096,7 +1136,10 @@ app.get("/api/story", (req, res) => {
   const state = loadPlayerState();
   res.json({
     ...storyEngine.getStorySnapshot(state),
-    events: storyEngine.getEligibleEvents(state, "resume"),
+    events: [
+      ...storyEngine.getEligibleEvents(state, "resume"),
+      ...recurringCharacterEngine.getPendingScenes(state),
+    ],
   });
 });
 
@@ -1130,7 +1173,12 @@ app.post("/api/story/trigger", (req, res) => {
   }
   return res.json({
     success: true,
-    events: storyEngine.getEligibleEvents(state, trigger, context),
+    events: [
+      ...storyEngine.getEligibleEvents(state, trigger, context),
+      ...(trigger === "resume"
+        ? recurringCharacterEngine.getPendingScenes(state)
+        : []),
+    ],
     story: storyEngine.getStorySnapshot(state),
   });
 });
@@ -1145,7 +1193,12 @@ app.post("/api/story/complete", (req, res) => {
       ? String(req.body.context.badge)
       : null,
   };
-  const result = storyEngine.completeEvent(state, req.body?.eventId, context);
+  const eventId = req.body?.eventId;
+  const result = storyEngine.hasEvent(eventId)
+    ? storyEngine.completeEvent(state, eventId, context)
+    : recurringCharacterEngine.hasScene(eventId)
+      ? recurringCharacterEngine.completeScene(state, eventId)
+      : { error: "Unknown story event" };
   if (result.error) return res.status(400).json(result);
   const savedState = savePlayerState(result.state);
   return res.json({
@@ -1155,6 +1208,7 @@ app.post("/api/story/complete", (req, res) => {
     reward: result.reward,
     state: savedState,
     story: storyEngine.getStorySnapshot(savedState),
+    nextAction: result.nextAction || null,
   });
 });
 
@@ -2194,15 +2248,17 @@ app.get("/api/npcs", (req, res) => {
   return res.json({
     area,
     map: areaMap,
-    npcs: npcs
-      .filter((npc) => npc.area === area)
-      .map((npc) => getNpcView(npc, state)),
+    npcs: [
+      ...npcs.filter((npc) => npc.area === area),
+      ...recurringCharacterEngine.getAreaNpcs(state, area),
+    ].map((npc) => getNpcView(npc, state)),
   });
 });
 
 app.post("/api/npc/interact", (req, res) => {
-  const { npcId } = req.body;
-  const npc = getNpcById(npcId);
+  const { npcId, beginBattle = false } = req.body;
+  const state = loadPlayerState();
+  const npc = getNpcById(npcId, state);
   if (!npc) {
     return res.status(404).json({ error: "NPC not found" });
   }
@@ -2235,9 +2291,22 @@ app.post("/api/npc/interact", (req, res) => {
       .json({ error: "Finish your Elite Four battle first" });
   }
 
-  const state = loadPlayerState();
   const npcView = getNpcView(npc, state);
   if (npc.type === "trainer") {
+    const introScene = npc.recurringCharacter
+      ? recurringCharacterEngine.getIntroScene(state, npc.encounterId)
+      : null;
+    if (introScene && !beginBattle) {
+      return res.json({
+        success: true,
+        action: "story",
+        npc: npcView,
+        event: introScene,
+      });
+    }
+    if (introScene && beginBattle) {
+      return res.status(409).json({ error: "Finish the rival introduction first" });
+    }
     if (isTrainerDefeated(state, npc.id)) {
       return res.json({
         success: true,
@@ -2265,8 +2334,13 @@ app.post("/api/npc/interact", (req, res) => {
       ),
       opponentIndex: 0,
       aiItems: {
-        potion: npc.team && npc.team.length > 1 ? 1 : 0,
+        potion: npc.recurringCharacter
+          ? 0
+          : npc.team && npc.team.length > 1
+            ? 1
+            : 0,
       },
+      aiDifficulty: npc.aiDifficulty || "MEDIUM",
       status: "active",
       weather: "clear",
     };
@@ -2457,7 +2531,7 @@ app.post("/api/npc/move", (req, res) => {
     session.aiItems,
     playerPokemon,
     session.npc.name,
-    aiDifficulty.MEDIUM,
+    aiDifficulty[session.aiDifficulty] || aiDifficulty.MEDIUM,
     session.weather,
   );
   let activeNpcPokemon = opponentPokemon;

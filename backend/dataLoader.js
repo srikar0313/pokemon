@@ -640,6 +640,16 @@ function validateGameData(gameData) {
   (gameData.npcs || [])
     .filter((npc) => npc.type === "trainer" || npc.team?.length)
     .forEach((npc) => validateTeam(`NPC ${npc.name}`, npc.team, pokemonNames, groups));
+  (gameData.characters?.characters || []).forEach((character) =>
+    (character.encounters || []).forEach((encounter) =>
+      validateTeam(
+        `Recurring character ${character.name} (${encounter.id})`,
+        encounter.team,
+        pokemonNames,
+        groups,
+      ),
+    ),
+  );
 
   requiredRarityWeights.forEach((rarity) => {
     if (gameData.rarityWeights?.[rarity] === undefined) {
@@ -750,6 +760,7 @@ function loadGameData(options = {}) {
   const shouldValidate = options.validate !== false;
   const eliteData = loadJson(path.join(dataDir, "elite_four.json"), {});
   const npcData = loadJson(path.join(dataDir, "npcs.json"), {});
+  const characterData = loadJson(path.join(dataDir, "characters.json"), {});
   const encounterData = loadJson(path.join(dataDir, "encounters.json"), {});
   const areaData = loadJson(path.join(dataDir, "areas.json"), {});
   const canonicalMoveData = loadJson(
@@ -794,6 +805,7 @@ function loadGameData(options = {}) {
     champion: eliteData.champion || {},
     npcs: npcData.npcs || [],
     npcMaps: npcData.npcMaps || {},
+    characters: characterData,
     areas: areaData.areas || [],
     areaUnlocks: areaData.areaUnlocks || {},
     rarityWeights: encounterData.rarityWeights || {},

@@ -179,6 +179,10 @@ const npcTypeLabels = {
   healer: "Healer",
 };
 
+function getNpcRoleLabel(npc) {
+  return npc?.role === "rival" ? "Rival" : npcTypeLabels[npc?.type] || "NPC";
+}
+
 const leaderThemes = {
   Electric: { className: "volt", badge: "Volt Badge", icon: "⚡" },
   Water: { className: "aqua", badge: "Aqua Badge", icon: "💧" },
@@ -311,6 +315,7 @@ function renderStoryScene() {
     : { current: activeStoryLineIndex + 1, total: event.dialogue.length };
   layer.classList.remove("hidden", "story-motion-none");
   layer.classList.toggle("story-motion-none", motion.transition === "none");
+  layer.classList.toggle("story-rival-scene", event.presentation === "rival");
   document.getElementById("story-act-label").textContent = `ACT ${event.act}`;
   document.getElementById("story-scene-title").textContent = getStoryChapterTitle(event);
   document.getElementById("story-scene-name").textContent = event.title;
@@ -370,6 +375,10 @@ async function completeActiveStoryEvent() {
     }
     document.getElementById("story-cinematic")?.classList.add("hidden");
     activeStoryEvent = null;
+    if (data.nextAction?.type === "rival-battle") {
+      await startRivalBattle(data.nextAction.npcId);
+      return;
+    }
     if (completedEvent.id === "prologue-first-light" && selectedArea) {
       await requestStoryEvents("area-enter", { area: selectedArea });
     }
@@ -378,7 +387,7 @@ async function completeActiveStoryEvent() {
     alert(error.message || "Could not save story progress.");
   } finally {
     storyCompletionPending = false;
-    if (!activeStoryEvent) showNextStoryEvent();
+    if (!activeStoryEvent && !npcBattle) showNextStoryEvent();
   }
 }
 
@@ -2450,7 +2459,7 @@ function renderRouteDialogue() {
       <div class="dialogue-content">
         <div class="dialogue-head">
           <strong>${escapeHtml(speaker?.name || "Route")}</strong>
-          <span>${speaker ? npcTypeLabels[speaker.type] || "World" : "Explore"}</span>
+          <span>${speaker ? getNpcRoleLabel(speaker) : "Explore"}</span>
         </div>
         <p>${safeMessage}</p>
         ${speaker ? renderNpcActions(speaker, canInteractWithSpeaker) : ""}
@@ -2538,7 +2547,7 @@ function renderRouteWorld() {
                   <img class="route-npc-sprite" src="${getNpcSprite(displayNpc)}" alt="${displayNpc.name}">
                   <div>
                     <strong>${displayNpc.name}</strong>
-                    <span>${npcTypeLabels[displayNpc.type] || "NPC"}</span>
+                    <span>${getNpcRoleLabel(displayNpc)}${displayNpc.title ? ` · ${escapeHtml(displayNpc.title)}` : ""}</span>
                   </div>
                 </div>
                 <p>${displayNpc.dialogue}</p>
@@ -2867,12 +2876,17 @@ async function interactNearbyNpc() {
   }
 
   focusedNpcId = npc.id;
+  if (data.action === "story") {
+    setRouteDialogue(
+      data.npc,
+      `${data.npc?.name || "Your rival"} has something important to say.`,
+      "battle",
+    );
+    queueStoryEvents(data.event ? [data.event] : [], { area: selectedArea });
+    return;
+  }
   if (data.action === "battle") {
-    npcBattle = data.session;
-    setRouteDialogue(data.npc, data.dialogue, "battle");
-    await runOverworldPresentation("playTrainerTransition", { npc: data.npc });
-    showNpcBattle(data.log || []);
-    animatePokemonSwitch("opponent", npcBattle.opponentPokemon);
+    await beginNpcBattlePresentation(data);
     return;
   }
 
@@ -2893,6 +2907,34 @@ async function interactNearbyNpc() {
 
   setRouteDialogue(data.npc, data.dialogue, "dialogue");
   await loadAreaWorld(selectedArea);
+}
+
+async function beginNpcBattlePresentation(data) {
+  npcBattle = data.session;
+  setRouteDialogue(data.npc, data.dialogue, "battle");
+  await runOverworldPresentation("playTrainerTransition", { npc: data.npc });
+  showNpcBattle(data.log || []);
+  animatePokemonSwitch("opponent", npcBattle.opponentPokemon);
+}
+
+async function startRivalBattle(npcId) {
+  try {
+    const response = await fetch("/api/npc/interact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ npcId, beginBattle: true }),
+    });
+    const data = await response.json();
+    if (!response.ok || data.error || data.action !== "battle") {
+      throw new Error(data.error || "Rival battle could not begin");
+    }
+    await beginNpcBattlePresentation(data);
+  } catch (error) {
+    console.error("Rival battle start failed:", error);
+    setActiveScreen("explore");
+    await loadAreaWorld(selectedArea);
+    setRouteDialogue(null, error.message || "Talk to Rhea to try again.", "warning");
+  }
 }
 
 async function loadGyms() {
@@ -3530,7 +3572,7 @@ function showNpcBattle(lines = []) {
         <img class="arena-trainer-sprite" src="${getNpcSprite(npc)}" alt="${npc.name}">
         <div>
           <h2>${npc.name}</h2>
-          <p class="weather-info">${npcTypeLabels[npc.type] || "Trainer"} battle | No catching | No running</p>
+          <p class="weather-info">${getNpcRoleLabel(npc)} battle | No catching | No running</p>
         </div>
         <div class="badge-token npc-badge-token">
           <span class="badge-icon">${getNpcTypeIcon(npc.type)}</span>
@@ -3665,6 +3707,7 @@ async function npcMove(moveName) {
       await loadProfile();
       await loadInventory();
       await loadAreaWorld(selectedArea);
+      queueStoryEvents(data.storyEvents || [], { area: selectedArea });
     },
     afterContinue: async () => {
       showNpcMoveButtons(normalizePokemon(npcBattle.playerPokemon));
@@ -3718,6 +3761,7 @@ async function npcSwitch(pokemonIndex) {
       await loadProfile();
       await loadInventory();
       await loadAreaWorld(selectedArea);
+      queueStoryEvents(data.storyEvents || [], { area: selectedArea });
     },
     afterContinue: async () => {
       showNpcMoveButtons(normalizePokemon(npcBattle.playerPokemon));

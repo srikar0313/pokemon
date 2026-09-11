@@ -75,6 +75,7 @@ const defaultPlayerState = {
     rewardedEventIds: [],
     badgeMilestones: [],
     discoveredLocations: [],
+    characters: {},
   },
 };
 

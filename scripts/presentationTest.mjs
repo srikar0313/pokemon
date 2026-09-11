@@ -87,7 +87,20 @@ const storyScene = normalizeStoryEvent({
   speaker: { name: "Guide", portrait: "guide" },
   dialogue: [{ text: "Welcome, Trainer." }, { speaker: "Player", text: "Ready." }],
 });
+const rivalScene = normalizeStoryEvent({
+  id: "rival-test:intro",
+  title: "A Friendly Challenge",
+  act: 1,
+  presentation: "rival",
+  characterId: "rhea-vale",
+  encounterId: "rival-test",
+  phase: "intro",
+  speaker: { name: "Rhea Vale", portrait: "ranger" },
+  dialogue: [{ text: "Show me what your team has learned." }],
+});
 assert.equal(storyScene.dialogue[0].speaker, "Guide");
+assert.equal(rivalScene.presentation, "rival");
+assert.equal(rivalScene.characterId, "rhea-vale");
 assert.equal(getStoryProgress(storyScene, 1).percent, 100);
 assert.equal(getStoryMotionProfile(true).characterDelay, 0);
 assert.equal(getStoryMotionProfile(true).transition, "none");
@@ -692,6 +705,8 @@ assert(frontendIndex.includes('id="story-cinematic"'), "Story cinematic layer is
 assert(frontendSource.includes('fetch("/api/story/trigger"'), "Story trigger integration is missing");
 assert(frontendSource.includes("handleStoryKeydown"), "Story keyboard controls are missing");
 assert(frontendStyles.includes(".story-dialogue-panel"), "Story dialogue styling is missing");
+assert(frontendStyles.includes(".story-rival-scene"), "Rival cinematic styling is missing");
+assert(frontendSource.includes("startRivalBattle"), "Rival battle handoff is missing");
 assert(frontendSource.includes('fetch("/api/handbook")'), "Handbook data is not loaded from the backend");
 assert(frontendSource.includes("renderBattleHandbookShortcut"), "Battle Handbook shortcut is missing");
 assert(frontendSource.includes("renderTypeMatchupExplorer"), "Battle Academy Type Explorer is missing");

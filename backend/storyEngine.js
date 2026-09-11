@@ -4,7 +4,12 @@ function uniqueStrings(values = []) {
   return [...new Set((Array.isArray(values) ? values : []).filter(Boolean).map(String))];
 }
 
-function createStoryEngine({ storyData = {}, itemCatalog = {} } = {}) {
+function createStoryEngine({
+  storyData = {},
+  itemCatalog = {},
+  normalizeCharacters = (characters) =>
+    characters && typeof characters === "object" ? characters : {},
+} = {}) {
   const chapters = Array.isArray(storyData.chapters) ? storyData.chapters : [];
   const events = Array.isArray(storyData.events) ? storyData.events : [];
   const eventsById = new Map(events.map((event) => [event.id, event]));
@@ -92,6 +97,7 @@ function createStoryEngine({ storyData = {}, itemCatalog = {} } = {}) {
       rewardedEventIds: [...rewardedEventIds],
       badgeMilestones: [...badgeMilestones],
       discoveredLocations: [...discoveredLocations],
+      characters: normalizeCharacters(existing.characters),
     };
   }
 
@@ -206,6 +212,7 @@ function createStoryEngine({ storyData = {}, itemCatalog = {} } = {}) {
     getEligibleEvents,
     completeEvent,
     getStorySnapshot,
+    hasEvent: (eventId) => eventsById.has(eventId),
   };
 }
 

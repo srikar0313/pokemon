@@ -1,0 +1,105 @@
+{
+  "characters": [
+    {
+      "id": "rhea-vale",
+      "name": "Rhea Vale",
+      "title": "Field Researcher",
+      "sprite": "trainer-ranger",
+      "portrait": "ranger",
+      "initialRelationship": "new colleague",
+      "personality": "Observant, warm and quietly competitive. Rhea begins by treating every challenge like field data, then learns that trust matters more than perfect measurements.",
+      "motivation": "Understand the strange signals changing the region's habitats and protect the Pokemon affected by them.",
+      "signaturePokemon": "Eevee",
+      "encounters": [
+        {
+          "id": "rival-forest-first-meeting", "npcId": 9001, "act": 1,
+          "title": "A Curious Challenger", "area": "forest", "position": { "x": 4, "y": 2 },
+          "conditions": { "minBadges": 0, "requiredFlags": ["journey_started"] },
+          "team": [{ "name": "Eevee", "level": 7 }], "aiDifficulty": "EASY",
+          "battleIntro": "One quick battle. Let's see what our first steps have taught us.",
+          "repeatDialogue": "The trail is still here. We can try again whenever you are ready.",
+          "introDialogue": [
+            { "speaker": "Rhea Vale", "text": "Professor Lumen sent me to record changes in the Forest. You must be the other new field Trainer." },
+            { "speaker": "Rhea Vale", "text": "I'm Rhea. Eevee and I learn fastest by testing an idea in battle. Want to compare notes?" }
+          ],
+          "winDialogue": [{ "speaker": "Rhea Vale", "text": "That settled it: instincts can beat a perfect plan. I want a rematch when we both know more." }],
+          "lossDialogue": [{ "speaker": "Rhea Vale", "text": "Your timing is close. Heal your team and come find me again; our research is not finished." }],
+          "relationshipAfter": "friendly rival", "setFlags": ["rival_rhea_met"],
+          "reward": { "coins": 200 }
+        },
+        {
+          "id": "rival-cave-second-meeting", "npcId": 9002,
+          "previousEncounterId": "rival-forest-first-meeting", "act": 2,
+          "title": "Echoes and Evidence", "area": "cave", "position": { "x": 4, "y": 3 },
+          "conditions": { "minBadges": 1 },
+          "team": [{ "name": "Eevee", "level": 16 }, { "name": "Pidgey", "level": 14 }],
+          "aiDifficulty": "MEDIUM",
+          "battleIntro": "The cave changed my plan three times. Let's see how yours holds up.",
+          "repeatDialogue": "A good result should be repeatable. Ready to test yours again?",
+          "introDialogue": [
+            { "speaker": "Rhea Vale", "text": "A badge already? Good. I was worried I would have to slow down for you." },
+            { "speaker": "Rhea Vale", "text": "These tracks end where the strange echo begins. Battle me, then help me decide which clue matters." }
+          ],
+          "winDialogue": [{ "speaker": "Rhea Vale", "text": "You adjusted before I did. The echo is moving toward warmer ground; I'll meet you there." }],
+          "lossDialogue": [{ "speaker": "Rhea Vale", "text": "My notes finally predicted something. Next time, surprise me." }],
+          "relationshipAfter": "serious competitor", "setFlags": ["rival_cave_clue_shared"],
+          "reward": { "coins": 400, "items": [{ "id": "great", "quantity": 1 }] }
+        },
+        {
+          "id": "rival-volcano-signal", "npcId": 9003,
+          "previousEncounterId": "rival-cave-second-meeting", "act": 3,
+          "title": "Heat Without a Source", "area": "volcano", "position": { "x": 6, "y": 4 },
+          "conditions": { "minBadges": 3 },
+          "team": [{ "name": "Eevee", "level": 25 }, { "name": "Riolu", "level": 24 }, { "name": "Vulpix", "level": 24 }],
+          "aiDifficulty": "MEDIUM",
+          "battleIntro": "No instruments this time. We trust our Pokemon and read the field.",
+          "repeatDialogue": "The signal can wait a moment. Our teams deserve a clean rematch.",
+          "introDialogue": [
+            { "speaker": "Rhea Vale", "text": "The vents are calm, but Eevee keeps watching the Mountain. The signal is guiding Pokemon somewhere." },
+            { "speaker": "Rhea Vale", "text": "I used to think better numbers meant better answers. Show me what your team notices." }
+          ],
+          "winDialogue": [{ "speaker": "Rhea Vale", "text": "Your whole team moved like one. I'll stop chasing the signal alone. We solve this together." }],
+          "lossDialogue": [{ "speaker": "Rhea Vale", "text": "The field favored my plan today. I know better than to expect the same result twice." }],
+          "relationshipAfter": "trusted partner", "setFlags": ["rival_volcano_signal_confirmed"],
+          "reward": { "coins": 700 }
+        },
+        {
+          "id": "rival-mountain-confrontation", "npcId": 9004,
+          "previousEncounterId": "rival-volcano-signal", "act": 4,
+          "title": "Above the Signal", "area": "mountain", "position": { "x": 4, "y": 4 },
+          "conditions": { "minBadges": 6 },
+          "team": [{ "name": "Espeon", "level": 40 }, { "name": "Lucario", "level": 39 }, { "name": "Arcanine", "level": 38 }, { "name": "Absol", "level": 39 }],
+          "aiDifficulty": "HARD",
+          "battleIntro": "No rivalry without trust, and no trust without honesty. Give me your best.",
+          "repeatDialogue": "We have climbed too far to leave this question unanswered.",
+          "introDialogue": [
+            { "speaker": "Rhea Vale", "text": "Espeon felt the pulse before the instruments did. It points to the old memorial beyond the ridge." },
+            { "speaker": "Rhea Vale", "text": "I nearly ordered everyone back. Then I remembered how your team faces uncertainty. Battle me before we choose our next step." }
+          ],
+          "winDialogue": [{ "speaker": "Rhea Vale", "text": "You did not force an answer; you listened for one. That's the Trainer I want beside me at the memorial." }],
+          "lossDialogue": [{ "speaker": "Rhea Vale", "text": "I can protect the route for now. Come back when your team is ready to climb again." }],
+          "relationshipAfter": "steadfast ally", "setFlags": ["rival_mountain_truth_shared"],
+          "reward": { "coins": 1000, "items": [{ "id": "ultra", "quantity": 1 }] }
+        },
+        {
+          "id": "rival-graveyard-league-promise", "npcId": 9005,
+          "previousEncounterId": "rival-mountain-confrontation", "act": 5,
+          "title": "The Promise Before the League", "area": "graveyard", "position": { "x": 4, "y": 3 },
+          "conditions": { "minBadges": 8 },
+          "team": [{ "name": "Espeon", "level": 55 }, { "name": "Lucario", "level": 53 }, { "name": "Arcanine", "level": 53 }, { "name": "Absol", "level": 54 }, { "name": "Lapras", "level": 52 }],
+          "aiDifficulty": "HARD",
+          "battleIntro": "One last field test before the League. Not for data this time, just for us.",
+          "repeatDialogue": "The League road will wait. Our promise deserves our strongest battle.",
+          "introDialogue": [
+            { "speaker": "Rhea Vale", "text": "The memorial's warning was not about fear. It was asking whether Trainers would face the unknown together." },
+            { "speaker": "Rhea Vale", "text": "You head for the League next. Before you go, let me meet the team that changed how I see this region." }
+          ],
+          "winDialogue": [{ "speaker": "Rhea Vale", "text": "Go win the League. I'll keep studying the signal, and when you return, your rival will be waiting." }],
+          "lossDialogue": [{ "speaker": "Rhea Vale", "text": "The League deserves you at your best. Rest, regroup, and ask me again." }],
+          "relationshipAfter": "lifelong rival", "setFlags": ["rival_league_promise_kept"],
+          "reward": { "coins": 1500, "items": [{ "id": "maxPotion", "quantity": 1 }] }
+        }
+      ]
+    }
+  ]
+}

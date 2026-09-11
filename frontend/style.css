@@ -5795,6 +5795,25 @@ button:disabled {
   pointer-events: none;
 }
 
+.story-cinematic.story-rival-scene::before {
+  background:
+    linear-gradient(115deg, rgba(230, 80, 96, 0.3), transparent 44%),
+    linear-gradient(300deg, rgba(69, 180, 197, 0.28), transparent 50%);
+}
+
+.story-rival-scene .story-chapter-card {
+  border-left-color: #ef6674;
+}
+
+.story-rival-scene .story-speaker-portrait {
+  filter: drop-shadow(0 0 24px rgba(94, 210, 218, 0.3));
+}
+
+.story-rival-scene .story-dialogue-panel {
+  border-color: #62bdc8;
+  border-bottom-color: #ef6674;
+}
+
 .story-cinematic-stage {
   position: relative;
   width: min(1000px, calc(100vw - 32px));

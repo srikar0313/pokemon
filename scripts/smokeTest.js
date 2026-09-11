@@ -17,6 +17,7 @@ const {
   STORY_STATE_VERSION,
   createStoryEngine,
 } = require("../backend/storyEngine");
+const { createRecurringCharacterEngine } = require("../backend/recurringCharacterEngine");
 const variantUtils = require("../frontend/variantUtils");
 const {
   reorderParty,
@@ -84,9 +85,14 @@ function createMemoryGameState(pokemonUtils, normalizeStoryState = null) {
 
 function main() {
   const gameData = loadGameData();
+  const recurringCharacterEngine = createRecurringCharacterEngine({
+    characterData: gameData.characters,
+    itemCatalog: gameData.items,
+  });
   const storyEngine = createStoryEngine({
     storyData: gameData.story,
     itemCatalog: gameData.items,
+    normalizeCharacters: recurringCharacterEngine.normalizeCharacterState,
   });
   const handbook = createHandbookData(gameData.moves);
   assert(
@@ -358,6 +364,99 @@ function main() {
       migratedStory.flags.includes("journey_started"),
     "old save story migration would replay historical opening or badge events",
   );
+  assert(
+    migratedStory.characters?.["rhea-vale"]?.encounterProgress === 0,
+    "old save did not normalize recurring-character progress",
+  );
+
+  const rivalPlayer = {
+    ...freshStoryPlayer,
+    coins: 0,
+    money: 0,
+    badges: [],
+    items: {},
+    story: storyEngine.normalizeStoryState(
+      {
+        ...freshStoryPlayer.story,
+        flags: ["journey_started"],
+      },
+      freshStoryPlayer,
+    ),
+  };
+  const firstRivalNpc = recurringCharacterEngine.getAreaNpcs(rivalPlayer, "forest")[0];
+  const rivalTeamSizes = recurringCharacterEngine.encounters.map(
+    (encounter) => encounter.team.length,
+  );
+  const rivalLeadLevels = recurringCharacterEngine.encounters.map(
+    (encounter) => encounter.team[0].level,
+  );
+  assert(
+    firstRivalNpc?.name === "Rhea Vale" && firstRivalNpc.team.length === 1,
+    "rival introduction did not appear at the intended Act 1 location",
+  );
+  assert(
+    rivalTeamSizes.join(",") === "1,2,3,4,5" &&
+      rivalLeadLevels.every(
+        (level, index) => index === 0 || level > rivalLeadLevels[index - 1],
+      ),
+    "rival teams do not grow consistently across the five story acts",
+  );
+  const rivalIntro = recurringCharacterEngine.getIntroScene(
+    rivalPlayer,
+    firstRivalNpc.encounterId,
+  );
+  const rivalIntroResult = recurringCharacterEngine.completeScene(
+    rivalPlayer,
+    rivalIntro.id,
+  );
+  assert(
+    rivalIntroResult.success &&
+      rivalIntroResult.nextAction?.type === "rival-battle" &&
+      recurringCharacterEngine.completeScene(rivalPlayer, rivalIntro.id).alreadyCompleted,
+    "rival introduction did not persist or attempted to repeat",
+  );
+  const rivalLoss = recurringCharacterEngine.recordBattleResult(
+    rivalPlayer,
+    firstRivalNpc.encounterId,
+    "lost",
+  );
+  assert(
+    rivalLoss.storyEvents.length === 1 &&
+      recurringCharacterEngine.getAreaNpcs(rivalPlayer, "forest").length === 1 &&
+      rivalPlayer.story.characters["rhea-vale"].playerLosses === 1,
+    "rival loss did not remain safely retryable",
+  );
+  recurringCharacterEngine.completeScene(rivalPlayer, rivalLoss.storyEvents[0].id);
+  const rivalWin = recurringCharacterEngine.recordBattleResult(
+    rivalPlayer,
+    firstRivalNpc.encounterId,
+    "won",
+  );
+  const duplicateRivalWin = recurringCharacterEngine.recordBattleResult(
+    rivalPlayer,
+    firstRivalNpc.encounterId,
+    "won",
+  );
+  assert(
+    rivalWin.reward?.coins === 200 &&
+      duplicateRivalWin.reward === null &&
+      rivalPlayer.coins === 200 &&
+      rivalPlayer.story.characters["rhea-vale"].playerWins === 1 &&
+      recurringCharacterEngine.getAreaNpcs(rivalPlayer, "forest").length === 0,
+    "rival victory progress or one-time reward protection failed",
+  );
+  assert(
+    recurringCharacterEngine
+      .getPendingScenes(rivalPlayer)
+      .some((scene) => scene.id === "rival-forest-first-meeting:win"),
+    "unfinished post-battle rival scene was not recoverable after reload",
+  );
+  rivalPlayer.badges = ["Volt Badge"];
+  const secondRivalNpc = recurringCharacterEngine.getAreaNpcs(rivalPlayer, "cave")[0];
+  assert(
+    secondRivalNpc?.team.length === 2 && secondRivalNpc.team[0].level === 16,
+    "rival team progression did not advance with the story",
+  );
   memoryFiles.clear();
   const persistentStoryState = createMemoryGameState(
     pokemonUtils,
@@ -369,6 +468,17 @@ function main() {
       .loadPlayerState()
       .story.flags.includes("first_badge_recognized"),
     "story flags did not survive save/load",
+  );
+  persistentStoryState.savePlayerState(rivalPlayer);
+  const reloadedRivalProgress = persistentStoryState.loadPlayerState().story
+    .characters["rhea-vale"];
+  assert(
+    reloadedRivalProgress.playerWins === 1 &&
+      reloadedRivalProgress.playerLosses === 1 &&
+      reloadedRivalProgress.completedBattleIds.includes(
+        "rival-forest-first-meeting",
+      ),
+    "recurring rival progress did not survive save/load",
   );
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");

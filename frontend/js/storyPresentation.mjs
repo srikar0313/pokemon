@@ -23,6 +23,10 @@ export function normalizeStoryEvent(event = {}) {
     dialogue,
     reward: event.reward || null,
     context: event.context || {},
+    presentation: String(event.presentation || "story"),
+    characterId: event.characterId || null,
+    encounterId: event.encounterId || null,
+    phase: event.phase || null,
   };
 }
 
