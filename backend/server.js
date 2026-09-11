@@ -8,6 +8,10 @@ const { createEncounterEngine } = require("./encounterEngine");
 const { createRewardEngine } = require("./rewardEngine");
 const { createEvolutionEngine } = require("./evolutionEngine");
 const { createHandbookData } = require("./handbookData");
+const {
+  reorderParty,
+  sendPartyPokemonToStorage,
+} = require("./partyManager");
 const app = express();
 const port = process.env.PORT || 3000;
 const rootDir = path.join(__dirname, "..");
@@ -3190,6 +3194,54 @@ app.post("/api/swap-storage", (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to swap Pokemon" });
+  }
+});
+
+app.post("/api/party/reorder", (req, res) => {
+  if (
+    activeNpcSessions.get("player")?.status === "active" ||
+    activeGymSessions.get("player")?.status === "active" ||
+    activeEliteSessions.get("player")?.status === "active"
+  ) {
+    return res.status(400).json({ error: "Finish the current battle before reordering your party." });
+  }
+  try {
+    const { team, storage } = loadTeamAndStorage();
+    const result = reorderParty(team, req.body?.fromIndex, req.body?.toIndex);
+    if (result.error) return res.status(400).json(result);
+    saveTeamAndStorage(result.team, storage);
+    return res.json({
+      success: true,
+      message: `${result.team[req.body.toIndex].name} moved to party slot ${req.body.toIndex + 1}.`,
+      team: result.team,
+      storage,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to reorder party" });
+  }
+});
+
+app.post("/api/party/send-to-storage", (req, res) => {
+  if (
+    activeNpcSessions.get("player")?.status === "active" ||
+    activeGymSessions.get("player")?.status === "active" ||
+    activeEliteSessions.get("player")?.status === "active"
+  ) {
+    return res.status(400).json({ error: "Finish the current battle before editing your party." });
+  }
+  try {
+    const { team, storage } = loadTeamAndStorage();
+    const result = sendPartyPokemonToStorage(team, storage, req.body?.teamIndex);
+    if (result.error) return res.status(400).json(result);
+    saveTeamAndStorage(result.team, result.storage);
+    return res.json({
+      success: true,
+      message: `${result.pokemon.name} was sent to PC Storage.`,
+      team: result.team,
+      storage: result.storage,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to move Pokemon to storage" });
   }
 });
 

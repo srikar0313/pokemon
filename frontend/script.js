@@ -11,6 +11,7 @@ let teamCache = [];
 let storageCache = [];
 let partyPresetCache = [];
 let partyPresetMessage = "";
+let partyTransferMessage = "";
 let activePartyPresetSlot = 1;
 let playerState = null;
 let shopCatalog = [];
@@ -78,6 +79,7 @@ const ROUTE_ENCOUNTER_CHANCES = {
 const storageUiState = {
   search: "",
   type: "all",
+  level: "all",
   rarity: "all",
   form: "all",
   shiny: "all",
@@ -1767,12 +1769,26 @@ function displayCurrentPlayer() {
     return;
   }
 
-  currentPlayer.innerHTML = renderPokemonDetailCard(
-    activePokemon,
-    "Active",
-    "team",
-    activeInventoryIndex,
-  );
+  const hp = activePokemon.currentHp ?? activePokemon.hp ?? 0;
+  const fainted = hp <= 0;
+  currentPlayer.innerHTML = `
+    <section class="party-active-summary${activePokemon.shiny ? " shiny" : ""}" style="--party-type:${getTypeColor(activePokemon.types?.[0] || activePokemon.type)}">
+      <span class="party-active-label">Active Pokémon</span>
+      <img src="${getPokemonImage(activePokemon)}" alt="${escapeHtml(getPokemonDisplayName(activePokemon))}">
+      <div class="party-active-copy">
+        <h3>${escapeHtml(getPokemonDisplayName(activePokemon))} <span>Lv${activePokemon.level || 1}</span></h3>
+        <div class="variant-badges">${renderVariantBadges(activePokemon)}</div>
+        <div>${renderTypeBadges(activePokemon.types || [activePokemon.type])}</div>
+        <div class="party-hp-line"><span>HP</span><strong>${hp}/${activePokemon.maxHp}</strong></div>
+        <div class="hp-bar-small"><div class="hp-fill" style="width:${getHpPercent(hp, activePokemon.maxHp)}%"></div></div>
+        <p>${fainted ? renderStatus("fainted") : renderStatus(activePokemon.status)} · Ability: <strong>${escapeHtml(formatAbilityName(activePokemon.ability))}</strong></p>
+      </div>
+      <div class="party-active-moves">
+        ${(activePokemon.moves || []).slice(0, 4).map((move) => `<span style="--move-type:${getTypeColor(move.type)}"><strong>${escapeHtml(move.name)}</strong><small>${escapeHtml(move.type)} · ${move.currentPp ?? move.maxPp ?? move.pp}/${move.maxPp ?? move.pp}</small></span>`).join("")}
+      </div>
+      <button class="secondary-btn" onclick="showPokemonDetail('team', ${activeInventoryIndex})">Full Summary</button>
+    </section>
+  `;
 }
 
 async function displayAreas() {
@@ -4363,11 +4379,15 @@ async function loadInventory() {
 function displayParty(data) {
   const usableItems = getUsableItems();
   let html = `
-    <div class="inventory-header">
-      <h3>Team (${data.length}/${PARTY_LIMIT})</h3>
-      <span class="xp-help" title="Every Pokemon in your active party shares XP from battles. Storage Pokemon do not gain XP. Leveling uses a cubic growth curve, so higher levels need much more XP.">XP help</span>
-      <button class="secondary-btn icon-button" onclick="healTeam()">${renderIcon("potion", "Potion")} Heal All</button>
+    <div class="inventory-header premium-party-head">
+      <div><span class="party-kicker">Battle Party</span><h3>Team (${data.length}/${PARTY_LIMIT})</h3><p>Select a slot, reorder it, or move Pokémon between Party and PC.</p></div>
+      <div class="party-head-actions">
+        <span class="xp-help" title="Every Pokemon in your active party shares XP from battles. Storage Pokemon do not gain XP. Leveling uses a cubic growth curve, so higher levels need much more XP.">XP help</span>
+        <button class="secondary-btn icon-button" onclick="healTeam()">${renderIcon("potion", "Potion")} Heal All</button>
+        <button class="secondary-btn" onclick="openOverlay('storage')">Open PC</button>
+      </div>
     </div>
+    ${partyTransferMessage ? `<div class="party-transfer-message" role="status">${escapeHtml(partyTransferMessage)}</div>` : ""}
   `;
 
   if (data.length === 0) {
@@ -4377,33 +4397,39 @@ function displayParty(data) {
   data.forEach((p, index) => {
     const isActive = index === activeInventoryIndex;
     const fainted = (p.currentHp ?? p.hp) <= 0;
-    html += `<div class="inventory-item party-card${isActive ? " active" : ""}" onclick="selectPokemon(${index})">
-        <img src="${getPokemonImage(p)}" alt="${p.name}">
-        <div class="item-info">
-          <div class="inventory-top">
-            <strong>${getPokemonDisplayName(p)}</strong> Lv${p.level}
-            ${renderVariantBadges(p)}
-            ${renderTypeBadges(p.types)}
-            ${isActive ? '<span class="active-label">ACTIVE</span>' : ""}
-          </div>
-          <div class="hp-bar-small"><div class="hp-fill" style="width: ${getHpPercent(p.currentHp ?? p.hp, p.maxHp)}%"></div></div>
-          ${renderXpBar(p)}
-          <p>${renderIcon("heart", "HP")} ${p.currentHp ?? p.hp}/${p.maxHp} HP ${fainted ? renderStatus("fainted") : renderStatus(p.status)}</p>
-          <div class="bag-actions">
-            <button onclick="setActivePokemonByIndex(event, ${index})" class="mini-item-btn icon-button">Make Active</button>
-            <button onclick="event.stopPropagation(); showPokemonDetail('team', ${index})" class="mini-item-btn icon-button">Details</button>
-            ${usableItems.length ? `<button onclick="setActiveScreen('inventory'); setActivePokemonByIndex(event, ${index})" class="mini-item-btn icon-button">Use Items</button>` : ""}
-            <button onclick="releasePokemon(event, 'team', ${index})" class="mini-btn">Release</button>
+    html += `<article class="party-slot-card${isActive ? " active" : ""}${fainted ? " fainted" : ""}${p.shiny ? " shiny" : ""}" style="--party-type:${getTypeColor(p.types?.[0] || p.type)}" onclick="selectPokemon(${index})" tabindex="0" onkeydown="if(event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')){event.preventDefault();selectPokemon(${index});}">
+        <div class="party-slot-top"><span>Slot ${index + 1}</span>${isActive ? '<strong class="active-label">ACTIVE</strong>' : '<strong>PARTY</strong>'}</div>
+        <div class="party-slot-main">
+          <div class="party-slot-art"><img src="${getPokemonImage(p)}" alt="${escapeHtml(getPokemonDisplayName(p))}">${p.shiny ? '<span class="party-shiny-spark">Shiny</span>' : ""}</div>
+          <div class="party-slot-copy">
+            <div class="inventory-top">
+              <strong>${escapeHtml(getPokemonDisplayName(p))}</strong><span>Lv${p.level || 1}</span>
+            </div>
+            <div class="variant-badges">${renderVariantBadges(p)}</div>
+            <div class="party-types">${renderTypeBadges(p.types || [p.type])}</div>
+            <div class="party-hp-line"><span>HP</span><strong>${p.currentHp ?? p.hp}/${p.maxHp}</strong></div>
+            <div class="hp-bar-small"><div class="hp-fill" style="width: ${getHpPercent(p.currentHp ?? p.hp, p.maxHp)}%"></div></div>
+            <div class="party-status-line">${fainted ? renderStatus("fainted") : renderStatus(p.status)}</div>
           </div>
         </div>
-    </div>`;
+        ${renderXpBar(p)}
+        <div class="party-slot-actions">
+          <button class="party-order-btn" title="Move toward first slot" aria-label="Move ${escapeHtml(p.name)} toward first slot" onclick="event.stopPropagation(); reorderPartyPokemon(${index}, ${index - 1})" ${index === 0 ? "disabled" : ""}>↑</button>
+          <button class="party-order-btn" title="Move toward last slot" aria-label="Move ${escapeHtml(p.name)} toward last slot" onclick="event.stopPropagation(); reorderPartyPokemon(${index}, ${index + 1})" ${index === data.length - 1 ? "disabled" : ""}>↓</button>
+          <button onclick="event.stopPropagation(); showPokemonDetail('team', ${index})" class="secondary-btn">Details</button>
+          <button onclick="setActivePokemonByIndex(event, ${index})" class="secondary-btn" ${isActive || fainted ? "disabled" : ""}>Set Active</button>
+          <button onclick="event.stopPropagation(); sendPartyPokemonToPc(${index})" class="secondary-btn" ${data.length <= 1 ? "disabled" : ""}>To PC</button>
+          ${usableItems.length ? `<button onclick="event.stopPropagation(); setActiveScreen('inventory'); setActivePokemonByIndex(null, ${index})" class="secondary-btn">Items</button>` : ""}
+          <button onclick="releasePokemon(event, 'team', ${index})" class="party-release-btn">Release</button>
+        </div>
+    </article>`;
   });
   for (let index = data.length; index < PARTY_LIMIT; index += 1) {
     html += `
-        <div class="party-slot-empty" aria-label="Empty party slot ${index + 1}">
+        <button class="party-slot-empty" aria-label="Empty party slot ${index + 1}" onclick="openOverlay('storage')">
           <span>${index + 1}</span>
-          <strong>Empty slot</strong>
-        </div>
+          <strong>Empty slot</strong><small>Choose from PC</small>
+        </button>
     `;
   }
   html += `</div>`;
@@ -4413,10 +4439,76 @@ function displayParty(data) {
         <span>PC Storage</span>
         <strong>${storageCache.length} Pokemon stored</strong>
       </div>
-      <button class="secondary-btn" onclick="openOverlay('storage')">Open Storage</button>
+      <button class="secondary-btn" onclick="openOverlay('storage')">Manage Party & PC</button>
     </div>
   `;
   document.getElementById("party-panel").innerHTML = html;
+}
+
+function isPartyManagementLocked() {
+  return Boolean(battleActionBusy || isInBattle || npcBattle || gymBattle || eliteBattle);
+}
+
+async function restorePartyAfterManagement(activeOwnedId, fallbackIndex = 0) {
+  await loadInventory();
+  const preservedIndex = activeOwnedId
+    ? teamCache.findIndex((pokemon) => pokemon.ownedId === activeOwnedId)
+    : -1;
+  activeInventoryIndex = preservedIndex >= 0
+    ? preservedIndex
+    : Math.min(Math.max(0, fallbackIndex), Math.max(0, teamCache.length - 1));
+  activePokemon = teamCache[activeInventoryIndex] || null;
+  displayCurrentPlayer();
+  displayParty(teamCache);
+  displayStorage(storageCache);
+  displayBag();
+}
+
+async function reorderPartyPokemon(fromIndex, toIndex) {
+  if (isPartyManagementLocked()) {
+    alert("Finish the current battle before reordering your party.");
+    return;
+  }
+  if (!teamCache[fromIndex] || !teamCache[toIndex]) return;
+  const activeOwnedId = activePokemon?.ownedId;
+  const response = await fetch("/api/party/reorder", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fromIndex, toIndex }),
+  });
+  const data = await response.json();
+  if (!response.ok || data.error) {
+    alert(data.error || "Could not reorder your party.");
+    return;
+  }
+  partyTransferMessage = data.message;
+  await restorePartyAfterManagement(activeOwnedId, toIndex);
+}
+
+async function sendPartyPokemonToPc(teamIndex) {
+  if (isPartyManagementLocked()) {
+    alert("Finish the current battle before editing your party.");
+    return;
+  }
+  const pokemon = teamCache[teamIndex];
+  if (!pokemon || teamCache.length <= 1) return;
+  const activeOwnedId = activePokemon?.ownedId;
+  const response = await fetch("/api/party/send-to-storage", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ teamIndex }),
+  });
+  const data = await response.json();
+  if (!response.ok || data.error) {
+    alert(data.error || "Could not send that Pokémon to PC Storage.");
+    return;
+  }
+  partyTransferMessage = data.message;
+  const fallbackIndex = Math.min(teamIndex, Math.max(0, (data.team || []).length - 1));
+  await restorePartyAfterManagement(
+    pokemon.ownedId === activeOwnedId ? null : activeOwnedId,
+    fallbackIndex,
+  );
 }
 
 function selectQuickPokemon(index) {
@@ -4571,12 +4663,19 @@ function displayStorage(storage) {
 }
 
 function getFilteredStorage(storage = storageCache) {
-  const search = storageUiState.search.trim().toLowerCase();
   const filtered = storage
     .map((pokemon, originalIndex) => ({ pokemon, originalIndex }))
     .filter(({ pokemon }) => {
+      if (window.PartyStorageUI?.matchesStorageFilters) {
+        return window.PartyStorageUI.matchesStorageFilters(pokemon, storageUiState);
+      }
+      const search = storageUiState.search.trim().toLowerCase().replace(/^#/, "");
       const types = Array.isArray(pokemon.types) ? pokemon.types : [pokemon.type];
-      if (search && !pokemon.name.toLowerCase().includes(search)) return false;
+      const speciesId = Number(pokemon.speciesId ?? pokemon.id);
+      const searchable = [pokemon.name, speciesId, String(speciesId).padStart(3, "0"), ...types]
+        .join(" ")
+        .toLowerCase();
+      if (search && !searchable.includes(search)) return false;
       if (storageUiState.type !== "all" && !types.includes(storageUiState.type))
         return false;
       if (
@@ -4589,6 +4688,11 @@ function getFilteredStorage(storage = storageCache) {
         return false;
       if (storageUiState.shiny === "shiny" && !pokemon.shiny) return false;
       if (storageUiState.shiny === "non-shiny" && pokemon.shiny) return false;
+      const level = Number(pokemon.level) || 1;
+      if (storageUiState.level === "1-19" && level > 19) return false;
+      if (storageUiState.level === "20-39" && (level < 20 || level > 39)) return false;
+      if (storageUiState.level === "40-59" && (level < 40 || level > 59)) return false;
+      if (storageUiState.level === "60+" && level < 60) return false;
       return true;
     });
 
@@ -4612,7 +4716,8 @@ function getFilteredStorage(storage = storageCache) {
         (rarityRank[left.pokemon.rarity] || 0)
       );
     }
-    return (left.pokemon.id || 0) - (right.pokemon.id || 0);
+    return (left.pokemon.speciesId ?? left.pokemon.id ?? 0) -
+      (right.pokemon.speciesId ?? right.pokemon.id ?? 0);
   });
   return filtered;
 }
@@ -4692,7 +4797,7 @@ function renderStorageBrowser(storage = storageCache) {
     <div class="storage-browser-head">
       <div>
         <h3>Storage ${storage.length}</h3>
-        <p>Search and organize your collection without changing its saved order.</p>
+        <p>Search your PC, inspect a Pokémon, or move it directly into the active Party.</p>
       </div>
       <div class="storage-browser-actions">
         <strong>Showing ${showingStart}-${showingEnd} of ${filtered.length}</strong>
@@ -4700,12 +4805,21 @@ function renderStorageBrowser(storage = storageCache) {
     </div>
     <div class="storage-controls">
       <label>Search
-        <input id="storage-search" type="search" value="${escapeHtml(storageUiState.search)}" placeholder="Pokemon name" oninput="updateStorageFilter('search', this.value)">
+        <input id="storage-search" type="search" value="${escapeHtml(storageUiState.search)}" placeholder="Name, #Dex, or type" oninput="updateStorageFilter('search', this.value)">
       </label>
       <label>Type
         <select onchange="updateStorageFilter('type', this.value)">
           <option value="all">All</option>
           ${types.map((type) => `<option value="${type}" ${storageUiState.type === type ? "selected" : ""}>${type}</option>`).join("")}
+        </select>
+      </label>
+      <label>Level
+        <select onchange="updateStorageFilter('level', this.value)">
+          <option value="all" ${storageUiState.level === "all" ? "selected" : ""}>All levels</option>
+          <option value="1-19" ${storageUiState.level === "1-19" ? "selected" : ""}>Lv 1-19</option>
+          <option value="20-39" ${storageUiState.level === "20-39" ? "selected" : ""}>Lv 20-39</option>
+          <option value="40-59" ${storageUiState.level === "40-59" ? "selected" : ""}>Lv 40-59</option>
+          <option value="60+" ${storageUiState.level === "60+" ? "selected" : ""}>Lv 60+</option>
         </select>
       </label>
       <label>Rarity
@@ -4751,14 +4865,15 @@ function renderStorageBrowser(storage = storageCache) {
                 const hp = pokemon.currentHp ?? pokemon.hp ?? 0;
                 const fainted = hp <= 0;
                 return `
-                  <article class="storage-compact-card${fainted ? " fainted" : ""}" onclick="showStoragePokemonDetail(${originalIndex})" tabindex="0" onkeydown="if(event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')){ event.preventDefault(); showStoragePokemonDetail(${originalIndex}); }">
-                    <img src="${getPokemonImage(pokemon)}" alt="${escapeHtml(pokemon.name)}" loading="lazy">
+                  <article class="storage-compact-card${fainted ? " fainted" : ""}${pokemon.shiny ? " shiny" : ""}" style="--storage-type:${getTypeColor(pokemon.types?.[0] || pokemon.type)}" onclick="showStoragePokemonDetail(${originalIndex})" tabindex="0" onkeydown="if(event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')){ event.preventDefault(); showStoragePokemonDetail(${originalIndex}); }">
+                    <div class="storage-card-art"><img src="${getPokemonImage(pokemon)}" alt="${escapeHtml(pokemon.name)}" loading="lazy">${pokemon.shiny ? '<span>Shiny</span>' : ""}</div>
                     <div class="storage-card-copy">
+                      <span class="storage-location-label">PC · #${String(pokemon.speciesId ?? pokemon.id).padStart(3, "0")}</span>
                       <strong>${escapeHtml(getPokemonDisplayName(pokemon))}</strong>
                       <span class="variant-badges">${renderVariantBadges(pokemon)}</span>
                       <span>Lv${pokemon.level || 1} ${renderTypeBadges(pokemon.types || [pokemon.type])}</span>
                       <div class="hp-bar-small"><div class="hp-fill" style="width: ${getHpPercent(hp, pokemon.maxHp)}%"></div></div>
-                      <small>${hp}/${pokemon.maxHp} HP · ${fainted ? "Fainted" : formatStatus(pokemon.status)}</small>
+                      <small>${hp}/${pokemon.maxHp} HP · ${fainted ? "Fainted" : formatStatus(pokemon.status)} · ${escapeHtml(formatAbilityName(pokemon.ability))}</small>
                     </div>
                     <div class="storage-card-actions">
                       <button class="mini-btn preset-add-btn" onclick="event.stopPropagation(); addPokemonToPartyPreset('${escapeHtml(pokemon.ownedId)}')" ${isPokemonInActivePreset(pokemon.ownedId) || isActivePartyPresetFull() ? "disabled" : ""}>${isPokemonInActivePreset(pokemon.ownedId) ? "Added" : isActivePartyPresetFull() ? "Full" : `Add to P${activePartyPresetSlot}`}</button>
@@ -4880,12 +4995,18 @@ function showPokemonDetail(section, index) {
     section === "storage" ? storageCache[index] : teamCache[index];
   const panel = document.getElementById("current-player");
   if (!pokemon || !panel) return;
-  panel.innerHTML = renderPokemonDetailCard(
-    normalizePokemon(pokemon),
-    section === "storage" ? "Storage" : "Team",
-    section,
-    index,
-  );
+  panel.innerHTML = `
+    <div class="party-detail-head">
+      <button class="secondary-btn" onclick="displayCurrentPlayer()">Back to Active Summary</button>
+      <strong>${section === "storage" ? "PC Storage" : `Party slot ${index + 1}`}</strong>
+    </div>
+    ${renderPokemonDetailCard(
+      normalizePokemon(pokemon),
+      section === "storage" ? "Storage" : "Team",
+      section,
+      index,
+    )}
+  `;
 }
 
 function displayBag() {
@@ -4948,6 +5069,21 @@ function formatItemCategory(category) {
   return labels[category] || "Item";
 }
 
+function renderPokemonComparison(incoming, current) {
+  const rows = window.PartyStorageUI?.getPokemonComparison?.(incoming, current) || [
+    { label: "Lv", incoming: incoming.level || 1, current: current.level || 1 },
+    { label: "HP", incoming: incoming.maxHp || incoming.hp || 0, current: current.maxHp || current.hp || 0 },
+    { label: "ATK", incoming: incoming.attack || 0, current: current.attack || 0 },
+    { label: "DEF", incoming: incoming.defense || 0, current: current.defense || 0 },
+  ];
+  return `
+    <div class="swap-comparison">
+      <div class="swap-comparison-head"><span>Current</span><strong>Stat</strong><span>Incoming</span></div>
+      ${rows.map((row) => `<div><span>${row.current}</span><strong>${row.label}</strong><span class="${row.incoming > row.current ? "better" : row.incoming < row.current ? "lower" : ""}">${row.incoming}</span></div>`).join("")}
+    </div>
+  `;
+}
+
 function renderSwapPicker() {
   const picker = document.getElementById("swap-picker");
   if (!picker) return;
@@ -4966,9 +5102,11 @@ function renderSwapPicker() {
       <div class="swap-summary">
         <img src="${getPokemonImage(storedPokemon)}" alt="${storedPokemon.name}">
         <div>
-          <h3>${storedPokemon.name}</h3>
+          <span class="storage-location-label">Incoming from PC</span>
+          <h3>${escapeHtml(getPokemonDisplayName(storedPokemon))} · Lv${storedPokemon.level || 1}</h3>
           <p>Choose which team slot should be replaced.</p>
           <p>${renderTypeBadges(storedPokemon.types)}</p>
+          <p>Ability: <strong>${escapeHtml(formatAbilityName(storedPokemon.ability))}</strong></p>
         </div>
       </div>
       <div class="swap-team-grid">
@@ -4978,11 +5116,17 @@ function renderSwapPicker() {
               <button class="swap-slot-btn" onclick="confirmStorageSwap(${index})" ${
                 isInBattle && index === activeInventoryIndex ? "disabled" : ""
               }>
-                <img src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
-                <div>
-                  <strong>Slot ${index + 1}: ${pokemon.name}</strong>
-                  <span>${pokemon.currentHp}/${pokemon.maxHp} HP</span>
+                <div class="swap-slot-identity">
+                  <img src="${getPokemonImage(pokemon)}" alt="${pokemon.name}">
+                  <div>
+                    <small>Party slot ${index + 1}${index === activeInventoryIndex ? " · Active" : ""}</small>
+                    <strong>${escapeHtml(getPokemonDisplayName(pokemon))}</strong>
+                    <span>Lv${pokemon.level || 1} · ${pokemon.currentHp}/${pokemon.maxHp} HP</span>
+                    <span>${renderTypeBadges(pokemon.types || [pokemon.type])}</span>
+                    <span>${escapeHtml(formatAbilityName(pokemon.ability))}</span>
+                  </div>
                 </div>
+                ${renderPokemonComparison(storedPokemon, pokemon)}
               </button>
             `,
           )
@@ -5510,6 +5654,7 @@ async function confirmStorageSwap(
     return;
   }
 
+  const activeOwnedId = activePokemon?.ownedId;
   const response = await fetch("/api/swap-storage", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -5520,9 +5665,12 @@ async function confirmStorageSwap(
     alert(data.error);
     return;
   }
-  if (activeInventoryIndex >= (data.team || []).length)
-    activeInventoryIndex = 0;
-  await loadInventory();
+  partyTransferMessage = data.message;
+  const replacedActive = teamCache[teamIndex]?.ownedId === activeOwnedId;
+  await restorePartyAfterManagement(
+    replacedActive ? data.team?.[teamIndex]?.ownedId : activeOwnedId,
+    teamIndex,
+  );
   closeOverlay();
   renderBattlePlaceholder(data.message);
 }

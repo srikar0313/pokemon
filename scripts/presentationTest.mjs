@@ -69,6 +69,10 @@ import {
   matchesPokedexFilters,
   selectPokedexDisplayVariant,
 } from "../frontend/js/pokedexUi.mjs";
+import {
+  getPokemonComparison,
+  matchesStorageFilters,
+} from "../frontend/js/partyStorageUi.mjs";
 
 assert.deepEqual(Object.keys(BIOME_PRESENTATIONS).sort(), [
   "cave",
@@ -147,6 +151,29 @@ assert.equal(
   "normal:shiny",
   "a shiny-only collection entry did not default to its owned shiny artwork",
 );
+const storedJirachi = {
+  id: 300,
+  speciesId: 385,
+  name: "Jirachi",
+  level: 64,
+  rarity: "mythical",
+  types: ["Steel", "Psychic"],
+  shiny: true,
+  form: { id: "wish", category: "special" },
+};
+assert(matchesStorageFilters(storedJirachi, { search: "#385" }));
+assert(matchesStorageFilters(storedJirachi, { search: "psychic" }));
+assert(matchesStorageFilters(storedJirachi, { level: "60+" }));
+assert(matchesStorageFilters(storedJirachi, { shiny: "shiny" }));
+assert(matchesStorageFilters(storedJirachi, { form: "special" }));
+assert(!matchesStorageFilters(storedJirachi, { level: "20-39" }));
+assert(!matchesStorageFilters(storedJirachi, { shiny: "non-shiny" }));
+const partyComparison = getPokemonComparison(
+  { level: 30, maxHp: 120, attack: 90, defense: 70, specialAttack: 80, specialDefense: 75 },
+  { level: 20, maxHp: 100, attack: 65, defense: 85, specialAttack: 55, specialDefense: 60 },
+);
+assert.equal(partyComparison.find((entry) => entry.key === "attack").difference, 25);
+assert.equal(partyComparison.find((entry) => entry.key === "defense").difference, -15);
 assert(matchesPokedexFilters(pokedexEntry, { search: "#025" }));
 assert(matchesPokedexFilters(pokedexEntry, { search: "electric" }));
 assert(matchesPokedexFilters(pokedexEntry, { search: "forest" }));

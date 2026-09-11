@@ -14,6 +14,10 @@ const { createEncounterEngine } = require("../backend/encounterEngine");
 const { createBattleEngine } = require("../backend/battleEngine");
 const { createHandbookData } = require("../backend/handbookData");
 const variantUtils = require("../frontend/variantUtils");
+const {
+  reorderParty,
+  sendPartyPokemonToStorage,
+} = require("../backend/partyManager");
 
 const rootDir = path.join(__dirname, "..");
 const teamLimit = 6;
@@ -285,6 +289,47 @@ function main() {
   assert(
     randomizedParty.team.some((entry) => entry.name.startsWith("Box-")),
     "random party did not select from storage",
+  );
+  const managementTeam = Array.from({ length: teamLimit }, (_, index) => ({
+    ownedId: `owned-${index}`,
+    id: index + 1,
+    speciesId: index + 1,
+    name: `Party-${index + 1}`,
+    shiny: index === 2,
+    form: index === 2 ? { id: "alolan", category: "regional" } : null,
+  }));
+  const reorderedParty = reorderParty(managementTeam, 2, 0);
+  assert(
+    reorderedParty.success &&
+      reorderedParty.team.length === teamLimit &&
+      reorderedParty.team[0].ownedId === "owned-2" &&
+      reorderedParty.team[0].shiny &&
+      reorderedParty.team[0].form.id === "alolan" &&
+      new Set(reorderedParty.team.map((entry) => entry.ownedId)).size === teamLimit,
+    "party reorder lost order, identity, shiny, or form state",
+  );
+  assert(
+    reorderParty(managementTeam, -1, 2).error,
+    "party reorder accepted an invalid slot",
+  );
+  const sentToStorage = sendPartyPokemonToStorage(
+    reorderedParty.team,
+    [{ ownedId: "stored-existing", name: "Stored" }],
+    0,
+  );
+  assert(
+    sentToStorage.success &&
+      sentToStorage.team.length === teamLimit - 1 &&
+      sentToStorage.storage.length === 2 &&
+      sentToStorage.storage[1].ownedId === "owned-2" &&
+      sentToStorage.storage[1].speciesId === 3 &&
+      sentToStorage.storage[1].shiny &&
+      sentToStorage.storage[1].form.id === "alolan",
+    "Party to PC movement lost Pokemon identity or exceeded the party limit",
+  );
+  assert(
+    sendPartyPokemonToStorage([{ ownedId: "last" }], [], 0).error,
+    "the final party Pokemon could be sent to storage",
   );
   memoryFiles.clear();
   const partyPresetState = createMemoryGameState(pokemonUtils);
