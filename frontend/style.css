@@ -3775,6 +3775,7 @@ button:disabled {
 
 .wild-encounter-head h2 {
   margin: 3px 0 0;
+  color: #ffffff;
 }
 
 .wild-encounter-name {
@@ -4699,6 +4700,10 @@ button:disabled {
   padding: 5px;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 4px;
+}
+
+#battle-log:empty {
+  display: none;
 }
 
 #attack-btn {
@@ -5968,6 +5973,216 @@ button:disabled {
   .story-cinematic * {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Keep the complete battle command surface visible on shorter viewports. */
+@media (max-height: 900px) {
+  .screen-panel.wild-encounter-layer {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .screen-panel.wild-encounter-layer .battle-screen-card {
+    width: min(920px, 100%);
+    max-height: calc(100dvh - 24px);
+    padding: 10px;
+  }
+
+  .wild-encounter-head {
+    padding: 8px 10px;
+  }
+
+  .wild-encounter-head h2 {
+    margin-top: 1px;
+    font-size: 20px;
+  }
+
+  .wild-encounter-head .variant-badges,
+  .wild-encounter-head .wild-ownership {
+    margin-top: 4px;
+  }
+
+  #battle-screen .battle-help-row {
+    position: relative;
+    z-index: 9;
+    height: 0;
+    min-height: 0;
+    margin: 0;
+  }
+
+  #battle-screen .battle-help-row .handbook-help-button {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    margin: 0;
+  }
+
+  #battle-screen .battle-container {
+    min-height: 210px;
+    gap: 12px;
+    margin: 6px 0;
+    padding: 9px 12px;
+  }
+
+  #battle-screen .battle-pokemon {
+    gap: 5px;
+  }
+
+  #battle-screen .battle-pokemon > img {
+    width: 82px;
+    height: 82px;
+  }
+
+  #battle-screen .battle-info h3,
+  #battle-screen .battle-info p {
+    margin-block: 2px;
+  }
+
+  #battle-screen .battle-tactical-hud {
+    gap: 3px;
+    margin-top: 3px;
+  }
+
+  #battle-screen .battle-weather-hud {
+    margin: 4px auto -2px;
+  }
+
+  #battle-screen .move-buttons {
+    gap: 7px;
+    margin: 7px 0;
+  }
+
+  #battle-screen .tactical-move-card {
+    min-height: 88px;
+    padding-block: 7px;
+  }
+
+  #battle-screen .catch-options {
+    display: grid;
+    grid-template-columns: auto repeat(5, minmax(0, 1fr));
+    align-items: center;
+    gap: 6px;
+    margin: 6px 0;
+    padding: 6px 8px;
+  }
+
+  #battle-screen .catch-options h3 {
+    margin: 0;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  #battle-screen .catch-options button {
+    min-width: 0;
+    margin: 0;
+    padding: 7px 5px;
+    font-size: 12px;
+  }
+
+  #battle-screen .catch-options .ui-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  #battle-screen #battle-log {
+    max-height: 92px;
+    margin-top: 7px;
+    padding: 8px;
+  }
+
+  #battle-screen #battle-log p {
+    margin: 2px 0;
+    padding: 3px 5px;
+  }
+
+  #battle-screen .arena-log {
+    padding: 10px;
+  }
+
+  #battle-screen .arena-trainer-banner {
+    grid-template-columns: 62px minmax(0, 1fr) auto;
+    gap: 9px;
+    margin-bottom: 6px;
+    padding: 7px 9px;
+  }
+
+  #battle-screen .arena-trainer-sprite {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 700px) {
+  .screen-panel.wild-encounter-layer {
+    padding: 8px;
+  }
+
+  .screen-panel.wild-encounter-layer .battle-screen-card {
+    max-height: calc(100dvh - 16px);
+    padding: 8px;
+  }
+
+  .wild-encounter-head {
+    position: relative;
+    display: block;
+    padding-right: 8px;
+  }
+
+  .wild-encounter-head h2 {
+    max-width: calc(100% - 112px);
+  }
+
+  .wild-encounter-head .weather-info {
+    position: absolute;
+    top: 8px;
+    right: 9px;
+    max-width: 105px;
+    font-size: 12px;
+    text-align: right;
+  }
+
+  .wild-encounter-head .wild-ownership {
+    font-size: 11px;
+  }
+
+  #battle-screen .battle-container {
+    min-height: 0;
+    margin: 6px 0;
+    padding: 7px;
+  }
+
+  #battle-screen .battle-container .battle-pokemon {
+    grid-template-columns: 68px minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  #battle-screen .battle-container .battle-pokemon > img {
+    width: 68px;
+    height: 68px;
+  }
+
+  #battle-screen .move-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #battle-screen .tactical-move-card {
+    min-height: 86px;
+    padding: 6px 8px 6px 11px;
+  }
+
+  #battle-screen .move-card-head strong {
+    font-size: 13px;
+  }
+
+  #battle-screen .catch-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #battle-screen .catch-options h3 {
+    grid-column: auto;
+    text-align: left;
+    white-space: normal;
   }
 }
 
