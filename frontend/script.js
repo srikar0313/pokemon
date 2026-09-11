@@ -77,6 +77,8 @@ const ROUTE_ENCOUNTER_CHANCES = {
   blocked: 0,
 };
 const storageUiState = {
+  mode: "storage",
+  filtersOpen: window.innerWidth > 700,
   search: "",
   type: "all",
   level: "all",
@@ -4753,6 +4755,21 @@ function closeStoragePokemonDetail() {
   renderStorageBrowser();
 }
 
+function setStorageMode(mode) {
+  storageUiState.mode = mode === "teams" ? "teams" : "storage";
+  storageUiState.detailIndex = null;
+  renderStorageBrowser();
+}
+
+function renderStorageModeTabs() {
+  return `
+    <nav class="pc-mode-tabs" aria-label="PC management sections">
+      <button class="${storageUiState.mode === "storage" ? "active" : ""}" onclick="setStorageMode('storage')">Pokémon Storage</button>
+      <button class="${storageUiState.mode === "teams" ? "active" : ""}" onclick="setStorageMode('teams')">Saved Teams</button>
+    </nav>
+  `;
+}
+
 function renderStorageBrowser(storage = storageCache) {
   const browser = document.getElementById("storage-browser");
   if (!browser) return;
@@ -4767,13 +4784,18 @@ function renderStorageBrowser(storage = storageCache) {
       <div class="storage-detail-head">
         <button class="secondary-btn" onclick="closeStoragePokemonDetail()">Back to Storage</button>
         <div class="storage-card-actions">
-          <button class="secondary-btn" onclick="addPokemonToPartyPreset('${escapeHtml(pokemon.ownedId)}')" ${isPokemonInActivePreset(pokemon.ownedId) || isActivePartyPresetFull() ? "disabled" : ""}>${isPokemonInActivePreset(pokemon.ownedId) ? "Already Added" : isActivePartyPresetFull() ? "Party Full" : `Add to Party ${activePartyPresetSlot}`}</button>
-          <button class="swap-btn" onclick="swapWithStorage(${index})">Move to Team</button>
+          <button class="storage-party-btn" onclick="swapWithStorage(${index})">${teamCache.length < PARTY_LIMIT ? "Add to Active Party" : "Swap into Active Party"}</button>
+          <button class="secondary-btn" onclick="addPokemonToPartyPreset('${escapeHtml(pokemon.ownedId)}')" ${isPokemonInActivePreset(pokemon.ownedId) || isActivePartyPresetFull() ? "disabled" : ""}>${isPokemonInActivePreset(pokemon.ownedId) ? `Saved in Team ${activePartyPresetSlot}` : isActivePartyPresetFull() ? `Saved Team ${activePartyPresetSlot} Full` : `Save to Team ${activePartyPresetSlot}`}</button>
           <button class="mini-btn" onclick="releasePokemon(event, 'storage', ${index})">Release</button>
         </div>
       </div>
       ${renderPokemonDetailCard(pokemon, "PC Storage", "storage", index)}
     `;
+    return;
+  }
+
+  if (storageUiState.mode === "teams") {
+    browser.innerHTML = `${renderStorageModeTabs()}${renderPartyPresetSlots()}`;
     return;
   }
 
@@ -4793,17 +4815,19 @@ function renderStorageBrowser(storage = storageCache) {
   const showingEnd = Math.min(start + STORAGE_PAGE_SIZE, filtered.length);
 
   browser.innerHTML = `
-    ${renderPartyPresetSlots()}
+    ${renderStorageModeTabs()}
     <div class="storage-browser-head">
       <div>
         <h3>Storage ${storage.length}</h3>
-        <p>Search your PC, inspect a Pokémon, or move it directly into the active Party.</p>
+        <p>Choose a Pokémon below to add or swap it into your active Party.</p>
       </div>
       <div class="storage-browser-actions">
         <strong>Showing ${showingStart}-${showingEnd} of ${filtered.length}</strong>
       </div>
     </div>
-    <div class="storage-controls">
+    <details class="storage-filter-panel" ${storageUiState.filtersOpen ? "open" : ""} ontoggle="storageUiState.filtersOpen = this.open">
+      <summary>Search &amp; filters</summary>
+      <div class="storage-controls">
       <label>Search
         <input id="storage-search" type="search" value="${escapeHtml(storageUiState.search)}" placeholder="Name, #Dex, or type" oninput="updateStorageFilter('search', this.value)">
       </label>
@@ -4856,7 +4880,8 @@ function renderStorageBrowser(storage = storageCache) {
           <option value="rarity" ${storageUiState.sort === "rarity" ? "selected" : ""}>Rarity</option>
         </select>
       </label>
-    </div>
+      </div>
+    </details>
     <div class="storage-grid">
       ${
         visible.length
@@ -4876,9 +4901,9 @@ function renderStorageBrowser(storage = storageCache) {
                       <small>${hp}/${pokemon.maxHp} HP · ${fainted ? "Fainted" : formatStatus(pokemon.status)} · ${escapeHtml(formatAbilityName(pokemon.ability))}</small>
                     </div>
                     <div class="storage-card-actions">
-                      <button class="mini-btn preset-add-btn" onclick="event.stopPropagation(); addPokemonToPartyPreset('${escapeHtml(pokemon.ownedId)}')" ${isPokemonInActivePreset(pokemon.ownedId) || isActivePartyPresetFull() ? "disabled" : ""}>${isPokemonInActivePreset(pokemon.ownedId) ? "Added" : isActivePartyPresetFull() ? "Full" : `Add to P${activePartyPresetSlot}`}</button>
-                      <button class="mini-btn swap-btn" onclick="event.stopPropagation(); swapWithStorage(${originalIndex})">Team</button>
-                      <button class="mini-btn" onclick="releasePokemon(event, 'storage', ${originalIndex})">Release</button>
+                      <button class="storage-party-btn" onclick="event.stopPropagation(); swapWithStorage(${originalIndex})">${teamCache.length < PARTY_LIMIT ? "Add to Active Party" : "Swap into Active Party"}</button>
+                      <button class="mini-btn preset-add-btn" onclick="event.stopPropagation(); addPokemonToPartyPreset('${escapeHtml(pokemon.ownedId)}')" ${isPokemonInActivePreset(pokemon.ownedId) || isActivePartyPresetFull() ? "disabled" : ""}>${isPokemonInActivePreset(pokemon.ownedId) ? `Saved in Team ${activePartyPresetSlot}` : isActivePartyPresetFull() ? `Saved Team ${activePartyPresetSlot} Full` : `Save to Team ${activePartyPresetSlot}`}</button>
+                      <button class="storage-release-btn" onclick="releasePokemon(event, 'storage', ${originalIndex})">Release</button>
                     </div>
                   </article>
                 `;
@@ -4911,8 +4936,8 @@ function renderPartyPresetSlots() {
     <section class="party-presets-panel" aria-label="Saved party slots">
       <div class="party-presets-title">
         <div>
-          <h3>Party Decks</h3>
-          <span>Editing Party ${activePartyPresetSlot}. Your active team changes only when you press Use Party.</span>
+          <h3>Saved Teams</h3>
+          <span>Editing saved Team ${activePartyPresetSlot}. Press Use Team to make it your active Party.</span>
         </div>
         ${partyPresetMessage ? `<strong class="party-preset-message">${escapeHtml(partyPresetMessage)}</strong>` : ""}
       </div>
@@ -4921,7 +4946,7 @@ function renderPartyPresetSlots() {
           .map(
             (preset) => `
               <button class="party-deck-tab${preset.slot === activePartyPresetSlot ? " active" : ""}" onclick="selectPartyPresetSlot(${preset.slot})">
-                Party ${preset.slot}<span>${(preset.pokemon || []).length}/${PARTY_LIMIT}</span>
+                Team ${preset.slot}<span>${(preset.pokemon || []).length}/${PARTY_LIMIT}</span>
               </button>`,
           )
           .join("")}
@@ -4940,13 +4965,13 @@ function renderPartyPresetSlots() {
             : `<div class="party-deck-card empty">
                 <span class="party-deck-number">${position + 1}</span>
                 <strong>+</strong>
-                <small>Add from storage</small>
+                <small>Choose below</small>
               </div>`;
         }).join("")}
       </div>
       ${selectedPreset?.missingCount ? `<small>${selectedPreset.missingCount} released Pokemon unavailable</small>` : ""}
       <div class="party-deck-current">
-        <strong>Current team</strong>
+        <strong>Add from active Party</strong>
         <div class="party-deck-current-list">
           ${teamCache
             .map(
@@ -4959,9 +4984,9 @@ function renderPartyPresetSlots() {
       </div>
       <div class="party-preset-actions">
         <button class="secondary-btn" onclick="savePartyPresetSlot(${activePartyPresetSlot})">Copy Current Team</button>
-        <button class="secondary-btn random-slot-btn" onclick="randomizePartyFromStorage()" ${storageRandomizing ? "disabled" : ""}>${storageRandomizing ? "Choosing..." : `Randomize Party ${activePartyPresetSlot}`}</button>
+        <button class="secondary-btn random-slot-btn" onclick="randomizePartyFromStorage()" ${storageRandomizing ? "disabled" : ""}>${storageRandomizing ? "Choosing..." : `Randomize Team ${activePartyPresetSlot}`}</button>
         <button class="secondary-btn" onclick="clearPartyPresetSlot()" ${selectedPokemon.length === 0 ? "disabled" : ""}>Clear</button>
-        <button class="primary-btn" onclick="loadPartyPresetSlot(${activePartyPresetSlot})" ${selectedPokemon.length === 0 ? "disabled" : ""}>Use Party ${activePartyPresetSlot}</button>
+        <button class="primary-btn" onclick="loadPartyPresetSlot(${activePartyPresetSlot})" ${selectedPokemon.length === 0 ? "disabled" : ""}>Use Team ${activePartyPresetSlot}</button>
       </div>
     </section>
   `;
@@ -5127,6 +5152,7 @@ function renderSwapPicker() {
                   </div>
                 </div>
                 ${renderPokemonComparison(storedPokemon, pokemon)}
+                <span class="swap-choice-label">Choose this slot</span>
               </button>
             `,
           )
@@ -5463,6 +5489,10 @@ function releasePokemon(event, section, index) {
 }
 
 async function swapWithStorage(storageIndex) {
+  if (isPartyManagementLocked()) {
+    alert("Finish the current battle before editing your party.");
+    return;
+  }
   if (teamCache.length < PARTY_LIMIT) {
     await confirmStorageSwap(teamCache.length, storageIndex);
     return;
@@ -5486,7 +5516,7 @@ async function randomizePartyFromStorage() {
   }
   if (
     !confirm(
-      `Replace saved Party ${activePartyPresetSlot} with ${PARTY_LIMIT} random owned Pokemon? Your active team will not change.`,
+      `Replace saved Team ${activePartyPresetSlot} with ${PARTY_LIMIT} random owned Pokemon? Your active Party will not change.`,
     )
   ) {
     return;
@@ -5507,7 +5537,7 @@ async function randomizePartyFromStorage() {
     }
 
     partyPresetCache = data.slots || partyPresetCache;
-    partyPresetMessage = `Party ${activePartyPresetSlot} randomized. Press Use Party to activate it.`;
+    partyPresetMessage = `Saved Team ${activePartyPresetSlot} randomized. Press Use Team to activate it.`;
   } catch (error) {
     alert("Could not create a random party.");
   } finally {
@@ -5522,7 +5552,7 @@ async function savePartyPresetSlot(slot) {
     return;
   }
   const existing = partyPresetCache.find((preset) => preset.slot === slot);
-  if (existing?.pokemon?.length && !confirm(`Replace saved Party ${slot}?`)) {
+  if (existing?.pokemon?.length && !confirm(`Replace saved Team ${slot}?`)) {
     return;
   }
   const response = await fetch("/api/party-presets/save", {
@@ -5536,7 +5566,7 @@ async function savePartyPresetSlot(slot) {
     return;
   }
   partyPresetCache = data.slots || partyPresetCache;
-  partyPresetMessage = `Current team saved in Party ${slot}.`;
+  partyPresetMessage = `Active Party saved in Team ${slot}.`;
   renderStorageBrowser();
 }
 
@@ -5577,7 +5607,7 @@ async function addPokemonToPartyPreset(ownedId) {
     return;
   }
   if (await updatePartyPresetSlot("add", { ownedId })) {
-    partyPresetMessage = `${pokemon.name} added to Party ${activePartyPresetSlot}.`;
+    partyPresetMessage = `${pokemon.name} saved in Team ${activePartyPresetSlot}.`;
     renderStorageBrowser();
   }
 }
@@ -5588,17 +5618,17 @@ async function removePokemonFromPartyPreset(position) {
   );
   const pokemon = preset?.pokemon?.[position];
   if (await updatePartyPresetSlot("remove", { position })) {
-    partyPresetMessage = `${pokemon?.name || "Pokemon"} removed from Party ${activePartyPresetSlot}.`;
+    partyPresetMessage = `${pokemon?.name || "Pokemon"} removed from Team ${activePartyPresetSlot}.`;
     renderStorageBrowser();
   }
 }
 
 async function clearPartyPresetSlot() {
-  if (!confirm(`Clear every Pokemon from Party ${activePartyPresetSlot}?`)) {
+  if (!confirm(`Clear every Pokemon from saved Team ${activePartyPresetSlot}?`)) {
     return;
   }
   if (await updatePartyPresetSlot("clear")) {
-    partyPresetMessage = `Party ${activePartyPresetSlot} cleared.`;
+    partyPresetMessage = `Saved Team ${activePartyPresetSlot} cleared.`;
     renderStorageBrowser();
   }
 }
@@ -5615,7 +5645,7 @@ async function loadPartyPresetSlot(slot) {
   });
   const data = await response.json();
   if (!response.ok || data.error) {
-    alert(data.error || "Could not load this party.");
+    alert(data.error || "Could not load this saved team.");
     return;
   }
   activeInventoryIndex = 0;
@@ -5623,13 +5653,13 @@ async function loadPartyPresetSlot(slot) {
   storageUiState.page = 1;
   await loadInventory();
   partyPresetMessage = data.missingCount
-    ? `Party ${slot} loaded with ${data.missingCount} unavailable member.`
-    : `Party ${slot} is now your active team.`;
+    ? `Team ${slot} loaded with ${data.missingCount} unavailable member.`
+    : `Team ${slot} is now your active Party.`;
   renderStorageBrowser();
   renderBattlePlaceholder(
     data.missingCount
-      ? `Party ${slot} loaded without ${data.missingCount} unavailable Pokemon.`
-      : `Party ${slot} loaded.`,
+      ? `Team ${slot} loaded without ${data.missingCount} unavailable Pokemon.`
+      : `Team ${slot} loaded.`,
   );
 }
 

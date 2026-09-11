@@ -5338,7 +5338,7 @@ button:disabled {
 
 .party-slot-top {
   color: #667b90;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -5405,7 +5405,7 @@ button:disabled {
 .party-hp-line,
 .party-status-line {
   color: #60758c;
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .party-types { margin: 4px 0; }
@@ -5421,10 +5421,10 @@ button:disabled {
 
 .party-slot-actions button {
   min-width: 0;
-  min-height: 30px;
+  min-height: 36px;
   margin: 0;
-  padding: 5px;
-  font-size: 8px;
+  padding: 6px;
+  font-size: 10px;
 }
 
 .party-order-btn {
@@ -5457,6 +5457,50 @@ button:disabled {
 
 .storage-controls {
   grid-template-columns: minmax(190px, 1.5fr) repeat(6, minmax(96px, 1fr));
+}
+
+.pc-mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 5px;
+  border-radius: 8px;
+  background: #dfe9f2;
+}
+
+.pc-mode-tabs button {
+  min-height: 44px;
+  margin: 0;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #405b76;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.pc-mode-tabs button.active {
+  border-color: #2f74b5;
+  background: #ffffff;
+  color: #245f98;
+  box-shadow: 0 3px 8px rgba(36, 78, 117, 0.12);
+}
+
+.storage-filter-panel {
+  margin: 12px 0;
+}
+
+.storage-filter-panel > summary {
+  width: fit-content;
+  cursor: pointer;
+  color: #365a7d;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.storage-filter-panel[open] > summary {
+  margin-bottom: 8px;
 }
 
 .storage-compact-card {
@@ -5492,7 +5536,7 @@ button:disabled {
   border-radius: 3px;
   background: #f4cf4d;
   color: #5e4500;
-  font-size: 7px;
+  font-size: 10px;
   font-weight: 900;
 }
 
@@ -5502,6 +5546,68 @@ button:disabled {
 
 .storage-compact-card.shiny {
   box-shadow: inset 0 0 0 1px rgba(225, 177, 25, 0.34);
+}
+
+.storage-card-copy > strong {
+  color: #243e58;
+  font-size: 15px;
+}
+
+.storage-card-copy > span,
+.storage-card-copy > small,
+.storage-location-label {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.storage-card-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 7px;
+}
+
+.storage-card-actions button {
+  min-height: 36px;
+  margin: 0;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.storage-card-actions .storage-party-btn {
+  grid-column: 1 / -1;
+  min-height: 42px;
+  border: 2px solid #245f98;
+  border-radius: 6px;
+  background: #2f74b5;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.storage-card-actions .storage-party-btn:hover,
+.storage-card-actions .storage-party-btn:focus-visible {
+  border-color: #174d80;
+  background: #245f98;
+}
+
+.storage-card-actions .preset-add-btn {
+  border: 1px solid #d3a51f;
+  background: #ffd75a;
+  color: #442f00;
+}
+
+.storage-card-actions .preset-add-btn:hover,
+.storage-card-actions .preset-add-btn:focus-visible {
+  background: #f2c742;
+  color: #342400;
+}
+
+.storage-release-btn {
+  border: 1px solid #d9a9a9;
+  border-radius: 5px;
+  background: #fff7f7;
+  color: #9b3838;
 }
 
 .swap-team-grid {
@@ -5539,7 +5645,7 @@ button:disabled {
 
 .swap-slot-identity small {
   color: #6c7e90;
-  font-size: 8px;
+  font-size: 10px;
   text-transform: uppercase;
 }
 
@@ -5555,7 +5661,7 @@ button:disabled {
   grid-template-columns: 1fr 46px 1fr;
   gap: 3px;
   color: #64768a;
-  font-size: 8px;
+  font-size: 10px;
   text-align: center;
 }
 
@@ -5563,6 +5669,18 @@ button:disabled {
 .swap-comparison .better { color: #18774b; font-weight: 900; }
 .swap-comparison .lower { color: #a04747; }
 .swap-comparison-head { margin-bottom: 3px; font-weight: 900; }
+
+.swap-choice-label {
+  grid-column: 1 / -1;
+  display: block;
+  border-radius: 5px;
+  background: #2f74b5;
+  color: #ffffff !important;
+  padding: 8px;
+  font-size: 12px !important;
+  font-weight: 900;
+  text-align: center;
+}
 
 @keyframes party-transfer-arrive {
   from { opacity: 0; transform: translateY(-5px); }
@@ -5595,6 +5713,16 @@ button:disabled {
   .storage-controls label:first-child { grid-column: 1 / -1; }
   .swap-slot-btn { grid-template-columns: 1fr; }
   .swap-comparison { border-top: 1px solid #dbe4ec; border-left: 0; padding-top: 7px; padding-left: 0; }
+  .storage-card-actions button,
+  .storage-card-actions .storage-party-btn { min-height: 44px; font-size: 13px; }
+  .storage-filter-panel > summary {
+    width: 100%;
+    min-height: 42px;
+    border: 2px solid #cbdbea;
+    border-radius: 6px;
+    padding: 10px 12px;
+    background: #f4f8fc;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
