@@ -471,15 +471,21 @@ function createGameState({
     } else if (action === "add") {
       const normalizedOwnedId = String(ownedId || "").trim();
       const { team, storage } = loadTeamAndStorage();
-      const ownedPokemon = [...team, ...storage].find(
+      const ownedPokemonList = [...team, ...storage];
+      const ownedIds = new Set(
+        ownedPokemonList.map((pokemon) => pokemon.ownedId),
+      );
+      // Released Pokemon must not continue occupying invisible preset slots.
+      preset.pokemonIds = preset.pokemonIds.filter((id) => ownedIds.has(id));
+      const ownedPokemon = ownedPokemonList.find(
         (pokemon) => pokemon.ownedId === normalizedOwnedId,
       );
       if (!ownedPokemon) return { error: "That Pokemon is no longer owned." };
       if (preset.pokemonIds.includes(normalizedOwnedId)) {
-        return { error: `${ownedPokemon.name} is already in Party ${slot}.` };
+        return { error: `${ownedPokemon.name} is already in saved Team ${slot}.` };
       }
       if (preset.pokemonIds.length >= teamLimit) {
-        return { error: `Party ${slot} already has ${teamLimit} Pokemon.` };
+        return { error: `Saved Team ${slot} already has ${teamLimit} Pokemon.` };
       }
       preset.pokemonIds.push(normalizedOwnedId);
     } else {

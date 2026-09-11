@@ -402,6 +402,41 @@ function main() {
     presetOwnedIds.length === 5 && new Set(presetOwnedIds).size === 5,
     "party preset load lost or duplicated owned Pokemon",
   );
+  memoryFiles.clear();
+  const stalePresetState = createMemoryGameState(pokemonUtils);
+  const stalePresetOwned = [
+    "Pikachu",
+    "Bulbasaur",
+    "Charmander",
+    "Squirtle",
+    "Caterpie",
+    "Eevee",
+  ].map((name) =>
+    pokemonUtils.normalizePokemon(pokemonUtils.getPokemonTemplateByName(name)),
+  );
+  stalePresetState.saveTeamAndStorage(
+    stalePresetOwned.slice(0, 3),
+    stalePresetOwned.slice(3),
+  );
+  const stalePlayerState = stalePresetState.loadPlayerState();
+  stalePlayerState.partyPresets[0] = {
+    slot: 1,
+    pokemonIds: [
+      ...stalePresetOwned.slice(0, 5).map((pokemon) => pokemon.ownedId),
+      "released-pokemon-id",
+    ],
+  };
+  stalePresetState.savePlayerState(stalePlayerState);
+  const repairedPreset = stalePresetState.updatePartyPreset(1, {
+    action: "add",
+    ownedId: stalePresetOwned[5].ownedId,
+  });
+  assert(
+    repairedPreset.success &&
+      repairedPreset.slots[0].pokemon.length === teamLimit &&
+      repairedPreset.slots[0].missingCount === 0,
+    "an unavailable Pokemon incorrectly occupied a saved-team slot",
+  );
   assert(
     gameData.shinyRollChance === 0.03,
     `expected a 3% shiny chance, got ${gameData.shinyRollChance}`,
