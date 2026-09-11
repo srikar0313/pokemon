@@ -806,6 +806,10 @@ function loadGameData(options = {}) {
       summary: {},
       entries: [],
     }),
+    story: loadJson(path.join(dataDir, "story.json"), {
+      chapters: [],
+      events: [],
+    }),
   };
   if (shouldValidate) {
     logValidationGroups(validateGameData(gameData));

@@ -93,6 +93,15 @@ const areaPlayerPositions = {};
 const routeDiscovery = {};
 const recentRouteDiscoveries = {};
 let lastZoneEventAt = 0;
+let storySnapshot = null;
+let storyQueue = [];
+let activeStoryEvent = null;
+let activeStoryLineIndex = 0;
+let storyTypingTimer = null;
+let storyLineTyping = false;
+let storyCompletionPending = false;
+let storyInitialized = false;
+const storyTriggerPending = new Set();
 
 const icons = {
   standard: "assets/icons/ball-standard.svg",
@@ -212,9 +221,184 @@ async function init() {
     await loadInventory();
     await loadShop();
     setActiveScreen("explore");
+    storyInitialized = true;
+    await requestStoryEvents("startup");
+    await requestStoryEvents("resume");
   } catch (error) {
     console.error("Error:", error);
   }
+}
+
+function getStoryChapterTitle(event) {
+  return (
+    storySnapshot?.chapters?.find((chapter) => chapter.id === event.chapter)
+      ?.title || event.title
+  );
+}
+
+function getStoryPortrait(portrait) {
+  return trainerSprites[portrait] || trainerSprites.guide || trainerSprites.player;
+}
+
+function queueStoryEvents(events = [], context = {}) {
+  const normalized = events
+    .map((event) => {
+      const value = window.StoryPresentation?.normalizeStoryEvent
+        ? window.StoryPresentation.normalizeStoryEvent(event)
+        : event;
+      return { ...value, context: { ...context, ...(value.context || {}) } };
+    })
+    .filter((event) => event?.id && event.dialogue?.length);
+  const knownIds = new Set([
+    activeStoryEvent?.id,
+    ...storyQueue.map((event) => event.id),
+  ]);
+  normalized.forEach((event) => {
+    if (!knownIds.has(event.id)) {
+      storyQueue.push(event);
+      knownIds.add(event.id);
+    }
+  });
+  if (!activeStoryEvent) showNextStoryEvent();
+}
+
+async function requestStoryEvents(trigger, context = {}) {
+  const requestKey = `${trigger}:${context.area || context.badge || "global"}`;
+  if (storyTriggerPending.has(requestKey)) return;
+  storyTriggerPending.add(requestKey);
+  try {
+    const response = await fetch("/api/story/trigger", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ trigger, context }),
+    });
+    const data = await response.json();
+    if (!response.ok || data.error) return;
+    storySnapshot = data.story || storySnapshot;
+    queueStoryEvents(data.events || [], context);
+  } catch (error) {
+    console.warn("Story event check failed:", error);
+  } finally {
+    storyTriggerPending.delete(requestKey);
+  }
+}
+
+function clearStoryTyping() {
+  if (storyTypingTimer) clearInterval(storyTypingTimer);
+  storyTypingTimer = null;
+  storyLineTyping = false;
+}
+
+function showNextStoryEvent() {
+  if (activeStoryEvent || storyCompletionPending) return;
+  activeStoryEvent = storyQueue.shift() || null;
+  if (!activeStoryEvent) return;
+  activeStoryLineIndex = 0;
+  renderStoryScene();
+}
+
+function renderStoryScene() {
+  const layer = document.getElementById("story-cinematic");
+  const event = activeStoryEvent;
+  const line = event?.dialogue?.[activeStoryLineIndex];
+  if (!layer || !event || !line) return;
+  clearStoryTyping();
+  const motion = window.StoryPresentation?.getStoryMotionProfile
+    ? window.StoryPresentation.getStoryMotionProfile(prefersReducedMotion())
+    : { characterDelay: prefersReducedMotion() ? 0 : 18, transition: "cinematic" };
+  const progress = window.StoryPresentation?.getStoryProgress
+    ? window.StoryPresentation.getStoryProgress(event, activeStoryLineIndex)
+    : { current: activeStoryLineIndex + 1, total: event.dialogue.length };
+  layer.classList.remove("hidden", "story-motion-none");
+  layer.classList.toggle("story-motion-none", motion.transition === "none");
+  document.getElementById("story-act-label").textContent = `ACT ${event.act}`;
+  document.getElementById("story-scene-title").textContent = getStoryChapterTitle(event);
+  document.getElementById("story-scene-name").textContent = event.title;
+  document.getElementById("story-speaker-name").textContent = line.speaker;
+  document.getElementById("story-line-progress").textContent = `${progress.current} / ${progress.total}`;
+  const portrait = document.getElementById("story-speaker-portrait");
+  portrait.innerHTML = `<img src="${getStoryPortrait(event.speaker?.portrait)}" alt="${escapeHtml(event.speaker?.name || line.speaker)}">`;
+  const text = document.getElementById("story-dialogue-text");
+  text.textContent = "";
+  if (!motion.characterDelay) {
+    text.textContent = line.text;
+    return;
+  }
+  let characterIndex = 0;
+  storyLineTyping = true;
+  storyTypingTimer = setInterval(() => {
+    characterIndex += 1;
+    text.textContent = line.text.slice(0, characterIndex);
+    if (characterIndex >= line.text.length) clearStoryTyping();
+  }, motion.characterDelay);
+}
+
+function revealStoryLine() {
+  const line = activeStoryEvent?.dialogue?.[activeStoryLineIndex];
+  const text = document.getElementById("story-dialogue-text");
+  if (!line || !text) return;
+  clearStoryTyping();
+  text.textContent = line.text;
+}
+
+async function completeActiveStoryEvent() {
+  if (!activeStoryEvent || storyCompletionPending) return;
+  storyCompletionPending = true;
+  clearStoryTyping();
+  const completedEvent = activeStoryEvent;
+  try {
+    const response = await fetch("/api/story/complete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        eventId: completedEvent.id,
+        context: completedEvent.context || {},
+      }),
+    });
+    const data = await response.json();
+    if (!response.ok || data.error) throw new Error(data.error || "Story could not be saved");
+    playerState = data.state || playerState;
+    storySnapshot = data.story || storySnapshot;
+    displayStats();
+    if (data.reward && !data.alreadyCompleted) {
+      const rewardLines = [];
+      if (data.reward.coins) rewardLines.push(`Story reward: +${data.reward.coins} coins.`);
+      (data.reward.items || []).forEach((item) => {
+        rewardLines.push(`Story reward: ${item.name} x${item.quantity}.`);
+      });
+      if (rewardLines.length) showRewardPopup(rewardLines);
+    }
+    document.getElementById("story-cinematic")?.classList.add("hidden");
+    activeStoryEvent = null;
+    if (completedEvent.id === "prologue-first-light" && selectedArea) {
+      await requestStoryEvents("area-enter", { area: selectedArea });
+    }
+    showNextStoryEvent();
+  } catch (error) {
+    alert(error.message || "Could not save story progress.");
+  } finally {
+    storyCompletionPending = false;
+    if (!activeStoryEvent) showNextStoryEvent();
+  }
+}
+
+function advanceStoryScene() {
+  if (!activeStoryEvent || storyCompletionPending) return;
+  if (storyLineTyping) {
+    revealStoryLine();
+    return;
+  }
+  if (activeStoryLineIndex < activeStoryEvent.dialogue.length - 1) {
+    activeStoryLineIndex += 1;
+    renderStoryScene();
+    return;
+  }
+  completeActiveStoryEvent();
+}
+
+function skipStoryScene() {
+  if (!activeStoryEvent || storyCompletionPending) return;
+  completeActiveStoryEvent();
 }
 
 function setActiveScreen(screen) {
@@ -1927,6 +2111,9 @@ async function loadAreaWorld(area) {
   renderRouteWorld();
   presentedRouteArea = area;
   syncOverworldPresentation({ playEntry: areaChanged });
+  if (areaChanged && storyInitialized) {
+    requestStoryEvents("area-enter", { area });
+  }
 }
 
 function getDefaultPlayerPosition(area, map) {
@@ -3023,6 +3210,9 @@ async function gymMove(moveName) {
       await displayAreas();
       await loadGyms();
       await loadEliteFour();
+      queueStoryEvents(data.storyEvents || [], {
+        badge: previousState?.gym?.badge,
+      });
     },
     afterContinue: async () => {
       showGymMoveButtons(normalizePokemon(gymBattle.playerPokemon));
@@ -3077,6 +3267,9 @@ async function gymSwitch(pokemonIndex) {
       await displayAreas();
       await loadGyms();
       await loadEliteFour();
+      queueStoryEvents(data.storyEvents || [], {
+        badge: previousState?.gym?.badge,
+      });
     },
     afterContinue: async () => {
       showGymMoveButtons(normalizePokemon(gymBattle.playerPokemon));
@@ -6987,7 +7180,7 @@ function getNpcTypeIcon(type) {
 }
 
 function handleExploreKeydown(event) {
-  if (activeScreen !== "explore" || activeOverlay) return;
+  if (activeScreen !== "explore" || activeOverlay || activeStoryEvent) return;
   if (npcBattle || gymBattle || eliteBattle || isInBattle) return;
 
   const key = event.key.toLowerCase();
@@ -7009,6 +7202,20 @@ function handleExploreKeydown(event) {
   }
 }
 
+function handleStoryKeydown(event) {
+  if (!activeStoryEvent) return;
+  if (["Enter", " ", "ArrowDown"].includes(event.key)) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    advanceStoryScene();
+  } else if (event.key === "Escape") {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    skipStoryScene();
+  }
+}
+
+document.addEventListener("keydown", handleStoryKeydown, true);
 document.addEventListener("keydown", handleExploreKeydown);
 document.addEventListener("error", handleExternalImageError, true);
 window.addEventListener("battle-presentation-ready", () => {

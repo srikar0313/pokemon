@@ -13,6 +13,10 @@ const { createEvolutionEngine } = require("../backend/evolutionEngine");
 const { createEncounterEngine } = require("../backend/encounterEngine");
 const { createBattleEngine } = require("../backend/battleEngine");
 const { createHandbookData } = require("../backend/handbookData");
+const {
+  STORY_STATE_VERSION,
+  createStoryEngine,
+} = require("../backend/storyEngine");
 const variantUtils = require("../frontend/variantUtils");
 const {
   reorderParty,
@@ -50,7 +54,7 @@ function assert(condition, message) {
   }
 }
 
-function createMemoryGameState(pokemonUtils) {
+function createMemoryGameState(pokemonUtils, normalizeStoryState = null) {
   const memoryRead = (filePath, fallback) =>
     memoryFiles.has(filePath) ? memoryFiles.get(filePath) : fallback;
   const memoryWrite = (filePath, data) =>
@@ -74,11 +78,16 @@ function createMemoryGameState(pokemonUtils) {
     getEvolutionFamilyKey: pokemonUtils.getEvolutionFamilyKey,
     getPokemonVariantKey: pokemonUtils.getPokemonVariantKey,
     resolvePokemonSpeciesId: pokemonUtils.getPokemonSpeciesId,
+    normalizeStoryState,
   });
 }
 
 function main() {
   const gameData = loadGameData();
+  const storyEngine = createStoryEngine({
+    storyData: gameData.story,
+    itemCatalog: gameData.items,
+  });
   const handbook = createHandbookData(gameData.moves);
   assert(
     Object.keys(handbook.typeChart).length === 18,
@@ -121,6 +130,7 @@ function main() {
     getEvolutionFamilyKey: pokemonUtils.getEvolutionFamilyKey,
     getPokemonVariantKey: pokemonUtils.getPokemonVariantKey,
     resolvePokemonSpeciesId: pokemonUtils.getPokemonSpeciesId,
+    normalizeStoryState: storyEngine.normalizeStoryState,
   });
 
   const playerState = gameState.loadPlayerState();
@@ -233,6 +243,133 @@ function main() {
   );
 
   assert(playerState.trainerName, "player state did not load");
+  assert(
+    playerState.story?.version === STORY_STATE_VERSION,
+    "player story state did not normalize",
+  );
+  const freshStoryPlayer = {
+    trainerName: "Story Tester",
+    coins: 0,
+    money: 0,
+    level: 1,
+    badges: [],
+    defeatedNpcs: [],
+    items: {},
+    pokedex: { seen: [], caught: [] },
+    story: {
+      version: STORY_STATE_VERSION,
+      currentAct: 1,
+      currentChapter: "act-1",
+      flags: [],
+      completedEventIds: [],
+      rewardedEventIds: [],
+      badgeMilestones: [],
+      discoveredLocations: [],
+    },
+  };
+  const prologueEvents = storyEngine.getEligibleEvents(
+    freshStoryPlayer,
+    "startup",
+  );
+  assert(
+    prologueEvents.length === 1 &&
+      prologueEvents[0].id === "prologue-first-light",
+    "new player did not receive the prologue event",
+  );
+  const prologueResult = storyEngine.completeEvent(
+    freshStoryPlayer,
+    "prologue-first-light",
+  );
+  assert(
+    prologueResult.success &&
+      prologueResult.state.story.flags.includes("journey_started") &&
+      prologueResult.state.items.standard === 3,
+    "prologue flags or one-time reward were not applied",
+  );
+  const repeatedPrologue = storyEngine.completeEvent(
+    prologueResult.state,
+    "prologue-first-light",
+  );
+  assert(
+    repeatedPrologue.alreadyCompleted &&
+      repeatedPrologue.reward === null &&
+      repeatedPrologue.state.items.standard === 3,
+    "completed story event duplicated its reward",
+  );
+  const forestEvents = storyEngine.getEligibleEvents(
+    prologueResult.state,
+    "area-enter",
+    { area: "forest" },
+  );
+  assert(
+    forestEvents.some((event) => event.id === "discovery-forest-trail") &&
+      storyEngine.getEligibleEvents(
+        prologueResult.state,
+        "area-enter",
+        { area: "cave" },
+      ).length === 0,
+    "story area conditions did not select the correct discovery",
+  );
+  const forestResult = storyEngine.completeEvent(
+    prologueResult.state,
+    "discovery-forest-trail",
+    { area: "forest" },
+  );
+  assert(
+    forestResult.success &&
+      forestResult.state.story.discoveredLocations.includes("forest-trail") &&
+      storyEngine.getEligibleEvents(
+        forestResult.state,
+        "area-enter",
+        { area: "forest" },
+      ).length === 0,
+    "area discovery event repeated or failed to persist its location",
+  );
+  forestResult.state.badges = ["Volt Badge"];
+  const badgeEvents = storyEngine.getEligibleEvents(
+    forestResult.state,
+    "badge-earned",
+    { badge: "Volt Badge" },
+  );
+  assert(
+    badgeEvents.some((event) => event.id === "milestone-first-badge"),
+    "first badge milestone did not trigger",
+  );
+  const badgeResult = storyEngine.completeEvent(
+    forestResult.state,
+    "milestone-first-badge",
+    { badge: "Volt Badge" },
+  );
+  assert(
+    badgeResult.success &&
+      badgeResult.state.story.currentAct === 2 &&
+      badgeResult.state.story.badgeMilestones.includes("Volt Badge"),
+    "badge milestone did not advance persistent story state",
+  );
+  const migratedStory = storyEngine.normalizeStoryState(undefined, {
+    badges: ["Volt Badge"],
+    defeatedNpcs: [1],
+    pokedex: { seen: [25] },
+  });
+  assert(
+    migratedStory.version === STORY_STATE_VERSION &&
+      migratedStory.completedEventIds.includes("prologue-first-light") &&
+      migratedStory.completedEventIds.includes("milestone-first-badge") &&
+      migratedStory.flags.includes("journey_started"),
+    "old save story migration would replay historical opening or badge events",
+  );
+  memoryFiles.clear();
+  const persistentStoryState = createMemoryGameState(
+    pokemonUtils,
+    storyEngine.normalizeStoryState,
+  );
+  persistentStoryState.savePlayerState(badgeResult.state);
+  assert(
+    persistentStoryState
+      .loadPlayerState()
+      .story.flags.includes("first_badge_recognized"),
+    "story flags did not survive save/load",
+  );
   assert(team.length <= teamLimit, `team has ${team.length}, expected <= ${teamLimit}`);
   assert(team.length + storage.length >= 1, "no owned Pokemon found");
   const rarityByName = new Map(

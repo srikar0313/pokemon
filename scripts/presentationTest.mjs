@@ -73,6 +73,32 @@ import {
   getPokemonComparison,
   matchesStorageFilters,
 } from "../frontend/js/partyStorageUi.mjs";
+import {
+  getStoryMotionProfile,
+  getStoryProgress,
+  mergeStoryEventQueue,
+  normalizeStoryEvent,
+} from "../frontend/js/storyPresentation.mjs";
+
+const storyScene = normalizeStoryEvent({
+  id: "test-scene",
+  title: "First Steps",
+  act: 1,
+  speaker: { name: "Guide", portrait: "guide" },
+  dialogue: [{ text: "Welcome, Trainer." }, { speaker: "Player", text: "Ready." }],
+});
+assert.equal(storyScene.dialogue[0].speaker, "Guide");
+assert.equal(getStoryProgress(storyScene, 1).percent, 100);
+assert.equal(getStoryMotionProfile(true).characterDelay, 0);
+assert.equal(getStoryMotionProfile(true).transition, "none");
+assert.equal(getStoryMotionProfile(false).transition, "cinematic");
+assert.deepEqual(
+  mergeStoryEventQueue([storyScene], [storyScene, { id: "next-scene" }]).map(
+    (event) => event.id,
+  ),
+  ["test-scene", "next-scene"],
+  "story queue duplicated an already queued event",
+);
 
 assert.deepEqual(Object.keys(BIOME_PRESENTATIONS).sort(), [
   "cave",
@@ -662,6 +688,10 @@ assert(frontendIndex.includes('data-screen="handbook"'), "Handbook navigation ta
 assert(frontendIndex.includes('id="handbook-screen"'), "Handbook screen is missing");
 assert(!frontendIndex.includes('data-screen="quests"'), "Quest navigation remains visible");
 assert(!frontendIndex.includes('id="quests-screen"'), "Quest screen remains in the UI");
+assert(frontendIndex.includes('id="story-cinematic"'), "Story cinematic layer is missing");
+assert(frontendSource.includes('fetch("/api/story/trigger"'), "Story trigger integration is missing");
+assert(frontendSource.includes("handleStoryKeydown"), "Story keyboard controls are missing");
+assert(frontendStyles.includes(".story-dialogue-panel"), "Story dialogue styling is missing");
 assert(frontendSource.includes('fetch("/api/handbook")'), "Handbook data is not loaded from the backend");
 assert(frontendSource.includes("renderBattleHandbookShortcut"), "Battle Handbook shortcut is missing");
 assert(frontendSource.includes("renderTypeMatchupExplorer"), "Battle Academy Type Explorer is missing");

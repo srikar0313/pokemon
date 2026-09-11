@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokemon Adventure</title>
-    <link rel="stylesheet" href="style.css?v=20260911-party-pc-readable" />
+    <link rel="stylesheet" href="style.css?v=20260911-story-foundation" />
   </head>
   <body>
     <div class="app-shell">
@@ -179,6 +179,38 @@
         </div>
       </div>
     </div>
+    <div
+      id="story-cinematic"
+      class="story-cinematic hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="story-scene-title"
+      onclick="advanceStoryScene()"
+    >
+      <div class="story-cinematic-stage">
+        <div class="story-chapter-card">
+          <span id="story-act-label">ACT 1</span>
+          <strong id="story-scene-title">Beginning the Journey</strong>
+        </div>
+        <div class="story-speaker-portrait" id="story-speaker-portrait"></div>
+        <div class="story-dialogue-panel" onclick="event.stopPropagation()">
+          <div class="story-dialogue-head">
+            <div>
+              <span id="story-scene-name">Story Event</span>
+              <strong id="story-speaker-name">Story</strong>
+            </div>
+            <button class="story-skip-button" onclick="skipStoryScene()">Skip scene</button>
+          </div>
+          <p id="story-dialogue-text" aria-live="polite"></p>
+          <div class="story-dialogue-footer">
+            <span id="story-line-progress">1 / 1</span>
+            <button class="story-continue-button" onclick="advanceStoryScene()">
+              Continue <span aria-hidden="true">▼</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <aside
       id="presentation-settings-panel"
       class="presentation-settings-panel hidden"
@@ -213,8 +245,8 @@
         <input id="reduce-battle-motion" type="checkbox" />
       </label>
     </aside>
-    <script type="module" src="js/battlePresentationBootstrap.mjs?v=20260911-party-pc-readable"></script>
+    <script type="module" src="js/battlePresentationBootstrap.mjs?v=20260911-story-foundation"></script>
     <script src="variantUtils.js?v=20260906-variants"></script>
-    <script src="script.js?v=20260911-party-pc-readable"></script>
+    <script src="script.js?v=20260911-story-foundation"></script>
   </body>
 </html>

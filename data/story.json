@@ -1,0 +1,185 @@
+{
+  "chapters": [
+    { "id": "act-1", "act": 1, "title": "Beginning the Journey", "minBadges": 0 },
+    { "id": "act-2", "act": 2, "title": "First Badge Journey", "minBadges": 1 },
+    { "id": "act-3", "act": 3, "title": "Growing Trainer", "minBadges": 3 },
+    { "id": "act-4", "act": 4, "title": "Strange Discoveries", "minBadges": 5 },
+    { "id": "act-5", "act": 5, "title": "Road to the Pokémon League", "minBadges": 8 }
+  ],
+  "events": [
+    {
+      "id": "prologue-first-light",
+      "order": 10,
+      "title": "First Light",
+      "act": 1,
+      "chapter": "act-1",
+      "triggers": ["startup"],
+      "oneTime": true,
+      "conditions": { "excludedFlags": ["journey_started"] },
+      "speaker": { "name": "Professor Lumen", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Professor Lumen", "text": "Our region changes with every path a Trainer chooses." },
+        { "speaker": "Professor Lumen", "text": "Travel with your Pokémon, study the wild habitats, and earn the trust of each Gym." },
+        { "speaker": "Professor Lumen", "text": "Begin in the Forest. Your first discovery is waiting beyond the trail." }
+      ],
+      "setFlags": ["journey_started", "objective_explore_forest"],
+      "reward": { "items": [{ "id": "standard", "quantity": 3 }] }
+    },
+    {
+      "id": "discovery-forest-trail",
+      "order": 20,
+      "title": "The Living Trail",
+      "act": 1,
+      "chapter": "act-1",
+      "triggers": ["area-enter"],
+      "oneTime": true,
+      "conditions": { "area": "forest", "requiredFlags": ["journey_started"] },
+      "speaker": { "name": "Professor Lumen", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Professor Lumen", "text": "Notice how the grass shifts. Every habitat shelters a different community of Pokémon." },
+        { "speaker": "Professor Lumen", "text": "Explore carefully, then challenge the Volt Gym when your team is ready." }
+      ],
+      "setFlags": ["forest_trail_discovered"],
+      "storyLocation": "forest-trail"
+    },
+    {
+      "id": "milestone-first-badge",
+      "order": 100,
+      "title": "A Spark of Resolve",
+      "act": 2,
+      "chapter": "act-2",
+      "triggers": ["badge-earned", "resume"],
+      "oneTime": true,
+      "migrateIfSatisfied": true,
+      "conditions": { "badge": "Volt Badge", "excludedFlags": ["first_badge_recognized"] },
+      "speaker": { "name": "Archivist Mira", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Archivist Mira", "text": "The Volt Badge is more than proof of victory. It marks the first step beyond familiar roads." },
+        { "speaker": "Archivist Mira", "text": "New routes are opening. Let your team grow through every challenge." }
+      ],
+      "setFlags": ["first_badge_recognized"],
+      "badgeMilestone": "Volt Badge"
+    },
+    {
+      "id": "discovery-cave-echo",
+      "order": 120,
+      "title": "Echoes Below",
+      "act": 2,
+      "chapter": "act-2",
+      "triggers": ["area-enter"],
+      "oneTime": true,
+      "conditions": { "area": "cave", "badge": "Volt Badge" },
+      "speaker": { "name": "Field Note", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Field Note", "text": "Fresh marks cross the stone, but they do not match the tracks near the entrance." },
+        { "speaker": "Field Note", "text": "Something deep in the cave is disturbing the wild Pokémon." }
+      ],
+      "setFlags": ["cave_echo_investigated"],
+      "storyLocation": "cave-depths"
+    },
+    {
+      "id": "milestone-three-badges",
+      "order": 200,
+      "title": "A Trainer in Bloom",
+      "act": 3,
+      "chapter": "act-3",
+      "triggers": ["badge-earned", "resume"],
+      "oneTime": true,
+      "migrateIfSatisfied": true,
+      "conditions": { "minBadges": 3, "excludedFlags": ["growing_trainer_recognized"] },
+      "speaker": { "name": "Professor Lumen", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Professor Lumen", "text": "Three badges already. Your Pokémon are not simply stronger; they trust your decisions." },
+        { "speaker": "Professor Lumen", "text": "Keep watching the habitats. Unusual signs are appearing across the region." }
+      ],
+      "setFlags": ["growing_trainer_recognized"],
+      "badgeMilestone": "Three Badges"
+    },
+    {
+      "id": "discovery-volcano-signal",
+      "order": 220,
+      "title": "Heat Without Flame",
+      "act": 3,
+      "chapter": "act-3",
+      "triggers": ["area-enter"],
+      "oneTime": true,
+      "conditions": { "area": "volcano", "badge": "Blaze Badge" },
+      "speaker": { "name": "Ranger Sol", "portrait": "ranger" },
+      "dialogue": [
+        { "speaker": "Ranger Sol", "text": "The vents are calm, yet the instruments keep detecting waves of heat." },
+        { "speaker": "Ranger Sol", "text": "Whatever caused them moved toward the high country." }
+      ],
+      "setFlags": ["volcano_signal_found"],
+      "storyLocation": "volcano-observatory"
+    },
+    {
+      "id": "milestone-five-badges",
+      "order": 300,
+      "title": "Whispers Across the Region",
+      "act": 4,
+      "chapter": "act-4",
+      "triggers": ["badge-earned", "resume"],
+      "oneTime": true,
+      "migrateIfSatisfied": true,
+      "conditions": { "minBadges": 5, "excludedFlags": ["strange_discoveries_opened"] },
+      "speaker": { "name": "Archivist Mira", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Archivist Mira", "text": "Reports from distant routes describe the same pulse you found in the wilds." },
+        { "speaker": "Archivist Mira", "text": "The pattern points toward the Mountain and the old Graveyard." }
+      ],
+      "setFlags": ["strange_discoveries_opened"],
+      "badgeMilestone": "Five Badges"
+    },
+    {
+      "id": "discovery-mountain-pulse",
+      "order": 320,
+      "title": "The Sky Answers",
+      "act": 4,
+      "chapter": "act-4",
+      "triggers": ["area-enter"],
+      "oneTime": true,
+      "conditions": { "area": "mountain", "requiredFlags": ["strange_discoveries_opened"] },
+      "speaker": { "name": "Archivist Mira", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Archivist Mira", "text": "That light above the ridge is no storm. Ancient records call it a skyward signal." },
+        { "speaker": "Archivist Mira", "text": "We are close to understanding why rare Pokémon have begun to stir." }
+      ],
+      "setFlags": ["mountain_pulse_witnessed"],
+      "storyLocation": "mountain-summit"
+    },
+    {
+      "id": "discovery-graveyard-whisper",
+      "order": 340,
+      "title": "A Quiet Warning",
+      "act": 4,
+      "chapter": "act-4",
+      "triggers": ["area-enter"],
+      "oneTime": true,
+      "conditions": { "area": "graveyard", "badge": "Psychic Badge" },
+      "speaker": { "name": "Old Memorial", "portrait": "channeler" },
+      "dialogue": [
+        { "speaker": "Old Memorial", "text": "The carved letters feel warm beneath the moonlight: When sky and shadow answer, the final road appears." }
+      ],
+      "setFlags": ["graveyard_warning_read"],
+      "storyLocation": "graveyard-memorial"
+    },
+    {
+      "id": "milestone-league-road",
+      "order": 400,
+      "title": "The League Road",
+      "act": 5,
+      "chapter": "act-5",
+      "triggers": ["badge-earned", "resume"],
+      "oneTime": true,
+      "migrateIfSatisfied": true,
+      "conditions": { "minBadges": 8, "excludedFlags": ["league_road_opened"] },
+      "speaker": { "name": "Professor Lumen", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Professor Lumen", "text": "Eight badges. The Pokémon League now recognizes you as a challenger." },
+        { "speaker": "Professor Lumen", "text": "Prepare every member of your party. The hardest road begins here." }
+      ],
+      "setFlags": ["league_road_opened"],
+      "badgeMilestone": "Eight Badges"
+    }
+  ]
+}

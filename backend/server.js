@@ -8,6 +8,7 @@ const { createEncounterEngine } = require("./encounterEngine");
 const { createRewardEngine } = require("./rewardEngine");
 const { createEvolutionEngine } = require("./evolutionEngine");
 const { createHandbookData } = require("./handbookData");
+const { createStoryEngine } = require("./storyEngine");
 const {
   reorderParty,
   sendPartyPokemonToStorage,
@@ -54,6 +55,10 @@ const shinyRollChance = gameData.shinyRollChance;
 const formEncounterChance = gameData.formEncounterChance;
 const speciesEncounterBoosts = gameData.speciesEncounterBoosts;
 const weatherBoosts = gameData.weatherBoosts;
+const storyEngine = createStoryEngine({
+  storyData: gameData.story,
+  itemCatalog,
+});
 const pokemonUtils = createPokemonUtils({
   pokemonPath,
   readJsonFile: loadJson,
@@ -163,6 +168,7 @@ const gameState = createGameState({
   getEvolutionFamilyKey,
   getPokemonVariantKey,
   resolvePokemonSpeciesId: getPokemonSpeciesId,
+  normalizeStoryState: storyEngine.normalizeStoryState,
 });
 const {
   readJsonFile,
@@ -810,7 +816,8 @@ function finishNpcLoss(session, log = []) {
 
 function completeGymSession(session, log = []) {
   const state = loadPlayerState();
-  if (!state.badges.includes(session.gym.badge)) {
+  const firstVictory = !state.badges.includes(session.gym.badge);
+  if (firstVictory) {
     state.badges.push(session.gym.badge);
     awardCoins(state, session.gym.rewardCoins);
     log.push(`You earned the ${session.gym.badge}!`);
@@ -822,11 +829,17 @@ function completeGymSession(session, log = []) {
   persistGymPlayerTeam(session);
   markOwnedTeamCaught(state, session.playerTeam);
   activeGymSessions.delete("player");
+  const savedState = savePlayerState(state);
   return {
     success: true,
     won: true,
     log,
-    state: savePlayerState(state),
+    state: savedState,
+    storyEvents: firstVictory
+      ? storyEngine.getEligibleEvents(savedState, "badge-earned", {
+          badge: session.gym.badge,
+        })
+      : [],
     session: getGymSessionView(session),
   };
 }
@@ -1077,6 +1090,72 @@ app.get("/api/profile", (req, res) => {
 
 app.get("/api/player", (req, res) => {
   res.json(loadPlayerState());
+});
+
+app.get("/api/story", (req, res) => {
+  const state = loadPlayerState();
+  res.json({
+    ...storyEngine.getStorySnapshot(state),
+    events: storyEngine.getEligibleEvents(state, "resume"),
+  });
+});
+
+app.post("/api/story/trigger", (req, res) => {
+  const trigger = String(req.body?.trigger || "");
+  const supportedTriggers = new Set([
+    "startup",
+    "resume",
+    "area-enter",
+    "badge-earned",
+  ]);
+  if (!supportedTriggers.has(trigger)) {
+    return res.status(400).json({ error: "Unknown story trigger" });
+  }
+  const state = loadPlayerState();
+  const context = {
+    area: req.body?.context?.area
+      ? String(req.body.context.area).toLowerCase()
+      : null,
+    badge: req.body?.context?.badge
+      ? String(req.body.context.badge)
+      : null,
+  };
+  if (trigger === "area-enter") {
+    if (!areas.some((area) => area.id === context.area)) {
+      return res.status(400).json({ error: "Unknown story area" });
+    }
+    if (!(state.unlockedAreas || []).includes(context.area)) {
+      return res.status(403).json({ error: "That area is still locked" });
+    }
+  }
+  return res.json({
+    success: true,
+    events: storyEngine.getEligibleEvents(state, trigger, context),
+    story: storyEngine.getStorySnapshot(state),
+  });
+});
+
+app.post("/api/story/complete", (req, res) => {
+  const state = loadPlayerState();
+  const context = {
+    area: req.body?.context?.area
+      ? String(req.body.context.area).toLowerCase()
+      : null,
+    badge: req.body?.context?.badge
+      ? String(req.body.context.badge)
+      : null,
+  };
+  const result = storyEngine.completeEvent(state, req.body?.eventId, context);
+  if (result.error) return res.status(400).json(result);
+  const savedState = savePlayerState(result.state);
+  return res.json({
+    success: true,
+    alreadyCompleted: result.alreadyCompleted,
+    event: result.event,
+    reward: result.reward,
+    state: savedState,
+    story: storyEngine.getStorySnapshot(savedState),
+  });
 });
 
 app.get("/api/handbook", (req, res) => {

@@ -1,4 +1,5 @@
 const { randomUUID } = require("crypto");
+const { STORY_STATE_VERSION } = require("./storyEngine");
 
 const POKEDEX_IDENTITY_VERSION = "species-v1";
 const PARTY_PRESET_COUNT = 3;
@@ -65,6 +66,16 @@ const defaultPlayerState = {
   })),
   defeatedNpcs: [],
   achievements: [],
+  story: {
+    version: STORY_STATE_VERSION,
+    currentAct: 1,
+    currentChapter: "act-1",
+    flags: [],
+    completedEventIds: [],
+    rewardedEventIds: [],
+    badgeMilestones: [],
+    discoveredLocations: [],
+  },
 };
 
 const legacyPokemonIdMap = new Map([[246, 94]]);
@@ -138,6 +149,7 @@ function createGameState({
   getEvolutionFamilyKey,
   getPokemonVariantKey,
   resolvePokemonSpeciesId,
+  normalizeStoryState: storyStateNormalizer,
 }) {
   function resolvePokedexSpeciesId(identity, pokemon = null) {
     const explicitSpeciesId = Number(pokemon?.speciesId);
@@ -291,6 +303,24 @@ function createGameState({
       );
     const pokedexUsesSpeciesIdentity =
       state.pokedex?.identityVersion === POKEDEX_IDENTITY_VERSION;
+    const storyContext = {
+      ...state,
+      badges,
+      championDefeated,
+      unlockedAreas,
+      unlockedGyms,
+    };
+    const story = storyStateNormalizer
+      ? storyStateNormalizer(state.story, storyContext)
+      : {
+          ...defaultPlayerState.story,
+          ...(state.story || {}),
+          flags: uniqueStrings(state.story?.flags || []),
+          completedEventIds: uniqueStrings(state.story?.completedEventIds || []),
+          rewardedEventIds: uniqueStrings(state.story?.rewardedEventIds || []),
+          badgeMilestones: uniqueStrings(state.story?.badgeMilestones || []),
+          discoveredLocations: uniqueStrings(state.story?.discoveredLocations || []),
+        };
     return {
       ...defaultPlayerState,
       ...normalizedInput,
@@ -324,6 +354,7 @@ function createGameState({
       unlockedAreas,
       unlockedGyms,
       achievements: state.achievements || [],
+      story,
     };
   }
 
