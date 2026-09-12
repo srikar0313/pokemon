@@ -1,5 +1,9 @@
 const { randomUUID } = require("crypto");
 const { STORY_STATE_VERSION } = require("./storyEngine");
+const {
+  LEAGUE_STATE_VERSION,
+  migrateLegacyChampionState,
+} = require("./leagueStory");
 
 const POKEDEX_IDENTITY_VERSION = "species-v1";
 const PARTY_PRESET_COUNT = 3;
@@ -12,6 +16,13 @@ const defaultPlayerState = {
   xp: 0,
   badges: [],
   championDefeated: false,
+  league: {
+    version: LEAGUE_STATE_VERSION,
+    completed: false,
+    completionCount: 0,
+    completedAt: null,
+    hallOfFame: null,
+  },
   unlockedAreas: ["forest"],
   unlockedGyms: [1],
   items: {
@@ -281,6 +292,7 @@ function createGameState({
   }
 
   function normalizePlayerState(state = {}) {
+    const legacyLeagueState = state.league?.version !== LEAGUE_STATE_VERSION;
     const normalizedInput = { ...state };
     delete normalizedInput.questStats;
     delete normalizedInput.quests;
@@ -322,7 +334,7 @@ function createGameState({
           badgeMilestones: uniqueStrings(state.story?.badgeMilestones || []),
           discoveredLocations: uniqueStrings(state.story?.discoveredLocations || []),
         };
-    return {
+    const normalizedState = {
       ...defaultPlayerState,
       ...normalizedInput,
       coins,
@@ -357,6 +369,9 @@ function createGameState({
       achievements: state.achievements || [],
       story,
     };
+    return migrateLegacyChampionState(normalizedState, {
+      legacy: legacyLeagueState,
+    });
   }
 
   function updateAchievements(state) {

@@ -101,6 +101,7 @@ let storyTypingTimer = null;
 let storyLineTyping = false;
 let storyCompletionPending = false;
 let storyInitialized = false;
+let leagueEntryPending = false;
 const storyTriggerPending = new Set();
 
 const icons = {
@@ -277,9 +278,10 @@ async function requestStoryEvents(trigger, context = {}) {
       body: JSON.stringify({ trigger, context }),
     });
     const data = await response.json();
-    if (!response.ok || data.error) return;
+    if (!response.ok || data.error) return null;
     storySnapshot = data.story || storySnapshot;
     queueStoryEvents(data.events || [], context);
+    return data;
   } catch (error) {
     console.warn("Story event check failed:", error);
   } finally {
@@ -324,6 +326,14 @@ function renderStoryScene() {
   layer.classList.toggle(
     "story-legendary-scene",
     event.presentation === "legendary",
+  );
+  layer.classList.toggle(
+    "story-league-scene",
+    ["league", "league-victory"].includes(event.presentation),
+  );
+  layer.classList.toggle(
+    "story-league-victory-scene",
+    event.presentation === "league-victory",
   );
   layer.dataset.storyTheme = event.theme || "";
   document.getElementById("story-act-label").textContent = `ACT ${event.act}`;
@@ -391,6 +401,16 @@ async function completeActiveStoryEvent() {
     }
     if (data.nextAction?.type === "story-legendary") {
       await startStoryLegendaryEncounter(data.nextAction.encounterId);
+      return;
+    }
+    if (data.nextAction?.type === "league-confirm") {
+      leagueEntryPending = false;
+      openLeagueEntryConfirmation();
+      return;
+    }
+    if (data.nextAction?.type === "return-to-explore") {
+      setActiveScreen("explore");
+      renderRouteWorld();
       return;
     }
     if (data.followUpTrigger) {
@@ -3094,6 +3114,14 @@ function displayEliteFour() {
       </div>
       <strong>${eliteCache.completed ? "Cleared" : eliteCache.unlocked ? "Unlocked" : "Locked"}</strong>
     </div>
+    ${
+      eliteCache.unlocked
+        ? `<div class="league-entry-panel">
+            <div><span>Pokemon League</span><strong>${eliteCache.active ? "League run in progress" : eliteCache.completed ? "Champion rematch available" : "Final challenge ready"}</strong><p>Four Elite battles lead directly into the Champion battle. Your team is not healed between rounds.</p></div>
+            <button class="primary-btn" onclick="startEliteRun()">${eliteCache.active ? "Resume League Run" : eliteCache.completed ? "Start Rematch" : "Approach League Gates"}</button>
+          </div>`
+        : ""
+    }
     <div class="gym-list">
       ${stages
         .map((stage, index) => {
@@ -3108,6 +3136,8 @@ function displayEliteFour() {
                 <img class="leader-sprite" src="${getTrainerSprite(stage.type, stage.name)}" alt="${stage.name}">
                 <div class="leader-card-meta">
                   <span>${stage.type} specialist</span>
+                  <strong class="gym-leader-title">${escapeHtml(stage.story?.title || "League challenger")}</strong>
+                  <span class="gym-theme-summary">${escapeHtml(stage.story?.personality || "A formidable League opponent.")}</span>
                   <span>${stage.team.map((member) => `${member.name} Lv${member.level}`).join(", ")}</span>
                   <div class="badge-token badge-${theme.className}">
                     <span class="badge-icon">${theme.icon}</span>
@@ -3131,7 +3161,40 @@ function displayEliteFour() {
               : "Earn all gym badges to unlock the Elite Four."
       }
     </p>
+    ${renderHallOfFame(eliteCache.hallOfFame)}
   `;
+}
+
+function renderHallOfFame(hallOfFame) {
+  if (!hallOfFame) {
+    return eliteCache?.completed
+      ? `<section class="hall-of-fame legacy"><h3>Hall of Fame</h3><p>Your Champion title predates the team-record system. Your achievement remains recognized.</p></section>`
+      : "";
+  }
+  const completedAt = hallOfFame.completedAt
+    ? new Date(hallOfFame.completedAt).toLocaleString()
+    : "Recorded Champion victory";
+  return `
+    <section class="hall-of-fame" aria-label="Hall of Fame team">
+      <div class="hall-of-fame-head">
+        <div><span>League Record</span><h3>Hall of Fame</h3></div>
+        <div><strong>${escapeHtml(hallOfFame.trainerName || "Player")}</strong><span>${escapeHtml(completedAt)}</span></div>
+      </div>
+      <div class="hall-of-fame-team">
+        ${(hallOfFame.team || [])
+          .map(
+            (pokemon) => `
+              <article class="hall-pokemon${pokemon.shiny ? " shiny" : ""}">
+                <img src="${getPokemonImage(pokemon)}" alt="${escapeHtml(pokemon.name)}">
+                <strong>${escapeHtml(pokemon.name)}</strong>
+                <span>Lv${pokemon.level}</span>
+                ${pokemon.form?.name ? `<small>${escapeHtml(pokemon.form.name)}</small>` : ""}
+                ${pokemon.shiny ? "<small>Shiny</small>" : ""}
+              </article>`,
+          )
+          .join("")}
+      </div>
+    </section>`;
 }
 
 async function startGymBattle(gymId) {
@@ -3404,6 +3467,65 @@ async function gymSwitch(pokemonIndex) {
 }
 
 async function startEliteRun() {
+  if (!eliteCache?.unlocked || leagueEntryPending) return;
+  if (eliteCache.active) {
+    await beginEliteRun();
+    return;
+  }
+  leagueEntryPending = true;
+  const result = await requestStoryEvents("league-entry");
+  if (!result) {
+    leagueEntryPending = false;
+    return;
+  }
+  if (result?.events?.length) return;
+  leagueEntryPending = false;
+  openLeagueEntryConfirmation();
+}
+
+function openLeagueEntryConfirmation() {
+  document.getElementById("league-entry-confirmation")?.remove();
+  const layer = document.createElement("div");
+  layer.id = "league-entry-confirmation";
+  layer.className = `league-confirmation-layer${prefersReducedMotion() ? " reduced" : ""}`;
+  layer.setAttribute("role", "dialog");
+  layer.setAttribute("aria-modal", "true");
+  layer.setAttribute("aria-labelledby", "league-confirmation-title");
+  layer.onclick = (event) => {
+    if (event.target === layer) closeLeagueEntryConfirmation();
+  };
+  layer.innerHTML = `
+    <div class="league-confirmation-card" onclick="event.stopPropagation()">
+      <span>League Challenge</span>
+      <h2 id="league-confirmation-title">Enter the Elite Four?</h2>
+      <p>This begins five continuous battles. HP, status, and PP carry between each Elite member and the Champion.</p>
+      <div class="league-ready-party">
+        ${teamCache
+          .map(
+            (pokemon) => `<span class="${pokemon.currentHp > 0 ? "ready" : "fainted"}">${escapeHtml(pokemon.name)} Lv${pokemon.level} - ${pokemon.currentHp}/${pokemon.maxHp} HP</span>`,
+          )
+          .join("")}
+      </div>
+      <div class="league-confirmation-actions">
+        <button class="secondary-btn" onclick="closeLeagueEntryConfirmation()">Prepare First</button>
+        <button class="primary-btn" onclick="confirmEliteRun()">Begin League Run</button>
+      </div>
+    </div>`;
+  document.body.appendChild(layer);
+  layer.querySelector(".primary-btn")?.focus();
+}
+
+function closeLeagueEntryConfirmation() {
+  document.getElementById("league-entry-confirmation")?.remove();
+  leagueEntryPending = false;
+}
+
+async function confirmEliteRun() {
+  closeLeagueEntryConfirmation();
+  await beginEliteRun();
+}
+
+async function beginEliteRun() {
   const response = await fetch("/api/elite/start", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -3417,6 +3539,18 @@ async function startEliteRun() {
   eliteBattle = data.session;
   showEliteBattle(data.log);
   animatePokemonSwitch("opponent", eliteBattle.opponentPokemon);
+}
+
+function renderLeagueBattleProgress(session) {
+  const current = Math.min(4, Number(session.stageIndex) || 0);
+  return `
+    <div class="league-battle-progress" aria-label="League stage ${current + 1} of 5">
+      ${Array.from({ length: 5 }, (_, index) => {
+        const label = index < 4 ? `Elite ${index + 1}` : "Champion";
+        const state = index < current ? "cleared" : index === current ? "active" : "upcoming";
+        return `<span class="${state}" title="${label}"><i></i><small>${label}</small></span>`;
+      }).join("")}
+    </div>`;
 }
 
 function showEliteBattle(lines = []) {
@@ -3435,13 +3569,16 @@ function showEliteBattle(lines = []) {
         <img class="arena-trainer-sprite" src="${getTrainerSprite(eliteBattle.trainer.type, eliteBattle.trainer.name)}" alt="${eliteBattle.trainer.name}">
         <div>
           <h2>${eliteBattle.trainer.name}</h2>
+          <strong class="arena-leader-title">${escapeHtml(eliteBattle.trainer.story?.title || eliteBattle.progressLabel)}</strong>
           <p class="weather-info">${eliteBattle.progressLabel} | ${eliteBattle.isChampion ? "Champion Battle" : `${eliteBattle.trainer.type} specialist`} | No healing between rounds</p>
+          <p class="gym-battle-line">${escapeHtml(eliteBattle.trainer.story?.battleLine || "The League challenge continues.")}</p>
         </div>
         <div class="badge-token badge-${theme.className}">
           <span class="badge-icon">${theme.icon}</span>
           <span>${theme.badge}</span>
         </div>
       </div>
+      ${renderLeagueBattleProgress(eliteBattle)}
       <div class="battle-help-row">${renderBattleHandbookShortcut("moves")}</div>
       ${renderBattleWeatherHud(eliteBattle.weather || "clear")}
       <div class="battle-container elite-battle-container">
@@ -3484,15 +3621,16 @@ function showEliteBattle(lines = []) {
   appendBattleLog(lines);
 }
 
-function showEliteResult(lines = []) {
+function showEliteResult(lines = [], result = {}) {
   endBattlePresentation();
   setActiveScreen("battle");
   const encounter = document.getElementById("encounter");
   encounter.innerHTML = `
     <div class="arena-log">
-      <h2>Elite Four</h2>
+      <h2>${result.won ? "Pokemon League Champion" : "Elite Four"}</h2>
       <div id="battle-log"></div>
-      <button class="secondary-btn" onclick="setActiveScreen('gym'); loadEliteFour()">Back to Elite Four</button>
+      ${result.won ? renderHallOfFame(result.hallOfFame) : ""}
+      <button class="secondary-btn" onclick="setActiveScreen('${result.won ? "explore" : "gym"}'); ${result.won ? "renderRouteWorld()" : "loadEliteFour()"}">${result.won ? "Return to Exploration" : "Back to Elite Four"}</button>
     </div>
   `;
   appendBattleLog(
@@ -3566,7 +3704,11 @@ async function eliteMove(moveName) {
     opponentTeamField: "opponentTeam",
     opponentIndexField: "opponentIndex",
     renderBattle: showEliteBattle,
-    renderResult: showEliteResult,
+    renderResult: (lines) =>
+      showEliteResult(lines, {
+        won: data.won,
+        hallOfFame: data.hallOfFame,
+      }),
     assignState: (session) => {
       eliteBattle = session;
     },
@@ -3577,6 +3719,7 @@ async function eliteMove(moveName) {
       await loadProfile();
       await loadEliteFour();
       await loadGyms();
+      queueStoryEvents(data.storyEvents || []);
     },
     afterContinue: async () => {
       showEliteMoveButtons(normalizePokemon(eliteBattle.playerPokemon));
@@ -3619,7 +3762,11 @@ async function eliteSwitch(pokemonIndex) {
     opponentTeamField: "opponentTeam",
     opponentIndexField: "opponentIndex",
     renderBattle: showEliteBattle,
-    renderResult: showEliteResult,
+    renderResult: (lines) =>
+      showEliteResult(lines, {
+        won: data.won,
+        hallOfFame: data.hallOfFame,
+      }),
     assignState: (session) => {
       eliteBattle = session;
     },
@@ -3630,6 +3777,7 @@ async function eliteSwitch(pokemonIndex) {
       await loadProfile();
       await loadEliteFour();
       await loadGyms();
+      queueStoryEvents(data.storyEvents || []);
     },
     afterContinue: async () => {
       showEliteMoveButtons(normalizePokemon(eliteBattle.playerPokemon));
@@ -7382,6 +7530,14 @@ function handleExploreKeydown(event) {
 }
 
 function handleStoryKeydown(event) {
+  if (document.getElementById("league-entry-confirmation")) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      closeLeagueEntryConfirmation();
+    }
+    return;
+  }
   if (!activeStoryEvent) return;
   if (["Enter", " ", "ArrowDown"].includes(event.key)) {
     event.preventDefault();

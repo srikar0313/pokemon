@@ -729,6 +729,22 @@ assert(
     frontendSource.includes("startStoryLegendaryEncounter"),
   "legendary story presentation or encounter handoff is missing",
 );
+assert(
+  frontendStyles.includes(".story-league-scene") &&
+    frontendStyles.includes(".league-confirmation-layer") &&
+    frontendSource.includes("openLeagueEntryConfirmation"),
+  "League arrival or preparation presentation is missing",
+);
+assert(
+  frontendStyles.includes(".league-battle-progress") &&
+    frontendSource.includes("renderLeagueBattleProgress"),
+  "Elite Four progression presentation is missing",
+);
+assert(
+  frontendStyles.includes(".hall-of-fame") &&
+    frontendSource.includes("renderHallOfFame"),
+  "Hall of Fame presentation is missing",
+);
 assert(frontendStyles.includes(".gym-journal-summary"), "Gym journal summary is missing");
 assert(frontendSource.includes("startRivalBattle"), "Rival battle handoff is missing");
 assert(frontendSource.includes("evolution-target-card"), "Evolution target artwork card is missing");

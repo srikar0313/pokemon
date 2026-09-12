@@ -27,6 +27,11 @@ const {
   createMysteryEncounter,
   completeMysteryConfrontation,
 } = require("../backend/mysteryStory");
+const {
+  LEAGUE_STATE_VERSION,
+  migrateLegacyChampionState,
+  recordLeagueVictory,
+} = require("../backend/leagueStory");
 const variantUtils = require("../frontend/variantUtils");
 const {
   reorderParty,
@@ -685,6 +690,119 @@ function main() {
         "legendary_confrontation_completed",
       ),
     "climax completion duplicated or leaked into normal legendary encounters",
+  );
+
+  const leagueLockedPlayer = {
+    ...freshStoryPlayer,
+    story: storyEngine.normalizeStoryState(freshStoryPlayer.story, freshStoryPlayer),
+  };
+  const leagueReadyPlayer = {
+    ...leagueLockedPlayer,
+    badges: gameData.gyms.map((gym) => gym.badge),
+    story: {
+      ...leagueLockedPlayer.story,
+      flags: ["journey_started", "regional_crisis_resolved"],
+    },
+  };
+  assert(
+    storyEngine.getEligibleEvents(leagueLockedPlayer, "league-entry").length === 0 &&
+      storyEngine
+        .getEligibleEvents(leagueReadyPlayer, "league-entry")
+        .some((event) => event.id === "league-arrival-after-mystery"),
+    "League entry gating or mystery-aware arrival scene is incorrect",
+  );
+  const hallTeam = [
+    {
+      ...pokemonUtils.createLeveledPokemon("Vulpix", 58),
+      ownedId: "hall-shiny-vulpix",
+      speciesId: 37,
+      shiny: true,
+      form: {
+        id: "alola",
+        name: "Alolan Form",
+        imageId: 10103,
+        shinyImageId: 10103,
+      },
+      battleState: { stages: { attack: 6 } },
+    },
+    pokemonUtils.createLeveledPokemon("Pikachu", 61),
+  ];
+  const leagueVictory = recordLeagueVictory(leagueReadyPlayer, hallTeam, {
+    firstVictory: true,
+    completedAt: "2026-09-12T12:00:00.000Z",
+  });
+  assert(
+    leagueVictory.firstCompletion &&
+      leagueVictory.state.league.version === LEAGUE_STATE_VERSION &&
+      leagueVictory.state.league.hallOfFame.team[0].shiny &&
+      leagueVictory.state.league.hallOfFame.team[0].form.id === "alola" &&
+      leagueVictory.state.league.hallOfFame.team[0].speciesId === 37 &&
+      !leagueVictory.state.league.hallOfFame.team[0].battleState &&
+      [
+        "league_challenge_completed",
+        "champion_defeated",
+        "main_story_completed",
+      ].every((flag) => leagueVictory.state.story.flags.includes(flag)),
+    "first Champion victory did not preserve a clean Hall of Fame identity snapshot",
+  );
+  leagueVictory.state.championDefeated = true;
+  const endingEvents = storyEngine.getEligibleEvents(
+    leagueVictory.state,
+    "league-complete",
+  );
+  const endingResult = storyEngine.completeEvent(
+    leagueVictory.state,
+    "league-champion-ending",
+  );
+  const repeatedEnding = storyEngine.completeEvent(
+    endingResult.state,
+    "league-champion-ending",
+  );
+  const originalHall = JSON.stringify(leagueVictory.hallOfFame);
+  const leagueRematch = recordLeagueVictory(
+    leagueVictory.state,
+    [pokemonUtils.createLeveledPokemon("Mewtwo", 90)],
+    { firstVictory: false, completedAt: "2027-01-01T00:00:00.000Z" },
+  );
+  assert(
+    endingEvents.some((event) => event.id === "league-champion-ending") &&
+      endingResult.nextAction?.type === "return-to-explore" &&
+      repeatedEnding.alreadyCompleted &&
+      repeatedEnding.reward === null &&
+      storyEngine.getEligibleEvents(repeatedEnding.state, "resume").every(
+        (event) => event.id !== "league-champion-ending",
+      ) &&
+      JSON.stringify(leagueRematch.hallOfFame) === originalHall &&
+      leagueRematch.state.league.completionCount === 2,
+    "Champion ending duplicated or a rematch overwrote the first Hall of Fame team",
+  );
+  const legacyChampion = migrateLegacyChampionState({
+    championDefeated: true,
+    story: { flags: [], completedEventIds: [] },
+  });
+  assert(
+    legacyChampion.league.completed &&
+      legacyChampion.league.hallOfFame === null &&
+      legacyChampion.story.flags.includes("main_story_completed") &&
+      legacyChampion.story.completedEventIds.includes("league-champion-ending"),
+    "legacy Champion state did not normalize without replaying the ending",
+  );
+  assert(
+    gameData.eliteFour.map((trainer) => trainer.id).join(",") === "1,2,3,4" &&
+      gameData.champion.id === 5,
+    "League progression order is not Elite Four members 1-4 followed by Champion",
+  );
+  assert(
+    gameData.eliteFour.every(
+      (trainer) =>
+        trainer.story?.title &&
+        trainer.story?.introDialogue &&
+        trainer.story?.battleLine &&
+        trainer.story?.postVictoryLine,
+    ) &&
+      gameData.champion.story?.title &&
+      gameData.champion.story?.postVictoryLine,
+    "League trainer presentation metadata is incomplete",
   );
 
   const rivalPlayer = {

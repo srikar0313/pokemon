@@ -71,7 +71,8 @@
         "x": 2,
         "y": 2
       },
-      "dialogue": "Routes open up fast once you grab badges. The cave responds to the Volt Badge."
+      "dialogue": "Routes open up fast once you grab badges. The cave responds to the Volt Badge.",
+      "championDialogue": "Champion! The Forest guides still remember your first trail. New journeys start from familiar paths."
     },
     {
       "id": 3,
@@ -236,7 +237,8 @@
         "y": 2
       },
       "dialogue": "Rare flying and dragon Pokemon show up more often on mountain paths at night.",
-      "aftermathDialogue": "The mountain wind is steady again. Rayquaza's passage left the sky clearer than I've seen it in years."
+      "aftermathDialogue": "The mountain wind is steady again. Rayquaza's passage left the sky clearer than I've seen it in years.",
+      "championDialogue": "The summit carries news quickly. Congratulations, Champion; the high trails remain yours to explore."
     },
     {
       "id": 12,
@@ -313,7 +315,8 @@
         "y": 4
       },
       "dialogue": "Ghost Pokemon are easier to find here at night. Some legends only answer after dark.",
-      "aftermathDialogue": "The memorial is cold and quiet again. The warning has become a record of what you protected."
+      "aftermathDialogue": "The memorial is cold and quiet again. The warning has become a record of what you protected.",
+      "championDialogue": "The memorial now records two titles: protector of the Beacon and Champion of the League."
     },
     {
       "id": 16,

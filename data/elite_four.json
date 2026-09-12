@@ -4,6 +4,14 @@
       "id": 1,
       "name": "Noctis",
       "type": "Dark",
+      "story": {
+        "title": "Keeper of the Quiet Veil",
+        "personality": "Measured and observant; Noctis tests whether challengers stay composed when certainty disappears.",
+        "theme": "shadow",
+        "introDialogue": "Beyond this door, confidence without patience becomes a weakness.",
+        "battleLine": "Show me the decisions you make when the path goes dark.",
+        "postVictoryLine": "You found direction without needing light. Pyra is waiting beyond the next gate."
+      },
       "team": [
         {
           "name": "Gengar",
@@ -27,6 +35,14 @@
       "id": 2,
       "name": "Pyra",
       "type": "Fire",
+      "story": {
+        "title": "Heart of the Ember Court",
+        "personality": "Direct and passionate; Pyra respects endurance more than spectacle.",
+        "theme": "ember",
+        "introDialogue": "A strong flame is not the loudest. It is the one that survives every storm.",
+        "battleLine": "Let your team's resolve burn brighter than mine.",
+        "postVictoryLine": "Your resolve held. Marinus will test whether it can bend without breaking."
+      },
       "team": [
         {
           "name": "Arcanine",
@@ -50,6 +66,14 @@
       "id": 3,
       "name": "Marinus",
       "type": "Water",
+      "story": {
+        "title": "Tactician of the Tidal Hall",
+        "personality": "Calm and adaptive; Marinus changes rhythm until a challenger reveals their habits.",
+        "theme": "tide",
+        "introDialogue": "Every battle leaves a current. Skilled Trainers learn to change with it.",
+        "battleLine": "Adapt, or let the tide decide for you.",
+        "postVictoryLine": "You changed course without losing purpose. Drakon guards the final ascent."
+      },
       "team": [
         {
           "name": "Blastoise",
@@ -73,6 +97,14 @@
       "id": 4,
       "name": "Drakon",
       "type": "Dragon",
+      "story": {
+        "title": "Warden of the High Throne",
+        "personality": "Proud but fair; Drakon believes strength matters only when it protects something greater.",
+        "theme": "summit",
+        "introDialogue": "You crossed shadow, flame, and tide. Now prove your strength has a purpose.",
+        "battleLine": "Climb beyond your limits, or end your League run here.",
+        "postVictoryLine": "Your strength carries every bond that brought you here. The Champion's chamber is open."
+      },
       "team": [
         {
           "name": "Dragonite",
@@ -97,6 +129,14 @@
     "id": 5,
     "name": "Champion Aurelius",
     "type": "Legendary",
+    "story": {
+      "title": "Guardian of the League Crown",
+      "personality": "Steady and deeply attentive; Aurelius judges the journey behind a Trainer, not merely their strongest move.",
+      "theme": "crown",
+      "introDialogue": "Eight badges opened these doors. Your choices through a region in crisis brought you to the final one.",
+      "battleLine": "Let every bond, every setback, and every victory speak through your team.",
+      "postVictoryLine": "The League recognizes more than your strength. It recognizes the Trainer you chose to become."
+    },
     "badge": "Champion Badge",
     "rewardCoins": 3000,
     "team": [

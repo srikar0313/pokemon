@@ -1068,6 +1068,19 @@ textarea {
 }
 
 @media (max-width: 700px) {
+  .league-entry-panel,
+  .hall-of-fame-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .league-entry-panel button { width: 100%; }
+  .league-ready-party { grid-template-columns: 1fr; }
+  .league-confirmation-actions { flex-direction: column-reverse; }
+  .league-confirmation-actions button { width: 100%; }
+  .hall-of-fame-head > div:last-child { justify-items: start; }
+  .hall-of-fame-team { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
   .pending-move-heading {
     align-items: flex-start;
   }
@@ -2313,6 +2326,190 @@ textarea {
   color: #5d4037;
   font-size: 13px;
 }
+
+.league-entry-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 12px 0 16px;
+  border: 2px solid #b99238;
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: linear-gradient(120deg, #17283c, #344c68 62%, #735f32);
+  color: #f8fbff;
+}
+
+.league-entry-panel > div {
+  display: grid;
+  gap: 3px;
+}
+
+.league-entry-panel span,
+.hall-of-fame-head span {
+  color: #f1cf76;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.league-entry-panel strong { font-size: 20px; }
+.league-entry-panel p { margin: 3px 0 0; color: #dbe6f0; }
+.league-entry-panel button { flex: 0 0 auto; }
+
+.league-confirmation-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1700;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(7, 14, 24, 0.82);
+  animation: story-scene-enter 220ms ease both;
+}
+
+.league-confirmation-card {
+  width: min(620px, 100%);
+  max-height: calc(100dvh - 36px);
+  overflow-y: auto;
+  border: 3px solid #d4ae50;
+  border-radius: 8px;
+  padding: 22px;
+  background: #f7fbff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.48);
+  color: #20364b;
+}
+
+.league-confirmation-card > span {
+  color: #9a6e18;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.league-confirmation-card h2 { margin: 5px 0 8px; }
+.league-confirmation-card p { color: #496176; line-height: 1.5; }
+
+.league-ready-party {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.league-ready-party span {
+  border: 1px solid #bad1c5;
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: #eaf7ef;
+  color: #285740;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.league-ready-party span.fainted {
+  border-color: #dfb8b8;
+  background: #fff0f0;
+  color: #8c4141;
+}
+
+.league-confirmation-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.league-battle-progress {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
+  margin: 8px 0 13px;
+}
+
+.league-battle-progress span {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  color: #718091;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.league-battle-progress i {
+  width: 100%;
+  height: 7px;
+  border-radius: 4px;
+  background: #d7e0e8;
+}
+
+.league-battle-progress .cleared i { background: #3c9b6b; }
+.league-battle-progress .active { color: #6f4d08; }
+.league-battle-progress .active i {
+  background: #e2b844;
+  box-shadow: 0 0 0 3px rgba(226, 184, 68, 0.18);
+}
+
+.hall-of-fame {
+  margin-top: 18px;
+  border: 2px solid #c5a148;
+  border-radius: 8px;
+  padding: 16px;
+  background: linear-gradient(145deg, #f8fbff, #fff8df);
+}
+
+.hall-of-fame.legacy { text-align: center; }
+
+.hall-of-fame-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.hall-of-fame-head > div:last-child {
+  display: grid;
+  justify-items: end;
+}
+
+.hall-of-fame-head h3 { margin: 2px 0 0; font-size: 24px; }
+.hall-of-fame-head > div:last-child span { color: #66798b; text-transform: none; }
+
+.hall-of-fame-team {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hall-pokemon {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-width: 0;
+  border: 1px solid #d5dee7;
+  border-radius: 6px;
+  padding: 8px 5px;
+  background: rgba(255, 255, 255, 0.88);
+  text-align: center;
+}
+
+.hall-pokemon img {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+}
+
+.hall-pokemon strong {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+}
+
+.hall-pokemon span,
+.hall-pokemon small { color: #596d80; font-size: 11px; font-weight: 750; }
+.hall-pokemon.shiny { border-color: #d7ae30; box-shadow: inset 0 0 14px rgba(244, 205, 74, 0.2); }
 
 .gym-card.defeated {
   border-color: #7cb342;
@@ -6092,6 +6289,30 @@ button:disabled {
     linear-gradient(305deg, rgba(62, 37, 109, 0.62), transparent 56%);
 }
 
+.story-cinematic.story-league-scene::before {
+  background:
+    radial-gradient(circle at 72% 26%, rgba(255, 225, 125, 0.3), transparent 20%),
+    linear-gradient(120deg, rgba(40, 63, 109, 0.65), transparent 48%),
+    linear-gradient(305deg, rgba(123, 74, 37, 0.46), transparent 58%);
+}
+
+.story-cinematic.story-league-victory-scene::before {
+  animation: league-victory-glow 2.2s ease-in-out infinite;
+  background:
+    radial-gradient(circle at 68% 24%, rgba(255, 247, 190, 0.55), transparent 22%),
+    linear-gradient(120deg, rgba(36, 74, 105, 0.64), transparent 48%),
+    linear-gradient(305deg, rgba(185, 125, 38, 0.5), transparent 58%);
+}
+
+.story-league-scene .story-chapter-card {
+  border-left-color: #f2ca61;
+}
+
+.story-league-scene .story-dialogue-panel {
+  border-color: #90a9c5;
+  border-bottom-color: #e4bd55;
+}
+
 .story-mystery-scene .story-chapter-card {
   border-left-color: #71e0c3;
 }
@@ -6112,6 +6333,10 @@ button:disabled {
 
 @keyframes mystery-sky-pulse {
   50% { filter: brightness(1.22); }
+}
+
+@keyframes league-victory-glow {
+  50% { filter: brightness(1.25) saturate(1.08); }
 }
 
 .story-gym-scene .story-chapter-card {
@@ -6386,6 +6611,11 @@ button:disabled {
   }
 
   .story-cinematic.story-legendary-scene::before {
+    animation: none;
+  }
+
+  .story-cinematic.story-league-victory-scene::before,
+  .league-confirmation-layer {
     animation: none;
   }
 }

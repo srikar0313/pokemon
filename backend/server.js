@@ -15,6 +15,7 @@ const {
   completeMysteryConfrontation,
   getMysteryNpcDialogue,
 } = require("./mysteryStory");
+const { recordLeagueVictory } = require("./leagueStory");
 const { createRecurringCharacterEngine } = require("./recurringCharacterEngine");
 const {
   createGymStoryEvents,
@@ -666,7 +667,10 @@ function getNpcView(npc, state) {
     type: npc.type,
     sprite: npc.sprite || npc.type,
     position: npc.position,
-    dialogue: getMysteryNpcDialogue(npc, state),
+    dialogue:
+      state.championDefeated && npc.championDialogue
+        ? npc.championDialogue
+        : getMysteryNpcDialogue(npc, state),
     introDialogue: npc.introDialogue || npc.dialogue,
     defeated,
     rewardCoins: npc.type === "trainer" ? getNpcRewardCoins(npc) : 0,
@@ -768,6 +772,7 @@ function getEliteSessionView(session) {
       id: session.currentTrainer.id,
       name: session.currentTrainer.name,
       type: session.currentTrainer.type,
+      story: session.currentTrainer.story || null,
     },
     isChampion: session.isChampion,
     stageIndex: session.stageIndex,
@@ -951,15 +956,31 @@ function refreshEliteStage(session) {
   session.aiItems = {};
 }
 
+function appendEliteTrainerEntrance(session, log) {
+  const story = session.currentTrainer.story || {};
+  log.push(`${session.currentTrainer.name} entered the arena!`);
+  if (story.introDialogue) log.push(story.introDialogue);
+  if (story.battleLine) log.push(story.battleLine);
+}
+
+function appendEliteTrainerVictoryLine(session, log) {
+  const line = session.currentTrainer.story?.postVictoryLine;
+  if (line) log.push(`${session.currentTrainer.name}: ${line}`);
+}
+
 function completeEliteSession(session, log = []) {
   const state = loadPlayerState();
-  if (!state.badges.includes(champion.badge)) {
+  const hasChampionBadge = state.badges.includes(champion.badge);
+  const firstVictory = !state.championDefeated && !hasChampionBadge;
+  appendEliteTrainerVictoryLine(session, log);
+  if (firstVictory) {
     state.badges.push(champion.badge);
     state.championDefeated = true;
     awardCoins(state, champion.rewardCoins);
     log.push(`You earned the ${champion.badge}!`);
     log.push(`You earned ${champion.rewardCoins} coins.`);
   } else {
+    if (!hasChampionBadge) state.badges.push(champion.badge);
     state.championDefeated = true;
     log.push(`${champion.badge} already earned.`);
   }
@@ -967,13 +988,21 @@ function completeEliteSession(session, log = []) {
   persistBattlePlayerTeam(session);
   markOwnedTeamCaught(state, session.playerTeam);
   activeEliteSessions.delete("player");
+  const leagueResult = recordLeagueVictory(state, session.playerTeam, {
+    firstVictory,
+  });
+  const savedState = savePlayerState(leagueResult.state);
   return {
     success: true,
     won: true,
     completed: true,
     log,
-    state: savePlayerState(state),
+    state: savedState,
     session: getEliteSessionView(session),
+    hallOfFame: leagueResult.hallOfFame,
+    storyEvents: firstVictory
+      ? storyEngine.getEligibleEvents(savedState, "league-complete")
+      : [],
   };
 }
 
@@ -1067,9 +1096,10 @@ function advanceEliteOpponent(session, faintedPokemon, log) {
       log.push(`${champion.name} has been defeated!`);
       return completeEliteSession(session, log);
     }
+    appendEliteTrainerVictoryLine(session, log);
     session.stageIndex += 1;
     refreshEliteStage(session);
-    log.push(`${session.currentTrainer.name} entered the arena!`);
+    appendEliteTrainerEntrance(session, log);
     if (session.isChampion) {
       log.push(`${champion.name} awaits as the final battle!`);
     } else {
@@ -1186,6 +1216,7 @@ app.post("/api/story/trigger", (req, res) => {
     "badge-earned",
     "gym-challenge",
     "mystery-progress",
+    "league-entry",
   ]);
   if (!supportedTriggers.has(trigger)) {
     return res.status(400).json({ error: "Unknown story trigger" });
@@ -1384,6 +1415,8 @@ app.get("/api/elitefour", (req, res) => {
       state.championDefeated || (state.badges || []).includes(champion.badge),
     ),
     active: Boolean(progress && progress.status === "active"),
+    hallOfFame: state.league?.hallOfFame || null,
+    completionCount: state.league?.completionCount || 0,
     session: progress ? getEliteSessionView(progress) : null,
     stages: [
       ...eliteFour.map((trainer, index) => ({
@@ -1391,6 +1424,7 @@ app.get("/api/elitefour", (req, res) => {
         name: trainer.name,
         type: trainer.type,
         team: trainer.team,
+        story: trainer.story || null,
         unlocked,
         progress:
           progress?.status === "active" && progress.stageIndex === index,
@@ -1400,6 +1434,7 @@ app.get("/api/elitefour", (req, res) => {
         name: champion.name,
         type: champion.type,
         team: champion.team,
+        story: champion.story || null,
         unlocked,
         progress: progress?.status === "active" && progress.isChampion,
       },
@@ -1535,9 +1570,9 @@ app.post("/api/elite/start", (req, res) => {
 
   const log = [
     "The Elite Four challenge begins.",
-    `${session.currentTrainer.name} stepped into the arena!`,
     "No healing between battles. Catching and running are disabled.",
   ];
+  appendEliteTrainerEntrance(session, log);
   applyBattleEntryAbilities(
     session.playerTeam[session.playerIndex],
     session.opponentTeam[session.opponentIndex],
@@ -2001,9 +2036,10 @@ app.post("/api/elite/move", (req, res) => {
         return res.json(completeEliteSession(session, log));
       }
 
+      appendEliteTrainerVictoryLine(session, log);
       session.stageIndex += 1;
       refreshEliteStage(session);
-      log.push(`${session.currentTrainer.name} entered the arena!`);
+      appendEliteTrainerEntrance(session, log);
       if (session.isChampion) {
         log.push(`${champion.name} awaits as the final battle!`);
       } else {
@@ -2068,9 +2104,10 @@ app.post("/api/elite/move", (req, res) => {
         return res.json(completeEliteSession(session, log));
       }
 
+      appendEliteTrainerVictoryLine(session, log);
       session.stageIndex += 1;
       refreshEliteStage(session);
-      log.push(`${session.currentTrainer.name} entered the arena!`);
+      appendEliteTrainerEntrance(session, log);
       if (session.isChampion) {
         log.push(`${champion.name} awaits as the final battle!`);
       } else {

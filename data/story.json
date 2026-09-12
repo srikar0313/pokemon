@@ -315,6 +315,80 @@
       ],
       "setFlags": ["league_road_opened"],
       "badgeMilestone": "Eight Badges"
+    },
+    {
+      "id": "league-arrival-after-mystery",
+      "order": 500,
+      "title": "The League Gates",
+      "act": 5,
+      "chapter": "act-5",
+      "triggers": ["league-entry"],
+      "oneTime": true,
+      "conditions": {
+        "minBadges": 8,
+        "championDefeated": false,
+        "requiredFlags": ["regional_crisis_resolved"],
+        "excludedFlags": ["league_entry_seen"]
+      },
+      "speaker": { "name": "Professor Lumen", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Professor Lumen", "text": "The habitats are calm, the Beacon is quiet, and the League gates are open. You helped make all three possible." },
+        { "speaker": "Rhea Vale", "portrait": "ranger", "text": "We started by comparing field notes. Now I get to watch my rival challenge the strongest Trainers in the region." },
+        { "speaker": "Professor Lumen", "text": "Once you enter, the Elite Four and Champion form one continuous challenge. Prepare before you commit." }
+      ],
+      "setFlags": ["league_entry_seen"],
+      "nextAction": { "type": "league-confirm" },
+      "presentation": "league",
+      "theme": "league"
+    },
+    {
+      "id": "league-arrival",
+      "order": 501,
+      "title": "The League Gates",
+      "act": 5,
+      "chapter": "act-5",
+      "triggers": ["league-entry"],
+      "oneTime": true,
+      "conditions": {
+        "minBadges": 8,
+        "championDefeated": false,
+        "excludedFlags": ["regional_crisis_resolved", "league_entry_seen"]
+      },
+      "speaker": { "name": "Professor Lumen", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Professor Lumen", "text": "Eight badges brought you to the League gates. Everything beyond them is one continuous challenge." },
+        { "speaker": "Rhea Vale", "portrait": "ranger", "text": "Your team has carried you through every kind of road. Give them time to prepare before the final climb." },
+        { "speaker": "Professor Lumen", "text": "When you are ready, face the Elite Four and then the Champion without leaving the run." }
+      ],
+      "setFlags": ["league_entry_seen"],
+      "nextAction": { "type": "league-confirm" },
+      "presentation": "league",
+      "theme": "league"
+    },
+    {
+      "id": "league-champion-ending",
+      "order": 600,
+      "title": "A New Champion",
+      "act": 5,
+      "chapter": "act-5",
+      "triggers": ["league-complete", "resume"],
+      "oneTime": true,
+      "conditions": {
+        "championDefeated": true,
+        "requiredFlags": ["league_challenge_completed", "main_story_completed"]
+      },
+      "speaker": { "name": "Champion Aurelius", "portrait": "champion" },
+      "dialogue": [
+        { "speaker": "Champion Aurelius", "text": "The League records your team among its Champions. Carry that title with the same care that brought you here." },
+        { "speaker": "Archivist Mira", "portrait": "guide", "text": "The record of the Aether Beacon now ends with a Trainer who answered history by protecting the present." },
+        { "speaker": "Ranger Sol", "portrait": "ranger", "text": "The routes are open and the habitats are steady. There will always be more to discover." },
+        { "speaker": "Rhea Vale", "portrait": "ranger", "text": "Champion or not, you're still my rival. Meet me back on the road when you're ready for whatever comes next." },
+        { "speaker": "Professor Lumen", "portrait": "guide", "text": "Congratulations, Champion. Your main journey is complete, but free exploration and every challenge remain open." }
+      ],
+      "setFlags": ["league_ending_seen", "post_game_ready"],
+      "nextAction": { "type": "return-to-explore" },
+      "presentation": "league-victory",
+      "theme": "champion"
     }
   ]
 }
