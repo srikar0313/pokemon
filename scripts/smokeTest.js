@@ -18,6 +18,10 @@ const {
   createStoryEngine,
 } = require("../backend/storyEngine");
 const { createRecurringCharacterEngine } = require("../backend/recurringCharacterEngine");
+const {
+  createGymStoryEvents,
+  getGymStorySummary,
+} = require("../backend/gymStory");
 const variantUtils = require("../frontend/variantUtils");
 const {
   reorderParty,
@@ -89,8 +93,28 @@ function main() {
     characterData: gameData.characters,
     itemCatalog: gameData.items,
   });
+  const gymStoryEvents = createGymStoryEvents(gameData.gyms);
+  assert(
+    gymStoryEvents.length === gameData.gyms.length * 2 &&
+      gameData.gyms.every((gym) => {
+        const story = gym.story || {};
+        return [
+          "leaderTitle",
+          "personality",
+          "theme",
+          "preBattleMessage",
+          "battleLine",
+          "postBattleMessage",
+          "localStoryHook",
+        ].every((field) => story[field]);
+      }),
+    "Gym narrative metadata or generated first-challenge/victory events are incomplete",
+  );
   const storyEngine = createStoryEngine({
-    storyData: gameData.story,
+    storyData: {
+      ...gameData.story,
+      events: [...(gameData.story.events || []), ...gymStoryEvents],
+    },
     itemCatalog: gameData.items,
     normalizeCharacters: recurringCharacterEngine.normalizeCharacterState,
   });
@@ -359,6 +383,38 @@ function main() {
       ).length === 0,
     "area discovery event repeated or failed to persist its location",
   );
+  const firstGymEvents = storyEngine.getEligibleEvents(
+    forestResult.state,
+    "gym-challenge",
+    { gymId: 1, badge: "Volt Badge" },
+  );
+  assert(
+    firstGymEvents.length === 1 &&
+      firstGymEvents[0].id === "gym-1-first-challenge" &&
+      firstGymEvents[0].presentation === "gym" &&
+      storyEngine.getEligibleEvents(
+        forestResult.state,
+        "gym-challenge",
+        { gymId: 2, badge: "Aqua Badge" },
+      )[0]?.id === "gym-2-first-challenge",
+    "Gym story conditions did not select the requested first challenge",
+  );
+  const firstGymIntro = storyEngine.completeEvent(
+    forestResult.state,
+    "gym-1-first-challenge",
+    { gymId: 1, badge: "Volt Badge" },
+  );
+  assert(
+    firstGymIntro.success &&
+      firstGymIntro.reward === null &&
+      firstGymIntro.state.story.flags.includes("gym_1_introduced") &&
+      storyEngine.getEligibleEvents(
+        firstGymIntro.state,
+        "gym-challenge",
+        { gymId: 1, badge: "Volt Badge" },
+      ).length === 0,
+    "first Gym challenge scene repeated or granted an unintended reward",
+  );
   forestResult.state.badges = ["Volt Badge"];
   const badgeEvents = storyEngine.getEligibleEvents(
     forestResult.state,
@@ -366,8 +422,39 @@ function main() {
     { badge: "Volt Badge" },
   );
   assert(
-    badgeEvents.some((event) => event.id === "milestone-first-badge"),
-    "first badge milestone did not trigger",
+    badgeEvents.some((event) => event.id === "milestone-first-badge") &&
+      badgeEvents.some((event) => event.id === "gym-1-first-victory"),
+    "first badge milestone or Gym victory scene did not trigger",
+  );
+  assert(
+    storyEngine
+      .getEligibleEvents(forestResult.state, "resume")
+      .some((event) => event.id === "gym-1-first-victory"),
+    "an interrupted first Gym victory scene cannot resume safely",
+  );
+  assert(
+    storyEngine
+      .getEligibleEvents(forestResult.state, "badge-earned", {
+        badge: "Aqua Badge",
+      })
+      .every((event) => event.id !== "gym-1-first-victory"),
+    "a Gym victory scene leaked into a different badge event",
+  );
+  const gymVictoryResult = storyEngine.completeEvent(
+    forestResult.state,
+    "gym-1-first-victory",
+    { badge: "Volt Badge" },
+  );
+  assert(
+    gymVictoryResult.success &&
+      gymVictoryResult.reward === null &&
+      gymVictoryResult.state.story.flags.includes("gym_1_story_complete") &&
+      storyEngine.getEligibleEvents(
+        gymVictoryResult.state,
+        "badge-earned",
+        { badge: "Volt Badge" },
+      ).every((event) => event.id !== "gym-1-first-victory"),
+    "Gym first-victory scene repeated or changed the existing reward",
   );
   const badgeResult = storyEngine.completeEvent(
     forestResult.state,
@@ -391,6 +478,26 @@ function main() {
       migratedStory.completedEventIds.includes("milestone-first-badge") &&
       migratedStory.flags.includes("journey_started"),
     "old save story migration would replay historical opening or badge events",
+  );
+  const oldSaveWithBadge = {
+    ...freshStoryPlayer,
+    badges: ["Volt Badge"],
+    story: storyEngine.normalizeStoryState(freshStoryPlayer.story, {
+      ...freshStoryPlayer,
+      badges: ["Volt Badge"],
+    }),
+  };
+  assert(
+    storyEngine.getEligibleEvents(
+      oldSaveWithBadge,
+      "gym-challenge",
+      { gymId: 1, badge: "Volt Badge" },
+    ).length === 0 &&
+      storyEngine
+        .getEligibleEvents(oldSaveWithBadge, "resume")
+        .every((event) => !event.id.startsWith("gym-")) &&
+      gameData.gyms.every((gym) => getGymStorySummary(gym).leaderTitle),
+    "old badge saves can replay first-challenge scenes or lack Gym summaries",
   );
   assert(
     migratedStory.characters?.["rhea-vale"]?.encounterProgress === 0,

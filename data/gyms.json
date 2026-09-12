@@ -8,6 +8,22 @@
     "difficulty": 1,
     "rewardCoins": 500,
     "badge": "Volt Badge",
+    "story": {
+      "act": 1,
+      "chapter": "act-1",
+      "leaderTitle": "Spark, Conductor of the Current",
+      "personality": "Energetic, exacting, and quick to praise brave decisions.",
+      "theme": "Timing, momentum, and controlled electrical circuits",
+      "preBattleMessage": "Every strong team finds its rhythm under pressure. Show me yours!",
+      "battleLine": "Keep moving. Hesitation gives the current somewhere to strike!",
+      "postBattleMessage": "You kept your rhythm even when the current changed. The Volt Badge belongs with you.",
+      "localStoryHook": "Volt City's instruments are picking up an unfamiliar pulse from beyond the Forest.",
+      "supportingPrelude": {
+        "name": "Professor Lumen",
+        "portrait": "guide",
+        "text": "Spark studies the same strange habitat pulse we detected in the Forest. Your battle may help calibrate the signal."
+      }
+    },
     "team": [
       {
         "name": "Pichu",
@@ -32,6 +48,17 @@
     "difficulty": 2,
     "rewardCoins": 800,
     "badge": "Aqua Badge",
+    "story": {
+      "act": 2,
+      "chapter": "act-2",
+      "leaderTitle": "Mistyra, Keeper of the Tides",
+      "personality": "Calm and observant, with a talent for turning pressure into opportunity.",
+      "theme": "Adaptation, patience, and shifting harbor currents",
+      "preBattleMessage": "A fixed plan sinks quickly. Let me see how well you adapt.",
+      "battleLine": "Read the current, then choose your moment.",
+      "postBattleMessage": "You changed course without losing sight of your team. Accept the Aqua Badge.",
+      "localStoryHook": "Aqua Harbor's tides have begun changing without wind or warning."
+    },
     "team": [
       {
         "name": "Squirtle",
@@ -56,6 +83,22 @@
     "difficulty": 3,
     "rewardCoins": 1100,
     "badge": "Blaze Badge",
+    "story": {
+      "act": 2,
+      "chapter": "act-2",
+      "leaderTitle": "Flint, Heart of the Furnace",
+      "personality": "Passionate and direct, but disciplined beneath the heat.",
+      "theme": "Courage, restraint, and volcanic pressure",
+      "preBattleMessage": "Power without control burns out fast. Bring me a flame that lasts!",
+      "battleLine": "Stand firm. The hottest moment reveals a Trainer's resolve!",
+      "postBattleMessage": "That was conviction, not recklessness. Carry the Blaze Badge with pride.",
+      "localStoryHook": "Volcanic sensors record heat waves moving against the natural vents.",
+      "supportingPrelude": {
+        "name": "Ranger Sol",
+        "portrait": "ranger",
+        "text": "The vents are stable, but wild Pokémon keep fleeing the upper trail. Flint has been watching the pattern too."
+      }
+    },
     "team": [
       {
         "name": "Charmander",
@@ -80,6 +123,17 @@
     "difficulty": 4,
     "rewardCoins": 1400,
     "badge": "Forest Badge",
+    "story": {
+      "act": 3,
+      "chapter": "act-3",
+      "leaderTitle": "Verdia, Warden of the Grove",
+      "personality": "Patient, protective, and attentive to every small change in nature.",
+      "theme": "Growth, endurance, and the balance of the living forest",
+      "preBattleMessage": "Strength grows quietly before it is seen. Show me what your journey has nurtured.",
+      "battleLine": "A rooted team can weather any sudden change.",
+      "postBattleMessage": "Your bonds have taken root. The Forest Badge marks how far they can still grow.",
+      "localStoryHook": "The oldest trees are responding to a rhythm that does not belong to the seasons."
+    },
     "team": [
       {
         "name": "Ivysaur",
@@ -104,6 +158,22 @@
     "difficulty": 5,
     "rewardCoins": 1700,
     "badge": "Storm Badge",
+    "story": {
+      "act": 3,
+      "chapter": "act-3",
+      "leaderTitle": "Zephyr, Rider of the High Wind",
+      "personality": "Free-spirited and daring, yet sharply aware of every change in the sky.",
+      "theme": "Speed, perspective, and high-altitude winds",
+      "preBattleMessage": "Up here, every choice carries farther. Let's see if you can keep pace!",
+      "battleLine": "The wind changed. Did you notice before I did?",
+      "postBattleMessage": "You found your footing where the air turns thin. The Storm Badge is yours.",
+      "localStoryHook": "Storm Peak's winds now circle a fixed point above the Mountain.",
+      "supportingPrelude": {
+        "name": "Rhea Vale",
+        "portrait": "ranger",
+        "text": "I followed the signal this far, but Zephyr reads these winds better than either of us. Win, and ask what he saw."
+      }
+    },
     "team": [
       {
         "name": "Fearow",
@@ -128,6 +198,17 @@
     "difficulty": 6,
     "rewardCoins": 2000,
     "badge": "Rock Badge",
+    "story": {
+      "act": 4,
+      "chapter": "act-4",
+      "leaderTitle": "Garnet, Keeper of the Deep Strata",
+      "personality": "Steady, practical, and almost impossible to unsettle.",
+      "theme": "Foundation, resilience, and the memory held in stone",
+      "preBattleMessage": "A strong foundation is proven by what it survives. Test yours against mine.",
+      "battleLine": "Pressure does not break a prepared team. It reveals it.",
+      "postBattleMessage": "Your team held together under real weight. Take the Rock Badge.",
+      "localStoryHook": "New fractures in Garnet Ridge point toward the same distant source as the habitat pulse."
+    },
     "team": [
       {
         "name": "Graveler",
@@ -152,6 +233,22 @@
     "difficulty": 7,
     "rewardCoins": 2300,
     "badge": "Psychic Badge",
+    "story": {
+      "act": 4,
+      "chapter": "act-4",
+      "leaderTitle": "Lunara, Reader of the Unseen",
+      "personality": "Quiet, perceptive, and more interested in intent than appearances.",
+      "theme": "Foresight, focus, and hidden patterns",
+      "preBattleMessage": "Your choices leave an echo before your Pokémon move. I wonder what yours will reveal.",
+      "battleLine": "Power is loud. Intent is clearer.",
+      "postBattleMessage": "You trusted your team beyond what you could predict. The Psychic Badge recognizes that clarity.",
+      "localStoryHook": "Moonveil records connect the Mountain signal to warnings preserved near the Graveyard.",
+      "supportingPrelude": {
+        "name": "Archivist Mira",
+        "portrait": "guide",
+        "text": "Lunara recognized the pattern in our oldest records. Her Gym may be the last place to test your focus before the Graveyard clue."
+      }
+    },
     "team": [
       {
         "name": "Mr. Mime",
@@ -176,6 +273,17 @@
     "difficulty": 8,
     "rewardCoins": 2600,
     "badge": "Ice Badge",
+    "story": {
+      "act": 5,
+      "chapter": "act-5",
+      "leaderTitle": "Glacius, Sentinel of the Still North",
+      "personality": "Composed and demanding, with deep respect for Trainers who endure.",
+      "theme": "Precision, patience, and resolve under extreme conditions",
+      "preBattleMessage": "The final badge is not won by rushing. Hold your purpose when everything turns cold.",
+      "battleLine": "Breathe. Decide. Endure.",
+      "postBattleMessage": "Your resolve did not fracture. The Ice Badge completes your road to the League.",
+      "localStoryHook": "Cold light over Glacier Bay pulses in time with the Mountain and Graveyard signals."
+    },
     "team": [
       {
         "name": "Weavile",

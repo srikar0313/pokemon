@@ -9,6 +9,7 @@ export function normalizeStoryEvent(event = {}) {
     .filter((line) => line && line.text)
     .map((line) => ({
       speaker: String(line.speaker || event.speaker?.name || "Story"),
+      portrait: String(line.portrait || event.speaker?.portrait || "guide"),
       text: String(line.text),
     }));
   return {
@@ -24,6 +25,7 @@ export function normalizeStoryEvent(event = {}) {
     reward: event.reward || null,
     context: event.context || {},
     presentation: String(event.presentation || "story"),
+    theme: String(event.theme || ""),
     characterId: event.characterId || null,
     encounterId: event.encounterId || null,
     phase: event.phase || null,

@@ -29,10 +29,24 @@ function createStoryEngine({
     const flags = new Set(playerState.story?.flags || []);
     const badges = new Set(playerState.badges || []);
     if (conditions.area && conditions.area !== context.area) return false;
+    if (
+      conditions.gymId !== undefined &&
+      Number(conditions.gymId) !== Number(context.gymId)
+    ) {
+      return false;
+    }
     if (conditions.badge && !badges.has(conditions.badge)) return false;
+    if (
+      conditions.triggerBadge &&
+      context.badge &&
+      conditions.triggerBadge !== context.badge
+    ) {
+      return false;
+    }
     if (Number(conditions.minBadges || 0) > badges.size) return false;
     if (
       (conditions.requiredBadges || []).some((badge) => !badges.has(badge)) ||
+      (conditions.excludedBadges || []).some((badge) => badges.has(badge)) ||
       (conditions.requiredFlags || []).some((flag) => !flags.has(flag)) ||
       (conditions.excludedFlags || []).some((flag) => flags.has(flag))
     ) {
@@ -111,6 +125,8 @@ function createStoryEngine({
       dialogue: event.dialogue || [],
       reward: event.reward || null,
       oneTime: event.oneTime !== false,
+      presentation: event.presentation || "story",
+      theme: event.theme || null,
     };
   }
 

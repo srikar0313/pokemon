@@ -1976,6 +1976,60 @@ textarea {
   gap: 10px;
 }
 
+.gym-journal-summary {
+  display: grid;
+  grid-template-columns: auto minmax(140px, 1fr);
+  gap: 8px 18px;
+  align-items: center;
+  margin-bottom: 12px;
+  border: 1px solid #b9c9d7;
+  border-left: 5px solid #e7b52f;
+  border-radius: 7px;
+  padding: 12px 14px;
+  background: #f5f9fc;
+}
+
+.gym-journal-summary > div:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.gym-journal-summary span,
+.arena-leader-title {
+  color: #52677a;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.gym-journal-summary strong {
+  color: #20384d;
+  font-size: 18px;
+}
+
+.gym-journal-summary p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #40576b;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.gym-progress-track {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #dce5ec;
+}
+
+.gym-progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #e0a91b, #3da16d);
+  transition: width 280ms ease;
+}
+
 .gym-card {
   display: flex;
   flex-direction: column;
@@ -2029,6 +2083,24 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.gym-leader-title {
+  color: #263f55;
+  font-size: 14px;
+}
+
+.gym-theme-summary {
+  color: #536a7c;
+  font-style: italic;
+}
+
+.gym-story-hook {
+  border-left: 3px solid #d9a91d;
+  padding-left: 8px;
+  color: #42596d;
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .leader-sprite {
@@ -2174,6 +2246,19 @@ textarea {
   padding: 10px 12px;
   border-radius: 12px;
   color: #fff;
+}
+
+.arena-leader-title {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.gym-battle-line {
+  max-width: 620px;
+  margin: 5px 0 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 700;
 }
 
 .arena-trainer-sprite {
@@ -5828,6 +5913,55 @@ button:disabled {
     linear-gradient(300deg, rgba(69, 180, 197, 0.28), transparent 50%);
 }
 
+.story-cinematic.story-gym-scene::before {
+  background:
+    radial-gradient(circle at 72% 35%, rgba(255, 255, 255, 0.16), transparent 22%),
+    linear-gradient(120deg, rgba(232, 181, 47, 0.3), transparent 44%),
+    linear-gradient(300deg, rgba(49, 142, 164, 0.28), transparent 52%);
+}
+
+.story-gym-scene .story-chapter-card {
+  border-left-color: #ffd04e;
+}
+
+.story-gym-scene .story-speaker-portrait {
+  filter: drop-shadow(0 0 25px rgba(255, 214, 90, 0.25));
+}
+
+.story-gym-scene .story-dialogue-panel {
+  border-color: #75b9c9;
+  border-bottom-color: #f1be3f;
+}
+
+.story-gym-scene[data-story-theme="fire"]::before {
+  background: linear-gradient(120deg, rgba(222, 70, 33, 0.4), transparent 48%), rgba(18, 15, 25, 0.9);
+}
+
+.story-gym-scene[data-story-theme="electric"]::before {
+  background: linear-gradient(120deg, rgba(235, 190, 31, 0.42), transparent 48%), rgba(20, 24, 31, 0.9);
+}
+
+.story-gym-scene[data-story-theme="water"]::before,
+.story-gym-scene[data-story-theme="ice"]::before {
+  background: linear-gradient(120deg, rgba(39, 139, 194, 0.42), transparent 50%), rgba(8, 24, 38, 0.9);
+}
+
+.story-gym-scene[data-story-theme="grass"]::before {
+  background: linear-gradient(120deg, rgba(52, 139, 72, 0.42), transparent 50%), rgba(10, 30, 25, 0.9);
+}
+
+.story-gym-scene[data-story-theme="flying"]::before {
+  background: linear-gradient(120deg, rgba(120, 105, 190, 0.4), transparent 50%), rgba(16, 24, 38, 0.9);
+}
+
+.story-gym-scene[data-story-theme="rock"]::before {
+  background: linear-gradient(120deg, rgba(154, 112, 62, 0.42), transparent 50%), rgba(28, 23, 20, 0.9);
+}
+
+.story-gym-scene[data-story-theme="psychic"]::before {
+  background: linear-gradient(120deg, rgba(178, 67, 136, 0.4), transparent 50%), rgba(27, 16, 38, 0.9);
+}
+
 .story-rival-scene .story-chapter-card {
   border-left-color: #ef6674;
 }
@@ -5997,6 +6131,14 @@ button:disabled {
 }
 
 @media (max-width: 700px) {
+  .gym-journal-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .gym-journal-summary p {
+    grid-column: 1;
+  }
+
   .story-cinematic-stage {
     width: calc(100vw - 20px);
     height: calc(100vh - 20px);
@@ -6043,6 +6185,10 @@ button:disabled {
   .story-cinematic * {
     animation: none !important;
     transition: none !important;
+  }
+
+  .gym-progress-track span {
+    transition: none;
   }
 }
 

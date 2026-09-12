@@ -316,13 +316,15 @@ function renderStoryScene() {
   layer.classList.remove("hidden", "story-motion-none");
   layer.classList.toggle("story-motion-none", motion.transition === "none");
   layer.classList.toggle("story-rival-scene", event.presentation === "rival");
+  layer.classList.toggle("story-gym-scene", event.presentation === "gym");
+  layer.dataset.storyTheme = event.theme || "";
   document.getElementById("story-act-label").textContent = `ACT ${event.act}`;
   document.getElementById("story-scene-title").textContent = getStoryChapterTitle(event);
   document.getElementById("story-scene-name").textContent = event.title;
   document.getElementById("story-speaker-name").textContent = line.speaker;
   document.getElementById("story-line-progress").textContent = `${progress.current} / ${progress.total}`;
   const portrait = document.getElementById("story-speaker-portrait");
-  portrait.innerHTML = `<img src="${getStoryPortrait(event.speaker?.portrait)}" alt="${escapeHtml(event.speaker?.name || line.speaker)}">`;
+  portrait.innerHTML = `<img src="${getStoryPortrait(line.portrait || event.speaker?.portrait)}" alt="${escapeHtml(line.speaker)}">`;
   const text = document.getElementById("story-dialogue-text");
   text.textContent = "";
   if (!motion.characterDelay) {
@@ -2964,12 +2966,24 @@ function displayGyms() {
   const gymsDiv = document.getElementById("gyms");
   if (!gymsDiv) return;
 
+  const defeatedCount = gymCache.filter((gym) => gym.defeated).length;
+  const nextGym = gymCache.find((gym) => gym.unlocked && !gym.defeated);
   gymsDiv.innerHTML = `
     <div class="panel-header">
       <div>
         <h3>Gym Arenas</h3>
         <p>Earn badges and build your collection case.</p>
       </div>
+    </div>
+    <div class="gym-journal-summary" aria-label="Gym journey progress">
+      <div>
+        <span>Gym Journal</span>
+        <strong>${defeatedCount}/${gymCache.length} badges</strong>
+      </div>
+      <div class="gym-progress-track" aria-hidden="true">
+        <span style="width:${gymCache.length ? (defeatedCount / gymCache.length) * 100 : 0}%"></span>
+      </div>
+      <p>${nextGym ? `Next: ${nextGym.leaderName} at ${nextGym.name} - ${nextGym.story?.theme || `${nextGym.type} mastery`}.` : defeatedCount === gymCache.length ? "Every Gym is cleared. The League road is open." : "Earn the previous badge to unlock your next challenge."}</p>
     </div>
     ${renderBadgeCollection(playerState?.badges || [])}
     <div class="gym-list">
@@ -2986,6 +3000,9 @@ function displayGyms() {
                 <img class="leader-sprite" src="${getTrainerSprite(gym.type, gym.leaderName)}" alt="${gym.leaderName}">
                 <div class="leader-card-meta">
                   <span>${gym.city} | Lv ${gym.difficulty}</span>
+                  <strong class="gym-leader-title">${gym.story?.leaderTitle || `${gym.type} Leader`}</strong>
+                  <span class="gym-theme-summary">${gym.story?.theme || `${gym.type} mastery`}</span>
+                  <span class="gym-story-hook">${gym.story?.localStoryHook || "A key stop on the League journey."}</span>
                   <span>${gym.team.map((member) => member.name).join(" / ")}</span>
                   <div class="badge-token badge-${theme.className}">
                     <span class="badge-icon">${theme.icon}</span>
@@ -3083,6 +3100,7 @@ async function startGymBattle(gymId) {
   gymBattle = data.session;
   showGymBattle(data.log);
   animatePokemonSwitch("opponent", gymBattle.gymPokemon);
+  queueStoryEvents(data.storyEvents || [], data.storyContext || { gymId });
 }
 
 function renderGymTeamIndicators() {
@@ -3123,8 +3141,10 @@ function showGymBattle(lines = []) {
       <div class="arena-trainer-banner leader-${theme.className}">
         <img class="arena-trainer-sprite" src="${getTrainerSprite(gymBattle.gym.type, gymBattle.gym.leaderName)}" alt="${gymBattle.gym.leaderName}">
         <div>
+          <span class="arena-leader-title">${gymBattle.gym.story?.leaderTitle || gymBattle.gym.leaderName}</span>
           <h2>${gymBattle.gym.leaderName}</h2>
           <p class="weather-info">${gymBattle.gym.name} | ${gymBattle.gym.type} leader | No catching | No running</p>
+          <p class="gym-battle-line">"${gymBattle.gym.story?.battleLine || "Show me how your team battles together!"}"</p>
           ${renderGymTeamIndicators()}
         </div>
         <div class="badge-token badge-${theme.className}">

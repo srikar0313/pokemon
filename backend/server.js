@@ -11,6 +11,11 @@ const { createHandbookData } = require("./handbookData");
 const { createStoryEngine } = require("./storyEngine");
 const { createRecurringCharacterEngine } = require("./recurringCharacterEngine");
 const {
+  createGymStoryEvents,
+  getGymStoryContext,
+  getGymStorySummary,
+} = require("./gymStory");
+const {
   reorderParty,
   sendPartyPokemonToStorage,
 } = require("./partyManager");
@@ -61,7 +66,13 @@ const recurringCharacterEngine = createRecurringCharacterEngine({
   itemCatalog,
 });
 const storyEngine = createStoryEngine({
-  storyData: gameData.story,
+  storyData: {
+    ...gameData.story,
+    events: [
+      ...(gameData.story.events || []),
+      ...createGymStoryEvents(gyms),
+    ],
+  },
   itemCatalog,
   normalizeCharacters: recurringCharacterEngine.normalizeCharacterState,
 });
@@ -727,6 +738,7 @@ function getGymSessionView(session) {
       difficulty: session.gym.difficulty,
       badge: session.gym.badge,
       rewardCoins: session.gym.rewardCoins,
+      story: getGymStorySummary(session.gym),
     },
     playerIndex: session.playerIndex,
     gymIndex: session.gymIndex,
@@ -1166,6 +1178,7 @@ app.post("/api/story/trigger", (req, res) => {
     "resume",
     "area-enter",
     "badge-earned",
+    "gym-challenge",
   ]);
   if (!supportedTriggers.has(trigger)) {
     return res.status(400).json({ error: "Unknown story trigger" });
@@ -1178,6 +1191,9 @@ app.post("/api/story/trigger", (req, res) => {
     badge: req.body?.context?.badge
       ? String(req.body.context.badge)
       : null,
+    gymId: req.body?.context?.gymId
+      ? Number(req.body.context.gymId)
+      : null,
   };
   if (trigger === "area-enter") {
     if (!areas.some((area) => area.id === context.area)) {
@@ -1186,6 +1202,9 @@ app.post("/api/story/trigger", (req, res) => {
     if (!(state.unlockedAreas || []).includes(context.area)) {
       return res.status(403).json({ error: "That area is still locked" });
     }
+  }
+  if (trigger === "gym-challenge" && !getGymById(context.gymId)) {
+    return res.status(400).json({ error: "Unknown story gym" });
   }
   return res.json({
     success: true,
@@ -1207,6 +1226,9 @@ app.post("/api/story/complete", (req, res) => {
       : null,
     badge: req.body?.context?.badge
       ? String(req.body.context.badge)
+      : null,
+    gymId: req.body?.context?.gymId
+      ? Number(req.body.context.gymId)
       : null,
   };
   const eventId = req.body?.eventId;
@@ -1307,6 +1329,7 @@ app.get("/api/gyms", (req, res) => {
       requiresBadge: gymUnlocks[gym.id] || null,
       rewardCoins: gym.rewardCoins,
       team: gym.team,
+      story: getGymStorySummary(gym),
       unlocked: (state.unlockedGyms || []).map(Number).includes(gym.id),
       defeated: (state.badges || []).includes(gym.badge),
     })),
@@ -1376,6 +1399,12 @@ app.post("/api/gym/start", (req, res) => {
   }
 
   const { team } = loadTeamAndStorage();
+  const storyContext = getGymStoryContext(gym);
+  const storyEvents = storyEngine.getEligibleEvents(
+    state,
+    "gym-challenge",
+    storyContext,
+  );
   const gymReadyTeam = preparePlayerTeamForGymBattle(team);
   const playerIndex = getFirstHealthyPokemonIndex(gymReadyTeam);
   if (playerIndex < 0) {
@@ -1414,6 +1443,8 @@ app.post("/api/gym/start", (req, res) => {
     success: true,
     log,
     session: getGymSessionView(session),
+    storyEvents,
+    storyContext,
   });
 });
 

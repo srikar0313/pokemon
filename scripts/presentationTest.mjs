@@ -98,9 +98,25 @@ const rivalScene = normalizeStoryEvent({
   speaker: { name: "Rhea Vale", portrait: "ranger" },
   dialogue: [{ text: "Show me what your team has learned." }],
 });
+const gymScene = normalizeStoryEvent({
+  id: "gym-1-first-challenge",
+  title: "Conductor of the Current",
+  act: 1,
+  presentation: "gym",
+  theme: "electric",
+  speaker: { name: "Spark", portrait: "spark" },
+  dialogue: [
+    { speaker: "Professor Lumen", portrait: "guide", text: "Watch the signal." },
+    { speaker: "Spark", portrait: "spark", text: "Find your rhythm!" },
+  ],
+});
 assert.equal(storyScene.dialogue[0].speaker, "Guide");
 assert.equal(rivalScene.presentation, "rival");
 assert.equal(rivalScene.characterId, "rhea-vale");
+assert.equal(gymScene.presentation, "gym");
+assert.equal(gymScene.theme, "electric");
+assert.equal(gymScene.dialogue[0].portrait, "guide");
+assert.equal(gymScene.dialogue[1].portrait, "spark");
 assert.equal(getStoryProgress(storyScene, 1).percent, 100);
 assert.equal(getStoryMotionProfile(true).characterDelay, 0);
 assert.equal(getStoryMotionProfile(true).transition, "none");
@@ -706,6 +722,8 @@ assert(frontendSource.includes('fetch("/api/story/trigger"'), "Story trigger int
 assert(frontendSource.includes("handleStoryKeydown"), "Story keyboard controls are missing");
 assert(frontendStyles.includes(".story-dialogue-panel"), "Story dialogue styling is missing");
 assert(frontendStyles.includes(".story-rival-scene"), "Rival cinematic styling is missing");
+assert(frontendStyles.includes(".story-gym-scene"), "Gym cinematic styling is missing");
+assert(frontendStyles.includes(".gym-journal-summary"), "Gym journal summary is missing");
 assert(frontendSource.includes("startRivalBattle"), "Rival battle handoff is missing");
 assert(frontendSource.includes("evolution-target-card"), "Evolution target artwork card is missing");
 assert(frontendSource.includes('fetch("/api/handbook")'), "Handbook data is not loaded from the backend");
