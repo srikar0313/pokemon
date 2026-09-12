@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: pokemon
+      POSTGRES_USER: pokemon
+      POSTGRES_PASSWORD: pokemon
+    ports:
+      - "5432:5432"
+    volumes:
+      - pokemon-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pokemon -d pokemon"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pokemon-postgres-data:

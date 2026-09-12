@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PokemonLocation {
+  PARTY
+  STORAGE
+}
+
+model Player {
+  id               String   @id
+  trainerName      String   @default("Player")
+  coins            Int      @default(100)
+  level            Int      @default(1)
+  xp               Int      @default(0)
+  championDefeated Boolean  @default(false)
+  pokedex          Json
+  unlockedAreas    String[]
+  unlockedGyms     Int[]
+  defeatedNpcs     Int[]
+  achievements     String[]
+  extraState       Json
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  pokemon           PlayerPokemon[]
+  inventory         InventoryItem[]
+  badges            Badge[]
+  story             StoryState?
+  recurringProgress RecurringCharacterProgress[]
+  league            LeagueState?
+  partyPresets      PartyPreset[]
+}
+
+model PlayerPokemon {
+  ownedId         String          @id
+  playerId        String
+  speciesId       Int
+  legacyLocalId   Int?
+  name            String
+  level           Int
+  xp              Int
+  currentHp       Int
+  maxHp           Int
+  shiny           Boolean         @default(false)
+  formId          String?
+  abilityName     String?
+  status          String?
+  moves           Json
+  data            Json
+  location        PokemonLocation
+  partyPosition   Int?
+  storagePosition Int?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId, location, partyPosition])
+  @@index([playerId, speciesId])
+}
+
+model InventoryItem {
+  playerId String
+  itemId   String
+  quantity Int    @default(0)
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@id([playerId, itemId])
+}
+
+model Badge {
+  playerId String
+  name     String
+  earnedAt DateTime @default(now())
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@id([playerId, name])
+}
+
+model StoryState {
+  playerId            String   @id
+  version             String
+  currentAct          Int
+  currentChapter      String
+  flags               String[]
+  completedEventIds   String[]
+  rewardedEventIds    String[]
+  badgeMilestones     String[]
+  discoveredLocations String[]
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+}
+
+model RecurringCharacterProgress {
+  playerId             String
+  characterId          String
+  introduced           Boolean  @default(false)
+  encounterProgress    Int      @default(0)
+  playerWins           Int      @default(0)
+  playerLosses         Int      @default(0)
+  relationship         String?
+  completedSceneIds    String[]
+  completedBattleIds   String[]
+  rewardedEncounterIds String[]
+  lastResult           Json?
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@id([playerId, characterId])
+}
+
+model LeagueState {
+  playerId        String    @id
+  version         String
+  completed       Boolean   @default(false)
+  completionCount Int       @default(0)
+  completedAt     DateTime?
+  hallOfFame      Json?
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+}
+
+model PartyPreset {
+  playerId String
+  slot     Int
+
+  player  Player               @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  members PartyPresetPokemon[]
+
+  @@id([playerId, slot])
+}
+
+model PartyPresetPokemon {
+  playerId String
+  slot     Int
+  position Int
+  ownedId  String
+
+  preset PartyPreset @relation(fields: [playerId, slot], references: [playerId, slot], onDelete: Cascade)
+
+  @@id([playerId, slot, position])
+  @@index([ownedId])
+}
+
+model PersistenceMetadata {
+  key       String   @id
+  value     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

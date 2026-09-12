@@ -1,7 +1,12 @@
+require("dotenv/config");
+
 const express = require("express");
 const path = require("path");
 const { loadGameData, loadJson, saveJson } = require("./dataLoader");
 const { createGameState } = require("./gameState");
+const {
+  createPersistenceCoordinator,
+} = require("./persistence/persistenceCoordinator");
 const { createPokemonUtils } = require("./pokemonUtils");
 const { createBattleEngine } = require("./battleEngine");
 const { createEncounterEngine } = require("./encounterEngine");
@@ -52,6 +57,17 @@ app.use(
   express.static(path.join(rootDir, "node_modules", "three", "build")),
 );
 app.use(express.json());
+
+const persistence = createPersistenceCoordinator({
+  paths: {
+    player: playerStatePath,
+    team: inventoryPath,
+    storage: storagePath,
+  },
+  loadJson,
+  saveJson,
+});
+app.use(persistence.createResponseMiddleware());
 
 const gameData = loadGameData();
 const itemCatalog = gameData.items;
@@ -184,8 +200,8 @@ const gameState = createGameState({
   gymUnlocks,
   legacyBadgeMap,
   championBadge: champion.badge,
-  readJsonFile: loadJson,
-  writeJsonFile: saveJson,
+  readJsonFile: persistence.readJsonFile,
+  writeJsonFile: persistence.writeJsonFile,
   normalizePokemon,
   getStarterPokemon,
   isPokemonOrEvolutionOf,
@@ -3621,6 +3637,20 @@ app.post("/api/heal-pokemon", (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+async function startServer() {
+  await persistence.initialize();
+  return app.listen(port, () => {
+    console.log(
+      `Server running at http://localhost:${port} (${persistence.mode} persistence)`,
+    );
+  });
+}
+
+if (require.main === module) {
+  startServer().catch((error) => {
+    console.error("Server startup failed:", error);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = { app, startServer, persistence };
