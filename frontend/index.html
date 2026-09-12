@@ -4,10 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokemon Adventure</title>
-    <link rel="stylesheet" href="style.css?v=20260912-league-finale" />
+    <link rel="stylesheet" href="style.css?v=20260913-auth" />
   </head>
   <body>
-    <div class="app-shell">
+    <main id="auth-gate" class="auth-gate hidden" aria-labelledby="auth-title">
+      <section class="auth-card">
+        <div class="auth-brand-mark" aria-hidden="true"><span></span></div>
+        <span class="auth-eyebrow">Trainer Network</span>
+        <h1 id="auth-title">Pokemon Adventure</h1>
+        <p>Sign in to continue your personal journey and cloud-ready save.</p>
+        <div class="auth-mode-tabs" role="tablist" aria-label="Account action">
+          <button id="auth-login-tab" class="active" type="button" onclick="setAuthMode('login')">Login</button>
+          <button id="auth-register-tab" type="button" onclick="setAuthMode('register')">Register</button>
+        </div>
+        <form id="auth-form" onsubmit="submitAuthForm(event)">
+          <label>Email<input id="auth-email" type="email" autocomplete="email" maxlength="254" required /></label>
+          <label>Password<input id="auth-password" type="password" autocomplete="current-password" minlength="8" maxlength="128" required /></label>
+          <button id="auth-submit" class="primary-btn" type="submit">Continue Journey</button>
+        </form>
+        <p id="auth-message" class="auth-message" role="alert"></p>
+      </section>
+    </main>
+    <div class="app-shell auth-locked">
+      <div id="account-bar" class="account-bar"></div>
       <div id="stats"></div>
       <div id="main-nav" class="main-nav">
         <button
@@ -247,6 +266,6 @@
     </aside>
     <script type="module" src="js/battlePresentationBootstrap.mjs?v=20260912-gym-story"></script>
     <script src="variantUtils.js?v=20260906-variants"></script>
-    <script src="script.js?v=20260912-league-finale"></script>
+    <script src="script.js?v=20260913-auth"></script>
   </body>
 </html>

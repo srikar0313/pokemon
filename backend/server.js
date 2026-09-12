@@ -2,11 +2,20 @@ require("dotenv/config");
 
 const express = require("express");
 const path = require("path");
+const { randomUUID } = require("crypto");
 const { loadGameData, loadJson, saveJson } = require("./dataLoader");
 const { createGameState } = require("./gameState");
 const {
   createPersistenceCoordinator,
 } = require("./persistence/persistenceCoordinator");
+const { getPrismaClient } = require("./persistence/prismaClient");
+const {
+  createAggregateRepository,
+} = require("./persistence/aggregateRepository");
+const { createAuthService } = require("./auth/authService");
+const { createAuthMiddleware } = require("./auth/authMiddleware");
+const { createAuthRouter } = require("./auth/authRoutes");
+const { createScopedSessionStore } = require("./auth/scopedSessionStore");
 const { createPokemonUtils } = require("./pokemonUtils");
 const { createBattleEngine } = require("./battleEngine");
 const { createEncounterEngine } = require("./encounterEngine");
@@ -56,8 +65,10 @@ app.use(
   "/vendor/three",
   express.static(path.join(rootDir, "node_modules", "three", "build")),
 );
-app.use(express.json());
+app.use(express.json({ limit: "64kb" }));
 
+const prisma = getPrismaClient();
+const aggregateRepository = createAggregateRepository({ prisma });
 const persistence = createPersistenceCoordinator({
   paths: {
     player: playerStatePath,
@@ -66,8 +77,8 @@ const persistence = createPersistenceCoordinator({
   },
   loadJson,
   saveJson,
+  repository: aggregateRepository,
 });
-app.use(persistence.createResponseMiddleware());
 
 const gameData = loadGameData();
 const itemCatalog = gameData.items;
@@ -180,9 +191,10 @@ const gymUnlocks = {
   8: "Psychic Badge",
 };
 
-const activeGymSessions = new Map();
-const activeEliteSessions = new Map();
-const activeNpcSessions = new Map();
+const resolveActivePlayerId = () => persistence.getCurrentPlayerId();
+const activeGymSessions = createScopedSessionStore(resolveActivePlayerId);
+const activeEliteSessions = createScopedSessionStore(resolveActivePlayerId);
+const activeNpcSessions = createScopedSessionStore(resolveActivePlayerId);
 
 const allGymBadges = gyms.map((gym) => gym.badge);
 
@@ -227,6 +239,44 @@ const {
   randomizePartyPreset,
   loadPartyPreset,
 } = gameState;
+
+function createDefaultPlayerAggregate() {
+  const starter = normalizePokemon(getStarterPokemon());
+  starter.ownedId = starter.ownedId || randomUUID();
+  return {
+    player: JSON.parse(JSON.stringify(gameState.defaultPlayerState)),
+    team: [starter],
+    storage: [],
+  };
+}
+
+const authService =
+  persistence.mode === "postgres"
+    ? createAuthService({
+        prisma,
+        aggregateRepository,
+        createDefaultAggregate: createDefaultPlayerAggregate,
+        sessionDays: Math.max(1, Number(process.env.SESSION_DAYS) || 30),
+      })
+    : null;
+const authMiddleware = createAuthMiddleware({
+  mode: persistence.mode,
+  authService,
+});
+app.use(
+  "/api/auth",
+  createAuthRouter({
+    mode: persistence.mode,
+    authService,
+    resolveAuth: authMiddleware.resolveAuth,
+  }),
+);
+app.use(
+  "/api",
+  authMiddleware.resolveAuth,
+  authMiddleware.requireAuth,
+  persistence.createRequestMiddleware(),
+);
 
 const battleEngine = createBattleEngine({ getRandomInt });
 const {
@@ -3635,6 +3685,19 @@ app.post("/api/heal-pokemon", (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Failed to heal Pokemon" });
   }
+});
+
+app.use((error, req, res, next) => {
+  if (res.headersSent) return next(error);
+  console.error("Request failed:", error.message);
+  const status = Number(error.status || error.statusCode);
+  if (status === 413) {
+    return res.status(413).json({ error: "Request body is too large." });
+  }
+  if (status >= 400 && status < 500) {
+    return res.status(status).json({ error: "Invalid request body." });
+  }
+  return res.status(500).json({ error: "Request could not be completed." });
 });
 
 async function startServer() {

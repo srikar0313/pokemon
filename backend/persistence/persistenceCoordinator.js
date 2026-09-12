@@ -1,4 +1,5 @@
 const path = require("path");
+const { AsyncLocalStorage } = require("async_hooks");
 const {
   createAggregateRepository,
   DEFAULT_PLAYER_ID,
@@ -32,13 +33,14 @@ function createPersistenceCoordinator({
   repository,
 } = {}) {
   const mode = resolveMode(environment);
-  const playerId = String(environment.PLAYER_ID || DEFAULT_PLAYER_ID);
+  const localPlayerId = String(environment.PLAYER_ID || DEFAULT_PLAYER_ID);
+  const context = new AsyncLocalStorage();
   const normalizedPaths = Object.fromEntries(
     Object.entries(paths || {}).map(([key, value]) => [key, path.resolve(value)]),
   );
-  let aggregate = { player: null, team: null, storage: null };
-  let dirty = false;
-  let commitQueue = Promise.resolve();
+  const aggregates = new Map();
+  const dirtyPlayers = new Set();
+  const commitQueues = new Map();
 
   function getAggregateKey(filePath) {
     const resolved = path.resolve(filePath);
@@ -47,84 +49,118 @@ function createPersistenceCoordinator({
     )?.[0];
   }
 
-  async function initialize() {
-    if (mode === "json") return { mode };
-    const databaseRepository = repository || createAggregateRepository();
-    repository = databaseRepository;
-    const loaded = await repository.loadAggregate(playerId);
-    if (loaded) {
-      aggregate = clone(loaded);
-      console.log(`[persistence] PostgreSQL player loaded: ${playerId}`);
-      return { mode, loaded: true };
+  function getCurrentPlayerId() {
+    if (mode === "json") return localPlayerId;
+    const playerId = context.getStore()?.playerId;
+    if (!playerId) {
+      throw new Error("PostgreSQL game state requires authenticated player context");
     }
-    console.warn(
-      `[persistence] PostgreSQL has no player '${playerId}'. Starting with game defaults. Run npm run db:import-legacy to import JSON saves.`,
-    );
-    return { mode, loaded: false };
+    return playerId;
+  }
+
+  function getCurrentAggregate() {
+    const playerId = getCurrentPlayerId();
+    if (!aggregates.has(playerId)) {
+      aggregates.set(playerId, { player: null, team: null, storage: null });
+    }
+    return aggregates.get(playerId);
+  }
+
+  async function initialize() {
+    if (mode === "postgres") repository ||= createAggregateRepository();
+    if (mode === "postgres") await repository.connect?.();
+    return { mode };
+  }
+
+  async function ensurePlayerLoaded(playerId) {
+    if (mode !== "postgres" || aggregates.has(playerId)) return;
+    const loaded = await repository.loadAggregate(playerId);
+    if (!loaded) throw new Error(`Player save '${playerId}' does not exist`);
+    aggregates.set(playerId, clone(loaded));
   }
 
   function readJsonFile(filePath, fallback) {
     if (mode === "json") return loadJson(filePath, fallback);
     const key = getAggregateKey(filePath);
     if (!key) return loadJson(filePath, fallback);
-    return clone(aggregate[key] ?? fallback);
+    return clone(getCurrentAggregate()[key] ?? fallback);
   }
 
   function writeJsonFile(filePath, value) {
     if (mode === "json") return saveJson(filePath, value);
     const key = getAggregateKey(filePath);
     if (!key) return saveJson(filePath, value);
-    aggregate[key] = clone(value);
-    dirty = true;
+    const playerId = getCurrentPlayerId();
+    getCurrentAggregate()[key] = clone(value);
+    dirtyPlayers.add(playerId);
     return value;
   }
 
-  async function commit() {
-    if (mode !== "postgres" || !dirty) return;
-    const snapshot = clone(aggregate);
-    dirty = false;
-    commitQueue = commitQueue.then(() =>
-      repository.saveAggregate(snapshot, playerId),
-    );
+  async function commit(playerId = getCurrentPlayerId()) {
+    if (mode !== "postgres" || !dirtyPlayers.has(playerId)) return;
+    const snapshot = clone(aggregates.get(playerId));
+    dirtyPlayers.delete(playerId);
+    const previous = commitQueues.get(playerId) || Promise.resolve();
+    const next = previous.then(() => repository.saveAggregate(snapshot, playerId));
+    commitQueues.set(playerId, next);
     try {
-      await commitQueue;
+      await next;
     } catch (error) {
-      dirty = true;
-      commitQueue = Promise.resolve();
+      dirtyPlayers.add(playerId);
+      commitQueues.set(playerId, Promise.resolve());
       throw error;
     }
   }
 
-  function createResponseMiddleware() {
-    return (req, res, next) => {
+  function createRequestMiddleware() {
+    return async (req, res, next) => {
       if (mode !== "postgres") return next();
-      const sendJson = res.json.bind(res);
-      let responseStarted = false;
-      res.json = (body) => {
-        if (responseStarted) return res;
-        responseStarted = true;
-        commit()
-          .then(() => sendJson(body))
-          .catch((error) => {
-            console.error("[persistence] Transaction failed:", error);
-            if (!res.headersSent) res.status(500);
-            sendJson({ error: "Player progress could not be saved" });
-          });
-        return res;
-      };
-      next();
+      const playerId = req.auth?.playerId;
+      if (!playerId) return res.status(401).json({ error: "Authentication required." });
+      try {
+        await ensurePlayerLoaded(playerId);
+      } catch (error) {
+        return next(error);
+      }
+      context.run({ playerId }, () => {
+        const sendJson = res.json.bind(res);
+        let responseStarted = false;
+        res.json = (body) => {
+          if (responseStarted) return res;
+          responseStarted = true;
+          commit(playerId)
+            .then(() => sendJson(body))
+            .catch((error) => {
+              console.error("[persistence] Transaction failed:", error);
+              if (!res.headersSent) res.status(500);
+              sendJson({ error: "Player progress could not be saved" });
+            });
+          return res;
+        };
+        next();
+      });
     };
+  }
+
+  function invalidatePlayer(playerId) {
+    aggregates.delete(playerId);
+    dirtyPlayers.delete(playerId);
+    commitQueues.delete(playerId);
   }
 
   return {
     mode,
-    playerId,
+    playerId: localPlayerId,
     initialize,
+    ensurePlayerLoaded,
     readJsonFile,
     writeJsonFile,
     commit,
-    createResponseMiddleware,
-    getSnapshot: () => clone(aggregate),
+    createRequestMiddleware,
+    getCurrentPlayerId,
+    invalidatePlayer,
+    runWithPlayer: (playerId, callback) => context.run({ playerId }, callback),
+    getSnapshot: (playerId = getCurrentPlayerId()) => clone(aggregates.get(playerId)),
   };
 }
 

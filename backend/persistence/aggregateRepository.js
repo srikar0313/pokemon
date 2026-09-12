@@ -93,7 +93,13 @@ function createAggregateRepository({ prisma = getPrismaClient() } = {}) {
     });
   }
 
-  return { loadAggregate, saveAggregate, importLegacy };
+  return {
+    connect: () => prisma.$connect(),
+    loadAggregate,
+    saveAggregate,
+    saveWithClient,
+    importLegacy,
+  };
 }
 
 module.exports = { DEFAULT_PLAYER_ID, createAggregateRepository };

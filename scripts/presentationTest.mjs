@@ -745,6 +745,13 @@ assert(
     frontendSource.includes("renderHallOfFame"),
   "Hall of Fame presentation is missing",
 );
+assert(
+  frontendSource.includes("loadAuthState") &&
+    frontendSource.includes("submitAuthForm") &&
+    frontendStyles.includes(".auth-gate") &&
+    frontendIndex.includes('id="auth-form"'),
+  "authenticated PostgreSQL frontend gate is missing",
+);
 assert(frontendStyles.includes(".gym-journal-summary"), "Gym journal summary is missing");
 assert(frontendSource.includes("startRivalBattle"), "Rival battle handoff is missing");
 assert(frontendSource.includes("evolution-target-card"), "Evolution target artwork card is missing");

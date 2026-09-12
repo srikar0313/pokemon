@@ -1,3 +1,7 @@
+const nativeFetch = window.fetch.bind(window);
+let authState = null;
+let authMode = "login";
+let gameInitialized = false;
 let activePokemon = null;
 let activeInventoryIndex = 0;
 let wild = null;
@@ -215,7 +219,99 @@ const badgeCollection = [
   },
 ];
 
-async function init() {
+function setAuthMode(mode) {
+  authMode = mode === "register" ? "register" : "login";
+  document.getElementById("auth-login-tab")?.classList.toggle("active", authMode === "login");
+  document.getElementById("auth-register-tab")?.classList.toggle("active", authMode === "register");
+  const password = document.getElementById("auth-password");
+  if (password) password.autocomplete = authMode === "register" ? "new-password" : "current-password";
+  const submit = document.getElementById("auth-submit");
+  if (submit) submit.textContent = authMode === "register" ? "Create Trainer" : "Continue Journey";
+  const message = document.getElementById("auth-message");
+  if (message) message.textContent = "";
+}
+
+function showAuthGate(message = "") {
+  document.getElementById("auth-gate")?.classList.remove("hidden");
+  document.querySelector(".app-shell")?.classList.add("auth-locked");
+  const output = document.getElementById("auth-message");
+  if (output) output.textContent = message;
+  document.getElementById("auth-email")?.focus();
+}
+
+function showAuthenticatedGame() {
+  document.getElementById("auth-gate")?.classList.add("hidden");
+  document.querySelector(".app-shell")?.classList.remove("auth-locked");
+  const accountBar = document.getElementById("account-bar");
+  if (!accountBar) return;
+  const account = authState?.account || {};
+  accountBar.innerHTML = authState?.authRequired
+    ? `<span>Trainer <strong>${escapeHtml(account.trainerName || "Player")}</strong> · ${escapeHtml(account.email || "")}</span><button onclick="logoutAccount()">Logout</button>`
+    : `<span><strong>Local Player</strong> · JSON save mode</span>`;
+}
+
+async function loadAuthState() {
+  try {
+    const response = await nativeFetch("/api/auth/me");
+    const data = await response.json();
+    if (!response.ok || !data.authenticated) {
+      authState = data;
+      showAuthGate(response.status === 401 ? "Your session has expired. Please sign in." : "Sign in to continue.");
+      return false;
+    }
+    authState = data;
+    showAuthenticatedGame();
+    return true;
+  } catch (error) {
+    showAuthGate("The game server could not be reached.");
+    return false;
+  }
+}
+
+window.fetch = async (...args) => {
+  const response = await nativeFetch(...args);
+  const url = typeof args[0] === "string" ? args[0] : args[0]?.url || "";
+  if (response.status === 401 && url.startsWith("/api/") && !url.startsWith("/api/auth/")) {
+    authState = { authRequired: true, authenticated: false };
+    showAuthGate("Your session has expired. Please sign in again.");
+  }
+  return response;
+};
+
+async function submitAuthForm(event) {
+  event.preventDefault();
+  const email = document.getElementById("auth-email")?.value || "";
+  const password = document.getElementById("auth-password")?.value || "";
+  const submit = document.getElementById("auth-submit");
+  const message = document.getElementById("auth-message");
+  if (submit) submit.disabled = true;
+  if (message) message.textContent = "";
+  try {
+    const response = await nativeFetch(`/api/auth/${authMode}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Authentication failed.");
+    authState = { authRequired: true, authenticated: true, account: data.account };
+    showAuthenticatedGame();
+    await initializeGame();
+  } catch (error) {
+    if (message) message.textContent = error.message;
+  } finally {
+    if (submit) submit.disabled = false;
+  }
+}
+
+async function logoutAccount() {
+  await nativeFetch("/api/auth/logout", { method: "POST" }).catch(() => null);
+  window.location.reload();
+}
+
+async function initializeGame() {
+  if (gameInitialized) return;
+  gameInitialized = true;
   try {
     renderBattlePlaceholder();
     await loadProfile();
@@ -231,7 +327,12 @@ async function init() {
     await requestStoryEvents("resume");
   } catch (error) {
     console.error("Error:", error);
+    gameInitialized = false;
   }
+}
+
+async function init() {
+  if (await loadAuthState()) await initializeGame();
 }
 
 function getStoryChapterTitle(event) {
@@ -4003,7 +4104,12 @@ async function npcSwitch(pokemonIndex) {
 
 async function loadProfile() {
   const response = await fetch("/api/profile");
+  if (!response.ok) throw new Error("Player profile is unavailable.");
   playerState = await response.json();
+  if (authState?.account) {
+    authState.account.trainerName = playerState.trainerName;
+    showAuthenticatedGame();
+  }
   displayStats();
 }
 

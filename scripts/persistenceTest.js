@@ -9,18 +9,22 @@ function copy(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-function createMemoryRepository(initial = null) {
-  let stored = initial ? copy(initial) : null;
+function createMemoryRepository(initial = null, initialPlayerId = "test-player") {
+  const storedByPlayer = new Map(
+    initial ? [[initialPlayerId, copy(initial)]] : [],
+  );
   let saveCount = 0;
   return {
-    async loadAggregate() {
+    async loadAggregate(playerId) {
+      const stored = storedByPlayer.get(playerId);
       return stored ? copy(stored) : null;
     },
-    async saveAggregate(aggregate) {
+    async saveAggregate(aggregate, playerId) {
       saveCount += 1;
-      stored = copy(aggregate);
+      storedByPlayer.set(playerId, copy(aggregate));
     },
-    getStored: () => copy(stored),
+    seed: (playerId, aggregate) => storedByPlayer.set(playerId, copy(aggregate)),
+    getStored: (playerId = initialPlayerId) => copy(storedByPlayer.get(playerId)),
     getSaveCount: () => saveCount,
   };
 }
@@ -154,22 +158,25 @@ async function runCoordinatorTests() {
     repository,
   });
   await coordinator.initialize();
-  const loadedTeam = coordinator.readJsonFile(paths.team, []);
-  const loadedStorage = coordinator.readJsonFile(paths.storage, []);
-  const loadedPlayer = coordinator.readJsonFile(paths.player, {});
-  assert.strictEqual(loadedTeam[0].ownedId, "owned-pikachu");
-  assert.strictEqual(loadedTeam[0].moves[0].currentPp, 7);
-  assert.strictEqual(loadedStorage[0].id, 16);
-  assert.strictEqual(loadedStorage[0].speciesId, 18);
-  assert.strictEqual(loadedPlayer.story.characters["rhea-vale"].playerWins, 2);
-  assert.strictEqual(loadedPlayer.league.hallOfFame.team[0].shiny, true);
+  await coordinator.ensurePlayerLoaded("test-player");
+  await coordinator.runWithPlayer("test-player", async () => {
+    const loadedTeam = coordinator.readJsonFile(paths.team, []);
+    const loadedStorage = coordinator.readJsonFile(paths.storage, []);
+    const loadedPlayer = coordinator.readJsonFile(paths.player, {});
+    assert.strictEqual(loadedTeam[0].ownedId, "owned-pikachu");
+    assert.strictEqual(loadedTeam[0].moves[0].currentPp, 7);
+    assert.strictEqual(loadedStorage[0].id, 16);
+    assert.strictEqual(loadedStorage[0].speciesId, 18);
+    assert.strictEqual(loadedPlayer.story.characters["rhea-vale"].playerWins, 2);
+    assert.strictEqual(loadedPlayer.league.hallOfFame.team[0].shiny, true);
 
-  loadedPlayer.coins += 100;
-  loadedPlayer.items.thunderStone = 0;
-  coordinator.writeJsonFile(paths.player, loadedPlayer);
-  coordinator.writeJsonFile(paths.team, [...loadedTeam, loadedStorage[0]]);
-  coordinator.writeJsonFile(paths.storage, []);
-  await coordinator.commit();
+    loadedPlayer.coins += 100;
+    loadedPlayer.items.thunderStone = 0;
+    coordinator.writeJsonFile(paths.player, loadedPlayer);
+    coordinator.writeJsonFile(paths.team, [...loadedTeam, loadedStorage[0]]);
+    coordinator.writeJsonFile(paths.storage, []);
+    await coordinator.commit();
+  });
   assert.strictEqual(repository.getSaveCount(), 1, "changes were not committed once");
 
   const restarted = createPersistenceCoordinator({
@@ -184,9 +191,29 @@ async function runCoordinatorTests() {
     repository,
   });
   await restarted.initialize();
-  assert.strictEqual(restarted.readJsonFile(paths.player, {}).coins, 1334);
-  assert.strictEqual(restarted.readJsonFile(paths.team, []).length, 2);
-  assert.strictEqual(restarted.readJsonFile(paths.storage, []).length, 0);
+  await restarted.ensurePlayerLoaded("test-player");
+  await restarted.runWithPlayer("test-player", () => {
+    assert.strictEqual(restarted.readJsonFile(paths.player, {}).coins, 1334);
+    assert.strictEqual(restarted.readJsonFile(paths.team, []).length, 2);
+    assert.strictEqual(restarted.readJsonFile(paths.storage, []).length, 0);
+  });
+
+  repository.seed("second-player", {
+    player: { trainerName: "Second", coins: 50, items: {}, story: {}, league: {} },
+    team: [{ ownedId: "second-owned", speciesId: 1, name: "Bulbasaur" }],
+    storage: [],
+  });
+  await restarted.ensurePlayerLoaded("second-player");
+  await restarted.runWithPlayer("second-player", async () => {
+    const second = restarted.readJsonFile(paths.player, {});
+    second.coins = 75;
+    restarted.writeJsonFile(paths.player, second);
+    await restarted.commit();
+  });
+  assert.strictEqual(repository.getStored("test-player").player.coins, 1334);
+  assert.strictEqual(repository.getStored("second-player").player.coins, 75);
+  assert.strictEqual(repository.getStored("test-player").team[0].ownedId, "owned-pikachu");
+  assert.strictEqual(repository.getStored("second-player").team[0].ownedId, "second-owned");
   assert.strictEqual(resolveMode({ PERSISTENCE_MODE: "json" }), "json");
   assert.strictEqual(resolveMode({ PERSISTENCE_MODE: "postgres" }), "json");
 }
