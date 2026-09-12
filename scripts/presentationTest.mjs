@@ -728,6 +728,18 @@ assert(frontendSource.includes("startRivalBattle"), "Rival battle handoff is mis
 assert(frontendSource.includes("evolution-target-card"), "Evolution target artwork card is missing");
 assert(frontendSource.includes('fetch("/api/handbook")'), "Handbook data is not loaded from the backend");
 assert(frontendSource.includes("renderBattleHandbookShortcut"), "Battle Handbook shortcut is missing");
+assert(
+  frontendSource.includes("pending-move-stat-grid") &&
+    frontendSource.includes("pending.effectDescription") &&
+    frontendSource.includes("Review move information") &&
+    frontendSource.includes("reviewPendingMove"),
+  "pending move learning does not expose detailed comparison and review controls",
+);
+assert(
+  frontendStyles.includes(".pending-move-candidate") &&
+    frontendStyles.includes(".pending-move-choices"),
+  "pending move comparison styling is missing",
+);
 assert(frontendSource.includes("renderTypeMatchupExplorer"), "Battle Academy Type Explorer is missing");
 assert(frontendSource.includes("Advanced battle notes"), "Advanced type chart disclosure is missing");
 assert(frontendSource.includes("renderBattleTips"), "Trainer coaching cards are missing");

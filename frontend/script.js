@@ -1887,25 +1887,52 @@ function renderEvolutionPanel(
 
 function renderPendingMovePanel(pokemon, section = "team", index = activeInventoryIndex) {
   if (!pokemon.pendingMove) return "";
+  const pending = getTacticalMoveData(pokemon.pendingMove, null);
+  const pendingPower = pending.category === "Status" ? "--" : pending.power;
   return `
     <div class="pending-move-panel">
-      <h4>${pokemon.name} wants to learn ${pokemon.pendingMove.name}</h4>
-      <p>Choose a move to replace, or skip learning it.</p>
-      <div class="moves-grid">
+      <div class="pending-move-heading">
+        <div>
+          <span>New level-up move</span>
+          <h4>${escapeHtml(pokemon.name)} wants to learn ${escapeHtml(pending.name)}</h4>
+        </div>
+        <span class="move-learning-type" style="--learning-type:${getTypeColor(pending.type)}">${escapeHtml(pending.type)}</span>
+      </div>
+      <div class="pending-move-candidate" style="--learning-type:${getTypeColor(pending.type)}">
+        <div class="pending-move-name-row">
+          <strong>${escapeHtml(pending.name)}</strong>
+          <span>${escapeHtml(pending.category)}</span>
+        </div>
+        <div class="pending-move-stat-grid">
+          <span><small>Type</small><strong>${escapeHtml(pending.type)}</strong></span>
+          <span><small>Power</small><strong>${pendingPower}</strong></span>
+          <span><small>Accuracy</small><strong>${pending.accuracy}</strong></span>
+          <span><small>PP</small><strong>${pending.maxPp}</strong></span>
+          ${pending.priority ? `<span><small>Priority</small><strong>${pending.priority > 0 ? "+" : ""}${pending.priority}</strong></span>` : ""}
+        </div>
+        <p>${escapeHtml(pending.effectDescription)}</p>
+      </div>
+      <p class="pending-move-instruction">Compare the new move with the four known moves. Select the move ${escapeHtml(pokemon.name)} should forget.</p>
+      <div class="pending-move-choices">
         ${(pokemon.moves || [])
-          .map(
-            (move, moveIndex) => `
-              <button class="move-summary pending-replace" onclick="learnPendingMove('${section}', ${index}, ${moveIndex})">
-                <strong>${move.name}</strong>
-                <span>${move.type} | ${move.category}</span>
-                <span>Power ${move.power ?? 0} | Acc ${move.accuracy ?? 100}</span>
-                <span>Replace with ${pokemon.pendingMove.name}</span>
+          .map((move, moveIndex) => {
+            const known = getTacticalMoveData(move, null);
+            const knownPower = known.category === "Status" ? "--" : known.power;
+            return `
+              <button class="move-summary pending-replace" style="--known-type:${getTypeColor(known.type)}" onclick="learnPendingMove('${section}', ${index}, ${moveIndex})" aria-label="Forget ${escapeHtml(known.name)} and learn ${escapeHtml(pending.name)}">
+                <span class="pending-known-label">Known move ${moveIndex + 1}</span>
+                <strong>${escapeHtml(known.name)}</strong>
+                <span>${escapeHtml(known.type)} | ${escapeHtml(known.category)}</span>
+                <span>Power ${knownPower} | Accuracy ${known.accuracy}</span>
+                <span>PP ${known.currentPp}/${known.maxPp}${known.priority ? ` | Priority ${known.priority > 0 ? "+" : ""}${known.priority}` : ""}</span>
+                <small>${escapeHtml(known.effectDescription)}</small>
+                <b>Forget ${escapeHtml(known.name)} -> Learn ${escapeHtml(pending.name)}</b>
               </button>
-            `,
-          )
+            `;
+          })
           .join("")}
       </div>
-      <button class="secondary-btn" onclick="skipPendingMove('${section}', ${index})">Skip ${pokemon.pendingMove.name}</button>
+      <button class="secondary-btn pending-move-skip" onclick="skipPendingMove('${section}', ${index})">Keep current moves and skip ${escapeHtml(pending.name)}</button>
     </div>
   `;
 }
@@ -6799,15 +6826,34 @@ function showRewardPopup(lines = []) {
   const popup = document.createElement("div");
   popup.className = "reward-popup battle-result-popup";
   const hasXpGrowth = rewardLines.some((line) => /gained .* XP/i.test(line));
+  const hasPendingMove = rewardLines.some((line) => /wants to learn/i.test(line));
   popup.innerHTML = `
     <div class="battle-result-head">
       <strong class="reward-popup-title">${hasXpGrowth ? "Battle Results" : "Reward Results"}</strong>
       <button type="button" onclick="this.closest('.reward-popup').remove()">×</button>
     </div>
     ${renderBattleResultGroups(rewardLines)}
+    ${hasPendingMove ? '<button class="reward-review-move" type="button" onclick="reviewPendingMove(this)">Review move information</button>' : ""}
   `;
   holder.appendChild(popup);
-  setTimeout(() => popup.remove(), hasXpGrowth ? 9000 : 5200);
+  setTimeout(() => popup.remove(), hasPendingMove ? 15000 : hasXpGrowth ? 9000 : 5200);
+}
+
+async function reviewPendingMove(button) {
+  button?.closest(".reward-popup")?.remove();
+  await loadInventory();
+  let section = "team";
+  let index = teamCache.findIndex((pokemon) => pokemon.pendingMove);
+  if (index < 0) {
+    section = "storage";
+    index = storageCache.findIndex((pokemon) => pokemon.pendingMove);
+  }
+  if (index < 0) {
+    alert("No Pokemon is currently waiting to learn a move.");
+    return;
+  }
+  setActiveScreen("party");
+  showPokemonDetail(section, index);
 }
 
 function queueEvolutionPresentations(lines = []) {
