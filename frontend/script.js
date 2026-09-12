@@ -317,6 +317,14 @@ function renderStoryScene() {
   layer.classList.toggle("story-motion-none", motion.transition === "none");
   layer.classList.toggle("story-rival-scene", event.presentation === "rival");
   layer.classList.toggle("story-gym-scene", event.presentation === "gym");
+  layer.classList.toggle(
+    "story-mystery-scene",
+    ["mystery", "legendary"].includes(event.presentation),
+  );
+  layer.classList.toggle(
+    "story-legendary-scene",
+    event.presentation === "legendary",
+  );
   layer.dataset.storyTheme = event.theme || "";
   document.getElementById("story-act-label").textContent = `ACT ${event.act}`;
   document.getElementById("story-scene-title").textContent = getStoryChapterTitle(event);
@@ -380,6 +388,13 @@ async function completeActiveStoryEvent() {
     if (data.nextAction?.type === "rival-battle") {
       await startRivalBattle(data.nextAction.npcId);
       return;
+    }
+    if (data.nextAction?.type === "story-legendary") {
+      await startStoryLegendaryEncounter(data.nextAction.encounterId);
+      return;
+    }
+    if (data.followUpTrigger) {
+      await requestStoryEvents(data.followUpTrigger, completedEvent.context || {});
     }
     if (completedEvent.id === "prologue-first-light" && selectedArea) {
       await requestStoryEvents("area-enter", { area: selectedArea });
@@ -2538,6 +2553,11 @@ function renderRouteWorld() {
     !eliteBattle &&
     !isInBattle,
   );
+  const storyFlags = new Set(storySnapshot?.state?.flags || []);
+  const mysteryRetryAvailable =
+    selectedArea === "mountain" &&
+    storyFlags.has("legendary_approach_ready") &&
+    !storyFlags.has("legendary_confrontation_completed");
 
   routeWorld.innerHTML = `
     <div class="route-layout">
@@ -2576,6 +2596,11 @@ function renderRouteWorld() {
           <button class="quick-find-btn" onclick="findPokemonQuickly()">
             Find Pokemon
           </button>
+          ${
+            mysteryRetryAvailable
+              ? `<button class="mystery-retry-btn" onclick="startStoryLegendaryEncounter('aether-beacon-rayquaza')">Return to Aether Beacon</button>`
+              : ""
+          }
         </div>
       </div>
       <div class="route-side-panel">
@@ -6023,22 +6048,49 @@ async function startWildEncounter(area = selectedArea) {
       alert(data.error);
       return false;
     }
-    wild = normalizePokemon(data);
-    currentPlayerHP = activePokemon.currentHp;
-    currentWildHP = wild.currentHp;
-    playerStatus = activePokemon.status || "none";
-    wildStatus = wild.status || "none";
-    wildParticipantIndexes = new Set([activeInventoryIndex]);
-    if (pokedexCache) await loadPokedex();
-    await runOverworldPresentation("playEncounterTransition", {
-      pokemon: wild,
-      area: encounterArea,
-    });
-    showBattle();
-    animatePokemonSwitch("opponent", wild);
-    return true;
+    return beginWildEncounter(data, encounterArea);
   } catch (error) {
     console.error("Error:", error);
+    return false;
+  }
+}
+
+async function beginWildEncounter(encounter, area = selectedArea) {
+  wild = normalizePokemon(encounter);
+  currentPlayerHP = activePokemon.currentHp;
+  currentWildHP = wild.currentHp;
+  playerStatus = activePokemon.status || "none";
+  wildStatus = wild.status || "none";
+  wildParticipantIndexes = new Set([activeInventoryIndex]);
+  if (pokedexCache) await loadPokedex();
+  await runOverworldPresentation("playEncounterTransition", {
+    pokemon: wild,
+    area,
+  });
+  showBattle();
+  animatePokemonSwitch("opponent", wild);
+  return true;
+}
+
+async function startStoryLegendaryEncounter(encounterId) {
+  if (battleActionBusy || isInBattle || npcBattle || gymBattle || eliteBattle) {
+    return false;
+  }
+  if (!activePokemon || activePokemon.currentHp <= 0) {
+    alert("Heal or select a healthy Pokemon before the final approach.");
+    return false;
+  }
+  try {
+    const response = await fetch("/api/story/legendary/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ encounterId }),
+    });
+    const data = await response.json();
+    if (!response.ok || data.error) throw new Error(data.error || "The encounter could not begin");
+    return beginWildEncounter(data, "mountain");
+  } catch (error) {
+    alert(error.message || "The encounter could not begin.");
     return false;
   }
 }
@@ -6110,7 +6162,7 @@ function showBattle() {
   document.getElementById("encounter").innerHTML = `
     <div class="wild-encounter-head">
       <div>
-        <span>Wild Encounter</span>
+        <span>${wild.storyEncounter ? "Aether Beacon Confrontation" : "Wild Encounter"}</span>
         <h2 class="wild-encounter-name">
           ${escapeHtml(getPokemonDisplayName(wild))} appeared!
           ${wild.shiny ? '<span class="shiny-encounter-label">SHINY</span>' : ""}
@@ -6431,6 +6483,7 @@ async function attack(moveName) {
     await returnToRouteAfterWildBattle(
       `You defeated wild ${wild.name} and returned to the route.`,
     );
+    queueStoryEvents(data.storyEvents || [], { area: "mountain" });
   } else if (data.winner === "wild") {
     const hasHealthyReplacement = teamCache.some(
       (pokemon, index) =>
@@ -6558,6 +6611,7 @@ async function performWildUtilityAction(
     await returnToRouteAfterWildBattle(
       `You defeated wild ${wild.name} and returned to the route.`,
     );
+    queueStoryEvents(data.storyEvents || [], { area: "mountain" });
   } else if (data.winner === "wild") {
     const hasHealthyReplacement = teamCache.some(
       (pokemon, index) =>
@@ -6710,6 +6764,7 @@ async function throwBall(type) {
       "Great catch! You returned to the route.",
       450,
     );
+    queueStoryEvents(data.storyEvents || [], { area: "mountain" });
     return;
   }
 

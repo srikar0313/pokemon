@@ -723,6 +723,12 @@ assert(frontendSource.includes("handleStoryKeydown"), "Story keyboard controls a
 assert(frontendStyles.includes(".story-dialogue-panel"), "Story dialogue styling is missing");
 assert(frontendStyles.includes(".story-rival-scene"), "Rival cinematic styling is missing");
 assert(frontendStyles.includes(".story-gym-scene"), "Gym cinematic styling is missing");
+assert(frontendStyles.includes(".story-mystery-scene"), "Mystery cinematic styling is missing");
+assert(
+  frontendStyles.includes(".story-legendary-scene") &&
+    frontendSource.includes("startStoryLegendaryEncounter"),
+  "legendary story presentation or encounter handoff is missing",
+);
 assert(frontendStyles.includes(".gym-journal-summary"), "Gym journal summary is missing");
 assert(frontendSource.includes("startRivalBattle"), "Rival battle handoff is missing");
 assert(frontendSource.includes("evolution-target-card"), "Evolution target artwork card is missing");

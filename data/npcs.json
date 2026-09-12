@@ -235,7 +235,8 @@
         "x": 2,
         "y": 2
       },
-      "dialogue": "Rare flying and dragon Pokemon show up more often on mountain paths at night."
+      "dialogue": "Rare flying and dragon Pokemon show up more often on mountain paths at night.",
+      "aftermathDialogue": "The mountain wind is steady again. Rayquaza's passage left the sky clearer than I've seen it in years."
     },
     {
       "id": 12,
@@ -311,7 +312,8 @@
         "x": 2,
         "y": 4
       },
-      "dialogue": "Ghost Pokemon are easier to find here at night. Some legends only answer after dark."
+      "dialogue": "Ghost Pokemon are easier to find here at night. Some legends only answer after dark.",
+      "aftermathDialogue": "The memorial is cold and quiet again. The warning has become a record of what you protected."
     },
     {
       "id": 16,

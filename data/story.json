@@ -145,7 +145,8 @@
         { "speaker": "Archivist Mira", "text": "We are close to understanding why rare Pokémon have begun to stir." }
       ],
       "setFlags": ["mountain_pulse_witnessed"],
-      "storyLocation": "mountain-summit"
+      "storyLocation": "mountain-summit",
+      "followUpTrigger": "mystery-progress"
     },
     {
       "id": "discovery-graveyard-whisper",
@@ -161,7 +162,141 @@
         { "speaker": "Old Memorial", "text": "The carved letters feel warm beneath the moonlight: When sky and shadow answer, the final road appears." }
       ],
       "setFlags": ["graveyard_warning_read"],
-      "storyLocation": "graveyard-memorial"
+      "storyLocation": "graveyard-memorial",
+      "followUpTrigger": "mystery-progress"
+    },
+    {
+      "id": "mystery-evidence-converges",
+      "order": 350,
+      "title": "One Signal, Seven Echoes",
+      "act": 4,
+      "chapter": "act-4",
+      "triggers": ["mystery-progress", "resume"],
+      "oneTime": true,
+      "conditions": {
+        "minBadges": 7,
+        "requiredFlags": ["mountain_pulse_witnessed", "graveyard_warning_read"],
+        "excludedFlags": ["mystery_evidence_assembled"]
+      },
+      "speaker": { "name": "Archivist Mira", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Archivist Mira", "text": "The memorial and the mountain describe the same device: an ancient Aether Beacon above the ridge." },
+        { "speaker": "Archivist Mira", "text": "Its broken resonance is echoing through every habitat. The cave, volcano, and restless sky are one disturbance." },
+        { "speaker": "Archivist Mira", "text": "Return to the Mountain. Professor Lumen and Ranger Sol are tracing the source." }
+      ],
+      "setFlags": ["mystery_evidence_assembled"],
+      "followUpTrigger": "mystery-progress",
+      "presentation": "mystery",
+      "theme": "aether"
+    },
+    {
+      "id": "mystery-source-discovered",
+      "order": 360,
+      "title": "The Aether Beacon",
+      "act": 4,
+      "chapter": "act-4",
+      "triggers": ["area-enter", "mystery-progress"],
+      "oneTime": true,
+      "conditions": {
+        "area": "mountain",
+        "requiredFlags": ["mystery_evidence_assembled"],
+        "excludedFlags": ["aether_beacon_discovered"]
+      },
+      "speaker": { "name": "Professor Lumen", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Ranger Sol", "portrait": "ranger", "text": "The wind stops at this stone ring, then surges outward toward every route." },
+        { "speaker": "Professor Lumen", "text": "The Beacon once balanced natural energy. Its fractured core is amplifying the region's own pulse instead." },
+        { "speaker": "Professor Lumen", "text": "Something above us is pushing back against it." }
+      ],
+      "setFlags": ["aether_beacon_discovered", "regional_crisis_active"],
+      "storyLocation": "aether-beacon",
+      "followUpTrigger": "mystery-progress",
+      "presentation": "mystery",
+      "theme": "aether"
+    },
+    {
+      "id": "mystery-legendary-awakens",
+      "order": 370,
+      "title": "The Sky Guardian",
+      "act": 4,
+      "chapter": "act-4",
+      "triggers": ["mystery-progress"],
+      "oneTime": true,
+      "conditions": {
+        "requiredFlags": ["aether_beacon_discovered", "regional_crisis_active"],
+        "excludedFlags": ["legendary_awakened"]
+      },
+      "speaker": { "name": "Rhea Vale", "portrait": "ranger" },
+      "dialogue": [
+        { "speaker": "Rhea Vale", "text": "That shape in the clouds is not causing the pulse. Rayquaza is trying to contain it." },
+        { "speaker": "Ranger Sol", "portrait": "ranger", "text": "The Beacon is overloading. If its next wave reaches the lowlands, every habitat will feel it." },
+        { "speaker": "Rhea Vale", "text": "Then we reach Rayquaza first and prove we came to help." }
+      ],
+      "setFlags": ["legendary_awakened"],
+      "followUpTrigger": "mystery-progress",
+      "presentation": "mystery",
+      "theme": "storm"
+    },
+    {
+      "id": "mystery-final-approach",
+      "order": 380,
+      "title": "Above the Storm",
+      "act": 4,
+      "chapter": "act-4",
+      "triggers": ["mystery-progress"],
+      "oneTime": true,
+      "conditions": {
+        "requiredFlags": ["legendary_awakened"],
+        "excludedFlags": ["legendary_approach_ready", "legendary_confrontation_completed"]
+      },
+      "speaker": { "name": "Rhea Vale", "portrait": "ranger" },
+      "dialogue": [
+        { "speaker": "Archivist Mira", "portrait": "guide", "text": "The old record is clear: the guardian answers courage, not control." },
+        { "speaker": "Rhea Vale", "text": "I'll stabilize the Beacon with Lumen. You and your team take the final path." },
+        { "speaker": "Rhea Vale", "text": "Stand with Rayquaza. Let it see what this region means to us." }
+      ],
+      "setFlags": ["legendary_approach_ready"],
+      "nextAction": { "type": "story-legendary", "encounterId": "aether-beacon-rayquaza" },
+      "presentation": "legendary",
+      "theme": "storm"
+    },
+    {
+      "id": "mystery-rayquaza-confronted",
+      "order": 390,
+      "title": "Guardian's Answer",
+      "act": 4,
+      "chapter": "act-4",
+      "triggers": [],
+      "oneTime": true,
+      "conditions": {
+        "requiredFlags": ["legendary_approach_ready"],
+        "excludedFlags": ["legendary_confrontation_completed"]
+      },
+      "dialogue": [],
+      "setFlags": ["legendary_confrontation_completed"]
+    },
+    {
+      "id": "mystery-aftermath",
+      "order": 395,
+      "title": "A Quiet Horizon",
+      "act": 5,
+      "chapter": "act-5",
+      "triggers": ["mystery-progress", "resume"],
+      "oneTime": true,
+      "conditions": {
+        "requiredFlags": ["legendary_confrontation_completed"],
+        "excludedFlags": ["regional_crisis_resolved"]
+      },
+      "speaker": { "name": "Professor Lumen", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Professor Lumen", "text": "The Beacon is quiet. Rayquaza carried its excess energy harmlessly beyond the clouds." },
+        { "speaker": "Ranger Sol", "portrait": "ranger", "text": "Temperatures are settling, the cave echoes have faded, and the habitats are calm again." },
+        { "speaker": "Rhea Vale", "portrait": "ranger", "text": "We found the answer together. Now take that same trust to the Pokémon League." }
+      ],
+      "setFlags": ["regional_crisis_resolved", "mystery_arc_completed", "objective_challenge_league"],
+      "storyLocation": "aether-beacon-restored",
+      "presentation": "mystery",
+      "theme": "calm"
     },
     {
       "id": "milestone-league-road",

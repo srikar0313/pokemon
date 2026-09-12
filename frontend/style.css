@@ -2616,6 +2616,8 @@ textarea {
 
 .route-map-actions {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: flex-end;
   margin-top: 12px;
 }
@@ -5387,7 +5389,8 @@ button:disabled {
     display: flex;
   }
 
-  .route-map-actions .quick-find-btn {
+  .route-map-actions .quick-find-btn,
+  .route-map-actions .mystery-retry-btn {
     width: 100%;
   }
 
@@ -6074,6 +6077,43 @@ button:disabled {
     linear-gradient(300deg, rgba(49, 142, 164, 0.28), transparent 52%);
 }
 
+.story-cinematic.story-mystery-scene::before {
+  background:
+    radial-gradient(circle at 70% 28%, rgba(135, 240, 220, 0.3), transparent 24%),
+    linear-gradient(120deg, rgba(31, 95, 126, 0.5), transparent 48%),
+    linear-gradient(300deg, rgba(87, 55, 139, 0.42), transparent 55%);
+}
+
+.story-cinematic.story-legendary-scene::before {
+  animation: mystery-sky-pulse 2.4s ease-in-out infinite;
+  background:
+    radial-gradient(circle at 68% 25%, rgba(220, 255, 245, 0.48), transparent 17%),
+    linear-gradient(125deg, rgba(17, 95, 107, 0.62), transparent 46%),
+    linear-gradient(305deg, rgba(62, 37, 109, 0.62), transparent 56%);
+}
+
+.story-mystery-scene .story-chapter-card {
+  border-left-color: #71e0c3;
+}
+
+.story-mystery-scene .story-dialogue-panel {
+  border-color: #72c8c5;
+  border-bottom-color: #8ce8c2;
+}
+
+.mystery-retry-btn {
+  min-height: 44px;
+  border: 2px solid #77d9c3;
+  border-radius: 6px;
+  background: #163f50;
+  color: #f4fffc;
+  font-weight: 900;
+}
+
+@keyframes mystery-sky-pulse {
+  50% { filter: brightness(1.22); }
+}
+
 .story-gym-scene .story-chapter-card {
   border-left-color: #ffd04e;
 }
@@ -6343,6 +6383,10 @@ button:disabled {
 
   .gym-progress-track span {
     transition: none;
+  }
+
+  .story-cinematic.story-legendary-scene::before {
+    animation: none;
   }
 }
 

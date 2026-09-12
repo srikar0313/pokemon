@@ -9,6 +9,12 @@ const { createRewardEngine } = require("./rewardEngine");
 const { createEvolutionEngine } = require("./evolutionEngine");
 const { createHandbookData } = require("./handbookData");
 const { createStoryEngine } = require("./storyEngine");
+const {
+  MYSTERY_ENCOUNTER_ID,
+  createMysteryEncounter,
+  completeMysteryConfrontation,
+  getMysteryNpcDialogue,
+} = require("./mysteryStory");
 const { createRecurringCharacterEngine } = require("./recurringCharacterEngine");
 const {
   createGymStoryEvents,
@@ -660,7 +666,7 @@ function getNpcView(npc, state) {
     type: npc.type,
     sprite: npc.sprite || npc.type,
     position: npc.position,
-    dialogue: npc.dialogue,
+    dialogue: getMysteryNpcDialogue(npc, state),
     introDialogue: npc.introDialogue || npc.dialogue,
     defeated,
     rewardCoins: npc.type === "trainer" ? getNpcRewardCoins(npc) : 0,
@@ -1179,6 +1185,7 @@ app.post("/api/story/trigger", (req, res) => {
     "area-enter",
     "badge-earned",
     "gym-challenge",
+    "mystery-progress",
   ]);
   if (!supportedTriggers.has(trigger)) {
     return res.status(400).json({ error: "Unknown story trigger" });
@@ -1247,7 +1254,38 @@ app.post("/api/story/complete", (req, res) => {
     state: savedState,
     story: storyEngine.getStorySnapshot(savedState),
     nextAction: result.nextAction || null,
+    followUpTrigger: result.event?.followUpTrigger || null,
   });
+});
+
+app.post("/api/story/legendary/start", (req, res) => {
+  if (req.body?.encounterId !== MYSTERY_ENCOUNTER_ID) {
+    return res.status(400).json({ error: "Unknown story encounter" });
+  }
+  if (activeNpcSessions.get("player")?.status === "active") {
+    return res.status(400).json({ error: "Finish your trainer battle first" });
+  }
+  if (activeGymSessions.get("player")?.status === "active") {
+    return res.status(400).json({ error: "Finish your gym battle first" });
+  }
+  if (activeEliteSessions.get("player")?.status === "active") {
+    return res.status(400).json({ error: "Finish your Elite Four run first" });
+  }
+  const { team } = loadTeamAndStorage();
+  if (!team.some((pokemon) => pokemon.currentHp > 0)) {
+    return res
+      .status(400)
+      .json({ error: "Heal your party before the final approach." });
+  }
+  const state = loadPlayerState();
+  const result = createMysteryEncounter({
+    state,
+    getPokemonTemplateByName,
+    createLeveledPokemon,
+  });
+  if (result.error) return res.status(409).json(result);
+  markPokedexSeen(result.pokemon.speciesId, result.pokemon);
+  return res.json(result.pokemon);
 });
 
 app.get("/api/handbook", (req, res) => {
@@ -2989,13 +3027,21 @@ app.post("/api/battle", (req, res) => {
     }
 
     let moneyReward = 0;
+    let storyEvents = [];
     if (winner === "player") {
       moneyReward = getRandomInt(
         coinRewards.wildBattleMin,
         coinRewards.wildBattleMax,
       );
-      const state = loadPlayerState();
+      let state = loadPlayerState();
       awardCoins(state, moneyReward);
+      const mysteryResult = completeMysteryConfrontation({
+        state,
+        pokemon: wildPokemon,
+        storyEngine,
+      });
+      state = mysteryResult.state;
+      storyEvents = mysteryResult.events;
       savePlayerState(state);
       log.push(`You earned ${moneyReward} coins.`);
     }
@@ -3042,6 +3088,7 @@ app.post("/api/battle", (req, res) => {
       wild: wildPokemon,
       turnMetadata: orderedTurn.metadata,
       state: itemState,
+      storyEvents,
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to process battle" });
@@ -3118,6 +3165,7 @@ app.post("/api/catch", (req, res) => {
           currentPp: m.currentPp ?? m.maxPp ?? m.pp,
         })),
       };
+      delete caughtPokemon.storyEncounter;
       const catchDestination =
         team.length < teamLimit ? "your team" : "storage";
       if (team.length < teamLimit) {
@@ -3145,15 +3193,21 @@ app.post("/api/catch", (req, res) => {
       ]);
       awardCoins(state, coinRewards.catch);
 
+      const mysteryResult = completeMysteryConfrontation({
+        state,
+        pokemon: target,
+        storyEngine,
+      });
       saveTeamAndStorage(team, storage);
-      savePlayerState(state);
+      savePlayerState(mysteryResult.state);
       return res.json({
         success: true,
         message: `Caught ${target.name}! Sent to ${catchDestination}. Earned ${coinRewards.catch} coins.`,
         pokemon: caughtPokemon,
         catchRate: Math.round(catchProbability * 100),
-        state,
+        state: mysteryResult.state,
         destination: catchDestination,
+        storyEvents: mysteryResult.events,
       });
     }
 

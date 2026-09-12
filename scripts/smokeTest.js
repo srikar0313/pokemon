@@ -22,6 +22,11 @@ const {
   createGymStoryEvents,
   getGymStorySummary,
 } = require("../backend/gymStory");
+const {
+  canStartMysteryEncounter,
+  createMysteryEncounter,
+  completeMysteryConfrontation,
+} = require("../backend/mysteryStory");
 const variantUtils = require("../frontend/variantUtils");
 const {
   reorderParty,
@@ -568,6 +573,118 @@ function main() {
   assert(
     migratedStory.characters?.["rhea-vale"]?.encounterProgress === 0,
     "old save did not normalize recurring-character progress",
+  );
+
+  const mysteryPlayer = {
+    ...freshStoryPlayer,
+    badges: gameData.gyms.slice(0, 7).map((gym) => gym.badge),
+    story: storyEngine.normalizeStoryState(
+      {
+        ...freshStoryPlayer.story,
+        flags: [
+          "journey_started",
+          "mountain_pulse_witnessed",
+          "graveyard_warning_read",
+        ],
+      },
+      freshStoryPlayer,
+    ),
+  };
+  const evidenceEvent = storyEngine
+    .getEligibleEvents(mysteryPlayer, "mystery-progress", { area: "mountain" })
+    .find((event) => event.id === "mystery-evidence-converges");
+  assert(evidenceEvent, "assembled mystery evidence did not open the late-game arc");
+  const evidenceResult = storyEngine.completeEvent(
+    mysteryPlayer,
+    evidenceEvent.id,
+    { area: "mountain" },
+  );
+  const sourceEvent = storyEngine
+    .getEligibleEvents(evidenceResult.state, "mystery-progress", {
+      area: "mountain",
+    })
+    .find((event) => event.id === "mystery-source-discovered");
+  assert(
+    sourceEvent &&
+      !storyEngine
+        .getEligibleEvents(evidenceResult.state, "area-enter", {
+          area: "forest",
+        })
+        .some((event) => event.id === sourceEvent.id),
+    "Aether Beacon discovery ignored its Mountain requirement",
+  );
+  const sourceResult = storyEngine.completeEvent(
+    evidenceResult.state,
+    sourceEvent.id,
+    { area: "mountain" },
+  );
+  const awakeningEvent = storyEngine
+    .getEligibleEvents(sourceResult.state, "mystery-progress")
+    .find((event) => event.id === "mystery-legendary-awakens");
+  const awakeningResult = storyEngine.completeEvent(
+    sourceResult.state,
+    awakeningEvent.id,
+  );
+  const approachEvent = storyEngine
+    .getEligibleEvents(awakeningResult.state, "mystery-progress")
+    .find((event) => event.id === "mystery-final-approach");
+  const approachResult = storyEngine.completeEvent(
+    awakeningResult.state,
+    approachEvent.id,
+  );
+  assert(
+    approachResult.nextAction?.type === "story-legendary" &&
+      canStartMysteryEncounter(approachResult.state),
+    "final approach did not expose the gated legendary confrontation",
+  );
+  const mysteryEncounter = createMysteryEncounter({
+    state: approachResult.state,
+    getPokemonTemplateByName: pokemonUtils.getPokemonTemplateByName,
+    createLeveledPokemon: pokemonUtils.createLeveledPokemon,
+  });
+  assert(
+    mysteryEncounter.pokemon?.name === "Rayquaza" &&
+      mysteryEncounter.pokemon.level === 62 &&
+      mysteryEncounter.pokemon.storyEncounter?.id,
+    "story climax did not create its marked Rayquaza encounter",
+  );
+  assert(
+    canStartMysteryEncounter(approachResult.state),
+    "starting or losing the encounter incorrectly consumed its retry",
+  );
+  const unresolvedMysteryState = JSON.parse(JSON.stringify(approachResult.state));
+  const confrontation = completeMysteryConfrontation({
+    state: approachResult.state,
+    pokemon: mysteryEncounter.pokemon,
+    storyEngine,
+  });
+  assert(
+    confrontation.completed &&
+      confrontation.state.story.flags.includes(
+        "legendary_confrontation_completed",
+      ) &&
+      confrontation.events.some((event) => event.id === "mystery-aftermath") &&
+      !canStartMysteryEncounter(confrontation.state),
+    "legendary victory did not resolve into the one-time aftermath",
+  );
+  const repeatedConfrontation = completeMysteryConfrontation({
+    state: confrontation.state,
+    pokemon: mysteryEncounter.pokemon,
+    storyEngine,
+  });
+  const ordinaryRayquaza = pokemonUtils.createLeveledPokemon("Rayquaza", 62);
+  const ordinaryResult = completeMysteryConfrontation({
+    state: unresolvedMysteryState,
+    pokemon: ordinaryRayquaza,
+    storyEngine,
+  });
+  assert(
+    !repeatedConfrontation.completed &&
+      !ordinaryResult.completed &&
+      !ordinaryResult.state.story.flags.includes(
+        "legendary_confrontation_completed",
+      ),
+    "climax completion duplicated or leaked into normal legendary encounters",
   );
 
   const rivalPlayer = {

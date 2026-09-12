@@ -127,6 +127,8 @@ function createStoryEngine({
       oneTime: event.oneTime !== false,
       presentation: event.presentation || "story",
       theme: event.theme || null,
+      followUpTrigger: event.followUpTrigger || null,
+      nextAction: event.nextAction || null,
     };
   }
 
@@ -206,6 +208,7 @@ function createStoryEngine({
       event: getEventView(event),
       reward,
       state: playerState,
+      nextAction: event.nextAction || null,
     };
   }
 
