@@ -278,6 +278,28 @@ window.fetch = async (...args) => {
   return response;
 };
 
+async function readAuthResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+  let data = {};
+  try {
+    data = contentType.includes("application/json")
+      ? await response.json()
+      : { error: (await response.text()).trim() };
+  } catch {
+    data = {};
+  }
+  if (!response.ok) {
+    const fallback =
+      response.status === 503
+        ? "The account database is unavailable. Apply database migrations and try again."
+        : response.status >= 500
+          ? "The account service encountered a server error. Please try again."
+          : "Authentication failed.";
+    throw new Error(data.error || fallback);
+  }
+  return data;
+}
+
 async function submitAuthForm(event) {
   event.preventDefault();
   const email = document.getElementById("auth-email")?.value || "";
@@ -292,8 +314,7 @@ async function submitAuthForm(event) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Authentication failed.");
+    const data = await readAuthResponse(response);
     authState = { authRequired: true, authenticated: true, account: data.account };
     showAuthenticatedGame();
     await initializeGame();

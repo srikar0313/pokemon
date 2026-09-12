@@ -63,6 +63,13 @@ The frontend shows a login/register gate only when PostgreSQL requires
 authentication. Expired gameplay requests return `401` and return the browser
 to that gate. JSON mode displays a local-save indicator and bypasses accounts.
 
+If registration reports that the database is not ready, verify `DATABASE_URL`
+and apply the committed schema before restarting the server:
+
+```bash
+npm run db:migrate
+```
+
 ## Legacy Save Claiming
 
 First import the JSON files, register the target account, then explicitly claim

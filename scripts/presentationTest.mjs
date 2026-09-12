@@ -748,6 +748,7 @@ assert(
 assert(
   frontendSource.includes("loadAuthState") &&
     frontendSource.includes("submitAuthForm") &&
+    frontendSource.includes("readAuthResponse") &&
     frontendStyles.includes(".auth-gate") &&
     frontendIndex.includes('id="auth-form"'),
   "authenticated PostgreSQL frontend gate is missing",

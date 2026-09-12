@@ -3690,6 +3690,20 @@ app.post("/api/heal-pokemon", (req, res) => {
 app.use((error, req, res, next) => {
   if (res.headersSent) return next(error);
   console.error("Request failed:", error.message);
+  const databaseErrorCodes = new Set([
+    "P1000",
+    "P1001",
+    "P1002",
+    "P1010",
+    "P2021",
+    "P2022",
+  ]);
+  if (persistence.mode === "postgres" && databaseErrorCodes.has(error.code)) {
+    return res.status(503).json({
+      error:
+        "Game database is not ready. Verify DATABASE_URL and run npm run db:migrate.",
+    });
+  }
   const status = Number(error.status || error.statusCode);
   if (status === 413) {
     return res.status(413).json({ error: "Request body is too large." });
