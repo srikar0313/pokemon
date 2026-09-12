@@ -2237,6 +2237,129 @@
       "chance": 100
     }
   },
+  "Dazzling Gleam": {
+    "name": "Dazzling Gleam",
+    "type": "Fairy",
+    "category": "Special",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Extrasensory": {
+    "name": "Extrasensory",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Freeze Dry": {
+    "name": "Freeze Dry",
+    "type": "Ice",
+    "category": "Special",
+    "power": 70,
+    "accuracy": 100,
+    "pp": 20,
+    "maxPp": 20
+  },
+  "Iron Head": {
+    "name": "Iron Head",
+    "type": "Steel",
+    "category": "Physical",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Leaf Storm": {
+    "name": "Leaf Storm",
+    "type": "Grass",
+    "category": "Special",
+    "power": 130,
+    "accuracy": 90,
+    "pp": 5,
+    "maxPp": 5,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "specialAttack",
+      "stages": -2,
+      "chance": 100
+    }
+  },
+  "Psycho Boost": {
+    "name": "Psycho Boost",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 140,
+    "accuracy": 90,
+    "pp": 5,
+    "maxPp": 5,
+    "effect": {
+      "type": "statChange",
+      "target": "self",
+      "stat": "specialAttack",
+      "stages": -2,
+      "chance": 100
+    }
+  },
+  "Psyshock": {
+    "name": "Psyshock",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Psystrike": {
+    "name": "Psystrike",
+    "type": "Psychic",
+    "category": "Special",
+    "power": 100,
+    "accuracy": 100,
+    "pp": 10,
+    "maxPp": 10
+  },
+  "Scald": {
+    "name": "Scald",
+    "type": "Water",
+    "category": "Special",
+    "power": 80,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "status",
+      "status": "burned",
+      "chance": 30
+    }
+  },
+  "Surf": {
+    "name": "Surf",
+    "type": "Water",
+    "category": "Special",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15
+  },
+  "Wild Charge": {
+    "name": "Wild Charge",
+    "type": "Electric",
+    "category": "Physical",
+    "power": 90,
+    "accuracy": 100,
+    "pp": 15,
+    "maxPp": 15,
+    "effect": {
+      "type": "recoil",
+      "target": "self",
+      "percent": 25
+    }
+  },
   "Zen Headbutt": {
     "name": "Zen Headbutt",
     "type": "Psychic",

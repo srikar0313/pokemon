@@ -5184,8 +5184,8 @@
 		"baseCatchRate": 5,
 		"moves": [
 			"Ice Beam",
-			"Hurricane",
 			"Blizzard",
+			"Hurricane",
 			"Roost"
 		],
 		"id": 247,
@@ -5193,7 +5193,8 @@
 		"xp": 0,
 		"maxHp": 90,
 		"imageId": 144,
-		"speed": 105
+		"speed": 105,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Zapdos",
@@ -5218,16 +5219,17 @@
 		"baseCatchRate": 5,
 		"moves": [
 			"Thunderbolt",
-			"Drill Peck",
 			"Thunder",
-			"Agility"
+			"Drill Peck",
+			"Hurricane"
 		],
 		"id": 248,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 90,
 		"imageId": 145,
-		"speed": 108
+		"speed": 108,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Moltres",
@@ -5252,16 +5254,17 @@
 		"baseCatchRate": 5,
 		"moves": [
 			"Flamethrower",
-			"Sky Attack",
 			"Heat Wave",
-			"Roost"
+			"Sky Attack",
+			"Hurricane"
 		],
 		"id": 249,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 90,
 		"imageId": 146,
-		"speed": 113
+		"speed": 113,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 147,
@@ -5392,14 +5395,15 @@
 		"specialAttack": 154,
 		"specialDefense": 90,
 		"moves": [
-			"Confusion",
-			"Psycho Cut",
 			"Psychic",
+			"Psycho Cut",
+			"Psystrike",
 			"Recover"
 		],
 		"catchRate": 3,
 		"imageId": 150,
-		"speed": 132
+		"speed": 132,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 151,
@@ -5426,14 +5430,15 @@
 		"specialAttack": 100,
 		"specialDefense": 100,
 		"moves": [
-			"Pound",
 			"Psychic",
-			"Aura Sphere",
-			"Ancient Power"
+			"Psycho Cut",
+			"Psyshock",
+			"Aura Sphere"
 		],
 		"catchRate": 10,
 		"imageId": 151,
-		"speed": 100
+		"speed": 100,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 152,
@@ -8732,17 +8737,18 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Charge",
-			"Extreme Speed",
-			"Leer",
-			"Quick Attack"
+			"Thunderbolt",
+			"Thunder",
+			"Wild Charge",
+			"Calm Mind"
 		],
 		"imageId": 243,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
 		"movesetPolicy": "canonical-level-up",
-		"learnsetVersionGroup": "scarlet-violet"
+		"learnsetVersionGroup": "scarlet-violet",
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 10026,
@@ -8768,17 +8774,18 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Ember",
-			"Leer",
-			"Smokescreen",
-			"Stomp"
+			"Sacred Fire",
+			"Flamethrower",
+			"Lava Plume",
+			"Extreme Speed"
 		],
 		"imageId": 244,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
 		"movesetPolicy": "canonical-level-up",
-		"learnsetVersionGroup": "scarlet-violet"
+		"learnsetVersionGroup": "scarlet-violet",
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 10027,
@@ -8804,17 +8811,18 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Gust",
-			"Leer",
-			"Mist",
-			"Water Gun"
+			"Hydro Pump",
+			"Surf",
+			"Scald",
+			"Ice Beam"
 		],
 		"imageId": 245,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
 		"movesetPolicy": "canonical-level-up",
-		"learnsetVersionGroup": "scarlet-violet"
+		"learnsetVersionGroup": "scarlet-violet",
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Larvitar",
@@ -8947,16 +8955,17 @@
 		"baseCatchRate": 5,
 		"moves": [
 			"Psychic",
+			"Extrasensory",
 			"Aeroblast",
-			"Hydro Pump",
-			"Calm Mind"
+			"Hurricane"
 		],
 		"id": 250,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 106,
 		"imageId": 249,
-		"speed": 90
+		"speed": 90,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Ho-Oh",
@@ -8981,16 +8990,17 @@
 		"baseCatchRate": 5,
 		"moves": [
 			"Sacred Fire",
+			"Heat Wave",
 			"Brave Bird",
-			"Recover",
-			"Earthquake"
+			"Sky Attack"
 		],
 		"id": 251,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 106,
 		"imageId": 250,
-		"speed": 120
+		"speed": 120,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 10030,
@@ -9017,17 +9027,18 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Confusion",
-			"Heal Bell",
-			"Magical Leaf",
-			"Baton Pass"
+			"Psychic",
+			"Zen Headbutt",
+			"Energy Ball",
+			"Leaf Storm"
 		],
 		"imageId": 251,
 		"isLegendary": false,
 		"isMythical": true,
 		"catalogOnly": true,
 		"movesetPolicy": "canonical-level-up",
-		"learnsetVersionGroup": "sword-shield"
+		"learnsetVersionGroup": "sword-shield",
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 266,
@@ -13548,17 +13559,18 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Charge Beam",
-			"Rock Throw",
-			"Bulldoze",
-			"Ancient Power"
+			"Stone Edge",
+			"Rock Slide",
+			"Ancient Power",
+			"Earthquake"
 		],
 		"imageId": 377,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
 		"movesetPolicy": "canonical-level-up",
-		"learnsetVersionGroup": "scarlet-violet"
+		"learnsetVersionGroup": "scarlet-violet",
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 378,
@@ -13584,17 +13596,18 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Charge Beam",
-			"Icy Wind",
-			"Bulldoze",
-			"Ancient Power"
+			"Blizzard",
+			"Ice Beam",
+			"Freeze Dry",
+			"Thunderbolt"
 		],
 		"imageId": 378,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
 		"movesetPolicy": "canonical-level-up",
-		"learnsetVersionGroup": "scarlet-violet"
+		"learnsetVersionGroup": "scarlet-violet",
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 379,
@@ -13620,17 +13633,18 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Charge Beam",
-			"Metal Claw",
-			"Bulldoze",
-			"Ancient Power"
+			"Iron Tail",
+			"Flash Cannon",
+			"Iron Head",
+			"Earthquake"
 		],
 		"imageId": 379,
 		"isLegendary": true,
 		"isMythical": false,
 		"catalogOnly": true,
 		"movesetPolicy": "canonical-level-up",
-		"learnsetVersionGroup": "scarlet-violet"
+		"learnsetVersionGroup": "scarlet-violet",
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 299,
@@ -13661,11 +13675,12 @@
 		"xp": 0,
 		"moves": [
 			"Dragon Pulse",
-			"Psychic",
+			"Dragon Breath",
 			"Mist Ball",
-			"Recover"
+			"Psychic"
 		],
-		"imageId": 380
+		"imageId": 380,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 298,
@@ -13695,11 +13710,12 @@
 		"xp": 0,
 		"moves": [
 			"Dragon Pulse",
-			"Psychic",
+			"Dragon Breath",
 			"Luster Purge",
-			"Recover"
+			"Psychic"
 		],
-		"imageId": 381
+		"imageId": 381,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Kyogre",
@@ -13724,15 +13740,16 @@
 		"moves": [
 			"Origin Pulse",
 			"Hydro Pump",
-			"Ice Beam",
-			"Thunder"
+			"Surf",
+			"Water Pulse"
 		],
 		"id": 253,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
 		"imageId": 382,
-		"speed": 125
+		"speed": 125,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Groudon",
@@ -13756,17 +13773,18 @@
 		],
 		"baseCatchRate": 5,
 		"moves": [
-			"Earthquake",
 			"Precipice Blades",
-			"Stone Edge",
-			"Solar Beam"
+			"Earthquake",
+			"Earth Power",
+			"Mud Shot"
 		],
 		"id": 254,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
 		"imageId": 383,
-		"speed": 125
+		"speed": 125,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Rayquaza",
@@ -13790,17 +13808,18 @@
 		],
 		"baseCatchRate": 5,
 		"moves": [
-			"Dragon Ascent",
 			"Outrage",
 			"Dragon Pulse",
-			"Extreme Speed"
+			"Dragon Ascent",
+			"Hurricane"
 		],
 		"id": 252,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 105,
 		"imageId": 384,
-		"speed": 150
+		"speed": 150,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 300,
@@ -13829,12 +13848,13 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Confusion",
 			"Doom Desire",
+			"Flash Cannon",
 			"Psychic",
-			"Recover"
+			"Zen Headbutt"
 		],
-		"imageId": 385
+		"imageId": 385,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 386,
@@ -13860,17 +13880,18 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Leer",
-			"Wrap",
-			"Night Shade",
-			"Teleport"
+			"Psycho Boost",
+			"Psychic",
+			"Zen Headbutt",
+			"Recover"
 		],
 		"imageId": 386,
 		"isLegendary": false,
 		"isMythical": true,
 		"catalogOnly": true,
 		"movesetPolicy": "canonical-level-up",
-		"learnsetVersionGroup": "scarlet-violet"
+		"learnsetVersionGroup": "scarlet-violet",
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 267,
@@ -15704,17 +15725,18 @@
 		],
 		"baseCatchRate": 5,
 		"moves": [
-			"Dragon Pulse",
 			"Flash Cannon",
-			"Aura Sphere",
-			"Roar of Time"
+			"Iron Tail",
+			"Roar of Time",
+			"Dragon Pulse"
 		],
 		"id": 255,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
 		"imageId": 483,
-		"speed": 135
+		"speed": 135,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Palkia",
@@ -15739,16 +15761,17 @@
 		"baseCatchRate": 5,
 		"moves": [
 			"Hydro Pump",
+			"Aqua Tail",
 			"Spacial Rend",
-			"Thunder",
-			"Earth Power"
+			"Dragon Pulse"
 		],
 		"id": 256,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 90,
 		"imageId": 484,
-		"speed": 135
+		"speed": 135,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Giratina",
@@ -15773,16 +15796,17 @@
 		"baseCatchRate": 5,
 		"moves": [
 			"Shadow Force",
+			"Shadow Ball",
 			"Dragon Pulse",
-			"Aura Sphere",
-			"Will-O-Wisp"
+			"Dragon Claw"
 		],
 		"id": 257,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 150,
 		"imageId": 487,
-		"speed": 100
+		"speed": 100,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 302,
@@ -15810,12 +15834,13 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Confusion",
-			"Moonlight",
-			"Psycho Shift",
-			"Moonblast"
+			"Psychic",
+			"Psycho Cut",
+			"Psybeam",
+			"Moonlight"
 		],
-		"imageId": 488
+		"imageId": 488,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 301,
@@ -15843,12 +15868,13 @@
 		"level": 1,
 		"xp": 0,
 		"moves": [
-			"Hypnosis",
-			"Dark Void",
+			"Dark Pulse",
 			"Night Daze",
-			"Dark Pulse"
+			"Foul Play",
+			"Dark Void"
 		],
-		"imageId": 491
+		"imageId": 491,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Arceus",
@@ -15872,16 +15898,17 @@
 		"baseCatchRate": 3,
 		"moves": [
 			"Judgment",
-			"Recover",
 			"Hyper Beam",
-			"Earthquake"
+			"Extreme Speed",
+			"Recover"
 		],
 		"id": 262,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 120,
 		"imageId": 493,
-		"speed": 120
+		"speed": 120,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 275,
@@ -16612,16 +16639,17 @@
 		"baseCatchRate": 5,
 		"moves": [
 			"Blue Flare",
-			"Dragon Pulse",
 			"Fusion Flare",
-			"Air Slash"
+			"Outrage",
+			"Dragon Pulse"
 		],
 		"id": 259,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
 		"imageId": 643,
-		"speed": 135
+		"speed": 135,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Zekrom",
@@ -16646,16 +16674,17 @@
 		"baseCatchRate": 5,
 		"moves": [
 			"Bolt Strike",
+			"Thunder",
 			"Outrage",
-			"Dragon Claw",
-			"Stone Edge"
+			"Dragon Claw"
 		],
 		"id": 258,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
 		"imageId": 644,
-		"speed": 135
+		"speed": 135,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 700,
@@ -16786,16 +16815,17 @@
 		"baseCatchRate": 5,
 		"moves": [
 			"Moonblast",
-			"Geomancy",
-			"Thunder",
-			"Psychic"
+			"Play Rough",
+			"Dazzling Gleam",
+			"Geomancy"
 		],
 		"id": 260,
 		"level": 1,
 		"xp": 0,
 		"maxHp": 100,
 		"imageId": 716,
-		"speed": 133
+		"speed": 133,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"name": "Yveltal",
@@ -16819,9 +16849,9 @@
 		],
 		"baseCatchRate": 5,
 		"moves": [
-			"Oblivion Wing",
 			"Dark Pulse",
 			"Foul Play",
+			"Oblivion Wing",
 			"Hurricane"
 		],
 		"id": 261,
@@ -16829,7 +16859,8 @@
 		"xp": 0,
 		"maxHp": 100,
 		"imageId": 717,
-		"speed": 135
+		"speed": 135,
+		"movesetVersion": "legendary-type-v1"
 	},
 	{
 		"id": 282,

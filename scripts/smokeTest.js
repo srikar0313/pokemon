@@ -208,6 +208,72 @@ function main() {
       .endsWith("/304.png"),
     "artwork fallback preferred Aron's legacy local ID over speciesId",
   );
+  const legendaryTemplates = pokemon
+    .map((template) => ({
+      template,
+      canonical: pokemonUtils.getCanonicalPokemon(template),
+    }))
+    .filter(({ canonical }) => canonical?.isLegendary || canonical?.isMythical);
+  assert(
+    legendaryTemplates.length === 31,
+    "canonical legendary/mythical catalog coverage changed unexpectedly",
+  );
+  legendaryTemplates.forEach(({ template }) => {
+    const normalized = pokemonUtils.normalizePokemon(template);
+    const types = new Set(normalized.types || [normalized.type]);
+    const moveTypeCounts = normalized.moves.reduce((counts, move) => {
+      counts[move.type] = (counts[move.type] || 0) + 1;
+      return counts;
+    }, {});
+    const damagingMoves = normalized.moves.filter((move) => move.power > 0);
+    assert(
+      normalized.moves.length === 4 &&
+        damagingMoves.length >= 3 &&
+        Math.max(...damagingMoves.map((move) => move.power)) >= 90,
+      `${template.name} does not have a strong four-move legendary loadout`,
+    );
+    if (types.size === 1) {
+      const [type] = types;
+      assert(
+        (moveTypeCounts[type] || 0) >= 3,
+        `${template.name} does not have at least three ${type} moves`,
+      );
+    } else {
+      types.forEach((type) => {
+        assert(
+          (moveTypeCounts[type] || 0) >= 2,
+          `${template.name} does not have two moves for its ${type} type`,
+        );
+      });
+    }
+  });
+  const mewtwoTemplate = pokemonUtils.getPokemonTemplateByName("Mewtwo");
+  const legacyMewtwo = {
+    ...mewtwoTemplate,
+    movesetVersion: "legendary-draft-v0",
+    moves: [
+      { ...pokemonUtils.normalizeMove("Psychic"), currentPp: 3 },
+      "Confusion",
+      "Psycho Cut",
+      "Recover",
+    ],
+  };
+  const upgradedMewtwo = pokemonUtils.normalizePokemon(legacyMewtwo);
+  assert(
+    upgradedMewtwo.movesetVersion === "legendary-type-v1" &&
+      upgradedMewtwo.moves.map((move) => move.name).join(",") ===
+        "Psychic,Psycho Cut,Psystrike,Recover" &&
+      upgradedMewtwo.moves[0].currentPp === 3,
+    "legacy legendary loadout did not upgrade once while preserving matching PP",
+  );
+  const customizedMewtwo = pokemonUtils.normalizePokemon({
+    ...upgradedMewtwo,
+    moves: [...upgradedMewtwo.moves.slice(0, 3), "Tackle"],
+  });
+  assert(
+    customizedMewtwo.moves.at(-1).name === "Tackle",
+    "versioned legendary loadout overwrote a later player move choice",
+  );
   const evolutionEngine = createEvolutionEngine({
     evolutionData: gameData.evolutions,
     getPokemonSpeciesId: pokemonUtils.getPokemonSpeciesId,

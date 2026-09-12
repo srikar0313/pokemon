@@ -683,7 +683,13 @@ function createPokemonUtils({
         ? template.moves
         : null;
     const savedMoves = Array.isArray(pokemon.moves) ? pokemon.moves : [];
-    const moveSource = savedMoves.length
+    const shouldUpgradeTemplateMoves = Boolean(
+      template.movesetVersion &&
+        pokemon.movesetVersion !== template.movesetVersion,
+    );
+    const moveSource = shouldUpgradeTemplateMoves
+      ? templateMoves || savedMoves || defaultMoves
+      : savedMoves.length
       ? savedMoves
       : templateMoves || defaultMoves;
     const moves = moveSource.map((move) => {
@@ -717,6 +723,9 @@ function createPokemonUtils({
       learnset: normalizeLearnset(canonicalLearnset),
       learnsetVersionGroup:
         canonical?.learnsetVersionGroup || merged.learnsetVersionGroup || null,
+      movesetVersion: shouldUpgradeTemplateMoves
+        ? template.movesetVersion
+        : merged.movesetVersion,
     };
     if (template?.name) {
       normalized.imageId = template.imageId || template.id || normalized.imageId;
