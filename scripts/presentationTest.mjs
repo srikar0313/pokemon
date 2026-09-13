@@ -761,6 +761,12 @@ assert(
   "Elite Four progression presentation is missing",
 );
 assert(
+  frontendStyles.includes(".league-lead-option") &&
+    frontendSource.includes("selectLeagueLead") &&
+    frontendSource.includes("pokemonIndex: leagueLeadIndex"),
+  "Elite Four lead Pokemon selection is missing",
+);
+assert(
   frontendStyles.includes(".hall-of-fame") &&
     frontendSource.includes("renderHallOfFame"),
   "Hall of Fame presentation is missing",

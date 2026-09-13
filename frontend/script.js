@@ -108,6 +108,7 @@ let storyLineTyping = false;
 let storyCompletionPending = false;
 let storyInitialized = false;
 let leagueEntryPending = false;
+let leagueLeadIndex = 0;
 const storyTriggerPending = new Set();
 
 const icons = {
@@ -3757,6 +3758,13 @@ async function startEliteRun() {
 
 function openLeagueEntryConfirmation() {
   document.getElementById("league-entry-confirmation")?.remove();
+  leagueLeadIndex =
+    teamCache[activeInventoryIndex]?.currentHp > 0
+      ? activeInventoryIndex
+      : Math.max(
+          0,
+          teamCache.findIndex((pokemon) => pokemon.currentHp > 0),
+        );
   const layer = document.createElement("div");
   layer.id = "league-entry-confirmation";
   layer.className = `league-confirmation-layer${prefersReducedMotion() ? " reduced" : ""}`;
@@ -3771,10 +3779,15 @@ function openLeagueEntryConfirmation() {
       <span>League Challenge</span>
       <h2 id="league-confirmation-title">Enter the Elite Four?</h2>
       <p>This begins five continuous battles. HP, status, and PP carry between each Elite member and the Champion.</p>
+      <strong class="league-lead-heading">Choose your lead Pokémon</strong>
       <div class="league-ready-party">
         ${teamCache
           .map(
-            (pokemon) => `<span class="${pokemon.currentHp > 0 ? "ready" : "fainted"}">${escapeHtml(pokemon.name)} Lv${pokemon.level} - ${pokemon.currentHp}/${pokemon.maxHp} HP</span>`,
+            (pokemon, index) => `<button type="button" class="league-lead-option ${pokemon.currentHp > 0 ? "ready" : "fainted"}${index === leagueLeadIndex ? " selected" : ""}" data-lead-index="${index}" aria-pressed="${index === leagueLeadIndex}" onclick="selectLeagueLead(${index})" ${pokemon.currentHp > 0 ? "" : "disabled"}>
+              <img src="${getPokemonImage(pokemon)}" alt="">
+              <span><strong>${escapeHtml(getPokemonDisplayName(pokemon))} <small>Lv${pokemon.level}</small></strong><small>${pokemon.currentHp}/${pokemon.maxHp} HP · ${index === activeInventoryIndex ? "Current active" : `Party slot ${index + 1}`}</small></span>
+              <i>${index === leagueLeadIndex ? "LEAD" : "SELECT"}</i>
+            </button>`,
           )
           .join("")}
       </div>
@@ -3785,6 +3798,20 @@ function openLeagueEntryConfirmation() {
     </div>`;
   document.body.appendChild(layer);
   layer.querySelector(".primary-btn")?.focus();
+}
+
+function selectLeagueLead(index) {
+  if (!teamCache[index] || teamCache[index].currentHp <= 0) return;
+  leagueLeadIndex = index;
+  document
+    .querySelectorAll(".league-lead-option")
+    .forEach((button) => {
+      const selected = Number(button.dataset.leadIndex) === index;
+      button.classList.toggle("selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+      const indicator = button.querySelector("i");
+      if (indicator) indicator.textContent = selected ? "LEAD" : "SELECT";
+    });
 }
 
 function closeLeagueEntryConfirmation() {
@@ -3801,7 +3828,7 @@ async function beginEliteRun() {
   const response = await fetch("/api/elite/start", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({}),
+    body: JSON.stringify({ pokemonIndex: leagueLeadIndex }),
   });
   const data = await response.json();
   if (data.error) {

@@ -1693,7 +1693,24 @@ app.post("/api/elite/start", (req, res) => {
   }
 
   const { team } = loadTeamAndStorage();
-  const playerIndex = getFirstHealthyPokemonIndex(team);
+  const requestedPlayerIndex = req.body?.pokemonIndex;
+  let playerIndex = getFirstHealthyPokemonIndex(team);
+  if (requestedPlayerIndex !== undefined && requestedPlayerIndex !== null) {
+    const selectedIndex = Number(requestedPlayerIndex);
+    if (
+      !Number.isInteger(selectedIndex) ||
+      selectedIndex < 0 ||
+      selectedIndex >= team.length
+    ) {
+      return res.status(400).json({ error: "Invalid lead Pokemon selection" });
+    }
+    if (team[selectedIndex].currentHp <= 0) {
+      return res
+        .status(400)
+        .json({ error: "Your lead Pokemon has fainted. Choose another." });
+    }
+    playerIndex = selectedIndex;
+  }
   if (playerIndex < 0) {
     return res
       .status(400)
@@ -1722,6 +1739,7 @@ app.post("/api/elite/start", (req, res) => {
     session.isRematch
       ? "The Pokemon League rematch begins."
       : "The Elite Four challenge begins.",
+    `${session.playerTeam[playerIndex].name} will lead your party.`,
     "No healing between battles. Catching and running are disabled.",
   ];
   appendEliteTrainerEntrance(session, log);
