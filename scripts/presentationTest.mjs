@@ -713,6 +713,11 @@ assert(
     frontendSource.includes('headers.set("X-Player-Timezone-Offset"'),
   "browser-local time context is not sent to player-facing API requests",
 );
+assert(
+  frontendSource.includes("function getBattleMoveChoices") &&
+    (frontendSource.match(/getBattleMoveChoices\(/g) || []).length >= 5,
+  "shared Struggle fallback is not rendered across all battle modes",
+);
 assert.deepEqual(
   encounterRules.rarityWeights,
   { common: 60, uncommon: 25, rare: 10, legendary: 3, mythical: 1 },

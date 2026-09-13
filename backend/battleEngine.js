@@ -7,6 +7,23 @@ const {
   resolveTypeImmunity,
 } = require("./abilityEngine");
 
+const STRUGGLE_MOVE_NAME = "Struggle";
+
+function createStruggleMove() {
+  return {
+    name: STRUGGLE_MOVE_NAME,
+    type: "Typeless",
+    category: "Physical",
+    power: 50,
+    accuracy: 100,
+    pp: 1,
+    maxPp: 1,
+    currentPp: 1,
+    effect: { type: "recoil", percent: 25 },
+    fallback: true,
+  };
+}
+
 const typeChart = {
   Normal: { Rock: 0.5, Ghost: 0, Steel: 0.5 },
   Fire: {
@@ -451,7 +468,17 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
   }
 
   function getMoveByName(pokemon, moveName) {
-    return (pokemon.moves || []).find((move) => move.name === moveName);
+    const move = (pokemon.moves || []).find((candidate) => candidate.name === moveName);
+    if (move && (moveName !== STRUGGLE_MOVE_NAME || (move.currentPp ?? 0) > 0)) {
+      return move;
+    }
+    if (
+      moveName === STRUGGLE_MOVE_NAME &&
+      !(pokemon.moves || []).some((candidate) => (candidate.currentPp ?? 0) > 0)
+    ) {
+      return createStruggleMove();
+    }
+    return null;
   }
 
   function checkAccuracy(move, attacker = null, defender = null) {
@@ -886,7 +913,8 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
   }
 
   function getAvailableMoves(pokemon) {
-    return (pokemon.moves || []).filter((move) => move.currentPp > 0);
+    const moves = (pokemon.moves || []).filter((move) => move.currentPp > 0);
+    return moves.length ? moves : [createStruggleMove()];
   }
 
   function resolveTurnOrder(actions = []) {
@@ -1264,6 +1292,8 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
 
 module.exports = {
   createBattleEngine,
+  createStruggleMove,
+  STRUGGLE_MOVE_NAME,
   typeChart,
   aiDifficulty,
 };

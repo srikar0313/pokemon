@@ -1202,7 +1202,7 @@ function prefersReducedMotion() {
 }
 
 function getMoveFromPokemon(pokemon, moveName) {
-  return (pokemon?.moves || []).find((move) => move.name === moveName) || null;
+  return getBattleMoveChoices(pokemon).find((move) => move.name === moveName) || null;
 }
 
 function setBattleActionBusy(isBusy) {
@@ -1900,6 +1900,26 @@ function createBattleMoveButton(move, opponent, onUse, disabled = false) {
   button.disabled = battleActionBusy || disabled || data.currentPp <= 0;
   button.onclick = () => onUse(move.name);
   return button;
+}
+
+function getBattleMoveChoices(pokemon) {
+  const moves = pokemon?.moves || [];
+  if (moves.some((move) => (move.currentPp ?? 0) > 0)) return moves;
+  return [
+    ...moves,
+    {
+      name: "Struggle",
+      type: "Typeless",
+      category: "Physical",
+      power: 50,
+      accuracy: 100,
+      pp: 1,
+      maxPp: 1,
+      currentPp: 1,
+      effect: { type: "recoil", percent: 25 },
+      fallback: true,
+    },
+  ];
 }
 
 function renderBattleTacticalHud(pokemon) {
@@ -3573,7 +3593,7 @@ function showGymMoveButtons(player) {
   const moveButtonsDiv = document.getElementById("gym-move-buttons");
   if (!moveButtonsDiv) return;
   moveButtonsDiv.innerHTML = "";
-  player.moves.forEach((move) => {
+  getBattleMoveChoices(player).forEach((move) => {
     moveButtonsDiv.appendChild(
       createBattleMoveButton(move, gymBattle?.gymPokemon, gymMove, player.currentHp <= 0),
     );
@@ -3894,7 +3914,7 @@ function showEliteMoveButtons(player) {
   const moveButtonsDiv = document.getElementById("elite-move-buttons");
   if (!moveButtonsDiv) return;
   moveButtonsDiv.innerHTML = "";
-  player.moves.forEach((move) => {
+  getBattleMoveChoices(player).forEach((move) => {
     moveButtonsDiv.appendChild(
       createBattleMoveButton(move, eliteBattle?.opponentPokemon, eliteMove, player.currentHp <= 0),
     );
@@ -4116,7 +4136,7 @@ function showNpcMoveButtons(player) {
   const moveButtonsDiv = document.getElementById("npc-move-buttons");
   if (!moveButtonsDiv) return;
   moveButtonsDiv.innerHTML = "";
-  player.moves.forEach((move) => {
+  getBattleMoveChoices(player).forEach((move) => {
     moveButtonsDiv.appendChild(
       createBattleMoveButton(move, npcBattle?.opponentPokemon, npcMove, player.currentHp <= 0),
     );
@@ -6626,7 +6646,7 @@ function showMoveButtons(disabled = false) {
   if (!moveButtonsDiv) return;
 
   moveButtonsDiv.innerHTML = "";
-  activePokemon.moves.forEach((move) => {
+  getBattleMoveChoices(activePokemon).forEach((move) => {
     moveButtonsDiv.appendChild(
       createBattleMoveButton(move, wild, attack, disabled || currentPlayerHP <= 0),
     );

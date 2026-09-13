@@ -317,6 +317,7 @@ const {
   aiDifficulty,
   getMoveByName,
   executeBattleMove,
+  getAvailableMoves,
   applyEndOfTurnStatus,
   chooseBestMove,
   chooseGymMove,
@@ -3088,7 +3089,7 @@ app.post("/api/battle", (req, res) => {
       !playerWasTransformed &&
       playerPokemon.battleState?.transform?.source === "imposter";
 
-    const availableMoves = wildPokemon.moves.filter((m) => m.currentPp > 0);
+    const availableMoves = getAvailableMoves(wildPokemon);
     const wildMove =
       chooseBestMove(wildPokemon, playerPokemon, wildPokemon.weather) ||
       availableMoves[Math.floor(Math.random() * availableMoves.length)];
@@ -3189,9 +3190,6 @@ app.post("/api/battle", (req, res) => {
     if (wildPokemon.currentHp <= 0) {
       winner = "player";
       log.push(`Wild ${wildPokemon.name} fainted!`);
-    } else if (availableMoves.length === 0) {
-      winner = "player";
-      log.push(`Wild ${wildPokemon.name} has no moves left!`);
     }
 
     if (!winner && action !== "forced-switch" && !orderedTurn.metadata.entryOnly) {

@@ -2928,6 +2928,29 @@ function main() {
     moves: [],
     ...overrides,
   });
+  const exhaustedPokemon = makeBattler({
+    name: "Exhausted",
+    moves: [{ ...gameData.moves.Tackle, currentPp: 0 }],
+  });
+  const struggleTarget = makeBattler({
+    name: "Ghost Target",
+    types: ["Ghost"],
+  });
+  const struggleMove = mechanicsEngine.getAvailableMoves(exhaustedPokemon)[0];
+  const struggleResult = mechanicsEngine.executeBattleMove(
+    exhaustedPokemon,
+    struggleTarget,
+    "Struggle",
+  );
+  assert(
+    struggleMove.name === "Struggle" &&
+      struggleMove.fallback === true &&
+      struggleTarget.currentHp < struggleTarget.maxHp &&
+      exhaustedPokemon.currentHp < exhaustedPokemon.maxHp &&
+      exhaustedPokemon.moves[0].currentPp === 0 &&
+      struggleResult.log.some((line) => line.includes("used Struggle")),
+    "an exhausted Pokemon could not use non-persistent Struggle with recoil",
+  );
   const stageTarget = makeBattler();
   const originalAttack = stageTarget.attack;
   mechanicsEngine.changeStat(stageTarget, "attack", 10);
