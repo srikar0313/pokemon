@@ -352,6 +352,15 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
     return pokemon;
   }
 
+  function beginBattleTurn(...pokemonList) {
+    pokemonList.forEach((pokemon) => {
+      if (!pokemon) return;
+      // Protect only applies during the turn in which it succeeds. Clearing it
+      // here also prevents an interrupted turn from carrying protection over.
+      ensureBattleState(pokemon).protected = false;
+    });
+  }
+
   function executeUtilityTurn({
     actionType,
     playerPokemon,
@@ -362,6 +371,7 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
     log = [],
     playerActionMetadata = {},
   }) {
+    beginBattleTurn(playerPokemon, opponentPokemon);
     const metadata = {
       order: ["player"],
       turns: [{ side: "player", action: actionType, ...playerActionMetadata }],
@@ -835,11 +845,35 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
     }
 
     if (move.name === "Protect") {
+      const previousStreak = Math.max(
+        0,
+        Number(attackerState.volatile.protectStreak || 0),
+      );
+      const successChance = 1 / 3 ** previousStreak;
+      attackerState.volatile.protectStreak = previousStreak + 1;
+      if (random() >= successChance) {
+        attackerState.protected = false;
+        log.push(`${attacker.name}'s Protect failed!`);
+        metadata.effects.push({
+          type: "protect",
+          target: "self",
+          success: false,
+          consecutiveUse: previousStreak + 1,
+        });
+        return { move, log, metadata, failed: true };
+      }
       attackerState.protected = true;
       log.push(`${attacker.name} protected itself!`);
-      metadata.effects.push({ type: "protect", target: "self" });
+      metadata.effects.push({
+        type: "protect",
+        target: "self",
+        success: true,
+        consecutiveUse: previousStreak + 1,
+      });
       return { move, log, metadata };
     }
+
+    attackerState.volatile.protectStreak = 0;
 
     if (ensureBattleState(defender).protected) {
       log.push(`${defender.name} protected itself!`);
@@ -1266,6 +1300,7 @@ function createBattleEngine({ getRandomInt, random = Math.random }) {
     getEffectiveStat,
     resetBattleState,
     resetSwitchState,
+    beginBattleTurn,
     transformPokemon,
     rehydrateTransformation,
     restoreTransformation,

@@ -327,6 +327,7 @@ const {
   ensureBattleState,
   rehydrateTransformation,
   resetSwitchState,
+  beginBattleTurn,
   executeUtilityTurn,
   resolveForcedSwitch,
   resolveTurnOrder,
@@ -402,6 +403,7 @@ function executeOrderedMoveTurn({
   battle,
   log,
 }) {
+  beginBattleTurn(playerPokemon, opponentPokemon);
   const playerMove = getMoveByName(playerPokemon, playerMoveName);
   if (!playerMove) return { error: "Move not found" };
   if ((playerMove.currentPp ?? 0) <= 0) {

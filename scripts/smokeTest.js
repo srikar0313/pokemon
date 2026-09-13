@@ -3163,6 +3163,47 @@ function main() {
     protectUser.currentHp === protectedHp && protectedTurn.protected,
     "Protect did not block the incoming move",
   );
+  mechanicsEngine.beginBattleTurn(protectUser, protectAttacker);
+  const hpBeforeExpiredProtect = protectUser.currentHp;
+  const expiredProtectTurn = mechanicsEngine.executeBattleMove(
+    protectAttacker,
+    protectUser,
+    "Tackle",
+  );
+  assert(
+    !expiredProtectTurn.protected && protectUser.currentHp < hpBeforeExpiredProtect,
+    "Protect incorrectly carried into the next turn",
+  );
+
+  const repeatedProtectUser = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplate("Blastoise"),
+    moves: [{ ...gameData.moves.Protect, currentPp: 2 }],
+  });
+  const repeatedProtectTarget = pokemonUtils.normalizePokemon({
+    ...pokemonUtils.getPokemonTemplate("Squirtle"),
+    moves: [{ ...gameData.moves.Tackle, currentPp: 35 }],
+  });
+  const firstProtect = mechanicsEngine.executeBattleMove(
+    repeatedProtectUser,
+    repeatedProtectTarget,
+    "Protect",
+  );
+  assert(
+    firstProtect.metadata.effects.some(
+      (effect) => effect.type === "protect" && effect.success === true,
+    ),
+    "The first Protect attempt should succeed",
+  );
+  mechanicsEngine.beginBattleTurn(repeatedProtectUser, repeatedProtectTarget);
+  const repeatedProtect = mechanicsEngine.executeBattleMove(
+    repeatedProtectUser,
+    repeatedProtectTarget,
+    "Protect",
+  );
+  assert(
+    repeatedProtect.failed && repeatedProtectUser.battleState.protected === false,
+    "Consecutive Protect did not use diminishing success",
+  );
 
   const flinchUser = makeBattler({
     moves: [{
