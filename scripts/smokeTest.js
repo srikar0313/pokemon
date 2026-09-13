@@ -41,6 +41,11 @@ const {
   reorderParty,
   sendPartyPokemonToStorage,
 } = require("../backend/partyManager");
+const {
+  resolvePlayerTime,
+  createPlayerTimeMiddleware,
+  getPlayerTimeOfDay,
+} = require("../backend/playerTime");
 
 const rootDir = path.join(__dirname, "..");
 const teamLimit = 6;
@@ -107,6 +112,37 @@ function createMemoryGameState(
 }
 
 function main() {
+  const fixedNow = new Date("2026-01-15T12:00:00.000Z");
+  assert(
+    resolvePlayerTime(
+      { timestamp: "2026-01-15T12:00:00.000Z", timezoneOffset: -660 },
+      fixedNow,
+    ).timeOfDay === "night" &&
+      resolvePlayerTime(
+        { timestamp: "2026-01-15T12:00:00.000Z", timezoneOffset: 300 },
+        fixedNow,
+      ).timeOfDay === "day" &&
+      resolvePlayerTime(
+        { timestamp: "not-a-date", timezoneOffset: 9999 },
+        fixedNow,
+      ).source === "server-fallback",
+    "player-local day/night resolution is not timezone-safe",
+  );
+  let middlewareTime = null;
+  createPlayerTimeMiddleware({ now: () => fixedNow })(
+    {
+      headers: {
+        "x-player-timestamp": "2026-01-15T12:00:00.000Z",
+        "x-player-timezone-offset": "-660",
+      },
+    },
+    {},
+    () => {
+      middlewareTime = getPlayerTimeOfDay();
+    },
+  );
+  assert(middlewareTime === "night", "request-scoped player time was not preserved");
+
   const gameData = loadGameData();
   const recurringCharacterEngine = createRecurringCharacterEngine({
     characterData: extendCharacterData(gameData.characters, gameData.postGame),

@@ -56,6 +56,7 @@ let isSwitching = false;
 let wildSwitchForced = false;
 let activeScreen = "explore";
 let activeOverlay = null;
+let overlayReturnFocus = null;
 let pendingSwapStorageIndex = null;
 let storageRandomizing = false;
 let quickPokemonSelectedIndex = 0;
@@ -222,8 +223,12 @@ const badgeCollection = [
 
 function setAuthMode(mode) {
   authMode = mode === "register" ? "register" : "login";
-  document.getElementById("auth-login-tab")?.classList.toggle("active", authMode === "login");
-  document.getElementById("auth-register-tab")?.classList.toggle("active", authMode === "register");
+  const loginTab = document.getElementById("auth-login-tab");
+  const registerTab = document.getElementById("auth-register-tab");
+  loginTab?.classList.toggle("active", authMode === "login");
+  registerTab?.classList.toggle("active", authMode === "register");
+  loginTab?.setAttribute("aria-selected", String(authMode === "login"));
+  registerTab?.setAttribute("aria-selected", String(authMode === "register"));
   const password = document.getElementById("auth-password");
   if (password) password.autocomplete = authMode === "register" ? "new-password" : "current-password";
   const submit = document.getElementById("auth-submit");
@@ -270,8 +275,19 @@ async function loadAuthState() {
 }
 
 window.fetch = async (...args) => {
-  const response = await nativeFetch(...args);
   const url = typeof args[0] === "string" ? args[0] : args[0]?.url || "";
+  const options = { ...(args[1] || {}) };
+  if (url.startsWith("/api/")) {
+    const requestHeaders =
+      typeof Request !== "undefined" && args[0] instanceof Request
+        ? args[0].headers
+        : undefined;
+    const headers = new Headers(options.headers || requestHeaders || {});
+    headers.set("X-Player-Timestamp", new Date().toISOString());
+    headers.set("X-Player-Timezone-Offset", String(new Date().getTimezoneOffset()));
+    options.headers = headers;
+  }
+  const response = await nativeFetch(args[0], options);
   if (response.status === 401 && url.startsWith("/api/") && !url.startsWith("/api/auth/")) {
     authState = { authRequired: true, authenticated: false };
     showAuthGate("Your session has expired. Please sign in again.");
@@ -285,7 +301,7 @@ async function readAuthResponse(response) {
   try {
     data = contentType.includes("application/json")
       ? await response.json()
-      : { error: (await response.text()).trim() };
+      : {};
   } catch {
     data = {};
   }
@@ -583,6 +599,8 @@ function setActiveScreen(screen) {
   });
   document.querySelectorAll(".nav-tab").forEach((button) => {
     button.classList.toggle("active", button.dataset.screen === screen);
+    if (button.dataset.screen === screen) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
   });
   if (screen === "pokedex") loadPokedex();
   if (screen === "handbook") loadHandbook();
@@ -978,6 +996,9 @@ function openOverlay(type) {
     alert("Quick Pokemon is unavailable during battle.");
     return;
   }
+  if (!activeOverlay && document.activeElement instanceof HTMLElement) {
+    overlayReturnFocus = document.activeElement;
+  }
   activeOverlay = type;
   document.getElementById("overlay-backdrop")?.classList.remove("hidden");
   document
@@ -1023,6 +1044,9 @@ function openOverlay(type) {
     quickPokemonDetailIndex = null;
     renderQuickPokemon();
   }
+  window.requestAnimationFrame(() => {
+    document.querySelector(".overlay-card")?.focus({ preventScroll: true });
+  });
 }
 
 function closeOverlay(event) {
@@ -1032,6 +1056,8 @@ function closeOverlay(event) {
   quickPokemonDetailIndex = null;
   document.getElementById("overlay-backdrop")?.classList.add("hidden");
   document.querySelector(".overlay-card")?.classList.remove("storage-overlay");
+  overlayReturnFocus?.focus?.({ preventScroll: true });
+  overlayReturnFocus = null;
 }
 
 function renderBattlePlaceholder(
@@ -7760,6 +7786,12 @@ function handleExploreKeydown(event) {
   }
 }
 
+function handleOverlayKeydown(event) {
+  if (!activeOverlay || event.key !== "Escape") return;
+  event.preventDefault();
+  closeOverlay();
+}
+
 function handleStoryKeydown(event) {
   if (document.getElementById("league-entry-confirmation")) {
     if (event.key === "Escape") {
@@ -7782,6 +7814,7 @@ function handleStoryKeydown(event) {
 }
 
 document.addEventListener("keydown", handleStoryKeydown, true);
+document.addEventListener("keydown", handleOverlayKeydown);
 document.addEventListener("keydown", handleExploreKeydown);
 document.addEventListener("error", handleExternalImageError, true);
 window.addEventListener("battle-presentation-ready", () => {

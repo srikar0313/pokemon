@@ -149,42 +149,6 @@ async function savePartyPresets(client, playerId, presets = []) {
   }
 }
 
-async function saveLeagueState(client, playerId, league = {}) {
-  const data = {
-    version: String(league.version || "league-v1"),
-    completed: Boolean(league.completed),
-    completionCount: Math.max(0, Number(league.completionCount) || 0),
-    completedAt: league.completedAt ? new Date(league.completedAt) : null,
-    hallOfFame: nullableJson(league.hallOfFame),
-  };
-  await client.leagueState.upsert({
-    where: { playerId },
-    create: { playerId, ...data },
-    update: data,
-  });
-}
-
-async function savePartyPresets(client, playerId, presets = []) {
-  await client.partyPresetPokemon.deleteMany({ where: { playerId } });
-  await client.partyPreset.deleteMany({ where: { playerId } });
-  for (const preset of asArray(presets)) {
-    const slot = Number(preset.slot);
-    if (!Number.isInteger(slot) || slot < 1) continue;
-    await client.partyPreset.create({
-      data: {
-        playerId,
-        slot,
-        members: {
-          create: asArray(preset.pokemonIds).map((ownedId, position) => ({
-            position,
-            ownedId: String(ownedId),
-          })),
-        },
-      },
-    });
-  }
-}
-
 module.exports = {
   loadStoryState,
   saveBadges,

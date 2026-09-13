@@ -708,6 +708,11 @@ const encounterRules = JSON.parse(
 );
 assert.equal(encounterRules.legendaryRollChance, 0.15, "presentation changed legendary odds");
 assert.equal(encounterRules.shinyRollChance, 0.03, "presentation changed shiny odds");
+assert(
+  frontendSource.includes('headers.set("X-Player-Timestamp"') &&
+    frontendSource.includes('headers.set("X-Player-Timezone-Offset"'),
+  "browser-local time context is not sent to player-facing API requests",
+);
 assert.deepEqual(
   encounterRules.rarityWeights,
   { common: 60, uncommon: 25, rare: 10, legendary: 3, mythical: 1 },
@@ -715,6 +720,16 @@ assert.deepEqual(
 );
 assert(frontendIndex.includes('data-screen="handbook"'), "Handbook navigation tab is missing");
 assert(frontendIndex.includes('id="handbook-screen"'), "Handbook screen is missing");
+assert(
+  frontendIndex.includes('aria-label="Main game screens"') &&
+    frontendIndex.includes('aria-labelledby="overlay-title"'),
+  "main navigation or shared overlay lacks accessible labeling",
+);
+assert(
+  frontendSource.includes("handleOverlayKeydown") &&
+    frontendSource.includes("overlayReturnFocus"),
+  "shared overlays do not support Escape and focus restoration",
+);
 assert(!frontendIndex.includes('data-screen="quests"'), "Quest navigation remains visible");
 assert(!frontendIndex.includes('id="quests-screen"'), "Quest screen remains in the UI");
 assert(frontendIndex.includes('id="story-cinematic"'), "Story cinematic layer is missing");

@@ -20,6 +20,10 @@ const { createPokemonUtils } = require("./pokemonUtils");
 const { createBattleEngine } = require("./battleEngine");
 const { createEncounterEngine } = require("./encounterEngine");
 const { createRewardEngine } = require("./rewardEngine");
+const {
+  createPlayerTimeMiddleware,
+  getPlayerTimeOfDay,
+} = require("./playerTime");
 const { createEvolutionEngine } = require("./evolutionEngine");
 const { createHandbookData } = require("./handbookData");
 const { createStoryEngine } = require("./storyEngine");
@@ -63,6 +67,18 @@ const wildLevelRanges = {
   mythical: { min: 60, max: 80 },
 };
 
+app.disable("x-powered-by");
+if (process.env.TRUST_PROXY === "1") app.set("trust proxy", 1);
+app.use((req, res, next) => {
+  res.set({
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "same-origin",
+    "X-Frame-Options": "DENY",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+  });
+  next();
+});
+
 app.use(express.static("frontend"));
 app.use("/assets", express.static(path.join(rootDir, "assets")));
 app.use(
@@ -70,6 +86,7 @@ app.use(
   express.static(path.join(rootDir, "node_modules", "three", "build")),
 );
 app.use(express.json({ limit: "64kb" }));
+app.use(createPlayerTimeMiddleware());
 
 const prisma = getPrismaClient();
 const aggregateRepository = createAggregateRepository({ prisma });
@@ -335,6 +352,7 @@ const encounterEngine = createEncounterEngine({
   getPokemonTypes,
   formEncounterChance,
   speciesEncounterBoosts,
+  resolveTimeOfDay: getPlayerTimeOfDay,
 });
 const { selectEncounter, getTimeOfDay } = encounterEngine;
 const shinyRateOverride = Number(process.env.SHINY_RATE_OVERRIDE);
@@ -3794,16 +3812,26 @@ app.use((error, req, res, next) => {
 
 async function startServer() {
   await persistence.initialize();
-  return app.listen(port, () => {
-    console.log(
-      `Server running at http://localhost:${port} (${persistence.mode} persistence)`,
-    );
+  return new Promise((resolve, reject) => {
+    const server = app.listen(port);
+    server.once("error", reject);
+    server.once("listening", () => {
+      server.removeListener("error", reject);
+      console.log(
+        `Server running at http://localhost:${port} (${persistence.mode} persistence)`,
+      );
+      resolve(server);
+    });
   });
 }
 
 if (require.main === module) {
   startServer().catch((error) => {
-    console.error("Server startup failed:", error);
+    const detail =
+      error?.code === "EADDRINUSE"
+        ? `Port ${port} is already in use. Stop the existing server or set PORT to another value.`
+        : error?.message || "Unknown startup error.";
+    console.error(`Server startup failed: ${detail}`);
     process.exitCode = 1;
   });
 }

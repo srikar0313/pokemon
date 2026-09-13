@@ -1,7 +1,15 @@
 function createRateLimiter({ windowMs = 15 * 60 * 1000, max = 10 } = {}) {
   const attempts = new Map();
+  let requestsSinceCleanup = 0;
   return function rateLimit(req, res, next) {
     const now = Date.now();
+    requestsSinceCleanup += 1;
+    if (requestsSinceCleanup >= 100) {
+      for (const [attemptKey, attempt] of attempts) {
+        if (attempt.resetAt <= now) attempts.delete(attemptKey);
+      }
+      requestsSinceCleanup = 0;
+    }
     const key = `${req.ip || req.socket?.remoteAddress || "unknown"}:${req.path}`;
     const current = attempts.get(key);
     if (!current || current.resetAt <= now) {
