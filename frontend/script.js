@@ -44,6 +44,7 @@ const pokedexDisplayVariants = new Map();
 const POKEDEX_PAGE_SIZE = 48;
 let gymCache = [];
 let eliteCache = null;
+let postGameCache = null;
 let gymBattle = null;
 let eliteBattle = null;
 let npcCache = [];
@@ -339,6 +340,7 @@ async function initializeGame() {
     await displayAreas();
     await loadGyms();
     await loadEliteFour();
+    await loadPostGame();
     await loadPokedex();
     await loadInventory();
     await loadShop();
@@ -525,6 +527,10 @@ async function completeActiveStoryEvent() {
       await startStoryLegendaryEncounter(data.nextAction.encounterId);
       return;
     }
+    if (data.nextAction?.type === "postgame-special") {
+      await startPostGameSpecialEncounter(data.nextAction.encounterId);
+      return;
+    }
     if (data.nextAction?.type === "league-confirm") {
       leagueEntryPending = false;
       openLeagueEntryConfirmation();
@@ -580,6 +586,7 @@ function setActiveScreen(screen) {
   });
   if (screen === "pokedex") loadPokedex();
   if (screen === "handbook") loadHandbook();
+  if (screen === "gym") loadPostGame();
   if (screen === "battle") focusBattlePresentation();
   const overworld = window.OverworldPresentation;
   overworld?.setActive?.(screen === "explore" && !isInBattle);
@@ -3154,6 +3161,103 @@ async function loadEliteFour() {
   const response = await fetch("/api/elitefour");
   eliteCache = await response.json();
   displayEliteFour();
+}
+
+async function loadPostGame() {
+  const panel = document.getElementById("postgame");
+  if (!panel) return;
+  try {
+    const response = await fetch("/api/postgame");
+    const data = await response.json();
+    if (!response.ok || data.error) throw new Error(data.error || "Post-game status unavailable");
+    postGameCache = data;
+    displayPostGame();
+  } catch (error) {
+    panel.innerHTML = `<p class="empty-state">${escapeHtml(error.message)}</p>`;
+  }
+}
+
+function displayPostGame() {
+  const panel = document.getElementById("postgame");
+  if (!panel || !postGameCache) return;
+  if (!postGameCache.unlocked) {
+    panel.innerHTML = `
+      <div class="postgame-locked">
+        <span class="postgame-emblem" aria-hidden="true">★</span>
+        <div><h3>Champion's Road</h3><p>Complete the main story and defeat the Champion to unlock post-game challenges.</p></div>
+      </div>`;
+    return;
+  }
+  const research = postGameCache.research;
+  const areaPercent = Math.min(100, (research.areasVisited / research.requiredAreas) * 100);
+  const rarePercent = Math.min(100, (research.rareCaught / research.requiredRareSpecies) * 100);
+  panel.innerHTML = `
+    <div class="panel-header postgame-header">
+      <div><span class="eyebrow">Post-game</span><h3>Champion's Road</h3><p>Return to old rivals, defend your title, and investigate one last signal.</p></div>
+      <div class="champion-mark"><span>★</span><strong>Champion</strong><small>${postGameCache.champion.completionCount} League clear${postGameCache.champion.completionCount === 1 ? "" : "s"}</small></div>
+    </div>
+    <div class="postgame-grid">
+      <article class="postgame-activity">
+        <span class="activity-kicker">Rival</span><h4>Rhea's Final Field Team</h4>
+        <p>${postGameCache.rheaRematch.completed ? "Your Champion-era battle is recorded. Rhea remains available for friendly rematches." : postGameCache.rheaRematch.available ? "Rhea is waiting on the Mountain with her strongest team." : "Complete Rhea's earlier encounters to unlock her Champion rematch."}</p>
+        <button class="primary-btn" ${postGameCache.rheaRematch.available ? "" : "disabled"} onclick="startRivalBattle(${postGameCache.rheaRematch.npcId})">${postGameCache.rheaRematch.completed ? "Rematch Rhea" : "Challenge Rhea"}</button>
+      </article>
+      <article class="postgame-activity">
+        <span class="activity-kicker">League</span><h4>Defend the Title</h4>
+        <p>Challenge the full Elite Four and Champion gauntlet again. First-clear rewards and Hall of Fame records stay protected.</p>
+        <button class="primary-btn" onclick="startEliteRun()">Start League Rematch</button>
+      </article>
+      <article class="postgame-activity moonlit">
+        <span class="activity-kicker">Special research</span><h4>${escapeHtml(postGameCache.specialEvent.name)}</h4>
+        <p>${postGameCache.specialEvent.completed ? `Resolved${postGameCache.specialEvent.result ? ` by ${postGameCache.specialEvent.result}` : ""}.` : "Archivist Mira detected a calm lunar signal over the Lake."}</p>
+        <button class="primary-btn" ${postGameCache.specialEvent.completed ? "disabled" : ""} onclick="beginPostGameSpecial()">${postGameCache.specialEvent.completed ? "Investigation Complete" : "Investigate Signal"}</button>
+      </article>
+      <article class="postgame-activity research-card">
+        <span class="activity-kicker">Professor Lumen</span><h4>${escapeHtml(research.title)}</h4>
+        <div class="research-row"><span>Habitats revisited</span><strong>${research.areasVisited}/${research.requiredAreas}</strong></div>
+        <div class="research-meter"><span style="width:${areaPercent}%"></span></div>
+        <div class="research-row"><span>Rare species caught</span><strong>${research.rareCaught}/${research.requiredRareSpecies}</strong></div>
+        <div class="research-meter"><span style="width:${rarePercent}%"></span></div>
+        <button class="primary-btn" ${research.complete && !research.rewardClaimed ? "" : "disabled"} onclick="claimPostGameResearch()">${research.rewardClaimed ? "Reward Claimed" : research.complete ? "Claim Research Reward" : "Survey In Progress"}</button>
+      </article>
+    </div>`;
+}
+
+async function claimPostGameResearch() {
+  try {
+    const response = await fetch("/api/postgame/research/claim", { method: "POST" });
+    const data = await response.json();
+    if (!response.ok || data.error) throw new Error(data.error || "Reward could not be claimed");
+    playerState = data.state || playerState;
+    postGameCache = data.postGame || postGameCache;
+    displayStats();
+    displayPostGame();
+    const lines = [`Research complete: +${data.reward.coins} coins.`];
+    (data.reward.items || []).forEach((item) => lines.push(`${item.name} x${item.quantity}`));
+    showRewardPopup(lines);
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+async function beginPostGameSpecial() {
+  if (battleActionBusy || isInBattle || npcBattle || gymBattle || eliteBattle) return;
+  const data = await requestStoryEvents("postgame-special");
+  if (!data?.events?.length) await startPostGameSpecialEncounter("moonlit-cresselia");
+}
+
+async function startPostGameSpecialEncounter(encounterId) {
+  if (encounterId !== "moonlit-cresselia" || battleActionBusy || isInBattle) return false;
+  try {
+    const response = await fetch("/api/postgame/special/start", { method: "POST" });
+    const data = await response.json();
+    if (!response.ok || data.error) throw new Error(data.error || "The signal faded");
+    return beginWildEncounter(data, "lake");
+  } catch (error) {
+    alert(error.message || "The signal faded.");
+    await loadPostGame();
+    return false;
+  }
 }
 
 function displayGyms() {

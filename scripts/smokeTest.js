@@ -19,6 +19,10 @@ const {
 } = require("../backend/storyEngine");
 const { createRecurringCharacterEngine } = require("../backend/recurringCharacterEngine");
 const {
+  createPostGameEngine,
+  extendCharacterData,
+} = require("../backend/postGameEngine");
+const {
   createGymStoryEvents,
   getGymStorySummary,
 } = require("../backend/gymStory");
@@ -69,7 +73,11 @@ function assert(condition, message) {
   }
 }
 
-function createMemoryGameState(pokemonUtils, normalizeStoryState = null) {
+function createMemoryGameState(
+  pokemonUtils,
+  normalizeStoryState = null,
+  normalizePostGameState = null,
+) {
   const memoryRead = (filePath, fallback) =>
     memoryFiles.has(filePath) ? memoryFiles.get(filePath) : fallback;
   const memoryWrite = (filePath, data) =>
@@ -94,13 +102,14 @@ function createMemoryGameState(pokemonUtils, normalizeStoryState = null) {
     getPokemonVariantKey: pokemonUtils.getPokemonVariantKey,
     resolvePokemonSpeciesId: pokemonUtils.getPokemonSpeciesId,
     normalizeStoryState,
+    normalizePostGameState,
   });
 }
 
 function main() {
   const gameData = loadGameData();
   const recurringCharacterEngine = createRecurringCharacterEngine({
-    characterData: gameData.characters,
+    characterData: extendCharacterData(gameData.characters, gameData.postGame),
     itemCatalog: gameData.items,
   });
   const gymStoryEvents = createGymStoryEvents(gameData.gyms);
@@ -123,7 +132,15 @@ function main() {
   const storyEngine = createStoryEngine({
     storyData: {
       ...gameData.story,
-      events: [...(gameData.story.events || []), ...gymStoryEvents],
+      chapters: [
+        ...(gameData.story.chapters || []),
+        ...(gameData.postGame.chapter ? [gameData.postGame.chapter] : []),
+      ],
+      events: [
+        ...(gameData.story.events || []),
+        ...gymStoryEvents,
+        ...(gameData.postGame.storyEvents || []),
+      ],
     },
     itemCatalog: gameData.items,
     normalizeCharacters: recurringCharacterEngine.normalizeCharacterState,
@@ -152,6 +169,11 @@ function main() {
     obtainability: gameData.obtainability,
     speciesMap: gameData.speciesMap,
   });
+  const postGameEngine = createPostGameEngine({
+    config: gameData.postGame,
+    pokemon: pokemonUtils.getPokemonTemplates(),
+    itemCatalog: gameData.items,
+  });
   const gameState = createGameState({
     inventoryPath: path.join(rootDir, "inventory.json"),
     storagePath: path.join(rootDir, "storage.json"),
@@ -171,6 +193,7 @@ function main() {
     getPokemonVariantKey: pokemonUtils.getPokemonVariantKey,
     resolvePokemonSpeciesId: pokemonUtils.getPokemonSpeciesId,
     normalizeStoryState: storyEngine.normalizeStoryState,
+    normalizePostGameState: postGameEngine.normalize,
   });
 
   const playerState = gameState.loadPlayerState();
@@ -787,6 +810,126 @@ function main() {
       legacyChampion.story.completedEventIds.includes("league-champion-ending"),
     "legacy Champion state did not normalize without replaying the ending",
   );
+  const lockedPostGame = postGameEngine.getSnapshot(
+    { ...leagueLockedPlayer, championDefeated: false },
+    recurringCharacterEngine,
+  );
+  assert(!lockedPostGame.unlocked, "post-game unlocked before Champion completion");
+
+  const postGamePlayer = JSON.parse(JSON.stringify(leagueVictory.state));
+  postGamePlayer.items ||= {};
+  postGamePlayer.story.characters ||= {};
+  postGamePlayer.story.characters["rhea-vale"] = {
+    introduced: true,
+    completedBattleIds: recurringCharacterEngine.encounters
+      .filter((encounter) => encounter.id !== "rival-champion-rematch")
+      .map((encounter) => encounter.id),
+    completedSceneIds: [],
+    rewardedEncounterIds: [],
+    playerWins: 5,
+    playerLosses: 0,
+  };
+  postGameEngine.normalize(postGamePlayer);
+  const unlockedPostGame = postGameEngine.getSnapshot(
+    postGamePlayer,
+    recurringCharacterEngine,
+  );
+  assert(
+    unlockedPostGame.unlocked &&
+      unlockedPostGame.leagueRematchAvailable &&
+      unlockedPostGame.rheaRematch.available &&
+      storyEngine
+        .getEligibleEvents(postGamePlayer, "resume")
+        .some((event) => event.id === "post-game-welcome"),
+    "Champion completion did not unlock the post-game activities",
+  );
+
+  const rheaChampionNpc = recurringCharacterEngine.getNpcById(postGamePlayer, 9006);
+  const firstChampionRivalWin = recurringCharacterEngine.recordBattleResult(
+    postGamePlayer,
+    "rival-champion-rematch",
+    "won",
+  );
+  const repeatChampionRivalWin = recurringCharacterEngine.recordBattleResult(
+    postGamePlayer,
+    "rival-champion-rematch",
+    "won",
+  );
+  assert(
+    rheaChampionNpc?.team.length === 6 &&
+      rheaChampionNpc.aiDifficulty === "HARD" &&
+      firstChampionRivalWin.reward?.coins === 1200 &&
+      repeatChampionRivalWin.reward === null &&
+      recurringCharacterEngine.getNpcById(postGamePlayer, 9006),
+    "Rhea Champion rematch is not repeatable or duplicated its first reward",
+  );
+
+  postGamePlayer.story.flags.push("post_game_special_discovered");
+  const specialEncounter = postGameEngine.createSpecialEncounter(
+    postGamePlayer,
+    pokemonUtils.createLeveledPokemon,
+  );
+  const retryableSpecialEncounter = postGameEngine.createSpecialEncounter(
+    postGamePlayer,
+    pokemonUtils.createLeveledPokemon,
+  );
+  assert(
+    specialEncounter.pokemon?.name === "Cresselia" &&
+      specialEncounter.pokemon.level === 70 &&
+      specialEncounter.pokemon.postGameEncounter?.id === "moonlit-cresselia" &&
+      !postGamePlayer.postGame.specialEvent.completed &&
+      retryableSpecialEncounter.pokemon?.name === "Cresselia",
+    "post-game special encounter did not start safely or was completed before victory",
+  );
+  const specialCompletion = postGameEngine.completeSpecialEncounter(
+    postGamePlayer,
+    specialEncounter.pokemon,
+    "caught",
+  );
+  const repeatedSpecialCompletion = postGameEngine.completeSpecialEncounter(
+    postGamePlayer,
+    specialEncounter.pokemon,
+    "caught",
+  );
+  assert(
+    specialCompletion.completed &&
+      repeatedSpecialCompletion.alreadyCompleted &&
+      postGamePlayer.postGame.specialEvent.result === "caught",
+    "post-game special encounter completion was not idempotent",
+  );
+
+  postGamePlayer.pokedex.caught = pokemonUtils
+    .getPokemonTemplates()
+    .filter((entry) => ["rare", "legendary", "mythical"].includes(entry.rarity))
+    .slice(0, 10)
+    .map((entry) => Number(entry.speciesId || entry.id));
+  ["forest", "cave", "lake"].forEach((area) =>
+    postGameEngine.recordAreaVisit(postGamePlayer, area),
+  );
+  const researchReward = postGameEngine.claimResearchReward(postGamePlayer);
+  const duplicateResearchReward = postGameEngine.claimResearchReward(postGamePlayer);
+  assert(
+    researchReward.reward?.coins === 1000 &&
+      researchReward.progress.rewardClaimed &&
+      duplicateResearchReward.error &&
+      postGamePlayer.items.ultra >= 2,
+    "post-game research progress or one-time reward protection failed",
+  );
+  memoryFiles.clear();
+  const persistentPostGameState = createMemoryGameState(
+    pokemonUtils,
+    storyEngine.normalizeStoryState,
+    postGameEngine.normalize,
+  );
+  persistentPostGameState.savePlayerState(postGamePlayer);
+  const reloadedPostGame = persistentPostGameState.loadPlayerState().postGame;
+  assert(
+    reloadedPostGame.unlocked &&
+      reloadedPostGame.specialEvent.completed &&
+      reloadedPostGame.research.rewardClaimed &&
+      reloadedPostGame.research.visitedAreas.length === 3,
+    "JSON save normalization did not preserve post-game progress",
+  );
   assert(
     gameData.eliteFour.map((trainer) => trainer.id).join(",") === "1,2,3,4" &&
       gameData.champion.id === 5,
@@ -831,11 +974,11 @@ function main() {
     "rival introduction did not appear at the intended Act 1 location",
   );
   assert(
-    rivalTeamSizes.join(",") === "1,2,3,4,5" &&
+    rivalTeamSizes.join(",") === "1,2,3,4,5,6" &&
       rivalLeadLevels.every(
         (level, index) => index === 0 || level > rivalLeadLevels[index - 1],
       ),
-    "rival teams do not grow consistently across the five story acts",
+    "rival teams do not grow consistently through the Champion rematch",
   );
   const rivalIntro = recurringCharacterEngine.getIntroScene(
     rivalPlayer,

@@ -1,0 +1,112 @@
+{
+  "version": "post-game-v1",
+  "chapter": { "id": "post-game", "act": 6, "title": "The Champion's Road", "minBadges": 8, "requiresChampion": true },
+  "rheaRematch": {
+    "id": "rival-champion-rematch",
+    "npcId": 9006,
+    "characterId": "rhea-vale",
+    "act": 6,
+    "title": "Champion's Field Test",
+    "area": "mountain",
+    "position": { "x": 6, "y": 2 },
+    "repeatable": true,
+    "conditions": {
+      "requiredFlags": ["post_game_unlocked"],
+      "requiredCompletedBattles": ["rival-graveyard-league-promise"]
+    },
+    "team": [
+      { "name": "Espeon", "level": 70 },
+      { "name": "Lucario", "level": 68 },
+      { "name": "Arcanine", "level": 68 },
+      { "name": "Absol", "level": 69 },
+      { "name": "Lapras", "level": 67 },
+      { "name": "Dragonite", "level": 70 }
+    ],
+    "aiDifficulty": "HARD",
+    "battleIntro": "No field notes today, Champion. Just our strongest teams.",
+    "repeatDialogue": "The League can call you Champion. Out here, you are still my favorite rival.",
+    "introDialogue": [
+      { "speaker": "Rhea Vale", "text": "You calmed the Beacon and conquered the League. Somehow, standing still still does not suit either of us." },
+      { "speaker": "Rhea Vale", "text": "My final field team is ready. Champion, show me what your journey taught you." }
+    ],
+    "winDialogue": [
+      { "speaker": "Rhea Vale", "text": "That was the answer I wanted. Titles changed around us, but the road between rivals did not." }
+    ],
+    "lossDialogue": [
+      { "speaker": "Rhea Vale", "text": "A Champion can lose a battle and still choose the next step. Come back when you want another." }
+    ],
+    "relationshipAfter": "champion's rival",
+    "setFlags": ["rhea_champion_rematch_won"],
+    "reward": {
+      "coins": 1200,
+      "items": [{ "id": "maxPotion", "quantity": 1 }]
+    }
+  },
+  "specialEvent": {
+    "id": "moonlit-cresselia",
+    "name": "Moonlit Research Signal",
+    "species": "Cresselia",
+    "level": 70,
+    "area": "lake",
+    "weather": "clear",
+    "timeOfDay": "night"
+  },
+  "research": {
+    "title": "Lumen's Champion Survey",
+    "requiredAreas": 3,
+    "eligibleAreas": ["forest", "cave", "volcano", "lake", "mountain", "desert", "graveyard"],
+    "requiredRareSpecies": 10,
+    "eligibleRarities": ["rare", "legendary", "mythical"],
+    "reward": {
+      "coins": 1000,
+      "items": [
+        { "id": "ultra", "quantity": 2 },
+        { "id": "maxPotion", "quantity": 1 }
+      ]
+    }
+  },
+  "storyEvents": [
+    {
+      "id": "post-game-welcome",
+      "order": 700,
+      "title": "The Road After Victory",
+      "act": 6,
+      "chapter": "post-game",
+      "triggers": ["resume"],
+      "oneTime": true,
+      "conditions": { "requiredFlags": ["post_game_unlocked"] },
+      "speaker": { "name": "Professor Lumen", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Professor Lumen", "text": "Champion, the League record is complete, but the region has not run out of questions." },
+        { "speaker": "Archivist Mira", "portrait": "guide", "text": "A quiet lunar signal has appeared over the Lake. It does not match the Beacon's old pattern." },
+        { "speaker": "Ranger Sol", "portrait": "ranger", "text": "The habitats are stable. Revisit a few routes and help us confirm the calm will hold." },
+        { "speaker": "Rhea Vale", "portrait": "ranger", "text": "And when the research is done, find me on the Mountain. I owe the Champion a real rematch." }
+      ],
+      "setFlags": ["post_game_welcome_seen"],
+      "presentation": "league-victory",
+      "theme": "champion"
+    },
+    {
+      "id": "post-game-cresselia-intro",
+      "order": 710,
+      "title": "Moon Over Still Water",
+      "act": 6,
+      "chapter": "post-game",
+      "triggers": ["postgame-special"],
+      "oneTime": true,
+      "conditions": {
+        "requiredFlags": ["post_game_unlocked"],
+        "excludedFlags": ["post_game_special_completed"]
+      },
+      "speaker": { "name": "Archivist Mira", "portrait": "guide" },
+      "dialogue": [
+        { "speaker": "Archivist Mira", "text": "The Lake's signal is gentle, almost dreamlike. It is an invitation, not another crisis." },
+        { "speaker": "Professor Lumen", "portrait": "guide", "text": "Approach carefully. Whatever appears must be free to battle, flee, or be caught normally." }
+      ],
+      "setFlags": ["post_game_special_discovered"],
+      "nextAction": { "type": "postgame-special", "encounterId": "moonlit-cresselia" },
+      "presentation": "mystery",
+      "theme": "moonlight"
+    }
+  ]
+}

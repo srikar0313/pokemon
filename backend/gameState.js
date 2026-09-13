@@ -162,6 +162,7 @@ function createGameState({
   getPokemonVariantKey,
   resolvePokemonSpeciesId,
   normalizeStoryState: storyStateNormalizer,
+  normalizePostGameState: postGameStateNormalizer,
 }) {
   function resolvePokedexSpeciesId(identity, pokemon = null) {
     const explicitSpeciesId = Number(pokemon?.speciesId);
@@ -369,9 +370,12 @@ function createGameState({
       achievements: state.achievements || [],
       story,
     };
-    return migrateLegacyChampionState(normalizedState, {
+    const leagueNormalizedState = migrateLegacyChampionState(normalizedState, {
       legacy: legacyLeagueState,
     });
+    return postGameStateNormalizer
+      ? postGameStateNormalizer(leagueNormalizedState)
+      : leagueNormalizedState;
   }
 
   function updateAchievements(state) {

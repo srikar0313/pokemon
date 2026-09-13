@@ -192,10 +192,15 @@ async function testAuthFlow() {
   firstSave.player.items.standard = 1;
   firstSave.player.story.flags.push("player-a-only");
   firstSave.player.league = { completed: true, hallOfFame: { team: ["A"] } };
+  firstSave.player.postGame = {
+    unlocked: true,
+    research: { visitedAreas: ["forest"], rewardClaimed: false },
+  };
   assert.strictEqual(secondSave.player.coins, 100);
   assert.strictEqual(secondSave.player.items.standard, 10);
   assert.deepStrictEqual(secondSave.player.story.flags, []);
   assert.strictEqual(secondSave.player.league.completed, false);
+  assert.strictEqual(secondSave.player.postGame, undefined);
   assert.notStrictEqual(firstSave.team[0].ownedId, secondSave.team[0].ownedId);
 
   clock = new Date("2026-09-15T10:00:00.000Z");
@@ -311,10 +316,23 @@ async function runPostgresAuthIntegration() {
     const firstSave = await aggregateRepository.loadAggregate(first.playerId);
     const secondSave = await aggregateRepository.loadAggregate(second.playerId);
     firstSave.player.coins = 777;
+    firstSave.player.postGame = {
+      version: "post-game-v1",
+      unlocked: true,
+      research: { visitedAreas: ["lake"], rewardClaimed: false },
+    };
     await aggregateRepository.saveAggregate(firstSave, first.playerId);
     assert.strictEqual(
       (await aggregateRepository.loadAggregate(second.playerId)).player.coins,
       secondSave.player.coins,
+    );
+    assert.strictEqual(
+      (await aggregateRepository.loadAggregate(second.playerId)).player.postGame,
+      undefined,
+    );
+    assert.deepStrictEqual(
+      (await aggregateRepository.loadAggregate(first.playerId)).player.postGame.research.visitedAreas,
+      ["lake"],
     );
     assert.strictEqual((await service.authenticate(first.token)).userId, first.userId);
     console.log("[auth] PostgreSQL account/isolation integration passed.");

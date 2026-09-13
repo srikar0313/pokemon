@@ -746,6 +746,18 @@ assert(
   "Hall of Fame presentation is missing",
 );
 assert(
+  frontendIndex.includes('id="postgame"') &&
+    frontendSource.includes('fetch("/api/postgame")') &&
+    frontendSource.includes("startPostGameSpecialEncounter") &&
+    frontendStyles.includes(".postgame-grid"),
+  "compact post-game status and activity UI is missing",
+);
+assert(
+  frontendStyles.includes(".research-meter span") &&
+    frontendStyles.includes("transition: none"),
+  "post-game research UI lacks reduced-motion-safe progress feedback",
+);
+assert(
   frontendSource.includes("loadAuthState") &&
     frontendSource.includes("submitAuthForm") &&
     frontendSource.includes("readAuthResponse") &&

@@ -56,7 +56,12 @@ function createRecurringCharacterEngine({ characterData = {}, itemCatalog = {} }
       encounter.previousEncounterId &&
       !progress.completedBattleIds.includes(encounter.previousEncounterId)
     ) return false;
-    return !progress.completedBattleIds.includes(encounter.id);
+    if (
+      (conditions.requiredCompletedBattles || []).some(
+        (encounterId) => !progress.completedBattleIds.includes(encounterId),
+      )
+    ) return false;
+    return encounter.repeatable || !progress.completedBattleIds.includes(encounter.id);
   }
 
   function getEncounterNpc(encounter, playerState) {
@@ -198,8 +203,10 @@ function createRecurringCharacterEngine({ characterData = {}, itemCatalog = {} }
     const progress = ensureStoryCharacters(playerState)[encounter.characterId];
     const won = result === "won";
     const alreadyCompleted = progress.completedBattleIds.includes(encounter.id);
-    if (won && !alreadyCompleted) {
+    if (won && (!alreadyCompleted || encounter.repeatable)) {
       progress.playerWins += 1;
+    }
+    if (won && !alreadyCompleted) {
       progress.completedBattleIds = uniqueStrings([...progress.completedBattleIds, encounter.id]);
       progress.encounterProgress = progress.completedBattleIds.length;
       progress.relationship = encounter.relationshipAfter || progress.relationship;

@@ -1536,6 +1536,139 @@ textarea {
   50% { opacity: 0.34; transform: translateY(-6px); }
 }
 
+.postgame-screen-card {
+  margin-top: 16px;
+  border-top: 3px solid #e0aa32;
+}
+
+.postgame-locked,
+.postgame-header,
+.champion-mark,
+.research-row {
+  display: flex;
+  align-items: center;
+}
+
+.postgame-locked {
+  gap: 16px;
+  min-height: 88px;
+}
+
+.postgame-emblem,
+.champion-mark > span {
+  color: #f3bd37;
+  font-size: 32px;
+  filter: drop-shadow(0 2px 3px rgba(93, 57, 5, 0.25));
+}
+
+.postgame-header {
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.postgame-header .eyebrow,
+.activity-kicker {
+  color: #805d12;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.champion-mark {
+  min-width: 150px;
+  flex-direction: column;
+  padding: 10px 14px;
+  border: 1px solid #e8c25d;
+  background: #fff9df;
+  border-radius: 8px;
+}
+
+.champion-mark small {
+  color: #655f51;
+}
+
+.postgame-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.postgame-activity {
+  display: flex;
+  min-width: 0;
+  min-height: 210px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  border: 1px solid #cfd9df;
+  border-radius: 8px;
+  background: #f8fbfc;
+}
+
+.postgame-activity.moonlit {
+  border-color: #aeb9dd;
+  background: #f4f5ff;
+}
+
+.postgame-activity h4 {
+  margin: 5px 0 8px;
+  font-size: 18px;
+}
+
+.postgame-activity p {
+  flex: 1;
+  margin: 0 0 14px;
+  color: #4c5960;
+  line-height: 1.45;
+}
+
+.research-row {
+  width: 100%;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 7px;
+  font-size: 13px;
+}
+
+.research-meter {
+  width: 100%;
+  height: 7px;
+  margin: 5px 0;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #dce3e6;
+}
+
+.research-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #3c9b70;
+  transition: width 220ms ease;
+}
+
+@media (max-width: 1100px) {
+  .postgame-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .postgame-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .postgame-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .postgame-activity {
+    min-height: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -10044,5 +10177,9 @@ button:disabled {
   .handbook-weather-card:hover,
   .handbook-glossary article:hover {
     transform: none;
+  }
+
+  .research-meter span {
+    transition: none;
   }
 }

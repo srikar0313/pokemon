@@ -118,6 +118,12 @@ async function runCoordinatorTests() {
         completionCount: 1,
         hallOfFame: { team: [{ speciesId: 25, shiny: true }] },
       },
+      postGame: {
+        version: "post-game-v1",
+        unlocked: true,
+        specialEvent: { completed: true, result: "caught" },
+        research: { visitedAreas: ["forest", "lake"], rewardClaimed: false },
+      },
       partyPresets: [{ slot: 1, pokemonIds: ["owned-pikachu"] }],
     },
     team: [
@@ -169,6 +175,7 @@ async function runCoordinatorTests() {
     assert.strictEqual(loadedStorage[0].speciesId, 18);
     assert.strictEqual(loadedPlayer.story.characters["rhea-vale"].playerWins, 2);
     assert.strictEqual(loadedPlayer.league.hallOfFame.team[0].shiny, true);
+    assert.deepStrictEqual(loadedPlayer.postGame.research.visitedAreas, ["forest", "lake"]);
 
     loadedPlayer.coins += 100;
     loadedPlayer.items.thunderStone = 0;
@@ -196,6 +203,10 @@ async function runCoordinatorTests() {
     assert.strictEqual(restarted.readJsonFile(paths.player, {}).coins, 1334);
     assert.strictEqual(restarted.readJsonFile(paths.team, []).length, 2);
     assert.strictEqual(restarted.readJsonFile(paths.storage, []).length, 0);
+    assert.strictEqual(
+      restarted.readJsonFile(paths.player, {}).postGame.specialEvent.result,
+      "caught",
+    );
   });
 
   repository.seed("second-player", {
@@ -212,6 +223,7 @@ async function runCoordinatorTests() {
   });
   assert.strictEqual(repository.getStored("test-player").player.coins, 1334);
   assert.strictEqual(repository.getStored("second-player").player.coins, 75);
+  assert.strictEqual(repository.getStored("second-player").player.postGame, undefined);
   assert.strictEqual(repository.getStored("test-player").team[0].ownedId, "owned-pikachu");
   assert.strictEqual(repository.getStored("second-player").team[0].ownedId, "second-owned");
   assert.strictEqual(resolveMode({ PERSISTENCE_MODE: "json" }), "json");

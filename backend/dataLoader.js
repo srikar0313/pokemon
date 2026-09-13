@@ -650,6 +650,24 @@ function validateGameData(gameData) {
       ),
     ),
   );
+  if (gameData.postGame?.rheaRematch) {
+    validateTeam(
+      `Post-game Rhea (${gameData.postGame.rheaRematch.id})`,
+      gameData.postGame.rheaRematch.team,
+      pokemonNames,
+      groups,
+    );
+  }
+  if (
+    gameData.postGame?.specialEvent?.species &&
+    !pokemonNames.has(gameData.postGame.specialEvent.species)
+  ) {
+    addWarning(
+      groups,
+      "teamWarnings",
+      `Post-game special event references missing Pokemon: ${gameData.postGame.specialEvent.species}`,
+    );
+  }
 
   requiredRarityWeights.forEach((rarity) => {
     if (gameData.rarityWeights?.[rarity] === undefined) {
@@ -761,6 +779,7 @@ function loadGameData(options = {}) {
   const eliteData = loadJson(path.join(dataDir, "elite_four.json"), {});
   const npcData = loadJson(path.join(dataDir, "npcs.json"), {});
   const characterData = loadJson(path.join(dataDir, "characters.json"), {});
+  const postGameData = loadJson(path.join(dataDir, "post_game.json"), {});
   const encounterData = loadJson(path.join(dataDir, "encounters.json"), {});
   const areaData = loadJson(path.join(dataDir, "areas.json"), {});
   const canonicalMoveData = loadJson(
@@ -806,6 +825,7 @@ function loadGameData(options = {}) {
     npcs: npcData.npcs || [],
     npcMaps: npcData.npcMaps || {},
     characters: characterData,
+    postGame: postGameData,
     areas: areaData.areas || [],
     areaUnlocks: areaData.areaUnlocks || {},
     rarityWeights: encounterData.rarityWeights || {},

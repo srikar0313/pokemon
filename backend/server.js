@@ -32,6 +32,10 @@ const {
 const { recordLeagueVictory } = require("./leagueStory");
 const { createRecurringCharacterEngine } = require("./recurringCharacterEngine");
 const {
+  createPostGameEngine,
+  extendCharacterData,
+} = require("./postGameEngine");
+const {
   createGymStoryEvents,
   getGymStoryContext,
   getGymStorySummary,
@@ -95,16 +99,22 @@ const shinyRollChance = gameData.shinyRollChance;
 const formEncounterChance = gameData.formEncounterChance;
 const speciesEncounterBoosts = gameData.speciesEncounterBoosts;
 const weatherBoosts = gameData.weatherBoosts;
+const characterData = extendCharacterData(gameData.characters, gameData.postGame);
 const recurringCharacterEngine = createRecurringCharacterEngine({
-  characterData: gameData.characters,
+  characterData,
   itemCatalog,
 });
 const storyEngine = createStoryEngine({
   storyData: {
     ...gameData.story,
+    chapters: [
+      ...(gameData.story.chapters || []),
+      ...(gameData.postGame.chapter ? [gameData.postGame.chapter] : []),
+    ],
     events: [
       ...(gameData.story.events || []),
       ...createGymStoryEvents(gyms),
+      ...(gameData.postGame.storyEvents || []),
     ],
   },
   itemCatalog,
@@ -135,6 +145,12 @@ const {
   getEvolutionFamilyKey,
   createLeveledPokemon,
 } = pokemonUtils;
+
+const postGameEngine = createPostGameEngine({
+  config: gameData.postGame,
+  pokemon: getPokemonTemplates(),
+  itemCatalog,
+});
 
 const ballRates = {
   standard: 1.0,
@@ -221,6 +237,7 @@ const gameState = createGameState({
   getPokemonVariantKey,
   resolvePokemonSpeciesId: getPokemonSpeciesId,
   normalizeStoryState: storyEngine.normalizeStoryState,
+  normalizePostGameState: postGameEngine.normalize,
 });
 const {
   readJsonFile,
@@ -841,6 +858,7 @@ function getEliteSessionView(session) {
       story: session.currentTrainer.story || null,
     },
     isChampion: session.isChampion,
+    isRematch: Boolean(session.isRematch),
     stageIndex: session.stageIndex,
     totalStages: session.totalStages,
     progressLabel: session.isChampion
@@ -1283,6 +1301,7 @@ app.post("/api/story/trigger", (req, res) => {
     "gym-challenge",
     "mystery-progress",
     "league-entry",
+    "postgame-special",
   ]);
   if (!supportedTriggers.has(trigger)) {
     return res.status(400).json({ error: "Unknown story trigger" });
@@ -1306,6 +1325,8 @@ app.post("/api/story/trigger", (req, res) => {
     if (!(state.unlockedAreas || []).includes(context.area)) {
       return res.status(403).json({ error: "That area is still locked" });
     }
+    postGameEngine.recordAreaVisit(state, context.area);
+    savePlayerState(state);
   }
   if (trigger === "gym-challenge" && !getGymById(context.gymId)) {
     return res.status(400).json({ error: "Unknown story gym" });
@@ -1320,6 +1341,47 @@ app.post("/api/story/trigger", (req, res) => {
     ],
     story: storyEngine.getStorySnapshot(state),
   });
+});
+
+app.get("/api/postgame", (req, res) => {
+  const state = loadPlayerState();
+  res.json(postGameEngine.getSnapshot(state, recurringCharacterEngine));
+});
+
+app.post("/api/postgame/research/claim", (req, res) => {
+  const state = loadPlayerState();
+  const result = postGameEngine.claimResearchReward(state);
+  if (result.error) return res.status(result.progress ? 409 : 403).json(result);
+  const savedState = savePlayerState(result.state);
+  return res.json({
+    success: true,
+    reward: result.reward,
+    state: savedState,
+    postGame: postGameEngine.getSnapshot(savedState, recurringCharacterEngine),
+  });
+});
+
+app.post("/api/postgame/special/start", (req, res) => {
+  if (activeNpcSessions.get("player")?.status === "active") {
+    return res.status(400).json({ error: "Finish your trainer battle first" });
+  }
+  if (activeGymSessions.get("player")?.status === "active") {
+    return res.status(400).json({ error: "Finish your gym battle first" });
+  }
+  if (activeEliteSessions.get("player")?.status === "active") {
+    return res.status(400).json({ error: "Finish your Elite Four run first" });
+  }
+  const { team } = loadTeamAndStorage();
+  if (!team.some((pokemon) => pokemon.currentHp > 0)) {
+    return res.status(400).json({ error: "Heal your party before investigating the signal." });
+  }
+  const result = postGameEngine.createSpecialEncounter(
+    loadPlayerState(),
+    createLeveledPokemon,
+  );
+  if (result.error) return res.status(409).json(result);
+  markPokedexSeen(result.pokemon.speciesId, result.pokemon);
+  return res.json(result.pokemon);
 });
 
 app.post("/api/story/complete", (req, res) => {
@@ -1627,6 +1689,7 @@ app.post("/api/elite/start", (req, res) => {
     opponentTeam: [],
     currentTrainer: eliteFour[0],
     isChampion: false,
+    isRematch: Boolean(state.championDefeated || state.league?.completed),
     status: "active",
     aiItems: {},
     weather: "clear",
@@ -1635,7 +1698,9 @@ app.post("/api/elite/start", (req, res) => {
   activeEliteSessions.set("player", session);
 
   const log = [
-    "The Elite Four challenge begins.",
+    session.isRematch
+      ? "The Pokemon League rematch begins."
+      : "The Elite Four challenge begins.",
     "No healing between battles. Catching and running are disabled.",
   ];
   appendEliteTrainerEntrance(session, log);
@@ -3145,6 +3210,12 @@ app.post("/api/battle", (req, res) => {
       });
       state = mysteryResult.state;
       storyEvents = mysteryResult.events;
+      const postGameResult = postGameEngine.completeSpecialEncounter(
+        state,
+        wildPokemon,
+        "defeated",
+      );
+      state = postGameResult.state;
       savePlayerState(state);
       log.push(`You earned ${moneyReward} coins.`);
     }
@@ -3268,7 +3339,9 @@ app.post("/api/catch", (req, res) => {
           currentPp: m.currentPp ?? m.maxPp ?? m.pp,
         })),
       };
+      const postGameEncounter = caughtPokemon.postGameEncounter;
       delete caughtPokemon.storyEncounter;
+      delete caughtPokemon.postGameEncounter;
       const catchDestination =
         team.length < teamLimit ? "your team" : "storage";
       if (team.length < teamLimit) {
@@ -3301,14 +3374,19 @@ app.post("/api/catch", (req, res) => {
         pokemon: target,
         storyEngine,
       });
+      const postGameResult = postGameEngine.completeSpecialEncounter(
+        mysteryResult.state,
+        { ...target, postGameEncounter },
+        "caught",
+      );
       saveTeamAndStorage(team, storage);
-      savePlayerState(mysteryResult.state);
+      const savedState = savePlayerState(postGameResult.state);
       return res.json({
         success: true,
         message: `Caught ${target.name}! Sent to ${catchDestination}. Earned ${coinRewards.catch} coins.`,
         pokemon: caughtPokemon,
         catchRate: Math.round(catchProbability * 100),
-        state: mysteryResult.state,
+        state: savedState,
         destination: catchDestination,
         storyEvents: mysteryResult.events,
       });
