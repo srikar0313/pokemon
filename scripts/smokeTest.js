@@ -2156,6 +2156,19 @@ function main() {
       friendship: 156,
     });
   evolutionTimeOfDay = "day";
+  const espeonDetailOption = evolutionEngine
+    .getEvolutionOptions(createFriendlyEevee(), { timeOfDay: "day" })
+    .find((option) => option.targetName === "Espeon");
+  assert(
+    espeonDetailOption &&
+      !espeonDetailOption.satisfied &&
+      espeonDetailOption.requirementOptions.some((requirement) =>
+        requirement.checks.some(
+          (check) => check.label === "Gain a level" && !check.satisfied,
+        ),
+      ),
+    "Eevee detail incorrectly claims Espeon evolution is fully satisfied before level-up",
+  );
   const espeonEvolution = rewardEngine.applyXpToPokemon(
     [createFriendlyEevee()],
     0,

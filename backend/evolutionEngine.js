@@ -132,6 +132,12 @@ function createEvolutionEngine({
     const checks = [];
     const expectedItem = getExpectedItem(condition);
     const friendshipThreshold = getFriendshipThreshold(condition);
+    if (LEVEL_UP_METHODS.has(condition.method)) {
+      checks.push({
+        label: "Gain a level",
+        satisfied: context.trigger === "level-up",
+      });
+    }
     if (Number(condition.minLevel) > 0) {
       checks.push({
         label: `Reach level ${condition.minLevel}`,
