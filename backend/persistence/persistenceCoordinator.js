@@ -13,10 +13,21 @@ function clone(value) {
 
 function resolveMode(environment = process.env) {
   const requested = String(environment.PERSISTENCE_MODE || "json").toLowerCase();
+  const isProduction = environment.NODE_ENV === "production";
   if (!SUPPORTED_MODES.has(requested)) {
     throw new Error(`Unsupported PERSISTENCE_MODE: ${requested}`);
   }
+  if (isProduction && requested !== "postgres") {
+    throw new Error(
+      "Production requires PERSISTENCE_MODE=postgres; JSON persistence is disabled.",
+    );
+  }
   if (requested === "postgres" && !environment.DATABASE_URL) {
+    if (isProduction) {
+      throw new Error(
+        "Production PostgreSQL persistence requires DATABASE_URL.",
+      );
+    }
     console.warn(
       "[persistence] DATABASE_URL is missing; using JSON persistence instead.",
     );

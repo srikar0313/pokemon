@@ -38,9 +38,12 @@ Elite Four, story definitions, and recurring-character definitions.
 
 Set `PERSISTENCE_MODE=postgres` and `DATABASE_URL` to use PostgreSQL. This mode
 requires an authenticated account for every gameplay API. If
-PostgreSQL mode is requested without `DATABASE_URL`, the server prints a clear
-warning and falls back to JSON. New accounts receive normal game defaults; the
-server never silently claims the JSON save for an account.
+PostgreSQL mode is requested without `DATABASE_URL` during local development,
+the server prints a clear warning and falls back to JSON. Production never
+falls back: `NODE_ENV=production` requires `PERSISTENCE_MODE=postgres`, a
+`DATABASE_URL`, and a successful database connection. New accounts receive
+normal game defaults; the server never silently claims the JSON save for an
+account.
 
 In PostgreSQL mode, the server hydrates the authenticated player's aggregate
 for each request context. Each API request continues to use the existing synchronous game-state contract.

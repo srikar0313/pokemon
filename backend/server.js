@@ -8,7 +8,11 @@ const { createGameState } = require("./gameState");
 const {
   createPersistenceCoordinator,
 } = require("./persistence/persistenceCoordinator");
-const { getPrismaClient } = require("./persistence/prismaClient");
+const {
+  getPrismaClient,
+  disconnectPrisma,
+} = require("./persistence/prismaClient");
+const { createHealthHandler } = require("./health");
 const {
   createAggregateRepository,
 } = require("./persistence/aggregateRepository");
@@ -49,7 +53,8 @@ const {
   sendPartyPokemonToStorage,
 } = require("./partyManager");
 const app = express();
-const port = process.env.PORT || 3000;
+const port = Number(process.env.PORT) || 3000;
+const host = process.env.HOST || "0.0.0.0";
 const rootDir = path.join(__dirname, "..");
 const inventoryPath = path.join(rootDir, "inventory.json");
 const storagePath = path.join(rootDir, "storage.json");
@@ -101,7 +106,16 @@ const persistence = createPersistenceCoordinator({
   repository: aggregateRepository,
 });
 
-const gameData = loadGameData();
+// Elastic Beanstalk must be able to check the process without a player session.
+app.get(
+  "/api/health",
+  createHealthHandler({ mode: persistence.mode, prisma }),
+);
+
+const gameData = loadGameData({ validate: process.env.NODE_ENV !== "production" });
+if (process.env.NODE_ENV === "production") {
+  console.log(`[startup] Loaded static game data (${gameData.pokemon.length} Pokemon).`);
+}
 const itemCatalog = gameData.items;
 const gyms = gameData.gyms;
 const eliteFour = gameData.eliteFour;
@@ -3831,27 +3845,62 @@ app.use((error, req, res, next) => {
 async function startServer() {
   await persistence.initialize();
   return new Promise((resolve, reject) => {
-    const server = app.listen(port);
+    const server = app.listen(port, host);
     server.once("error", reject);
     server.once("listening", () => {
       server.removeListener("error", reject);
       console.log(
-        `Server running at http://localhost:${port} (${persistence.mode} persistence)`,
+        `[startup] Listening on ${host}:${server.address().port}; persistence=${persistence.mode}`,
       );
       resolve(server);
     });
   });
 }
 
-if (require.main === module) {
-  startServer().catch((error) => {
-    const detail =
-      error?.code === "EADDRINUSE"
-        ? `Port ${port} is already in use. Stop the existing server or set PORT to another value.`
-        : error?.message || "Unknown startup error.";
-    console.error(`Server startup failed: ${detail}`);
-    process.exitCode = 1;
-  });
+async function stopServer(server) {
+  if (server?.listening) {
+    await new Promise((resolve, reject) => {
+      server.close((error) => (error ? reject(error) : resolve()));
+    });
+  }
+  await disconnectPrisma();
 }
 
-module.exports = { app, startServer, persistence };
+function installShutdownHandlers(server) {
+  let shuttingDown = false;
+  const shutdown = (signal) => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    console.log(`[shutdown] ${signal} received; closing services.`);
+    stopServer(server)
+      .then(() => console.log("[shutdown] Complete."))
+      .catch((error) => {
+        console.error(`[shutdown] Failed: ${error.message}`);
+        process.exitCode = 1;
+      });
+  };
+  process.once("SIGTERM", () => shutdown("SIGTERM"));
+  process.once("SIGINT", () => shutdown("SIGINT"));
+}
+
+if (require.main === module) {
+  startServer()
+    .then(installShutdownHandlers)
+    .catch(async (error) => {
+      const detail =
+        error?.code === "EADDRINUSE"
+          ? `Port ${port} is already in use. Stop the existing server or set PORT to another value.`
+          : error?.message || "Unknown startup error.";
+      console.error(`[startup] Failed: ${detail}`);
+      await disconnectPrisma().catch(() => {});
+      process.exitCode = 1;
+    });
+}
+
+module.exports = {
+  app,
+  startServer,
+  stopServer,
+  installShutdownHandlers,
+  persistence,
+};

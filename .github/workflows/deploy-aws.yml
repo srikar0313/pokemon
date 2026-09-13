@@ -1,0 +1,78 @@
+name: Deploy to Elastic Beanstalk
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: pokemon-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+
+      - name: Check required deployment variables
+        env:
+          AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          EB_APPLICATION_NAME: ${{ vars.EB_APPLICATION_NAME }}
+          EB_ENVIRONMENT_NAME: ${{ vars.EB_ENVIRONMENT_NAME }}
+          EB_S3_BUCKET: ${{ vars.EB_S3_BUCKET }}
+        run: |
+          for name in AWS_ROLE_ARN AWS_REGION EB_APPLICATION_NAME EB_ENVIRONMENT_NAME EB_S3_BUCKET; do
+            if [ -z "${!name}" ]; then
+              echo "Missing GitHub environment variable: ${name}"
+              exit 1
+            fi
+          done
+
+      - name: Configure short-lived AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Build source bundle
+        run: |
+          mkdir -p /tmp/pokemon-deploy
+          rsync -a ./ /tmp/pokemon-deploy/ \
+            --exclude .git \
+            --exclude node_modules \
+            --exclude .env \
+            --exclude inventory.json \
+            --exclude player_state.json \
+            --exclude storage.json
+          cd /tmp/pokemon-deploy
+          zip -qr "${GITHUB_WORKSPACE}/pokemon-${GITHUB_SHA}.zip" .
+
+      - name: Publish application version
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          EB_APPLICATION_NAME: ${{ vars.EB_APPLICATION_NAME }}
+          EB_ENVIRONMENT_NAME: ${{ vars.EB_ENVIRONMENT_NAME }}
+          EB_S3_BUCKET: ${{ vars.EB_S3_BUCKET }}
+        run: |
+          KEY="pokemon/${GITHUB_SHA}.zip"
+          aws s3 cp "pokemon-${GITHUB_SHA}.zip" "s3://${EB_S3_BUCKET}/${KEY}"
+          aws elasticbeanstalk create-application-version \
+            --application-name "${EB_APPLICATION_NAME}" \
+            --version-label "${GITHUB_SHA}" \
+            --source-bundle S3Bucket="${EB_S3_BUCKET}",S3Key="${KEY}"
+          aws elasticbeanstalk update-environment \
+            --environment-name "${EB_ENVIRONMENT_NAME}" \
+            --version-label "${GITHUB_SHA}"

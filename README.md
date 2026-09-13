@@ -47,6 +47,12 @@ npm run pokeapi:audit
 
 `npm test` is deterministic and offline. CI runs `npm ci` followed by `npm test` without rebuilding from live PokéAPI data.
 
+## Persistence and Deployment
+
+- [PostgreSQL and Prisma setup](docs/database.md)
+- [AWS Elastic Beanstalk and RDS deployment](docs/aws-deployment.md)
+- [Release checklist](docs/release-checklist.md)
+
 ## Development Data Pipeline
 
 Cached PokéAPI data can be rebuilt during development:
